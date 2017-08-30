@@ -35,3 +35,6 @@ public class StudentModel extends User {
     public void setLevel(Integer level){
         this.level = level;
     }
+    public void setTeamID(String teamID){
+        this.teamID = teamID;
+    }
