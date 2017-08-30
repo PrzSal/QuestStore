@@ -47,3 +47,7 @@ public class StudentModel extends User {
     public void removeQuest(QuestModel questToRemove){
         this.questsList.remove(questToRemove);
     }
+    public void addQuest(QuestModel questToAdd){
+        this.questsList.remove(questToAdd);
+    }
+}
