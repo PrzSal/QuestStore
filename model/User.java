@@ -37,6 +37,10 @@ public abstract User {
         login = newLogin;
     }
 
+    public setPassword(String newPassword) {
+        password = newPassword;
+    }
+    
 
 
 }
