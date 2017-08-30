@@ -38,3 +38,6 @@ public class StudentModel extends User {
     public void setTeamID(String teamID){
         this.teamID = teamID;
     }
+    public void addExperience(Integer experience){
+        this.experience += experience;
+    }
