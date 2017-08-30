@@ -1,4 +1,4 @@
-// package view;
+package view;
 
 import java.util.Scanner;
 
@@ -22,16 +22,11 @@ public class UIView {
         Scanner input = new Scanner(System.in);
         System.out.print("Press enter to continue ...");
         input.nextLine();
-
     }
 
-    public static void main(String[] args) {
+    public static void clearScreen() {
 
-        continueButton();
-        String input = getInput("Type name: ");
-
-
-
-
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
