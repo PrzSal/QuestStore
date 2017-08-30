@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 public class StudentModel extends User {
 
+    public static Integer counter = 0;
     private Integer experience;
     private Integer level;
     private WalletModel wallet;
@@ -15,7 +16,7 @@ public class StudentModel extends User {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.USER_ID = counter++;
+        this.USER_ID = "S_" + counter++;
         this.login = setDefaultLogin();
         this.password = setDefaultPassword();
         this.experience = 0;
@@ -23,5 +24,30 @@ public class StudentModel extends User {
         this.wallet = new WalletModel();
         this.teamID = null;
         this.questsList = new LinkedList<QuestModel>();
+    }
+
+    public Integer getLevel(){
+        return this.level;
+    }
+    public Integer getExperience(){
+        return this.experience;
+    }
+    public void setLevel(Integer level){
+        this.level = level;
+    }
+    public void setTeamID(String teamID){
+        this.teamID = teamID;
+    }
+    public void addExperience(Integer experience){
+        this.experience += experience;
+    }
+    public LinkedList<QuestModel> getQuestst(){
+        return questsList;
+    }
+    public void removeQuest(QuestModel questToRemove){
+        this.questsList.remove(questToRemove);
+    }
+    public void addQuest(QuestModel questToAdd){
+        this.questsList.remove(questToAdd);
     }
 }
