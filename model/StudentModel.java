@@ -29,3 +29,6 @@ public class StudentModel extends User {
     public Integer getLevel(){
         return this.level;
     }
+    public Integer getExperience(){
+        return this.experience;
+    }
