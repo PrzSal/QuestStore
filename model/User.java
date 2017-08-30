@@ -3,7 +3,6 @@ package model;
 public abstract User {
 
     protected final Integer USER_ID;
-    public static Integer counter = 0;
     protected String name;
     protected String surname;
     protected String email;
@@ -33,5 +32,11 @@ public abstract User {
     public void setEmail(String newEmail) {
         email = newEmail;
     }
+
+    public void setLogin(String newLogin) {
+        login = newLogin;
+    }
+
+
 
 }
