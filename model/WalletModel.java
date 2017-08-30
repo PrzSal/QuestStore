@@ -9,4 +9,8 @@ public class WalletModel{
         this.coolCoins = 0;
         this.artifactsList = new LinkedList<Artifact>();
     }
+
+    public void removeCoolCoins(Integer amount){
+        this.coolCoins -= amount;
+    }
 }
