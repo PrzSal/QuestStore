@@ -44,3 +44,6 @@ public class StudentModel extends User {
     public LinkedList<QuestModel> getQuestst(){
         return questsList;
     }
+    public void removeQuest(QuestModel questToRemove){
+        this.questsList.remove(questToRemove);
+    }
