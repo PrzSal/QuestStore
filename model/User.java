@@ -25,4 +25,8 @@ public abstract User {
     public String getLogin() {
         return login;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }
