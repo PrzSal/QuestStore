@@ -26,28 +26,35 @@ public class StudentModel extends User {
         this.questsList = new LinkedList<QuestModel>();
     }
 
-    public Integer getLevel(){
+    public Integer getLevel() {
         return this.level;
     }
-    public Integer getExperience(){
+
+    public Integer getExperience() {
         return this.experience;
     }
-    public void setLevel(Integer level){
+
+    public void setLevel(Integer level) {
         this.level = level;
     }
-    public void setTeamID(String teamID){
+
+    public void setTeamID(String teamID) {
         this.teamID = teamID;
     }
-    public void addExperience(Integer experience){
+
+    public void addExperience(Integer experience) {
         this.experience += experience;
     }
-    public LinkedList<QuestModel> getQuestst(){
+
+    public LinkedList<QuestModel> getQuestst() {
         return questsList;
     }
-    public void removeQuest(QuestModel questToRemove){
+
+    public void removeQuest(QuestModel questToRemove) {
         this.questsList.remove(questToRemove);
     }
-    public void addQuest(QuestModel questToAdd){
+
+    public void addQuest(QuestModel questToAdd) {
         this.questsList.remove(questToAdd);
     }
 }
