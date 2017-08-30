@@ -41,3 +41,6 @@ public class StudentModel extends User {
     public void addExperience(Integer experience){
         this.experience += experience;
     }
+    public LinkedList<QuestModel> getQuestst(){
+        return questsList;
+    }
