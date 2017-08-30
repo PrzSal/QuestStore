@@ -29,4 +29,9 @@ public abstract User {
     public String getPassword() {
         return password;
     }
+
+    public void setEmail(String newEmail) {
+        email = newEmail;
+    }
+
 }
