@@ -10,7 +10,12 @@ public abstract User {
     protected String login;
     protected String password;
 
-    public String getName(String name){
+    public String getName(String name) {
         return name;
     }
+
+    public String getSurname(String surname) {
+        return surname;
+    }
+
 }
