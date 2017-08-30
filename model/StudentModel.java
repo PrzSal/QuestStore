@@ -32,3 +32,6 @@ public class StudentModel extends User {
     public Integer getExperience(){
         return this.experience;
     }
+    public void setLevel(Integer level){
+        this.level = level;
+    }
