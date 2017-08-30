@@ -44,5 +44,8 @@ public abstract User {
     public void setDefaultLogin() {
 
     }
-    
+
+    public void setDefaultPassword() {
+        
+    }
 }
