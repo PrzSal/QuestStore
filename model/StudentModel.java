@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 public class StudentModel extends User {
 
+    public static Integer counter = 0;
     private Integer experience;
     private Integer level;
     private WalletModel wallet;
@@ -15,7 +16,7 @@ public class StudentModel extends User {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.USER_ID = counter++;
+        this.USER_ID = "S_" + counter++;
         this.login = setDefaultLogin();
         this.password = setDefaultPassword();
         this.experience = 0;
@@ -24,4 +25,7 @@ public class StudentModel extends User {
         this.teamID = null;
         this.questsList = new LinkedList<QuestModel>();
     }
-}
+
+    public Integer getLevel(){
+        return this.level;
+    }
