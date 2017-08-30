@@ -22,6 +22,7 @@ public abstract User {
         return email;
     }
 
-
-
+    public String getLogin() {
+        return login;
+    }
 }
