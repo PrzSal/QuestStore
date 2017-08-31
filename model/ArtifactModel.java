@@ -1,8 +1,9 @@
-package models;
+package model;
 
 public class ArtifactModel extends AbstractTask<T> {
 
     private boolean isUsed = false;
+    private Integer amount;
 
     public ArtifactModel(String tittle, Integer price, T artifactCategory) {
 
@@ -10,6 +11,7 @@ public class ArtifactModel extends AbstractTask<T> {
         this.price = price;
         this.artifactCategory = artifactCategory;
         this.isUsed = false;
+        this.amount = 0;
     }
 
     @Override
@@ -34,5 +36,15 @@ public class ArtifactModel extends AbstractTask<T> {
     public boolean setIsUsed() {
 
         return this.isUsed = true;
+    }
+
+    public Integer getAmount() {
+
+        return this.amount;
+    }
+
+    public void setAmount() {
+
+        this.amount++;
     }
 }

@@ -13,6 +13,10 @@ public abstract class User {
         return name;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -43,9 +47,11 @@ public abstract class User {
 
     public String setDefaultLogin() {
         login = "kamil";
+        return login;
     }
 
     public String setDefaultPassword() {
         password = "kmiec";
+        return login;
     }
 }
