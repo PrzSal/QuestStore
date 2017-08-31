@@ -14,9 +14,10 @@ public class AdminController {
     private static final String CREATE_CLASS = "3";
     private static final String EXIT = "0";
 
-    public MentorModel createMentor() {
+    private static UIView view = new UIView();
+    private static AdminView adminView = new AdminView();
 
-        UIView view = new UIView();
+    public MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
@@ -55,8 +56,6 @@ public class AdminController {
 
     public void editMentor(MentorModel mentor) {
 
-        UIView view = new UIView();
-
         String mentorInfo = mentor.toString();
         view.clearScreen();
         view.printMessage(mentorInfo);
@@ -89,7 +88,6 @@ public class AdminController {
 
     public ClassModel createClass() {
 
-        UIView view = new UIView();
         view.clearScreen();
         view.printMessage("Create new class");
 
@@ -100,8 +98,6 @@ public class AdminController {
     }
 
     public void startMenu(String operation, MentorDAO mentorDao, ClassDAO classDao) {
-
-        UIView view = new UIView();
 
         switch(operation) {
 
@@ -136,9 +132,6 @@ public class AdminController {
         String operation;
 
         do {
-            UIView view = new UIView();
-            AdminView adminView = new AdminView();
-
             view.clearScreen();
             adminView.showMenu();
             operation = view.getInput("Choice option: ");
