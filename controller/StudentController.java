@@ -3,27 +3,25 @@ package controller;
 import model.StudentModel;
 import java.util.LinkedList;
 
+import model.*;
 import dao.ArtifactDAO;
-import view.ArtifactView;
-import view.StudentView;
-import view.UIView;
-import view.WalletView;
+import view.*;
 
 public class StudentController {
 
     public void buyArtifact(StudentModel studentModel, ArtifactDAO artifactDAO) {
-        WalletView walletView = new WalletView();
+
         ArtifactView artifactView = new ArtifactView();
         ArtifactDAOView artifactDAOView = new ArtifactDAOView();
         UIView uiView = new UIView();
 
-        LinkedList artifactList = artifactDAO.getArtifactsList();
+        LinkedList<ArtifactModel> artifactList = artifactDAO.getArtifactsList();
 
         artifactDAOView.showList(artifactList);
 
         Integer index = Integer.parseInt(uiView.getInput("Enter index for chosen artifact:"));
         ArtifactModel artifactToBuy = artifactList.get(index);
-        Integer artifactPrice = artifactModel.getPrice();
+        Integer artifactPrice = artifactToBuy.getPrice();
 
         if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
 
@@ -32,20 +30,18 @@ public class StudentController {
 
         } 
         else {
-            uIView.printMessage("You don't have enought cool coins");
+            uiView.printMessage("You don't have enought cool coins");
         }
 
     }
 
     public ArtifactModel buyArtifactTogether() {
+
+        WalletView walletView = new WalletView();
         return;
     }
 
-    public ArtifactModel useArtifact() {
-        return;
-    }
-
-    public void showWallet() {
+    public void showWallet(StudentModel studentModel) {
         studentModel.getWalletModel().showWallet();
     }
 }
