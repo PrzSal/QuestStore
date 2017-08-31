@@ -9,9 +9,9 @@ public class MentorModel extends User {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.USER_ID = "M_" + counter++;
+        this.userID = "M_" + counter++;
         this.login = setDefaultLogin();
-        this.password = setDeafultPassword();
+        this.password = setDefaultPassword();
         this.classID = null;
     }
 
@@ -24,7 +24,7 @@ public class MentorModel extends User {
     }
 
     public String toString() {
-        return USER_ID + " | " + name + " | " + surname + " | " + email + " | " + classID;
+        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID;
     }
 
 }
