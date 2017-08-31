@@ -6,11 +6,11 @@ import view.*;
 
 public class MentorController {
 
+    private static UIView uiView = new UIView();
+    private static MentorView mentorView = new MentorView();
 
     public void startMentorController(StudentDAO studentDAO, QuestDAO questDAO, ArtifactDAO artifactDAO) {
 
-        UIView uiView = new UIView();
-        MentorView mentorView = new MentorView();
         String operation = "";
 
      do {
@@ -18,31 +18,29 @@ public class MentorController {
             operation = uiView.getInput("Choice option: ");
             chooseOption(operation, studentDAO, questDAO, artifactDAO);
         } while (!operation.equals("0"));
- 
+
     }
 
-    public void chooseOption(String operation, StudentDAO studentDAO, 
+    public void chooseOption(String operation, StudentDAO studentDAO,
                              QuestDAO questDAO, ArtifactDAO artifactDAO) {
- 
-        UIView uiView = new UIView();
 
         switch(operation) {
- 
+
             case "1":
                 addStudent(studentDAO);
                 break;
- 
+
             case "2":
                 addQuest(questDAO);
                 break;
- 
+
             case "3":
                 addArtifact(artifactDAO);
                 break;
- 
+
             case "0":
                 break;
- 
+
             default:
                 uiView.printMessage("No option! Try Again!\n");
         }
@@ -53,8 +51,6 @@ public class MentorController {
     }
 
     public void addStudent(StudentDAO studentDAO) {
-
-        UIView uiView = new UIView();
 
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
@@ -67,8 +63,6 @@ public class MentorController {
     }
 
     public void addQuest(QuestDAO questDAO) {
-        UIView uiView = new UIView();
-
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         QuestCategoryModel questCategory = new QuestCategoryModel(uiView.getInput("Enter category: "));
@@ -78,7 +72,6 @@ public class MentorController {
     }
 
     public void addArtifact(ArtifactDAO artifactDAO) {
-        UIView uiView = new UIView();
 
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
