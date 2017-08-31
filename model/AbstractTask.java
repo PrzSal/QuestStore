@@ -19,4 +19,9 @@ public class AbstractTask<T> {
 
         return price;
     }
+
+    public void setPrice(Integer newPrice) {
+
+        price = newPrice;
+    }
 }
