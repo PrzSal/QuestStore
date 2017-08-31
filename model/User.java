@@ -1,6 +1,6 @@
 package model;
 
-public abstract User {
+public abstract class User {
 
     protected final Integer USER_ID;
     protected String name;
@@ -41,11 +41,11 @@ public abstract User {
         password = newPassword;
     }
 
-    public void setDefaultLogin() {
+    public String setDefaultLogin() {
         login = "kamil";
     }
 
-    public void setDefaultPassword() {
+    public String setDefaultPassword() {
         password = "kmiec";
     }
 }
