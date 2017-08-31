@@ -24,9 +24,9 @@ public class Test {
 
 
         // view.clearScreen();
-        // AdminController admin = new AdminController();
-        // MentorModel mentor4 = admin.createMentor();
-        // admin.editMentor(mentor4);
+        AdminController admin = new AdminController();
+        MentorModel mentor4 = admin.createMentor();
+        admin.editMentor(mentor4);
         // System.out.println(mentor4);
         // System.out.println();
 
@@ -36,6 +36,8 @@ public class Test {
         ClassModel klasa = new ClassModel("Dupa");
         System.out.println(klasa);
         System.out.println(klasa);
+        ClassModel nowaKlasa = admin.createClass();
+        System.out.println(nowaKlasa);
 
 
     }

@@ -5,13 +5,9 @@ public class MentorModel extends User {
     public static Integer counter = 0;
     private String classID;
 
-    public MentorModel (String name, String surname, String email) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+    public MentorModel (String name, String surname, String email, String login, String password) {
+        super(name, surname, email, login, password);
         this.userID = "M_" + counter++;
-        this.login = setDefaultLogin();
-        this.password = setDefaultPassword();
         this.classID = null;
     }
 
