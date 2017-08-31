@@ -1,3 +1,5 @@
+package view;
+
 import model.ArtifactModel;
 
 public class ArtifactView {
