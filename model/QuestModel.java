@@ -1,8 +1,8 @@
 package model;
 
-public class QuestModel<T> extends AbstractTask<T> {
+public class QuestModel extends AbstractTask<QuestCategoryModel> {
 
-    public QuestModel(String name, Integer price, T questCategory ) {
+    public QuestModel(String name, Integer price, QuestCategoryModel questCategory ) {
 
         this.title = name;
         this.price = price;
