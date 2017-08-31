@@ -19,6 +19,16 @@ public class WalletModel {
         this.coolCoins -= amount;
     }
 
+    public Integer getCoolCoins() {
+
+        return this.coolCoins;
+    }
+
+    public LinkedList<ArtifactModel> getArtifactList() {
+
+        return this.artifactsList;
+    }
+
     public void addCoolCoins(Integer amount) {
 
         this.coolCoins += amount;
