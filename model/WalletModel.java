@@ -54,7 +54,7 @@ public class WalletModel {
         for (ArtifactModel artifact : this.artifactsList) {
 
             if (artifact.title.equals(name)) {
-                artifact. = true;
+                artifact.getIsUsed() = true;
             }
         throw new NullPointerException("Artifact not found \n");
 
