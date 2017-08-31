@@ -29,4 +29,9 @@ public class AbstractTask<T> {
 
         return category;
     }
+
+    public void setCategory(T newCategory) {
+
+        category = newCategory;
+    }
 }
