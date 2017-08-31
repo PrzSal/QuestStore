@@ -10,4 +10,10 @@ public class QuestModel<T> extends AbstractTask<T> {
 
     }
 
+    @Override
+    public String toString() {
+
+        String stringQuest = "Name quest: " + this.name + "Price: " this.price + this.questCategory.toString();
+
+        return stringQuest;
 }
