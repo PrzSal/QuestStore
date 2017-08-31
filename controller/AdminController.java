@@ -46,7 +46,6 @@ public class AdminController {
 
     public void editMentor(MentorModel mentor) {
 
-
         UIView view = new UIView();
 
         String mentorInfo = mentor.toString();
@@ -78,7 +77,6 @@ public class AdminController {
             }
 
     }
-
 
 
     // public static void main(String[] args) {
