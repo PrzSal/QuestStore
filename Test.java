@@ -26,6 +26,7 @@ public class Test {
         MentorModel mentor4 = admin.createMentor();
         admin.editMentor(mentor4);
         System.out.println(mentor4);
+        System.out.println();
         // String mentorSurname = view.getInput("Enter mentor surname: ");
         // ArrayList<MentorModel> mentorBySurname = admin.getMentorBySurname(mentorSurname);
         // System.out.println(mentorBySurname);

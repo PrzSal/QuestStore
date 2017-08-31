@@ -2,7 +2,7 @@ package model;
 
 public abstract class User {
 
-    protected String USER_ID;
+    protected String userID;
     protected String name;
     protected String surname;
     protected String email;
@@ -52,6 +52,6 @@ public abstract class User {
 
     public String setDefaultPassword() {
         password = "kmiec";
-        return login;
+        return password;
     }
 }
