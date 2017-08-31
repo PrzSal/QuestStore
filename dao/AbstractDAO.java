@@ -1,9 +1,8 @@
 package dao;
 
 import interfaces.*;
-import model.*;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class AbstractDAO<T> implements DAO<T> {
@@ -14,17 +13,17 @@ public abstract class AbstractDAO<T> implements DAO<T> {
         objectsList.add(object);
     }
 
-    public void removeObject(String userID) {
-
-        Iterator<T> iter = this.objectsList.iterator();
-
-        while (iter.hasNext()) {
-          T object = iter.next();
-
-          if (object.getUserID().equals(userID)) {
-            iter.remove();
-          }
-        }
+    public void removeObject(T object) {
+        objectsList.remove(object);
+        // Iterator<T> iter = this.objectsList.iterator();
+        //
+        // while (iter.hasNext()) {
+        //   T object = iter.next();
+        //
+        //   if (object.getUserID().equals(userID)) {
+        //     iter.remove();
+        //   }
+        // }
     }
 
     public void setObjectList(LinkedList<T> newObjectsList) {
@@ -35,16 +34,16 @@ public abstract class AbstractDAO<T> implements DAO<T> {
         return objectsList;
     }
 
-    public T getObjectBy(String userID) {
-
-        Iterator<T> iter = this.objectsList.iterator();
-
-        while (iter.hasNext()) {
-          T object = iter.next();
-
-          if (object.getUserID().equals(userID)) {
-            iter.remove();
-          }
-        }
-    }
+    // public T getObjectBy(String userID) {
+    //
+    //     Iterator<T> iter = this.objectsList.iterator();
+    //
+    //     while (iter.hasNext()) {
+    //       T object = iter.next();
+    //
+    //       if (object.getUserID().equals(userID)) {
+    //         iter.remove();
+    //       }
+    //     }
+    // }
 }
