@@ -3,6 +3,8 @@ import controller.*;
 import view.*;
 import dao.*;
 
+import java.util.Arrays;
+
 public class Application {
 
     public static void main(String[] args) {
@@ -34,6 +36,9 @@ public class Application {
         ClassModel class1 = new ClassModel("codecoo1");
         classDao.addObject(class1);
 
+        System.out.println(Arrays.toString(adminDao.getObjectList().toArray()));
+        System.out.println(Arrays.toString(mentorDao.getObjectList().toArray()));
+
         loginIntoSystem(adminDao, mentorDao, studentDao, classDao, questDao, artifactDao);
     }
 
@@ -41,9 +46,14 @@ public class Application {
                                        StudentDAO studentDao, ClassDAO classDao,
                                        QuestDAO questDao, ArtifactDAO artifactDao) {
 
-        UiView view = new UiView();
+        String operation;
+        UIView view = new UIView();
 
         do {
+
+            operation = view.getInput("~~~ Welcome in CODECOOL SHOP :)\n" +
+                                             "~~~ Login into system: press any key\n" +
+                                             "~~~ Exit: press E\n");
             String login = view.getInput("Enter login: ");
             String password = view.getInput("Enter password");
 
@@ -73,9 +83,7 @@ public class Application {
                 view.printMessage("Wrong login or password!");
             }
 
-            startMenu(operation, basket);
-
-       } while (!operation.equals());
+       } while (!operation.equals("E"));
     }
 
     public static MentorModel findMentor(String login, MentorDAO mentorDao) {
@@ -91,7 +99,7 @@ public class Application {
     public static StudentModel findStudent(String login, StudentDAO studentDao) {
 
         for (StudentModel student : studentDao.getObjectList()) {
-            if(mentor.getLogin().equals(login)) {
+            if(student.getLogin().equals(login)) {
                 return student;
             }
         }
