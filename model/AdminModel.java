@@ -1,6 +1,6 @@
 package model;
 
-public static AdminModel extends User {
+public class AdminModel extends User {
 
     public static Integer counter = 0;
 
