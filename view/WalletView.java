@@ -4,17 +4,9 @@ import java.util.LinkedList;
 
 public class WalletView {
 
-    public void showWallet(LinkedList <ArtifactModel> artifactsList, Integer coolCoins) {
+    public void showLineInWallet(String message) {
 
-        Integer index = 0;
-        System.out.println("Colected artifacts: ");
+        System.out.println(message);
 
-        for (ArtifactModel artifact : artifactsList) {
-
-            System.out.println(index + ". " + artifact);
-            index++;
-        }
-
-        System.out.println("\n" + "Colected coolCoins: " + coolCoins);
     }
 }
