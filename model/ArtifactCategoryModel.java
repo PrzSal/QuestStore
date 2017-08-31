@@ -10,7 +10,7 @@ public class ArtifactCategoryModel extends AbstractTaskCategory {
     @Override
     public String toString() {
 
-        String artifactCategoryString = "Artifact category: " + this.name;
+        String artifactCategoryString = this.name;
 
         return artifactCategoryString;
 
