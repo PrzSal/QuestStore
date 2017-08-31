@@ -1,6 +1,7 @@
 package model;
 
 import java.util.LinkedList;
+import model.WalletModel;
 
 public class StudentModel extends User {
 
@@ -47,7 +48,7 @@ public class StudentModel extends User {
     }
 
     public LinkedList<QuestModel> getQuestst() {
-        return questsList;
+        return this.questsList;
     }
 
     public void removeQuest(QuestModel questToRemove) {
@@ -56,5 +57,9 @@ public class StudentModel extends User {
 
     public void addQuest(QuestModel questToAdd) {
         this.questsList.remove(questToAdd);
+    }
+
+    public WalletModel getWallet() {
+        return this.wallet;
     }
 }
