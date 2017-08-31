@@ -19,6 +19,16 @@ public class WalletModel {
         this.coolCoins -= amount;
     }
 
+    public Integer getCoolCoins() {
+
+        return this.coolCoins;
+    }
+
+    public LinkedList<ArtifactModel> getArtifactList() {
+
+        return this.artifactsList;
+    }
+
     public void addCoolCoins(Integer amount) {
 
         this.coolCoins += amount;
@@ -26,7 +36,17 @@ public class WalletModel {
 
     public void addBoughtArtifact(ArtifactModel artifact) {
 
-        this.artifactsList.add(artifact);
+        for (ArtifactModel artifactElem : this.artifactsList) {
+
+            if(artifactElem.equils(artifact)) {
+
+                artifactElem.setAmount();
+            }
+        }
+        if (!this.artifactsList.contains(artifact)) {
+
+            this.artifactsList.add(artifact);
+        }
     }
 
     public void setIsUsed(String name) throws NullPointerException {
