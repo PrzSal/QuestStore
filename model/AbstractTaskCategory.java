@@ -8,4 +8,9 @@ public class AbstractTaskCategory {
 
         return name;
     }
+
+    public void setNameCategory(String newName) {
+
+        name = newName;
+    }
 }
