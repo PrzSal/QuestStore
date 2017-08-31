@@ -12,9 +12,9 @@ public class StudentView {
     }
 
     public void showMenu() {
-        String menu = "1) Create mentor.\n" +
-                      "2) Edit mentor.\n" +
-                      "3) Create class.\n" +
+        String menu = "1) Buy artifact.\n" +
+                      "2) Buy artifact in team.\n" +
+                      "3) Show wallet.\n" +
                       "0) EXIT";
 
         System.out.println(menu);

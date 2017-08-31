@@ -26,13 +26,11 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         else {
             isUsedState = "[ ]";
         }
-
-
-        String artifactString = this.category.toString() + "Tittle artifact: " +
-                                this.title + " Price: " + this.price + "State use: " + isUsedState;
+        String artifactString = category + " | " + title + " | " + price + " | " + isUsedState;
 
         return artifactString;
     }
+
 
     public boolean getIsUsed() {
         return this.isUsed;
@@ -52,4 +50,6 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
         this.amount++;
     }
+
+
 }
