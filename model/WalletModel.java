@@ -19,6 +19,11 @@ public class WalletModel {
         this.coolCoins -= amount;
     }
 
+    public Integer getCoolCoins() {
+
+        return this.coolCoins;
+    }
+
     public void addCoolCoins(Integer amount) {
 
         this.coolCoins += amount;
