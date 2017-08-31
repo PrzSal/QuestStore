@@ -1,5 +1,5 @@
 package controller;
-import model.MentorModel;
+import model.*;
 import view.*;
 
 import java.util.Scanner;
@@ -40,8 +40,6 @@ public class AdminController {
         }
 
         return searchMentor;
-
-
     }
 
     public void editMentor(MentorModel mentor) {
@@ -76,6 +74,18 @@ public class AdminController {
                 option = view.getInput("Choose option: ");
             }
 
+    }
+
+    public ClassModel createClass() {
+
+        UIView view = new UIView();
+        view.clearScreen();
+        view.printMessage("Create new class");
+        
+        String className = view.getInput("Enter class name: ");
+        ClassModel newClass = new ClassModel(className);
+
+        return newClass;
     }
 
 
