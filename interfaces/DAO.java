@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.LinkedList;
+
 public interface DAO<T> {
 
     public void addObject(T object);

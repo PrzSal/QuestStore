@@ -13,6 +13,10 @@ public abstract class User {
         return name;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     public String getSurname() {
         return surname;
     }
