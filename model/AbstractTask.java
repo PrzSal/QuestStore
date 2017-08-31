@@ -14,4 +14,9 @@ public class AbstractTask<T> {
 
         title = newTitle;
     }
+
+    public Integer getPrice() {
+
+        return price;
+    }
 }
