@@ -1,13 +1,15 @@
 package controller;
 
 import java.util.LinkedList;
-import model.ArtifactModel;
-import view.WalletView;
+import model.*;
+import view.*;
 
 public class WalletController {
 
-    public void showWallet(LinkedList <ArtifactModel> artifactsList) {
+    public void showWalletContent(WalletModel walletModel) {
 
+
+        LinkedList<ArtifactModel> artifactsList = walletModel.getArtifactList();
         WalletView walletView = new WalletView();
         Integer index = 0;
         String message = "";
@@ -21,7 +23,7 @@ public class WalletController {
             index++;
 
         }
-        message = "\n" + "Colected coolCoins: " + String.valueOf(coolCoins);
+        message = "\n" + "Colected coolCoins: " + String.valueOf(walletModel.getCoolCoins());
         walletView.showLineInWallet(message);
     }
 }
