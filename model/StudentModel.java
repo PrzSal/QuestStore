@@ -9,13 +9,13 @@ public class StudentModel extends User {
     private Integer level;
     private WalletModel wallet;
     private String teamID;
+    private String classID;
     private LinkedList<QuestModel> questsList;
 
-    public StudentModel(String name, String surname, String email) {
+    public StudentModel(String name, String surname, String email, String login, String password) {
 
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+        super(name, surname, email, login, password);
+
         this.userID = "S_" + counter++;
         this.login = setDefaultLogin();
         this.password = setDefaultPassword();
