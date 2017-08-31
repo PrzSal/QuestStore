@@ -1,8 +1,6 @@
 package model;
 
 import java.util.LinkedList;
-import model.WalletModel;
-import model.QuestModel;
 
 public class StudentModel extends User {
 
