@@ -2,6 +2,7 @@ package model;
 
 import java.util.LinkedList;
 import model.WalletModel;
+import model.QuestModel;
 
 public class StudentModel extends User {
 
@@ -17,13 +18,14 @@ public class StudentModel extends User {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.USER_ID = "S_" + counter++;
+        this.userID = "S_" + counter++;
         this.login = setDefaultLogin();
         this.password = setDefaultPassword();
         this.experience = 0;
         this.level = 0;
         this.wallet = new WalletModel();
         this.teamID = null;
+        this.classID = null;
         this.questsList = new LinkedList<QuestModel>();
     }
 
