@@ -2,7 +2,7 @@ package model;
 
 public abstract class User {
 
-    protected final Integer USER_ID;
+    protected String USER_ID;
     protected String name;
     protected String surname;
     protected String email;
