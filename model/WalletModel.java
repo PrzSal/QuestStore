@@ -8,7 +8,7 @@ public class WalletModel {
     private Integer coolCoins;
     private LinkedList<ArtifactModel> artifactsList;
 
-    public WalletModel(Integer coolCoins) {
+    public WalletModel() {
 
         this.coolCoins = 0;
         this.artifactsList = new LinkedList<ArtifactModel>();
