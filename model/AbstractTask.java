@@ -5,9 +5,13 @@ public class AbstractTask<T> {
     protected Integer price;
     protected <T> category;
 
-    public String getTitle(){
+    public String getTitle() {
 
-        return tittle;
+        return title;
     }
 
+    public void setTitle(String newTitle) {
+
+        title = newTitle;
+    }
 }
