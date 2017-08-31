@@ -36,3 +36,16 @@ public class StudentController {
         }
 
     }
+
+    public ArtifactModel buyArtifactTogether() {
+        return;
+    }
+
+    public ArtifactModel useArtifact() {
+        return;
+    }
+
+    public void showWallet() {
+        studentModel.getWalletModel().showWallet();
+    }
+}
