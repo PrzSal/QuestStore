@@ -1,4 +1,6 @@
 import controller.*;
+import model.*;
+import view.*;
 
 public class Test {
 

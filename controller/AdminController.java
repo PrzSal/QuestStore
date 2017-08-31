@@ -1,4 +1,6 @@
 package controller;
+import model.MentorModel;
+import view.*;
 
 import java.util.Scanner;
 
@@ -6,13 +8,13 @@ public class AdminController {
 
     public MentorModel createMentor() {
 
-        String name = getInput("Enter mentor name: ")
-        String surname = getInput("Enter mentor surname: ")
-        String email = getInput("Enter mentor email: ")
+        String name = UIView.getInput("Enter mentor name: ");
+        String surname = UIView.getInput("Enter mentor surname: ");
+        String email = UIView.getInput("Enter mentor email: ");
 
         MentorModel mentor = new MentorModel(name, surname, email);
 
-        return MentorModel
+        return mentor;
     }
 
     // public ArrayList<MentorModel> searchMentorBySurname() {
