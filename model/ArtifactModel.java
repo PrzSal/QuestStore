@@ -1,11 +1,11 @@
 package model;
 
-public class ArtifactModel<T> extends AbstractTask<T> {
+public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
     private boolean isUsed;
     private Integer amount;
 
-    public ArtifactModel(String title, Integer price, T artifactCategory) {
+    public ArtifactModel(String title, Integer price, ArtifactCategoryModel artifactCategory) {
 
         this.title = title;
         this.price = price;
@@ -28,7 +28,8 @@ public class ArtifactModel<T> extends AbstractTask<T> {
         }
 
 
-        String artifactString = this.artifactCategory.toString() + "Tittle artifact: " + this.title + " Price: " + this.price +  + "State use: " + isUsedState;
+        String artifactString = this.category.toString() + "Tittle artifact: " +
+                                this.title + " Price: " + this.price + "State use: " + isUsedState;
 
         return artifactString;
     }
