@@ -1,4 +1,6 @@
 package dao;
 
-public class StudentDAO<T> extends AbstractDAO<T> {
+import model.StudentModel;
+
+public class StudentDAO extends AbstractDAO<StudentModel> {
 }
