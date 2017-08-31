@@ -2,6 +2,8 @@ import controller.*;
 import model.*;
 import view.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 
 
 public class Test {
@@ -21,14 +23,19 @@ public class Test {
         // mentorList.add(mentor3);
 
 
-        view.clearScreen();
-        AdminController admin = new AdminController();
-        MentorModel mentor4 = admin.createMentor();
-        admin.editMentor(mentor4);
-        System.out.println(mentor4);
-        System.out.println();
+        // view.clearScreen();
+        // AdminController admin = new AdminController();
+        // MentorModel mentor4 = admin.createMentor();
+        // admin.editMentor(mentor4);
+        // System.out.println(mentor4);
+        // System.out.println();
+
         // String mentorSurname = view.getInput("Enter mentor surname: ");
         // ArrayList<MentorModel> mentorBySurname = admin.getMentorBySurname(mentorSurname);
         // System.out.println(mentorBySurname);
+        ClassModel klasa = new ClassModel("Dupa");
+        System.out.println(klasa);
+
+
     }
 }
