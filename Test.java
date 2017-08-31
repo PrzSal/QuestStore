@@ -1,6 +1,8 @@
 import controller.*;
 import model.*;
 import view.*;
+import dao.*;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -22,22 +24,20 @@ public class Test {
         // mentorList.add(mentor2);
         // mentorList.add(mentor3);
 
+        MentorDAO mentorDao = new MentorDAO();
+        ClassDAO classDao = new ClassDAO();
 
-        // view.clearScreen();
+        MentorModel mentor1 = new MentorModel("Asia", "oszany", "das", "mentor1", "mentor1");
+        mentorDao.addObject(mentor1);
+
+        ClassModel class1 = new ClassModel("codecoo1");
+        classDao.addObject(class1);
+
+
+
         AdminController admin = new AdminController();
-        MentorModel mentor4 = admin.createMentor();
-        admin.editMentor(mentor4);
-        // System.out.println(mentor4);
-        // System.out.println();
+        admin.startAdminController(mentorDao, classDao);
 
-        // String mentorSurname = view.getInput("Enter mentor surname: ");
-        // ArrayList<MentorModel> mentorBySurname = admin.getMentorBySurname(mentorSurname);
-        // System.out.println(mentorBySurname);
-        ClassModel klasa = new ClassModel("Dupa");
-        System.out.println(klasa);
-        System.out.println(klasa);
-        ClassModel nowaKlasa = admin.createClass();
-        System.out.println(nowaKlasa);
 
 
     }
