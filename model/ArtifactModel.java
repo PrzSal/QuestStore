@@ -11,7 +11,7 @@ public class ArtifactModel extends AbstractTask<T> {
         this.price = price;
         this.artifactCategory = artifactCategory;
         this.isUsed = false;
-        this.amount = 0
+        this.amount = 0;
     }
 
     @Override
@@ -43,8 +43,8 @@ public class ArtifactModel extends AbstractTask<T> {
         return this.amount;
     }
 
-    public void setAmount(Integer newAmount) {
+    public void setAmount() {
 
-        this.amount = newAmount;
+        this.amount++;
     }
 }
