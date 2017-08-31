@@ -42,10 +42,10 @@ public abstract User {
     }
 
     public void setDefaultLogin() {
-
+        login = "kamil";
     }
 
     public void setDefaultPassword() {
-        
+        password = "kmiec";
     }
 }
