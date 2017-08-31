@@ -35,6 +35,7 @@ public class Test {
         // System.out.println(mentorBySurname);
         ClassModel klasa = new ClassModel("Dupa");
         System.out.println(klasa);
+        System.out.println(klasa);
 
 
     }
