@@ -50,8 +50,11 @@ public class StudentController {
     //     return;
     // }
 
-    public void showWallet(StudentModel studentModel) {
-        studentModel.getWallet();
+    public void showWallet(StudentModel student) {
+
+        WalletController walletController = new WalletController();
+        LinkedList<ArtifactModel> artifactModelList = student.getWallet().getArtifactList();
+        walletController.showWalletContent(student.getWallet());
     }
 
     public void startMenu(String operation, StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
@@ -72,7 +75,7 @@ public class StudentController {
             break;
 
         case SHOW_WALLET :
-            System.out.println("dupa3");
+            this.showWallet(student);
             uiView.continueButton();
             break;
 
