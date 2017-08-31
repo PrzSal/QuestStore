@@ -4,10 +4,11 @@ import interfaces.*;
 import model.*;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public abstract class AbstractDAO<T> implements Iterator, DAO<T> {
 
-    protected LinkedList<T> objectsList = new LinkedList<T>;
+    protected LinkedList<T> objectsList = new LinkedList<T>();
 
     public void addObject(T object) {
         objectsList.add(object);
@@ -15,12 +16,12 @@ public abstract class AbstractDAO<T> implements Iterator, DAO<T> {
 
     public void removeObject(String userID) {
 
-        Iterator<TodoItem> iter = objectsList.iterator();
+        Iterator<T> iter = getIterator();
 
         while (iter.hasNext()) {
           T object = iter.next();
 
-          if (object.getUserID().equals(userID) {
+          if (object.getUserID().equals(userID)) {
             iter.remove();
           }
         }
@@ -36,11 +37,23 @@ public abstract class AbstractDAO<T> implements Iterator, DAO<T> {
 
     public T getObjectBy(String userID) {
 
-        for (T object )
+        Iterator<T> iter = getIterator();
+
+        while (iter.hasNext()) {
+          T object = iter.next();
+
+          if (object.getUserID().equals(userID)) {
+            iter.remove();
+          }
+        }
     }
 
     public Iterator getIterator() {
-        return new Iterator();
+
+        Iterator iterator = this.objectsList.iterator();
+        return iterator;
     }
 
+    protected abstract void save(LinkedList<T> objectsList);
+    protected abstract LinkedList<T> load(String fileName);
 }
