@@ -10,10 +10,11 @@ public abstract class AbstractDAO<T> implements Iterator, DAO<T> {
     }
 
     public void removeObject(T object) {
+        objectsList.remove(object)
     }
 
-    public void setObjectList(LinkedList<T>) {
-
+    public void setObjectList(LinkedList<T> newObjectsList) {
+        objectsList.
     }
 
     public LinkedList<T> getObjectList() {
