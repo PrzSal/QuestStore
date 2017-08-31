@@ -8,4 +8,8 @@ public class AdminModel extends User {
         super(name, surname, email, login, password);
         this.userID = "A_" + counter++;
     }
+
+    public String toString() {
+        return userID + " | " + name + " | " + surname + " | " + email;
+    }
 }
