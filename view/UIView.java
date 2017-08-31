@@ -4,27 +4,25 @@ import java.util.Scanner;
 
 public class UIView {
 
-    public static void printMessage(String message) {
+    private Scanner input = new Scanner(System.in);
+
+    public void printMessage(String message) {
         System.out.println(message);
     }
 
-    public static String getInput(String message) {
+    public String getInput(String message) {
 
-        try(Scanner input = new Scanner(System.in)) {
-            System.out.print(message);
-
-            return input.nextLine();
-        }
+        System.out.print(message);
+        return input.nextLine().trim();
     }
 
-    public static void continueButton() {
+    public void continueButton() {
 
-        Scanner input = new Scanner(System.in);
         System.out.print("Press enter to continue ...");
         input.nextLine();
     }
 
-    public static void clearScreen() {
+    public void clearScreen() {
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
