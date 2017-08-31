@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.Iterator;
 
-public interface DAO<T> {
+public interface Iterator {
 
     public Iterator getIterator();
 }
