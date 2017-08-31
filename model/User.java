@@ -43,9 +43,11 @@ public abstract class User {
 
     public String setDefaultLogin() {
         login = "kamil";
+        return login;
     }
 
     public String setDefaultPassword() {
         password = "kmiec";
+        return login;
     }
 }
