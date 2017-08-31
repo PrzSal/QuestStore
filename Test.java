@@ -25,8 +25,8 @@ public class Test {
 
         // view.clearScreen();
         AdminController admin = new AdminController();
-        // MentorModel mentor4 = admin.createMentor();
-        // admin.editMentor(mentor4);
+        MentorModel mentor4 = admin.createMentor();
+        admin.editMentor(mentor4);
         // System.out.println(mentor4);
         // System.out.println();
 

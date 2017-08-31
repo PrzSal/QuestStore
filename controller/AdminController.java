@@ -14,8 +14,11 @@ public class AdminController {
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
         String email = view.getInput("Enter mentor email: ");
+        String login = view.getInput("Enter mentor login: ");
+        String password = view.getInput("Enter mentor password: ");
 
-        MentorModel mentor = new MentorModel(name, surname, email);
+
+        MentorModel mentor = new MentorModel(name, surname, email, login, password);
 
         return mentor;
     }
@@ -24,9 +27,9 @@ public class AdminController {
 
         ArrayList<MentorModel> mentorList = new ArrayList<MentorModel>();
 
-        MentorModel mentor1 = new MentorModel("Mateusz", "Ostafil", "mati@gmail.com");
-        MentorModel mentor2 = new MentorModel("Mateusz", "Steliga", "scooby@gmail.com");
-        MentorModel mentor3 = new MentorModel("Agnieszka", "Koszany", "agi@gmail.com");
+        MentorModel mentor1 = new MentorModel("Mateusz", "Ostafil", "mati@gmail.com", "dupa1", "pupa1");
+        MentorModel mentor2 = new MentorModel("Mateusz", "Steliga", "scooby@gmail.com", "dupa1", "pupa1");
+        MentorModel mentor3 = new MentorModel("Agnieszka", "Koszany", "agi@gmail.com", "dupa1", "pupa1");
 
         mentorList.add(mentor1);
         mentorList.add(mentor2);
@@ -81,7 +84,7 @@ public class AdminController {
         UIView view = new UIView();
         view.clearScreen();
         view.printMessage("Create new class");
-        
+
         String className = view.getInput("Enter class name: ");
         ClassModel newClass = new ClassModel(className);
 
