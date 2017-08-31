@@ -42,4 +42,9 @@ public class ArtifactModel extends AbstractTask<T> {
 
         return this.amount;
     }
+
+    public void setAmount(Integer newAmount) {
+
+        this.amount = newAmount;
+    }
 }
