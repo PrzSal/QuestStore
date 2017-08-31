@@ -10,8 +10,8 @@ public class MentorModel extends User {
         this.surname = surname;
         this.email = email;
         this.USER_ID = "M_" + counter++;
-        this.login = null;
-        this.password = null;
+        this.login = setDefaultLogin();
+        this.password = setDeafultPassword();
         this.classID = null;
     }
 
