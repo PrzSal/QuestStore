@@ -21,11 +21,13 @@ public class Test {
         // mentorList.add(mentor3);
 
 
-
+        view.clearScreen();
         AdminController admin = new AdminController();
         MentorModel mentor4 = admin.createMentor();
-        String mentorSurname = view.getInput("Enter mentor surname: ");
-        ArrayList<MentorModel> mentorBySurname = admin.getMentorBySurname(mentorSurname);
-        System.out.println(mentorBySurname);
+        admin.editMentor(mentor4);
+        System.out.println(mentor4);
+        // String mentorSurname = view.getInput("Enter mentor surname: ");
+        // ArrayList<MentorModel> mentorBySurname = admin.getMentorBySurname(mentorSurname);
+        // System.out.println(mentorBySurname);
     }
 }

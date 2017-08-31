@@ -23,4 +23,8 @@ public class MentorModel extends User {
         this.classID = classID;
     }
 
+    public String toString() {
+        return USER_ID + " | " + name + " | " + surname + " | " + email + " | " + classID;
+    }
+
 }
