@@ -1,11 +1,18 @@
 package controller;
 import model.*;
 import view.*;
+import dao.*;
 
 import java.util.Scanner;
 import java.util.ArrayList;
 
+
 public class AdminController {
+
+    private static final String CREATE_MENTOR = "1";
+    private static final String EDIT_MENTOR = "2";
+    private static final String CREATE_CLASS = "3";
+    private static final String EXIT = "0";
 
     public MentorModel createMentor() {
 
@@ -44,6 +51,7 @@ public class AdminController {
 
         return searchMentor;
     }
+
 
     public void editMentor(MentorModel mentor) {
 
@@ -91,11 +99,53 @@ public class AdminController {
         return newClass;
     }
 
+    public void startMenu(String operation, MentorDAO mentorDao, ClassDAO classDao) {
 
-    // public static void main(String[] args) {
-    //     createMentor();
-    //
-    // }
+        UIView view = new UIView();
 
+        switch(operation) {
+
+        case CREATE_MENTOR :
+            this.createMentor();
+            view.continueButton();
+            break;
+
+        case EDIT_MENTOR :
+            // ArrayList<MentorModel> mentorSurname = view.getInput("Find mentor by surname: ");
+            // this.getMentorBySurname(String mentorSurname)
+            view.continueButton();
+            break;
+
+        case CREATE_CLASS :
+            this.createClass();
+            view.continueButton();
+            break;
+
+        case EXIT:
+            break;
+
+         default :
+            view.printMessage("No option! Try Again!\n");
+            view.continueButton();
+        }
+
+    }
+
+    public void startAdminController(MentorDAO mentorDao, ClassDAO classDao) {
+
+        String operation;
+
+        do {
+            UIView view = new UIView();
+            AdminView adminView = new AdminView();
+
+            view.clearScreen();
+            adminView.showMenu();
+            operation = view.getInput("Choice option: ");
+            view.clearScreen();
+            this.startMenu(operation, mentorDao, classDao);
+        } while (!operation.equals(EXIT));
+
+    }
 
 }
