@@ -28,7 +28,7 @@ public class ArtifactModel<T> extends AbstractTask<T> {
         }
 
 
-        String artifactString = "Tittle artifact: " + this.title + " Price: " + this.price + "State use: " + isUsedState;
+        String artifactString = "Category: " + this.artifactCategory.toString() + "Tittle artifact: " + this.title + " Price: " + this.price +  + "State use: " + isUsedState;
 
         return artifactString;
     }
