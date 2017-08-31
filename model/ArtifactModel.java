@@ -1,15 +1,15 @@
 package model;
 
-public class ArtifactModel extends AbstractTask<T> {
+public class ArtifactModel<T> extends AbstractTask<T> {
 
     private boolean isUsed = false;
     private Integer amount;
 
-    public ArtifactModel(String tittle, Integer price, T artifactCategory) {
+    public ArtifactModel(String title, Integer price, T artifactCategory) {
 
-        this.tittle = tittle;
+        this.title = title;
         this.price = price;
-        this.artifactCategory = artifactCategory;
+        this.category = artifactCategory;
         this.isUsed = false;
         this.amount = 0;
     }
@@ -28,7 +28,7 @@ public class ArtifactModel extends AbstractTask<T> {
         }
 
 
-        String artifactString = "Tittle artifact: " + this.tittle + " Price: " + this.price + "State use: " + isUsedState;
+        String artifactString = "Tittle artifact: " + this.title + " Price: " + this.price + "State use: " + isUsedState;
 
         return artifactString;
     }
