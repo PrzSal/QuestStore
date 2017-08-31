@@ -41,11 +41,11 @@ public abstract class User {
         password = newPassword;
     }
 
-    public void setDefaultLogin() {
+    public String setDefaultLogin() {
         login = "kamil";
     }
 
-    public void setDefaultPassword() {
+    public String setDefaultPassword() {
         password = "kmiec";
     }
 }
