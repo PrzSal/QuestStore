@@ -13,7 +13,7 @@ public class QuestModel extends AbstractTask<QuestCategoryModel> {
     @Override
     public String toString() {
 
-        String stringQuest = "Name quest: " + this.title + "Price: " + this.price + this.category.toString();
+        String stringQuest = category.toString() + " | " + title + " | " + price;
 
         return stringQuest;
     }
