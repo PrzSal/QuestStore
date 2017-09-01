@@ -2,6 +2,8 @@ package controller;
 
 import model.StudentModel;
 import java.util.LinkedList;
+import java.lang.IndexOutOfBoundsException;
+import java.lang.NumberFormatException;
 
 import model.*;
 import view.*;
@@ -27,7 +29,7 @@ public class StudentController {
         String artifactDAOString = artifactDAO.toString();
         artifactView.showArtifactList(artifactDAOString);
 
-        Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact:"));
+        Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
         ArtifactModel artifactToBuy = artifactList.get(index - 1);
         Integer artifactPrice = artifactToBuy.getPrice();
 
@@ -54,28 +56,33 @@ public class StudentController {
 
         switch(operation) {
 
-        case BUY_ARTIFACT :
-            this.buyArtifact(student, artifactDao);
-            System.out.println("dupa1");
-            uiView.continueButton();
-            break;
+            case BUY_ARTIFACT :
+                try {
+                    this.buyArtifact(student, artifactDao);
+                } catch (IndexOutOfBoundsException e) {
+                    uiView.printMessage("Wrong index.");
+                } catch (NumberFormatException e) {
+                    uiView.printMessage("This is not number");
+                }
+                uiView.continueButton();
+                break;
 
-        case TEAM_BUY_ARTIFACT :
-            System.out.println("Coming soon ...");
-            uiView.continueButton();
-            break;
+            case TEAM_BUY_ARTIFACT :
+                System.out.println("Coming soon ...");
+                uiView.continueButton();
+                break;
 
-        case SHOW_WALLET :
-            this.showWallet(student);
-            uiView.continueButton();
-            break;
+            case SHOW_WALLET :
+                this.showWallet(student);
+                uiView.continueButton();
+                break;
 
-        case EXIT:
-            break;
+            case EXIT:
+                break;
 
-         default :
-            uiView.printMessage("No option! Try Again!\n");
-            uiView.continueButton();
+             default :
+                uiView.printMessage("No option! Try Again!\n");
+                uiView.continueButton();
         }
 
     }
