@@ -34,12 +34,12 @@ public class MentorController {
 
         switch(operation) {
 
-            case "1":
+            case ADD_STUDENT:
                 uiView.clearScreen();
                 addStudent(studentDAO);
                 break;
 
-            case "2":
+            case ADD_QUEST:
                 uiView.clearScreen();
                 try {
                     addQuest(questDAO);
@@ -49,7 +49,7 @@ public class MentorController {
                 }
                 break;
 
-            case "3":
+            case ADD_ARTIFACT:
                 uiView.clearScreen();
                 try {
                     addArtifact(artifactDAO);
@@ -59,7 +59,7 @@ public class MentorController {
                 }
                 break;
 
-            case "EXIT":
+            case EXIT:
                 break;
 
             default:
