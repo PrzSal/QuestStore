@@ -43,12 +43,6 @@ public class StudentController {
 
     }
 
-    // public ArtifactModel buyArtifactTogether() {
-    //
-    //     WalletView walletView = new WalletView();
-    //     return;
-    // }
-
     public void showWallet(StudentModel student) {
 
         WalletController walletController = new WalletController();
@@ -67,9 +61,7 @@ public class StudentController {
             break;
 
         case TEAM_BUY_ARTIFACT :
-            // ArrayList<MentorModel> mentorSurname = view.getInput("Find mentor by surname: ");
-            // this.getMentorBySurname(String mentorSurname)
-            System.out.println("dupa2");
+            System.out.println("Coming soon ...");
             uiView.continueButton();
             break;
 

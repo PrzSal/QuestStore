@@ -54,13 +54,13 @@ public class Test {
         ClassModel class1 = new ClassModel("codecoo1");
         classDao.addObject(class1);
 
-        System.out.println(artifactDao);
+        // System.out.println(artifactDao);
 
-        // AdminController adminController = new AdminController();
-        // adminController.startAdminController(mentorDao, classDao);
+        AdminController adminController = new AdminController();
+        adminController.startAdminController(mentorDao, classDao);
 
-        StudentController studentController = new StudentController();
-        studentController.startStudentController(student1, artifactDao, questDao);
+        // StudentController studentController = new StudentController();
+        // studentController.startStudentController(student1, artifactDao, questDao);
 
 
 

@@ -13,8 +13,6 @@ public class AdminController {
     private static final String EDIT_MENTOR = "2";
     private static final String CREATE_CLASS = "3";
     private static final String EXIT = "0";
-    private static UIView view = new UIView();
-    private static AdminView adminView = new AdminView();
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
