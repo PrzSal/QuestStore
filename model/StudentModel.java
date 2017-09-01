@@ -1,6 +1,7 @@
 package model;
 
 import java.util.LinkedList;
+import model.WalletModel;
 
 public class StudentModel extends User {
 
@@ -62,7 +63,7 @@ public class StudentModel extends User {
     public WalletModel getWallet() {
         return this.wallet;
     }
-
+  
     public String toString() {
         return userID + " | " + name + " | " + surname + " | " + classID + " | " + teamID;
     }

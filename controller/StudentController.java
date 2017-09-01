@@ -36,11 +36,11 @@ public class StudentController {
         ArtifactModel artifactToBuy = artifactList.get(index - 1);
         Integer artifactPrice = artifactToBuy.getPrice();
 
+
         if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
 
             studentModel.getWallet().addBoughtArtifact(artifactToBuy);
             studentModel.getWallet().removeCoolCoins(artifactPrice);
-
         }
         else {
             uiView.printMessage("You don't have enought cool coins");

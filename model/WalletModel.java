@@ -37,14 +37,11 @@ public class WalletModel {
     public void addBoughtArtifact(ArtifactModel artifact) {
 
         for (ArtifactModel artifactElem : this.artifactsList) {
-
             if(artifactElem.equals(artifact)) {
-
                 artifactElem.setAmount();
             }
         }
         if (!this.artifactsList.contains(artifact)) {
-
             this.artifactsList.add(artifact);
         }
     }
@@ -52,7 +49,6 @@ public class WalletModel {
     public void setIsUsed(String name) throws NullPointerException {
 
         for (ArtifactModel artifact : this.artifactsList) {
-
             if (artifact.title.equals(name)) {
                 artifact.setIsUsed();
             }

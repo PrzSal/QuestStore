@@ -1,4 +1,6 @@
 package controller;
+import model.MentorModel;
+import view.*;
 
 import model.*;
 import view.*;
@@ -31,7 +33,6 @@ public class AdminController {
         String login = view.getInput("Enter mentor login: ");
         String password = view.getInput("Enter mentor password: ");
 
-
         MentorModel mentor = new MentorModel(name, surname, email, login, password);
 
         return mentor;
@@ -48,7 +49,6 @@ public class AdminController {
         }
 
         return null;
-
     }
 
     public void showMentorList(MentorDAO mentorDao) {

@@ -1,5 +1,6 @@
 package model;
 
+
 public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
     private boolean isUsed;
@@ -26,11 +27,11 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         else {
             isUsedState = "[ ]";
         }
+
         String artifactString = category + " | " + title + " | " + price + " | " + isUsedState;
 
         return artifactString;
     }
-
 
     public boolean getIsUsed() {
         return this.isUsed;
@@ -50,6 +51,4 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
         this.amount++;
     }
-
-
 }
