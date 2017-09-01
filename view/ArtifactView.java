@@ -1,7 +1,5 @@
 package view;
 
-import model.ArtifactModel;
-
 public class ArtifactView {
 
     public void showArtifactList(String artifactDAOString) {

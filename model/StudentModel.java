@@ -64,7 +64,6 @@ public class StudentModel extends User {
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID +
-               " | " + login + " | " + password;
+        return userID + " | " + name + " | " + surname + " | " + classID + " | " + teamID;
     }
 }

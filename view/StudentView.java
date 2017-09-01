@@ -21,4 +21,11 @@ public class StudentView {
         System.out.println(menu);
     }
 
+    public void showStudentList(String studentDAOString) {
+
+        String headline = "\033[1;33mIndex | User ID | Name | Surname | Class ID | Team ID\033[0m\n";
+        System.out.println(headline);
+        System.out.println(studentDAOString);
+    }
+
 }
