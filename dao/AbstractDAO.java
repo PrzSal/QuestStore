@@ -51,7 +51,7 @@ public abstract class AbstractDAO<T> implements DAO<T> {
         String toStringList = "";
         int count = 1;
         for(T object: this.objectsList) {
-            toStringList += count + ". " + object.toString() + "\n";
+            toStringList += count + ". | " + object.toString() + "\n";
             count++;
         }
 

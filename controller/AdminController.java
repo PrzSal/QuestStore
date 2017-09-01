@@ -11,13 +11,18 @@ public class AdminController {
 
     private static final String CREATE_MENTOR = "1";
     private static final String EDIT_MENTOR = "2";
-    private static final String CREATE_CLASS = "3";
+    private static final String SHOW_MENTORS = "3";
+    private static final String CREATE_CLASS = "4";
+    private static final String SHOW_CLASSES = "5";
     private static final String EXIT = "0";
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
+    private static MentorView mentorView = new MentorView();
+    private static ClassView classView = new ClassView();
 
     public MentorModel createMentor() {
+
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
         String email = view.getInput("Enter mentor email: ");
@@ -30,30 +35,37 @@ public class AdminController {
         return mentor;
     }
 
-    public ArrayList<MentorModel> getMentorBySurname(String mentorSurname) {
+    public MentorModel getMentorByID(MentorDAO mentorDao) {
 
-        ArrayList<MentorModel> mentorList = new ArrayList<MentorModel>();
+        this.showMentorList(mentorDao);
+        String mentorID = view.getInput("Enter mentor ID: ");
 
-        MentorModel mentor1 = new MentorModel("Mateusz", "Ostafil", "mati@gmail.com", "dupa1", "pupa1");
-        MentorModel mentor2 = new MentorModel("Mateusz", "Steliga", "scooby@gmail.com", "dupa1", "pupa1");
-        MentorModel mentor3 = new MentorModel("Agnieszka", "Koszany", "agi@gmail.com", "dupa1", "pupa1");
-
-        mentorList.add(mentor1);
-        mentorList.add(mentor2);
-        mentorList.add(mentor3);
-
-        ArrayList<MentorModel> searchMentor = new ArrayList<MentorModel>();
-
-        for(MentorModel mentor: mentorList) {
-            if(mentor.getSurname().equals(mentorSurname))
-                searchMentor.add(mentor);
+        for(MentorModel mentor: mentorDao.getObjectList()) {
+            if(mentor.getUserID().equals(mentorID))
+                return mentor;
         }
 
-        return searchMentor;
+        return null;
+
+    }
+
+    public void showMentorList(MentorDAO mentorDao) {
+
+        String mentorDaoString = mentorDao.toString();
+        mentorView.showMentorList(mentorDaoString);
+    }
+
+    public void showClassList(ClassDAO classDao) {
+
+        String classDaoString = classDao.toString();
+        classView.showClassList(classDaoString);
     }
 
 
-    public void editMentor(MentorModel mentor) {
+    public void editMentor(MentorModel mentor, MentorDAO mentorDao) {
+
+        String mentorDaoString = mentorDao.toString();
+        mentorView.showMentorList(mentorDaoString);
 
         String mentorInfo = mentor.toString();
         view.clearScreen();
@@ -101,18 +113,30 @@ public class AdminController {
         switch(operation) {
 
         case CREATE_MENTOR :
-            this.createMentor();
+            MentorModel newMentor = this.createMentor();
+            mentorDao.addObject(newMentor);
             view.continueButton();
             break;
 
         case EDIT_MENTOR :
-            // ArrayList<MentorModel> mentorSurname = view.getInput("Find mentor by surname: ");
-            // this.getMentorBySurname(String mentorSurname)
+            MentorModel mentor = getMentorByID(mentorDao);
+            this.editMentor(mentor, mentorDao);
+            view.continueButton();
+            break;
+
+        case SHOW_MENTORS :
+            this.showMentorList(mentorDao);
             view.continueButton();
             break;
 
         case CREATE_CLASS :
-            this.createClass();
+            ClassModel newClass = this.createClass();
+            classDao.addObject(newClass);
+            view.continueButton();
+            break;
+
+        case SHOW_CLASSES :
+            this.showClassList(classDao);
             view.continueButton();
             break;
 
