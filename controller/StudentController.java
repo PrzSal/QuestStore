@@ -27,8 +27,8 @@ public class StudentController {
         String artifactDAOString = artifactDAO.toString();
         artifactView.showArtifactList(artifactDAOString);
 
-        Integer index = Integer.parseInt(uiView.getInput("Enter index for chosen artifact:"));
-        ArtifactModel artifactToBuy = artifactList.get(index + 1);
+        Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact:"));
+        ArtifactModel artifactToBuy = artifactList.get(index - 1);
         Integer artifactPrice = artifactToBuy.getPrice();
 
         if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
@@ -87,7 +87,7 @@ public class StudentController {
 
         do {
             uiView.clearScreen();
-            System.out.println("Hello " + student.getName());
+            System.out.println("Hello " + student.getName() + "\n");
             studentView.showMenu();
             operation = uiView.getInput("Choice option: ");
             uiView.clearScreen();

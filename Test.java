@@ -36,6 +36,8 @@ public class Test {
 
         MentorModel mentor1 = new MentorModel("Asia", "oszany", "das", "mentor1", "mentor1");
         mentorDao.addObject(mentor1);
+        MentorModel mentor2 = new MentorModel("Tomek", "Papryka", "das", "mentor1", "mentor1");
+        mentorDao.addObject(mentor2);
 
         StudentModel student1 = new StudentModel("Kamil", "Nowak", "das", "student1", "student1");
         studentDao.addObject(student1);
