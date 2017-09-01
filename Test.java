@@ -56,11 +56,11 @@ public class Test {
 
 
 
-        // AdminController adminController = new AdminController();
-        // adminController.startAdminController(mentorDao, classDao);
+        AdminController adminController = new AdminController();
+        adminController.startAdminController(mentorDao, classDao);
 
-        StudentController studentController = new StudentController();
-        studentController.startStudentController(student1, artifactDao, questDao);
+        // StudentController studentController = new StudentController();
+        // studentController.startStudentController(student1, artifactDao, questDao);
 
 
 
