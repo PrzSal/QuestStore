@@ -17,8 +17,8 @@ public class StudentModel extends User {
         super(name, surname, email, login, password);
 
         this.userID = "S_" + counter++;
-        this.login = setDefaultLogin();
-        this.password = setDefaultPassword();
+        this.login = login;
+        this.password = password;
         this.experience = 0;
         this.level = 0;
         this.wallet = new WalletModel();

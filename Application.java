@@ -3,6 +3,8 @@ import controller.*;
 import view.*;
 import dao.*;
 
+import java.util.Arrays;
+
 public class Application {
 
     private static final String EXIT = "E";
@@ -16,13 +18,13 @@ public class Application {
         QuestDAO questDao = new QuestDAO();
         ArtifactDAO artifactDao = new ArtifactDAO();
 
-        AdminModel admin = new AdminModel("Janek", "Kowalski", "das", "admin", "admin");
+        AdminModel admin = new AdminModel("Janek", "Kowalski", "janek.ko@uo.com", "admin", "admin");
         adminDao.addObject(admin);
 
-        MentorModel mentor1 = new MentorModel("Asia", "oszany", "das", "mentor1", "mentor1");
+        MentorModel mentor1 = new MentorModel("Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor");
         mentorDao.addObject(mentor1);
 
-        StudentModel student1 = new StudentModel("Kamil", "Nowak", "das", "student1", "student1");
+        StudentModel student1 = new StudentModel("Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student");
         studentDao.addObject(student1);
 
         ArtifactCategoryModel category = new ArtifactCategoryModel("owoce");
@@ -49,6 +51,7 @@ public class Application {
         do {
 
             view.clearScreen();
+
             operation = view.getInput("~~~ Welcome in CODECOOL SHOP :)\n" +
                                              "~~~ Login into system: press any key\n" +
                                              "~~~ Exit: press E\n");
@@ -57,7 +60,7 @@ public class Application {
 
                 String login = view.getInput("Enter login: ");
                 String password = view.getInput("Enter password: ");
-
+                System.out.println(login + " " + password);
                 MentorModel mentor = findMentor(login, mentorDao);
                 AdminModel admin = findAdmin(login, adminDao);
                 StudentModel student = findStudent(login, studentDao);
@@ -67,19 +70,16 @@ public class Application {
                     MentorController mentorController = new MentorController();
                     mentorController.startMentorController(studentDao, questDao, artifactDao);
                 }
-
                 else if (admin != null && admin.getPassword().equals(password)) {
 
                     AdminController adminController = new AdminController();
                     adminController.startAdminController(mentorDao, classDao);
                 }
-
                 else if (student != null && student.getPassword().equals(password)) {
 
                     StudentController studentController = new StudentController();
-                    //studentController.startStudentController(mentorDao, classDao);
+                    studentController.startStudentController(student, artifactDao, questDao);
                 }
-
                 else {
                     view.printMessage("\nWrong login or password!\n");
                 }
