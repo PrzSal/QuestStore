@@ -20,7 +20,8 @@ public class MentorModel extends User {
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID;
+        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID +
+               " | " + login + " | " + password;
     }
 
 }

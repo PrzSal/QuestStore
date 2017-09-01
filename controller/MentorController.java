@@ -4,7 +4,14 @@ import model.*;
 import dao.*;
 import view.*;
 
+import java.lang.NumberFormatException;
+
 public class MentorController {
+
+    private static final String ADD_STUDENT = "1";
+    private static final String ADD_QUEST = "2";
+    private static final String ADD_ARTIFACT = "3";
+    private static final String EXIT = "0";
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
@@ -14,10 +21,11 @@ public class MentorController {
         String operation = "";
 
      do {
+            uiView.clearScreen();
             mentorView.printMenu();
             operation = uiView.getInput("Choice option: ");
             chooseOption(operation, studentDAO, questDAO, artifactDAO);
-        } while (!operation.equals("0"));
+        } while (!operation.equals(EXIT));
 
     }
 
@@ -27,18 +35,31 @@ public class MentorController {
         switch(operation) {
 
             case "1":
+                uiView.clearScreen();
                 addStudent(studentDAO);
                 break;
 
             case "2":
-                addQuest(questDAO);
+                uiView.clearScreen();
+                try {
+                    addQuest(questDAO);
+                } catch (NumberFormatException e) {
+                    uiView.printMessage("This is not integer number");
+                    uiView.continueButton();
+                }
                 break;
 
             case "3":
-                addArtifact(artifactDAO);
+                uiView.clearScreen();
+                try {
+                    addArtifact(artifactDAO);
+                } catch (NumberFormatException e) {
+                    uiView.printMessage("This is not integer number");
+                    uiView.continueButton();
+                }
                 break;
 
-            case "0":
+            case "EXIT":
                 break;
 
             default:

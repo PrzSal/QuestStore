@@ -1,10 +1,12 @@
 package controller;
+
 import model.*;
 import view.*;
 import dao.*;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.NullPointerException;
 
 
 public class AdminController {
@@ -120,7 +122,12 @@ public class AdminController {
 
         case EDIT_MENTOR :
             MentorModel mentor = getMentorByID(mentorDao);
-            this.editMentor(mentor, mentorDao);
+
+            try {
+                this.editMentor(mentor, mentorDao);
+            } catch (NullPointerException e) {
+                view.printMessage("Wrong ID\n");
+            }
             view.continueButton();
             break;
 
