@@ -10,20 +10,21 @@ public class StudentModel extends User {
     private Integer level;
     private WalletModel wallet;
     private String teamID;
+    private String classID;
     private LinkedList<QuestModel> questsList;
 
-    public StudentModel(String name, String surname, String email) {
+    public StudentModel(String name, String surname, String email, String login, String password) {
 
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.USER_ID = "S_" + counter++;
-        this.login = setDefaultLogin();
-        this.password = setDefaultPassword();
+        super(name, surname, email, login, password);
+
+        this.userID = "S_" + counter++;
+        this.login = login;
+        this.password = password;
         this.experience = 0;
         this.level = 0;
         this.wallet = new WalletModel();
         this.teamID = null;
+        this.classID = null;
         this.questsList = new LinkedList<QuestModel>();
     }
 
@@ -61,5 +62,9 @@ public class StudentModel extends User {
 
     public WalletModel getWallet() {
         return this.wallet;
+    }
+  
+    public String toString() {
+        return userID + " | " + name + " | " + surname + " | " + classID + " | " + teamID;
     }
 }

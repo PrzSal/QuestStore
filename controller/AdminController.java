@@ -2,51 +2,72 @@ package controller;
 import model.MentorModel;
 import view.*;
 
+import model.*;
+import view.*;
+import dao.*;
+
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.NullPointerException;
+
 
 public class AdminController {
 
-    public MentorModel createMentor() {
+    private static final String CREATE_MENTOR = "1";
+    private static final String EDIT_MENTOR = "2";
+    private static final String SHOW_MENTORS = "3";
+    private static final String CREATE_CLASS = "4";
+    private static final String SHOW_CLASSES = "5";
+    private static final String EXIT = "0";
 
-        UIView view = new UIView();
+    private static UIView view = new UIView();
+    private static AdminView adminView = new AdminView();
+    private static MentorView mentorView = new MentorView();
+    private static ClassView classView = new ClassView();
+
+    public MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
         String email = view.getInput("Enter mentor email: ");
+        String login = view.getInput("Enter mentor login: ");
+        String password = view.getInput("Enter mentor password: ");
 
-        MentorModel mentor = new MentorModel(name, surname, email);
+        MentorModel mentor = new MentorModel(name, surname, email, login, password);
 
         return mentor;
     }
 
-    public ArrayList<MentorModel> getMentorBySurname(String mentorSurname) {
+    public MentorModel getMentorByID(MentorDAO mentorDao) {
 
-        ArrayList<MentorModel> mentorList = new ArrayList<MentorModel>();
+        this.showMentorList(mentorDao);
+        String mentorID = view.getInput("Enter mentor ID: ");
 
-        MentorModel mentor1 = new MentorModel("Mateusz", "Ostafil", "mati@gmail.com");
-        MentorModel mentor2 = new MentorModel("Mateusz", "Steliga", "scooby@gmail.com");
-        MentorModel mentor3 = new MentorModel("Agnieszka", "Koszany", "agi@gmail.com");
-
-        mentorList.add(mentor1);
-        mentorList.add(mentor2);
-        mentorList.add(mentor3);
-
-        ArrayList<MentorModel> searchMentor = new ArrayList<MentorModel>();
-
-        for(MentorModel mentor: mentorList) {
-            if(mentor.getSurname().equals(mentorSurname))
-                searchMentor.add(mentor);
+        for(MentorModel mentor: mentorDao.getObjectList()) {
+            if(mentor.getUserID().equals(mentorID))
+                return mentor;
         }
 
-        return searchMentor;
-
-
+        return null;
     }
 
-    public void editMentor(MentorModel mentor) {
+    public void showMentorList(MentorDAO mentorDao) {
 
-        UIView view = new UIView();
+        String mentorDaoString = mentorDao.toString();
+        mentorView.showMentorList(mentorDaoString);
+    }
+
+    public void showClassList(ClassDAO classDao) {
+
+        String classDaoString = classDao.toString();
+        classView.showClassList(classDaoString);
+    }
+
+
+    public void editMentor(MentorModel mentor, MentorDAO mentorDao) {
+
+        String mentorDaoString = mentorDao.toString();
+        mentorView.showMentorList(mentorDaoString);
 
         String mentorInfo = mentor.toString();
         view.clearScreen();
@@ -78,11 +99,76 @@ public class AdminController {
 
     }
 
+    public ClassModel createClass() {
 
-    // public static void main(String[] args) {
-    //     createMentor();
-    //
-    // }
+        view.clearScreen();
+        view.printMessage("Create new class");
 
+        String className = view.getInput("Enter class name: ");
+        ClassModel newClass = new ClassModel(className);
+
+        return newClass;
+    }
+
+    public void startMenu(String operation, MentorDAO mentorDao, ClassDAO classDao) {
+
+        switch(operation) {
+
+        case CREATE_MENTOR :
+            MentorModel newMentor = this.createMentor();
+            mentorDao.addObject(newMentor);
+            view.continueButton();
+            break;
+
+        case EDIT_MENTOR :
+            MentorModel mentor = getMentorByID(mentorDao);
+
+            try {
+                this.editMentor(mentor, mentorDao);
+            } catch (NullPointerException e) {
+                view.printMessage("Wrong ID\n");
+            }
+            view.continueButton();
+            break;
+
+        case SHOW_MENTORS :
+            this.showMentorList(mentorDao);
+            view.continueButton();
+            break;
+
+        case CREATE_CLASS :
+            ClassModel newClass = this.createClass();
+            classDao.addObject(newClass);
+            view.continueButton();
+            break;
+
+        case SHOW_CLASSES :
+            this.showClassList(classDao);
+            view.continueButton();
+            break;
+
+        case EXIT:
+            break;
+
+         default :
+            view.printMessage("No option! Try Again!\n");
+            view.continueButton();
+        }
+
+    }
+
+    public void startAdminController(MentorDAO mentorDao, ClassDAO classDao) {
+
+        String operation;
+
+        do {
+            view.clearScreen();
+            adminView.showMenu();
+            operation = view.getInput("Choice option: ");
+            view.clearScreen();
+            this.startMenu(operation, mentorDao, classDao);
+        } while (!operation.equals(EXIT));
+
+    }
 
 }

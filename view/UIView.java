@@ -7,7 +7,6 @@ public class UIView {
     private Scanner input = new Scanner(System.in);
 
     public void printMessage(String message) {
-        
         System.out.println(message);
     }
 

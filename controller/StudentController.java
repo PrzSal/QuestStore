@@ -2,50 +2,118 @@ package controller;
 
 import model.StudentModel;
 import java.util.LinkedList;
+import java.lang.IndexOutOfBoundsException;
+import java.lang.NumberFormatException;
 
-import dao.ArtifactDAO;
-import view.ArtifactView;
-import view.StudentView;
-import view.UIView;
-import view.WalletView;
+import model.*;
+import view.*;
+import dao.*;
+
 
 public class StudentController {
 
+    private static final String SHOW_QUESTS = "1";
+    private static final String BUY_ARTIFACT = "2";
+    private static final String TEAM_BUY_ARTIFACT = "3";
+    private static final String SHOW_WALLET = "4";
+    private static final String EXIT = "0";
+
+    private static UIView uiView = new UIView();
+    private static StudentView studentView = new StudentView();
+    private static QuestView questView = new QuestView();
+
+
     public void buyArtifact(StudentModel studentModel, ArtifactDAO artifactDAO) {
-        WalletView walletView = new WalletView();
+
         ArtifactView artifactView = new ArtifactView();
-        ArtifactDAOView artifactDAOView = new ArtifactDAOView();
-        UIView uiView = new UIView();
 
-        LinkedList artifactList = artifactDAO.getArtifactsList();
+        LinkedList<ArtifactModel> artifactList = artifactDAO.getObjectList();
 
-        artifactDAOView.showList(artifactList);
+        String artifactDAOString = artifactDAO.toString();
+        artifactView.showArtifactList(artifactDAOString);
 
-        Integer index = Integer.parseInt(uiView.getInput("Enter index for chosen artifact:"));
-        ArtifactModel artifactToBuy = artifactList.get(index);
-        Integer artifactPrice = artifactModel.getPrice();
+        Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
+        ArtifactModel artifactToBuy = artifactList.get(index - 1);
+        Integer artifactPrice = artifactToBuy.getPrice();
+
 
         if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
 
             studentModel.getWallet().addBoughtArtifact(artifactToBuy);
             studentModel.getWallet().removeCoolCoins(artifactPrice);
-
-        } 
+        }
         else {
-            uIView.printMessage("You don't have enought cool coins");
+            uiView.printMessage("You don't have enought cool coins");
         }
 
     }
 
-    public ArtifactModel buyArtifactTogether() {
-        return;
+    public void showWallet(StudentModel student) {
+
+        WalletController walletController = new WalletController();
+        LinkedList<ArtifactModel> artifactModelList = student.getWallet().getArtifactList();
+        walletController.showWalletContent(student.getWallet());
     }
 
-    public ArtifactModel useArtifact() {
-        return;
+    public void startMenu(String operation, StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
+
+        switch(operation) {
+
+            case SHOW_QUESTS :
+                this.showQuestList(questDao);
+                uiView.continueButton();
+                break;
+
+            case BUY_ARTIFACT :
+                try {
+                    this.buyArtifact(student, artifactDao);
+                } catch (IndexOutOfBoundsException e) {
+                    uiView.printMessage("Wrong index.");
+                } catch (NumberFormatException e) {
+                    uiView.printMessage("This is not number");
+                }
+                uiView.continueButton();
+                break;
+
+            case TEAM_BUY_ARTIFACT :
+                System.out.println("Coming soon ...");
+                uiView.continueButton();
+                break;
+
+            case SHOW_WALLET :
+                this.showWallet(student);
+                uiView.continueButton();
+                break;
+
+            case EXIT:
+                break;
+
+             default :
+                uiView.printMessage("No option! Try Again!\n");
+                uiView.continueButton();
+        }
+
     }
 
-    public void showWallet() {
-        studentModel.getWalletModel().showWallet();
+    public void startStudentController(StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
+
+        String operation;
+
+
+        do {
+            uiView.clearScreen();
+            System.out.println("Hello " + student.getName() + "\n");
+            studentView.showMenu();
+            operation = uiView.getInput("Choice option: ");
+            uiView.clearScreen();
+            this.startMenu(operation, student, artifactDao, questDao);
+        } while (!operation.equals(EXIT));
+
+    }
+
+    public void showQuestList(QuestDAO questDao) {
+
+        String questDaoString = questDao.toString();
+        questView.showQuestList(questDaoString);
     }
 }
