@@ -10,7 +10,7 @@ public class WalletModel {
 
     public WalletModel() {
 
-        this.coolCoins = 400;
+        this.coolCoins = 1000;
         this.artifactsList = new LinkedList<ArtifactModel>();
     }
 
