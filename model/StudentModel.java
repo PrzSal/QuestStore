@@ -17,8 +17,8 @@ public class StudentModel extends User {
         super(name, surname, email, login, password);
 
         this.userID = "S_" + counter++;
-        this.login = setDefaultLogin();
-        this.password = setDefaultPassword();
+        this.login = login;
+        this.password = password;
         this.experience = 0;
         this.level = 0;
         this.wallet = new WalletModel();
@@ -61,5 +61,10 @@ public class StudentModel extends User {
 
     public WalletModel getWallet() {
         return this.wallet;
+    }
+
+    public String toString() {
+        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID +
+               " | " + login + " | " + password;
     }
 }
