@@ -53,14 +53,17 @@ public class Application {
             view.clearScreen();
 
             operation = view.getInput("~~~ Welcome in CODECOOL SHOP :)\n" +
-                                             "~~~ Login into system: press any key\n" +
+                                             "~~~ Login into system: press ENTER to continue\n" +
                                              "~~~ Exit: press E\n");
+            operation = operation.toUpperCase();
 
             if (!operation.equals(EXIT)) {
 
                 String login = view.getInput("Enter login: ");
                 String password = view.getInput("Enter password: ");
+
                 System.out.println(login + " " + password);
+
                 MentorModel mentor = findMentor(login, mentorDao);
                 AdminModel admin = findAdmin(login, adminDao);
                 StudentModel student = findStudent(login, studentDao);
@@ -82,6 +85,7 @@ public class Application {
                 }
                 else {
                     view.printMessage("\nWrong login or password!\n");
+                    view.continueButton();
                 }
             }
 
