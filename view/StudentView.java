@@ -13,9 +13,10 @@ public class StudentView {
 
     public void showMenu() {
         String menu = " Student Menu \n" +
-                      "1) Buy artifact.\n" +
-                      "2) Buy artifact in team.\n" +
-                      "3) Show wallet.\n" +
+                      "1) Show quests\n" +
+                      "2) Buy artifact\n" +
+                      "3) Buy artifact in team\n" +
+                      "4) Show wallet\n" +
                       "0) EXIT";
 
         System.out.println(menu);
