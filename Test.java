@@ -54,7 +54,7 @@ public class Test {
         ClassModel class1 = new ClassModel("codecoo1");
         classDao.addObject(class1);
 
-
+        System.out.println(artifactDao);
 
         // AdminController adminController = new AdminController();
         // adminController.startAdminController(mentorDao, classDao);

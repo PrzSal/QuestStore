@@ -21,15 +21,14 @@ public class StudentController {
     public void buyArtifact(StudentModel studentModel, ArtifactDAO artifactDAO) {
 
         ArtifactView artifactView = new ArtifactView();
-        //ArtifactDAOView artifactDAOView = new ArtifactDAOView();
 
         LinkedList<ArtifactModel> artifactList = artifactDAO.getObjectList();
 
-        String artifactListString = artifactList.toString();
-        artifactView.showArtifactList(artifactListString);
+        String artifactDAOString = artifactDAO.toString();
+        artifactView.showArtifactList(artifactDAOString);
 
         Integer index = Integer.parseInt(uiView.getInput("Enter index for chosen artifact:"));
-        ArtifactModel artifactToBuy = artifactList.get(index);
+        ArtifactModel artifactToBuy = artifactList.get(index + 1);
         Integer artifactPrice = artifactToBuy.getPrice();
 
         if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
