@@ -26,10 +26,10 @@ public class Test {
 
         AdminDAO adminDao = new AdminDAO();
         MentorDAO mentorDao = new MentorDAO();
-        StudentDAO studentDao = new StudentDAO();
+        StudentDAO studentDAO = new StudentDAO();
         ClassDAO classDao = new ClassDAO();
-        QuestDAO questDao = new QuestDAO();
-        ArtifactDAO artifactDao = new ArtifactDAO();
+        QuestDAO questDAO = new QuestDAO();
+        ArtifactDAO artifactDAO = new ArtifactDAO();
 
         AdminModel admin = new AdminModel("Janek", "Kowalski", "das", "admin", "admin");
         adminDao.addObject(admin);
@@ -40,29 +40,32 @@ public class Test {
         mentorDao.addObject(mentor2);
 
         StudentModel student1 = new StudentModel("Kamil", "Nowak", "das", "student1", "student1");
-        studentDao.addObject(student1);
+        studentDAO.addObject(student1);
 
         ArtifactCategoryModel category1 = new ArtifactCategoryModel("learn");
         ArtifactCategoryModel category2 = new ArtifactCategoryModel("relax");
         ArtifactModel artifact1 = new ArtifactModel("mentoring", 200, category1);
         ArtifactModel artifact2 = new ArtifactModel("free day", 500, category2);
-        artifactDao.addObject(artifact1);
-        artifactDao.addObject(artifact2);
+        artifactDAO.addObject(artifact1);
+        artifactDAO.addObject(artifact2);
 
         QuestCategoryModel categoryQuest = new QuestCategoryModel("owoce");
         QuestModel quest1 = new QuestModel("zadanie", 200, categoryQuest);
-        questDao.addObject(quest1);
+        questDAO.addObject(quest1);
 
         ClassModel class1 = new ClassModel("codecoo1");
         classDao.addObject(class1);
 
         // System.out.println(artifactDao);
 
-        AdminController adminController = new AdminController();
-        adminController.startAdminController(mentorDao, classDao);
+        // AdminController adminController = new AdminController();
+        // adminController.startAdminController(mentorDao, classDao);
 
         // StudentController studentController = new StudentController();
         // studentController.startStudentController(student1, artifactDao, questDao);
+
+        MentorController mentorController = new MentorController();
+        mentorController.startMentorController(studentDAO, questDAO, artifactDAO);
 
 
 

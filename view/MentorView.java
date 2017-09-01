@@ -6,8 +6,11 @@ public class MentorView {
 
         System.out.println(   "Mentor Menu: \n"
                             + "1. Add new student\n"
-                            + "2. Add new quest\n"
-                            + "3. Add new artifact\n"
+                            + "2. Show students\n"
+                            + "3. Add new quest\n"
+                            + "4. Show quests\n"
+                            + "5. Add new artifact\n"
+                            + "6. Show artifacts\n"
                             + "0. Exit");
     }
 

@@ -9,12 +9,18 @@ import java.lang.NumberFormatException;
 public class MentorController {
 
     private static final String ADD_STUDENT = "1";
-    private static final String ADD_QUEST = "2";
-    private static final String ADD_ARTIFACT = "3";
+    private static final String SHOW_STUDENTS = "2";
+    private static final String ADD_QUEST = "3";
+    private static final String SHOW_QUESTS = "4";
+    private static final String ADD_ARTIFACT = "5";
+    private static final String SHOW_ARTIFACTS = "6";
     private static final String EXIT = "0";
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
+    private static StudentView studentView = new StudentView();
+    private static QuestView questView = new QuestView();
+    private static ArtifactView artifactView = new ArtifactView();
 
     public void startMentorController(StudentDAO studentDAO, QuestDAO questDAO, ArtifactDAO artifactDAO) {
 
@@ -34,12 +40,17 @@ public class MentorController {
 
         switch(operation) {
 
-            case "1":
+            case ADD_STUDENT:
                 uiView.clearScreen();
                 addStudent(studentDAO);
                 break;
 
-            case "2":
+            case SHOW_STUDENTS :
+                this.showStudentList(studentDAO);
+                uiView.continueButton();
+                break;
+
+            case ADD_QUEST:
                 uiView.clearScreen();
                 try {
                     addQuest(questDAO);
@@ -49,7 +60,12 @@ public class MentorController {
                 }
                 break;
 
-            case "3":
+            case SHOW_QUESTS :
+                this.showQuestList(questDAO);
+                uiView.continueButton();
+                break;
+
+            case ADD_ARTIFACT:
                 uiView.clearScreen();
                 try {
                     addArtifact(artifactDAO);
@@ -57,6 +73,11 @@ public class MentorController {
                     uiView.printMessage("This is not integer number");
                     uiView.continueButton();
                 }
+                break;
+
+            case SHOW_ARTIFACTS :
+                this.showArtifactList(artifactDAO);
+                uiView.continueButton();
                 break;
 
             case "EXIT":
@@ -67,8 +88,22 @@ public class MentorController {
         }
     }
 
-    public void printMenu() {
+    public void showArtifactList(ArtifactDAO artifactDAO) {
 
+        String artifactDaoString = artifactDAO.toString();
+        artifactView.showArtifactList(artifactDaoString);
+    }
+
+    public void showQuestList(QuestDAO questDAO) {
+
+        String questDaoString = questDAO.toString();
+        questView.showQuestList(questDaoString);
+    }
+
+    public void showStudentList(StudentDAO studentDAO) {
+
+        String studentDaoString = studentDAO.toString();
+        studentView.showStudentList(studentDaoString);
     }
 
     public void addStudent(StudentDAO studentDAO) {
