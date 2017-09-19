@@ -12,11 +12,11 @@ import com.codecool.dream_is_green.dao.*;
 
 public class StudentController {
 
-    private static final String SHOW_QUESTS = "1";
-    private static final String BUY_ARTIFACT = "2";
-    private static final String TEAM_BUY_ARTIFACT = "3";
-    private static final String SHOW_WALLET = "4";
-    private static final String EXIT = "0";
+    private static final int SHOW_QUESTS = 1;
+    private static final int BUY_ARTIFACT = 2;
+    private static final int TEAM_BUY_ARTIFACT = 3;
+    private static final int SHOW_WALLET = 4;
+    private static final int EXIT = 0;
 
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
@@ -55,7 +55,7 @@ public class StudentController {
         walletController.showWalletContent(student.getWallet());
     }
 
-    public void startMenu(String operation, StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
+    public void startMenu(int operation, StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
 
         switch(operation) {
 
@@ -97,17 +97,16 @@ public class StudentController {
 
     public void startStudentController(StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
 
-        String operation;
-
+        int operation;
 
         do {
             uiView.clearScreen();
             System.out.println("Hello " + student.getName() + "\n");
             studentView.showMenu();
-            operation = uiView.getInput("Choice option: ");
+            operation = uiView.getInputInt("Choice option: ");
             uiView.clearScreen();
             this.startMenu(operation, student, artifactDao, questDao);
-        } while (!operation.equals(EXIT));
+        } while (operation != EXIT);
 
     }
 

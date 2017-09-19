@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.model;
 
+import java.util.HashMap;
 
 public class LevelModel {
 
@@ -8,11 +9,5 @@ public class LevelModel {
     public LevelModel() {
         levelMap = new HashMap<String, Integer>();
     }
-
-    // public void createLevel(String levelName, Integer levelValue) {
-    //
-    //
-    //
-    // }
 
 }

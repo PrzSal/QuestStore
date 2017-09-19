@@ -16,6 +16,13 @@ public class UIView {
         return input.nextLine().trim();
     }
 
+    public int getInputInt(String message) {
+
+        System.out.print(message);
+        int userInput = input.nextInt();
+        return userInput;
+    }
+
     public void continueButton() {
 
         System.out.print("Press enter to continue ...");

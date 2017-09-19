@@ -8,13 +8,13 @@ import java.lang.NumberFormatException;
 
 public class MentorController {
 
-    private static final String ADD_STUDENT = "1";
-    private static final String SHOW_STUDENTS = "2";
-    private static final String ADD_QUEST = "3";
-    private static final String SHOW_QUESTS = "4";
-    private static final String ADD_ARTIFACT = "5";
-    private static final String SHOW_ARTIFACTS = "6";
-    private static final String EXIT = "0";
+    private static final int ADD_STUDENT = 1;
+    private static final int SHOW_STUDENTS = 2;
+    private static final int ADD_QUEST = 3;
+    private static final int SHOW_QUESTS = 4;
+    private static final int ADD_ARTIFACT = 5;
+    private static final int SHOW_ARTIFACTS = 6;
+    private static final int EXIT = 0;
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
@@ -24,18 +24,18 @@ public class MentorController {
 
     public void startMentorController(StudentDAO studentDAO, QuestDAO questDAO, ArtifactDAO artifactDAO) {
 
-        String operation = "";
+        int operation;
 
      do {
             uiView.clearScreen();
             mentorView.printMenu();
-            operation = uiView.getInput("Choice option: ");
+            operation = uiView.getInputInt("Choice option: ");
             chooseOption(operation, studentDAO, questDAO, artifactDAO);
-        } while (!operation.equals(EXIT));
+        } while (operation != EXIT);
 
     }
 
-    public void chooseOption(String operation, StudentDAO studentDAO,
+    public void chooseOption(int operation, StudentDAO studentDAO,
                              QuestDAO questDAO, ArtifactDAO artifactDAO) {
 
         switch(operation) {
@@ -80,7 +80,7 @@ public class MentorController {
                 uiView.continueButton();
                 break;
 
-            case "EXIT":
+            case EXIT:
                 break;
 
             default:

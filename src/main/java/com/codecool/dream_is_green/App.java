@@ -5,7 +5,7 @@ import com.codecool.dream_is_green.dao.*;
 
 import java.util.Arrays;
 
-public class Application {
+public class App {
 
     private static final String EXIT = "E";
 

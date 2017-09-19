@@ -3,20 +3,17 @@ package com.codecool.dream_is_green.controller;
 import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
-
-import java.util.Scanner;
-import java.util.ArrayList;
 import java.lang.NullPointerException;
 
 
 public class AdminController {
 
-    private static final String CREATE_MENTOR = "1";
-    private static final String EDIT_MENTOR = "2";
-    private static final String SHOW_MENTORS = "3";
-    private static final String CREATE_CLASS = "4";
-    private static final String SHOW_CLASSES = "5";
-    private static final String EXIT = "0";
+    private static final int CREATE_MENTOR = 1;
+    private static final int EDIT_MENTOR = 2;
+    private static final int SHOW_MENTORS = 3;
+    private static final int CREATE_CLASS = 4;
+    private static final int SHOW_CLASSES = 5;
+    private static final int EXIT = 0;
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
@@ -108,7 +105,7 @@ public class AdminController {
         return newClass;
     }
 
-    public void startMenu(String operation, MentorDAO mentorDao, ClassDAO classDao) {
+    public void startMenu(int operation, MentorDAO mentorDao, ClassDAO classDao) {
 
         switch(operation) {
 
@@ -157,15 +154,15 @@ public class AdminController {
 
     public void startAdminController(MentorDAO mentorDao, ClassDAO classDao) {
 
-        String operation;
+        int operation;
 
         do {
             view.clearScreen();
             adminView.showMenu();
-            operation = view.getInput("Choice option: ");
+            operation = view.getInputInt("Choice option: ");
             view.clearScreen();
             this.startMenu(operation, mentorDao, classDao);
-        } while (!operation.equals(EXIT));
+        } while (operation != EXIT);
 
     }
 

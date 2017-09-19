@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.model;
 
-import com.codecool.dream_is_green.java.util.LinkedList;
-import com.codecool.dream_is_green.model.WalletModel;
+import java.util.LinkedList;
 
 public class StudentModel extends User {
 
