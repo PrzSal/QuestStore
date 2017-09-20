@@ -17,7 +17,7 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
-            conection.setAutoCommit(false);
+            connection.setAutoCommit(false);
 
             statement = connection.createStatement();
             String query = "SELECT * FROM StudentsWithArtifacts;";
