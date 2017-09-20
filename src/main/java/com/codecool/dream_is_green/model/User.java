@@ -22,7 +22,7 @@ public abstract class User {
         return name;
     }
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 

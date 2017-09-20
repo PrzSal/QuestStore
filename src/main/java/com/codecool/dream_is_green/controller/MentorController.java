@@ -108,13 +108,15 @@ public class MentorController {
 
     public void addStudent(StudentDAO studentDAO) {
 
+        int userID = uiView.getInputInt("Enter student ID: ");
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
         String email = uiView.getInput("Enter email: ");
         String login = uiView.getInput("Enter login: ");
         String password = uiView.getInput("Enter password: ");
+        String className = uiView.getInput("Enter class name: ");
 
-        StudentModel studentModel = new StudentModel(name, surname, email, login, password);
+        StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
         studentDAO.addObject(studentModel);
     }
 
