@@ -20,6 +20,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             conn = DriverManager.getConnection(DB_URL);
             stat = conn.createStatement();
 
+
             String query = "SELECT * FROM UsersTable JOIN MentorsTable ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password;
@@ -37,6 +38,9 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
 
                 MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, classID);
                 this.addObject(mentor);
+                result.close();
+                stat.close();
+                conn.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
