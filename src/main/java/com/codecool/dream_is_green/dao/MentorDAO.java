@@ -6,8 +6,6 @@ import java.sql.*;
 
 public class MentorDAO extends AbstractDAO<MentorModel> {
 
-    public static final String DRIVER = "org.sqlite.JDBC";
-    public static final String DB_URL = "jdbc:sqlite:quest_store.db";
 
     public void loadMentors() {
 
@@ -16,12 +14,12 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
 
         try {
 
-            Class.forName(MentorDAO.DRIVER);
-            conn = DriverManager.getConnection(DB_URL);
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
             stat = conn.createStatement();
 
 
-            String query = "SELECT * FROM UsersTable JOIN MentorsTable ON UsersTable.user_id = MentorsTable.user_id";
+            String query = "SELECT * FROM MentorsTable JOIN UsersTable ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
             int userID;
@@ -39,10 +37,10 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
                 System.out.println("dupa" + surname);
                 MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
                 this.addObject(mentor);
-                result.close();
-                stat.close();
-                conn.close();
             }
+            result.close();
+            stat.close();
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

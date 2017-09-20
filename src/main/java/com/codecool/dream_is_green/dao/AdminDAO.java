@@ -19,7 +19,7 @@ public class AdminDAO extends AbstractDAO<AdminModel> {
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
-                String query = "SELECT * FROM users WHERE user_type = 'admin';";
+                String query = "SELECT * FROM UsersTable WHERE user_type = 'admin';";
                 ResultSet rs = stmt.executeQuery(query);
 
                 while ( rs.next() ) {
