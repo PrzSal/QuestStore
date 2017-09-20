@@ -30,7 +30,7 @@ public class AdminDAO extends AbstractDAO<AdminModel> {
                     String login = rs.getString("login");
                     String password = rs.getString("password");
 
-                    AdminModel admin = new AdminDAO(userId, name, surname, email, login, password);
+                    AdminModel admin = new AdminModel(userId, name, surname, email, login, password);
                     this.addObject(admin);
 
                 }
@@ -43,4 +43,3 @@ public class AdminDAO extends AbstractDAO<AdminModel> {
             }
         }
     }
-}
