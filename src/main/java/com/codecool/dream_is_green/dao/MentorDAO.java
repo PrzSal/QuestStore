@@ -23,7 +23,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
 
             String query = "SELECT * FROM UsersTable JOIN MentorsTable ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
-            String name, surname, email, login, password, class_name;
+            String name, surname, email, login, password, className;
             int userID;
 
             while(result.next()) {
@@ -34,10 +34,10 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
                 login = result.getString("login");
                 password = result.getString("password");
                 userID = result.getInt("user_id");
-                class_name = result.getString("class_name");
+                className = result.getString("class_name");
 
                 System.out.println("dupa" + surname);
-                MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, class_name);
+                MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
                 this.addObject(mentor);
                 result.close();
                 stat.close();
