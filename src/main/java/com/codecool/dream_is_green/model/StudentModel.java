@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 public class StudentModel extends User {
 
-    public static Integer counter = 0;
     private Integer experience;
     private Integer level;
     private WalletModel wallet;
@@ -15,8 +14,6 @@ public class StudentModel extends User {
     public StudentModel(int userID, String name, String surname, String email, String login, String password, String className) {
 
         super(userID, name, surname, email, login, password);
-
-        this.userID = userID;
         this.login = login;
         this.password = password;
         this.experience = 0;
