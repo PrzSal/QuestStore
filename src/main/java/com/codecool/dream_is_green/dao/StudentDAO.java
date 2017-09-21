@@ -39,4 +39,81 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
+    public void insertStudent(String name, String surname, String email,
+                             String login, String password, String className) {
+
+        Connection connection;
+        Statement statement;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+            connection.setAutoCommit(false);
+
+            String query1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
+
+            statement.executeUpdate(query1);
+            connection.commit();
+            int userId = this.getStudentId(login);
+
+            String query2 = String.format("INSERT INTO StudentsTable (user_id, level_name, class_name) VALUES (%d, 'noob', '%s');", userId, className);
+
+            statement.executeUpdate(query2);
+
+            statement.close();
+            connection.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteStudent(int id) {
+
+        Connection connection;
+
+            try {
+            connection = DatabaseConnection.getConnection();
+
+            String query1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'student'";
+            String query2 = "DELETE FROM StudentsTable WHERE user_id = ?";
+            PreparedStatement prepStmt1 = connection.prepareStatement(query1);
+            PreparedStatement prepStmt2 = connection.prepareStatement(query2);
+
+            prepStmt1.setInt(1, id);
+            prepStmt2.setInt(1, id);
+            prepStmt1.execute();
+            prepStmt2.execute();
+            prepStmt1.close();
+            prepStmt2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getStudentId(String login) {
+
+        Connection connection;
+        Statement statement;
+        int userID = 0;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+
+            String query = "SELECT user_id FROM UsersTable WHERE login = '" + login + "';";
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                userID = result.getInt("user_id");
+            }
+
+            result.close();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userID;
+    }
 }
