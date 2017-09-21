@@ -54,7 +54,7 @@ public class AdminController {
 
         this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
-
+        mentorDao.loadMentors();
         for (MentorModel mentor : mentorDao.getObjectList()) {
             if (mentor.getUserID() == userID) {
                 return mentor;
@@ -67,7 +67,6 @@ public class AdminController {
 
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
-        mentorDao.loadMentors();
         mentorView.showMentorList(mentorDaoString);
         mentorDao.clearObjectList();
 
@@ -82,11 +81,11 @@ public class AdminController {
 
     public void editMentor(MentorModel mentor) {
 
-        mentorDao.clearObjectList();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
 
         int mentorID = mentor.getUserID();
+        System.out.println(mentorID);
 
         String mentorInfo = mentor.toString();
         view.clearScreen();
@@ -96,20 +95,18 @@ public class AdminController {
 
         Boolean done = false;
 
-        while(!done)
-            if(option.equals("1")) {
+        while(!done) {
+            if (option.equals("1")) {
                 String email = view.getInput("Enter mentor email: ");
-                mentorDao.updateMentor(email, mentorID, "email");
+                mentorDao.updateMentor(email, mentorID, "email", "UsersTable");
                 mentor.setEmail(email);
                 done = true;
-            }
-            else if(option.equals("2")) {
+            } else if (option.equals("2")) {
                 String className = view.getInput("Enter mentor class name: ");
-                mentorDao.updateMentor(className, mentorID, "class_name");
+                mentorDao.updateMentor(className, mentorID, "class_name", "MentorsTable");
                 mentor.setClassName(className);
                 done = true;
-            }
-            else {
+            } else {
                 view.printMessage("Choose 1 or 2.");
                 view.pressToContinue();
                 view.clearScreen();
@@ -117,7 +114,8 @@ public class AdminController {
                 view.printMessage("1) Edit email.\n2) Edit mentor class.");
                 option = view.getInput("Choose option: ");
             }
-
+        }
+        mentorDao.clearObjectList();
     }
 
     public ClassModel createClass() {
@@ -142,6 +140,7 @@ public class AdminController {
             break;
 
         case EDIT_MENTOR :
+
             MentorModel mentor = getMentorByID();
 
             try {
