@@ -17,12 +17,12 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
-            String query = "SELECT * FROM StudentsWithArtifacts;";
+            String query = "SELECT * FROM ArtifactsTable;";
             ResultSet resultSet = statement.executeQuery(query);
 
             while ( resultSet.next() ) {
 
-                String title = resultSet.getString("title");
+                String title = resultSet.getString("artifact_name");
                 int price = resultSet.getInt("price");
                 String artifactCategoryDb = resultSet.getString("artifact_category");
                 ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(artifactCategoryDb);
@@ -38,24 +38,33 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         }
     }
 
-    public void insertArtifact(String artifactName, Integer price,  String artifactCategory) {
+    public void insertArtifact(String table, String artifactName, Integer price,  String artifactCategory, int id) {
 
         Connection connection;
-        PreparedStatement preparedStatement;
+        Statement statement;
 
         try {
             connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query= "INSERT INTO ArtifactsTable (artifact_name, price, artifact_category) VALUES(?,?,?);";
+            if(table.equals("ArtifactsTable")) {
 
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, artifactName);
-            preparedStatement.setInt(2, price);
-            preparedStatement.setString(3, artifactCategory);
+                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category) VALUES('%s', %d, '%s');", table, artifactName, price, artifactCategory);
+                statement.executeUpdate(query);
+                connection.commit();
 
-            preparedStatement.execute();
-            connection.commit();
+
+            } else {
+                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category, user_id) VALUES('%s', %d, '%s', %d);", table, artifactName, price, artifactCategory, id);
+                statement.executeUpdate(query);
+
+                connection.commit();
+
+            }
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
