@@ -39,4 +39,32 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
+    public void insertStudent(String name, String surname, String email,
+                             String login, String password, String className) {
+
+        Connection conn;
+        Statement stat;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            stat = conn.createStatement();
+            conn.setAutoCommit(false);
+
+            String statement1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
+
+            stat.executeUpdate(statement1);
+
+            int userId = this.getMentorId(login);
+
+            String statement2 = String.format("INSERT INTO StudentsTable (user_id, experience, level_name, class_name) VALUES (%d, '%d', 'noob');", userId);
+
+            stat.executeUpdate(statement2);
+
+            stat.close();
+            conn.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
