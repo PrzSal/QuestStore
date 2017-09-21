@@ -75,4 +75,32 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
     }
 
+    public void deleteMentor(int id) {
+
+        Connection conn;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+
+            String statement1 = "DELETE FROM UsersTable WHERE user_id = ?";
+            String statement2 = "DELETE FROM MentorsTable WHERE user_id = ?";
+            PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
+            PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
+
+            prepStmt1.setInt(1, id);
+            prepStmt2.setInt(1, id);
+            prepStmt1.execute();
+            prepStmt2.execute();
+            prepStmt1.close();
+            prepStmt2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public void updateMentor() {
+//        UPDATE COMPANY SET ADDRESS = 'Texas' WHERE ID = 6;
+//    }
 }
