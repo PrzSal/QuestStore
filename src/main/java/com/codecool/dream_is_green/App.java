@@ -1,39 +1,18 @@
+import com.codecool.dream_is_green.interfaces.DAO;
 import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.controller.*;
 import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
 
-import java.util.Arrays;
-
 public class App {
 
     private static final String EXIT = "E";
-    static AdminDAO adminDao;
-    static MentorDAO mentorDao;
-    static StudentDAO studentDao;
-    static ClassDAO classDao;
-    static QuestDAO questDao;
-    static ArtifactDAO artifactDao;
-
-    public App() {
-
-        adminDao = new AdminDAO();
-        mentorDao = new MentorDAO();
-        studentDao = new StudentDAO();
-        classDao = new ClassDAO();
-        questDao = new QuestDAO();
-        artifactDao = new ArtifactDAO();
-
-    }
-
+    
     public static void main(String[] args) {
-
-        App app = new App();
 
         AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
                                           "janek.ko@uo.com", "admin", "admin");
-        adminDao.addObject(admin);
-
+        DaoStart.getAdminDao().addObject(admin);
         loginIntoSystem();
     }
 
@@ -55,8 +34,6 @@ public class App {
 
                 String login = view.getInput("Enter login: ");
                 String password = view.getInput("Enter password: ");
-
-                System.out.println(login + " " + password);
 
                 MentorModel mentor = findMentor(login);
                 AdminModel admin = findAdmin(login);
@@ -89,7 +66,7 @@ public class App {
 
     public static MentorModel findMentor(String login) {
 
-        for (MentorModel mentor : mentorDao.getObjectList()) {
+        for (MentorModel mentor : DaoStart.getMentorDao().getObjectList()) {
             if(mentor.getLogin().equals(login)) {
                 return mentor;
             }
@@ -99,7 +76,7 @@ public class App {
 
     public static StudentModel findStudent(String login) {
 
-        for (StudentModel student : studentDao.getObjectList()) {
+        for (StudentModel student : DaoStart.getStudentDao().getObjectList()) {
             if(student.getLogin().equals(login)) {
                 return student;
             }
@@ -109,7 +86,7 @@ public class App {
 
     public static AdminModel findAdmin(String login) {
 
-        for (AdminModel admin : adminDao.getObjectList()) {
+        for (AdminModel admin : DaoStart.getAdminDao().getObjectList()) {
             if(admin.getLogin().equals(login)) {
                 return admin;
             }
