@@ -88,7 +88,7 @@ public class App {
                 }
                 else {
                     view.printMessage("\nWrong login or password!\n");
-                    view.continueButton();
+                    view.pressToContinue();
                 }
             }
 

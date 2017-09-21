@@ -23,7 +23,7 @@ public class UIView {
         return userInput;
     }
 
-    public void continueButton() {
+    public void pressToContinue() {
 
         System.out.print("Press enter to continue ...");
         input.nextLine();

@@ -47,7 +47,7 @@ public class MentorController {
 
             case SHOW_STUDENTS :
                 this.showStudentList(studentDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case ADD_QUEST:
@@ -56,13 +56,13 @@ public class MentorController {
                     addQuest(questDAO);
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
-                    uiView.continueButton();
+                    uiView.pressToContinue();
                 }
                 break;
 
             case SHOW_QUESTS :
                 this.showQuestList(questDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case ADD_ARTIFACT:
@@ -71,13 +71,13 @@ public class MentorController {
                     addArtifact(artifactDAO);
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
-                    uiView.continueButton();
+                    uiView.pressToContinue();
                 }
                 break;
 
             case SHOW_ARTIFACTS :
                 this.showArtifactList(artifactDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case EXIT:
