@@ -13,10 +13,14 @@ public class App {
         AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
                                           "janek.ko@uo.com", "admin", "admin");
 
+        MentorModel mentor = new MentorModel(10, "Michał", "Malinowski",
+                "m.malinowski@gmail.com", "mentor", "mentor", "krk17");
+
         StudentModel student = new StudentModel(3,"Tomek", "Dupa",
                 "tomcio.ko@uo.com", "student", "student", "2b");
 
         DaoStart.getAdminDao().addObject(admin);
+        DaoStart.getMentorDao().addObject(mentor);
         DaoStart.getStudentDao().addObject(student);
         loginIntoSystem();
     }
