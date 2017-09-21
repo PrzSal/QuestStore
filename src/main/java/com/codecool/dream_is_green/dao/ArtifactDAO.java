@@ -32,7 +32,6 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             }
             resultSet.close();
             statement.close();
-            connection.close();
 
         } catch ( Exception e ) {
             e.printStackTrace();

@@ -32,7 +32,6 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             }
             resultSet.close();
             statement.close();
-            connection.close();
 
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -57,7 +56,6 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             preparedStatement.execute();
 
             connection.commit();
-            connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +79,7 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             preparedStatement.execute();
 
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
