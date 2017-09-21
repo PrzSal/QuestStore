@@ -13,12 +13,11 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         Statement statement;
 
         try {
-            Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
-            String query = "SELECT * FROM StudentsWithQuests";
+            String query = "SELECT * FROM QuestsTable";
             ResultSet resultSet = statement.executeQuery(query);
 
             while ( resultSet.next() ) {
@@ -28,7 +27,7 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
                 int price = resultSet.getInt("price");
                 String questCategoryDb = resultSet.getString("quest_category");
                 QuestCategoryModel questCategoryModel = new QuestCategoryModel(questCategoryDb);
-                QuestModel questModel = new QuestModel(questName, price, questCategoryModel);
+                QuestModel questModel = new QuestModel(questId, questName, price, questCategoryModel);
                 this.addObject(questModel);
 
             }
@@ -37,6 +36,27 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             connection.close();
 
         } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteQuest(int id) {
+
+
+        Connection connection;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+
+            String statement = "DELETE FROM QuestTable WHERE quest_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            preparedStatement.close();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
