@@ -78,8 +78,11 @@ public class AdminController {
 
     public void editMentor(MentorModel mentor, MentorDAO mentorDao) {
 
+        mentorDao.clearObjectList();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
+
+        int mentorID = mentor.getUserID();
 
         String mentorInfo = mentor.toString();
         view.clearScreen();
@@ -92,11 +95,13 @@ public class AdminController {
         while(!done)
             if(option.equals("1")) {
                 String email = view.getInput("Enter mentor email: ");
+                mentorDao.updateMentor(email, mentorID, "email");
                 mentor.setEmail(email);
                 done = true;
             }
             else if(option.equals("2")) {
                 String className = view.getInput("Enter mentor class name: ");
+                mentorDao.updateMentor(className, mentorID, "class_name");
                 mentor.setClassName(className);
                 done = true;
             }
