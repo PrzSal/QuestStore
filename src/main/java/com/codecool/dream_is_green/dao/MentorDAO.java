@@ -12,8 +12,8 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         Statement stat;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+
+            conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();
 
             String query = "SELECT * FROM MentorsTable JOIN UsersTable ON UsersTable.user_id = MentorsTable.user_id";
@@ -36,7 +36,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             }
             result.close();
             stat.close();
-            conn.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,29 +46,25 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
                           String login, String password, String className) {
 
         Connection conn;
+        Statement stat;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            conn = DatabaseConnection.getConnection();
+            stat = conn.createStatement();
 
-            String statement1 = "INSERT INTO UsersTable (name, surname, email, login, password, user_type) " +
-                    "VALUES (?, ?, ?, ?, ?, 'mentor');";
-            String statement2 = "INSERT INTO MentorsTable (class_name) " +
-                    "VALUES (?);";
-            PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
-            PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
+            String statement1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES (%s, %s, %s, %s, %s, %s);", name, surname, email, login, password, "mentor");
 
-            prepStmt1.setString(1, name);
-            prepStmt1.setString(2, surname);
-            prepStmt1.setString(3, email);
-            prepStmt1.setString(4, login);
-            prepStmt1.setString(5, password);
+            stat.executeUpdate(statement1);
 
-            prepStmt2.setString(1, className);
-            prepStmt1.execute();
-            prepStmt2.execute();
-            prepStmt1.close();
-            prepStmt2.close();
+            int userId = this.getMentorId(login);
+
+            String statement2 = String.format("INSERT INTO MentorsTable (user_id, class_name) VALUES (%d, %s);", userId, className);
+
+            stat.executeUpdate(statement2);
+
+            stat.close();
+            conn.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,8 +75,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         Connection conn;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            conn = DatabaseConnection.getConnection();
 
             String statement1 = "DELETE FROM UsersTable WHERE user_id = ?";
             String statement2 = "DELETE FROM MentorsTable WHERE user_id = ?";
@@ -106,18 +101,18 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         int userID = 0;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();
 
-            String query = "SELECT user_id FROM UsersTable WHERE login ='" + login +  "' ;";
+            String query = "SELECT user_id FROM UsersTable WHERE login = '" + login + "';";
             ResultSet result = stat.executeQuery(query);
 
-            userID = result.getInt("user_id");
+            while (result.next()) {
+                userID = result.getInt("user_id");
+            }
 
             result.close();
             stat.close();
-            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
