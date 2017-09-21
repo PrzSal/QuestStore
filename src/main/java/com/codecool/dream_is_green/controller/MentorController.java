@@ -21,8 +21,11 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
+    private static StudentDAO studentDao = DaoStart.getStudentDao();
+    private static QuestDAO questDao = DaoStart.getQuestDao();
+    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
 
-    public void startMentorController(StudentDAO studentDAO, QuestDAO questDAO, ArtifactDAO artifactDAO) {
+    public void startMentorController() {
 
         int operation;
 
@@ -30,30 +33,29 @@ public class MentorController {
             uiView.clearScreen();
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
-            chooseOption(operation, studentDAO, questDAO, artifactDAO);
+            chooseOption(operation);
         } while (operation != EXIT);
 
     }
 
-    public void chooseOption(int operation, StudentDAO studentDAO,
-                             QuestDAO questDAO, ArtifactDAO artifactDAO) {
+    public void chooseOption(int operation) {
 
         switch(operation) {
 
             case ADD_STUDENT:
                 uiView.clearScreen();
-                addStudent(studentDAO);
+                addStudent();
                 break;
 
             case SHOW_STUDENTS :
-                this.showStudentList(studentDAO);
+                this.showStudentList();
                 uiView.pressToContinue();
                 break;
 
             case ADD_QUEST:
                 uiView.clearScreen();
                 try {
-                    addQuest(questDAO);
+                    addQuest();
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
                     uiView.pressToContinue();
@@ -61,14 +63,14 @@ public class MentorController {
                 break;
 
             case SHOW_QUESTS :
-                this.showQuestList(questDAO);
+                this.showQuestList();
                 uiView.pressToContinue();
                 break;
 
             case ADD_ARTIFACT:
                 uiView.clearScreen();
                 try {
-                    addArtifact(artifactDAO);
+                    addArtifact();
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
                     uiView.pressToContinue();
@@ -76,7 +78,7 @@ public class MentorController {
                 break;
 
             case SHOW_ARTIFACTS :
-                this.showArtifactList(artifactDAO);
+                this.showArtifactList();
                 uiView.pressToContinue();
                 break;
 
@@ -88,25 +90,25 @@ public class MentorController {
         }
     }
 
-    public void showArtifactList(ArtifactDAO artifactDAO) {
+    public void showArtifactList() {
 
-        String artifactDaoString = artifactDAO.toString();
+        String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
     }
 
-    public void showQuestList(QuestDAO questDAO) {
+    public void showQuestList() {
 
-        String questDaoString = questDAO.toString();
+        String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
     }
 
-    public void showStudentList(StudentDAO studentDAO) {
+    public void showStudentList() {
 
-        String studentDaoString = studentDAO.toString();
+        String studentDaoString = studentDao.toString();
         studentView.showStudentList(studentDaoString);
     }
 
-    public void addStudent(StudentDAO studentDAO) {
+    public void addStudent() {
 
         int userID = uiView.getInputInt("Enter student ID: ");
         String name = uiView.getInput("Enter name: ");
@@ -117,28 +119,28 @@ public class MentorController {
         String className = uiView.getInput("Enter class name: ");
 
         StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
-        studentDAO.addObject(studentModel);
+        studentDao.addObject(studentModel);
     }
 
-    public void addQuest(QuestDAO questDAO) {
+    public void addQuest() {
 
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String questCategoryStr = uiView.getInput("Enter category: ");
         QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
-        questDAO.inserQuest(title, price, questCategoryStr);
+        questDao.inserQuest(title, price, questCategoryStr);
         QuestModel questModel = new QuestModel(title, price, questCategory);
-        questDAO.addObject(questModel);
+        questDao.addObject(questModel);
     }
 
-    public void addArtifact(ArtifactDAO artifactDAO) {
+    public void addArtifact() {
 
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String categoryName = uiView.getInput("Enter category: ");
         ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
-        artifactDAO.insertArtifact(title, price, categoryName);
+        artifactDao.insertArtifact(title, price, categoryName);
         ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
-        artifactDAO.addObject(artifactModel);
+        artifactDao.addObject(artifactModel);
     }
 }

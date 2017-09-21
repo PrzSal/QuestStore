@@ -19,8 +19,10 @@ public class AdminController {
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
+    private static MentorDAO mentorDao = DaoStart.getMentorDao();
+    private static ClassDAO classDao = DaoStart.getClassDao();
 
-    public MentorModel createMentor(MentorDAO mentorDAO) {
+    public MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
@@ -29,16 +31,16 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
-        mentorDAO.insertMentor(name, surname, email, login, password, className);
-        int userID = mentorDAO.getMentorId(login);
+        mentorDao.insertMentor(name, surname, email, login, password, className);
+        int userID = mentorDao.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
     }
 
-    public MentorModel getMentorByID(MentorDAO mentorDao) {
+    public MentorModel getMentorByID() {
 
-        this.showMentorList(mentorDao);
+        this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
 
         for (MentorModel mentor : mentorDao.getObjectList()) {
@@ -49,21 +51,21 @@ public class AdminController {
         return null;
     }
 
-    public void showMentorList(MentorDAO mentorDao) {
+    public void showMentorList() {
 
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
     }
 
-    public void showClassList(ClassDAO classDao) {
+    public void showClassList() {
 
         String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
     }
 
 
-    public void editMentor(MentorModel mentor, MentorDAO mentorDao) {
+    public void editMentor(MentorModel mentor) {
 
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
@@ -109,21 +111,21 @@ public class AdminController {
         return newClass;
     }
 
-    public void startMenu(int operation, MentorDAO mentorDao, ClassDAO classDao) {
+    public void startMenu(int operation) {
 
         switch(operation) {
 
         case CREATE_MENTOR :
-            MentorModel newMentor = this.createMentor(mentorDao);
+            MentorModel newMentor = this.createMentor();
             mentorDao.addObject(newMentor);
             view.pressToContinue();
             break;
 
         case EDIT_MENTOR :
-            MentorModel mentor = getMentorByID(mentorDao);
+            MentorModel mentor = getMentorByID();
 
             try {
-                this.editMentor(mentor, mentorDao);
+                this.editMentor(mentor);
             } catch (NullPointerException e) {
                 view.printMessage("Wrong ID\n");
             }
@@ -131,7 +133,7 @@ public class AdminController {
             break;
 
         case SHOW_MENTORS :
-            this.showMentorList(mentorDao);
+            this.showMentorList();
             view.pressToContinue();
             break;
 
@@ -142,7 +144,7 @@ public class AdminController {
             break;
 
         case SHOW_CLASSES :
-            this.showClassList(classDao);
+            this.showClassList();
             view.pressToContinue();
             break;
 
@@ -156,7 +158,7 @@ public class AdminController {
 
     }
 
-    public void startAdminController(MentorDAO mentorDao, ClassDAO classDao) {
+    public void startAdminController() {
 
         int operation;
 
@@ -165,7 +167,7 @@ public class AdminController {
             adminView.showMenu();
             operation = view.getInputInt("Choice option: ");
             view.clearScreen();
-            this.startMenu(operation, mentorDao, classDao);
+            this.startMenu(operation);
         } while (operation != EXIT);
 
     }
