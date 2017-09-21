@@ -13,13 +13,15 @@ public class AdminController {
     private static final int SHOW_MENTORS = 3;
     private static final int CREATE_CLASS = 4;
     private static final int SHOW_CLASSES = 5;
+    private static final int REMOVE_MENTOR = 6;
     private static final int EXIT = 0;
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
-
+    private static MentorDAO mentorDao = DaoStart.getMentorDao();
+    private static ClassDAO classDao = DaoStart.getClassDao();
 
     public MentorModel createMentor() {
 
@@ -30,11 +32,22 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
-        DaoStart.getMentorDao().insertMentor(name, surname, email, login, password, className);
-        int userID = DaoStart.getMentorDao().getMentorId(login);
+        mentorDao.insertMentor(name, surname, email, login, password, className);
+        int userID = mentorDao.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
+    }
+
+    public void removeMentor() {
+
+        int mentorID = view.getInputInt("Enter the mentor ID you want to remove ");
+        mentorDao.deleteMentor(mentorID);
+        for (MentorModel mentor : mentorDao.getObjectList()) {
+            if (mentor.getUserID() == mentorID) {
+                mentorDao.removeObject(mentor);
+            }
+        }
     }
 
     public MentorModel getMentorByID() {
@@ -42,7 +55,7 @@ public class AdminController {
         this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
 
-        for (MentorModel mentor : DaoStart.getMentorDao().getObjectList()) {
+        for (MentorModel mentor : mentorDao.getObjectList()) {
             if (mentor.getUserID() == userID) {
                 return mentor;
             }
@@ -52,21 +65,24 @@ public class AdminController {
 
     public void showMentorList() {
 
-        DaoStart.getMentorDao().loadMentors();
-        String mentorDaoString = DaoStart.getMentorDao().toString();
+        mentorDao.loadMentors();
+        String mentorDaoString = mentorDao.toString();
+        mentorDao.loadMentors();
         mentorView.showMentorList(mentorDaoString);
+        mentorDao.clearObjectList();
+
     }
 
     public void showClassList() {
 
-        String classDaoString = DaoStart.getClassDao().toString();
+        String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
     }
 
 
     public void editMentor(MentorModel mentor) {
 
-        String mentorDaoString = DaoStart.getMentorDao().toString();
+        String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
 
         String mentorInfo = mentor.toString();
@@ -116,7 +132,7 @@ public class AdminController {
 
         case CREATE_MENTOR :
             MentorModel newMentor = this.createMentor();
-            DaoStart.getMentorDao().addObject(newMentor);
+            mentorDao.addObject(newMentor);
             view.pressToContinue();
             break;
 
@@ -138,12 +154,17 @@ public class AdminController {
 
         case CREATE_CLASS :
             ClassModel newClass = this.createClass();
-            DaoStart.getClassDao().addObject(newClass);
+            classDao.addObject(newClass);
             view.pressToContinue();
             break;
 
         case SHOW_CLASSES :
             this.showClassList();
+            view.pressToContinue();
+            break;
+
+        case REMOVE_MENTOR :
+            this.removeMentor();
             view.pressToContinue();
             break;
 

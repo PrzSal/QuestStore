@@ -21,6 +21,9 @@ public class StudentController {
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
+    private static QuestDAO questDao = DaoStart.getQuestDao();
+    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
+
 
 
     public void buyArtifact(StudentModel studentModel) {
@@ -29,7 +32,7 @@ public class StudentController {
 
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
-        String artifactDaoString = DaoStart.getArtifactDao().toString();
+        String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
 
         Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
@@ -112,7 +115,7 @@ public class StudentController {
 
     public void showQuestList() {
 
-        String questDaoString = DaoStart.getQuestDao().toString();
+        String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
     }
 }

@@ -13,7 +13,7 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         Statement statement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
@@ -32,32 +32,31 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             }
             resultSet.close();
             statement.close();
-            connection.close();
 
         } catch ( Exception e ) {
             e.printStackTrace();
         }
     }
 
-    public void inserQuest(String questName, Integer price,  String questCategory) {
+    public void insertQuest(String questName, Integer price,  String questCategory) {
 
         Connection connection;
         PreparedStatement preparedStatement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             String query= "INSERT INTO QuestsTable (quest_name, price, quest_category) VALUES(?,?,?);";
             preparedStatement = connection.prepareStatement(query);
+
             preparedStatement.setString(1, questName);
             preparedStatement.setInt(2, price);
             preparedStatement.setString(3, questCategory);
             preparedStatement.execute();
 
-
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,15 +69,17 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         PreparedStatement preparedStatement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             String query = "DELETE FROM QuestsTable WHERE quest_name = ?";
+
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, nameQuest);
             preparedStatement.execute();
+
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
