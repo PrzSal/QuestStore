@@ -13,6 +13,7 @@ public class AdminController {
     private static final int SHOW_MENTORS = 3;
     private static final int CREATE_CLASS = 4;
     private static final int SHOW_CLASSES = 5;
+    private static final int REMOVE_MENTOR = 6;
     private static final int EXIT = 0;
 
     private static UIView view = new UIView();
@@ -36,6 +37,17 @@ public class AdminController {
         return mentor;
     }
 
+    public void removeMentor(MentorDAO mentorDAO) {
+
+        int mentorID = view.getInputInt("Enter the mentor ID you want to remove ");
+        mentorDAO.deleteMentor(mentorID);
+        for (MentorModel mentor : mentorDAO.getObjectList()) {
+            if (mentor.getUserID() == mentorID) {
+                mentorDAO.removeObject(mentor);
+            }
+        }
+    }
+
     public MentorModel getMentorByID(MentorDAO mentorDao) {
 
         this.showMentorList(mentorDao);
@@ -51,6 +63,7 @@ public class AdminController {
 
     public void showMentorList(MentorDAO mentorDao) {
 
+        mentorDao.clearObjectList();
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
@@ -143,6 +156,11 @@ public class AdminController {
 
         case SHOW_CLASSES :
             this.showClassList(classDao);
+            view.pressToContinue();
+            break;
+
+        case REMOVE_MENTOR :
+            this.removeMentor(mentorDao);
             view.pressToContinue();
             break;
 
