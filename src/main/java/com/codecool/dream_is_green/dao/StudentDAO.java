@@ -42,29 +42,55 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
     public void insertStudent(String name, String surname, String email,
                              String login, String password, String className) {
 
-        Connection conn;
-        Statement stat;
+        Connection connection;
+        Statement statement;
 
         try {
-            conn = DatabaseConnection.getConnection();
-            stat = conn.createStatement();
-            conn.setAutoCommit(false);
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+            connection.setAutoCommit(false);
 
-            String statement1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
+            String query1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
 
-            stat.executeUpdate(statement1);
+            statement.executeUpdate(query1);
 
-            int userId = this.getMentorId(login);
+            int userId = this.getStudentId(login);
 
-            String statement2 = String.format("INSERT INTO StudentsTable (user_id, experience, level_name, class_name) VALUES (%d, '%d', 'noob');", userId);
+            String query2 = String.format("INSERT INTO StudentsTable (user_id, experience, level_name, class_name) VALUES (%d, '%d', 'noob');", userId);
 
-            stat.executeUpdate(statement2);
+            stat.executeUpdate(query2);
 
-            stat.close();
-            conn.commit();
+            statement.close();
+            connection.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getStudentId(String login) {
+
+        Connection connection;
+        Statement statement;
+        int userID = 0;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+
+            String query = "SELECT user_id FROM UsersTable WHERE login = '" + login + "';";
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                userID = result.getInt("user_id");
+            }
+
+            result.close();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userID;
     }
 }
