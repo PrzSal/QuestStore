@@ -31,7 +31,6 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
 
-                System.out.println("dupa" + surname);
                 MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
                 this.addObject(mentor);
             }
@@ -43,7 +42,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
     }
 
-    public void addMentor(String name, String surname, String email,
+    public void insertMentor(String name, String surname, String email,
                           String login, String password, String className) {
 
         Connection conn;
@@ -52,10 +51,10 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
 
-            String statement1 = "INSERT INTO UsersTable (user_id, name, surname, email, login, password, user_type) " +
-                    "VALUES (null, ?, ?, ?, ?, ?, 'mentor');";
-            String statement2 = "INSERT INTO MentorsTable (user_id, class_name) " +
-                    "VALUES (null, ?);";
+            String statement1 = "INSERT INTO UsersTable (name, surname, email, login, password, user_type) " +
+                    "VALUES (?, ?, ?, ?, ?, 'mentor');";
+            String statement2 = "INSERT INTO MentorsTable (class_name) " +
+                    "VALUES (?);";
             PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
             PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
 
@@ -100,7 +99,32 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
     }
 
-//    public void updateMentor() {
-//        UPDATE COMPANY SET ADDRESS = 'Texas' WHERE ID = 6;
-//    }
+    public int getMentorId(String login) {
+
+        Connection conn;
+        Statement stat;
+        int userID = 0;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            stat = conn.createStatement();
+
+            String query = "SELECT user_id FROM UsersTable WHERE login ='" + login +  "' ;";
+            ResultSet result = stat.executeQuery(query);
+
+            userID = result.getInt("user_id");
+
+            result.close();
+            stat.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userID;
+    }
 }
+
+
+

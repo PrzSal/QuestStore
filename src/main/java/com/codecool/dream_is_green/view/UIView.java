@@ -19,7 +19,7 @@ public class UIView {
     public int getInputInt(String message) {
 
         System.out.print(message);
-        int userInput = input.nextInt();
+        int userInput = Integer.parseInt(input.nextLine());
         return userInput;
     }
 
