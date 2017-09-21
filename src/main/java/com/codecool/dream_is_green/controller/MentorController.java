@@ -123,8 +123,9 @@ public class MentorController {
     public void addQuest(QuestDAO questDAO) {
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        QuestCategoryModel questCategory = new QuestCategoryModel(uiView.getInput("Enter category: "));
-
+        String questCategoryStr = uiView.getInput("Enter category: ");
+        QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
+        questDAO.inserQuest(title, price, questCategoryStr);
         QuestModel questModel = new QuestModel(title, price, questCategory);
         questDAO.addObject(questModel);
     }

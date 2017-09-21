@@ -13,17 +13,15 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         Statement statement;
 
         try {
-            Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
-            String query = "SELECT * FROM StudentsWithQuests";
+            String query = "SELECT * FROM QuestsTable";
             ResultSet resultSet = statement.executeQuery(query);
 
             while ( resultSet.next() ) {
 
-                int questId = resultSet.getInt("quest_id");
                 String questName = resultSet.getString("quest_name");
                 int price = resultSet.getInt("price");
                 String questCategoryDb = resultSet.getString("quest_category");
@@ -37,6 +35,48 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             connection.close();
 
         } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public void inserQuest(String questName, Integer price,  String questCategory) {
+
+        Connection connection;
+        Statement statement = null;
+
+        try {
+
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+
+            String query= "INSERT INTO QuestsTable (quest_name, price, quest_category)" +
+                          "\nVALUES(" + questName +  Integer.toString(price) + questCategory + ")";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.execute();
+            preparedStatement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteQuest(String nameQuest) {
+
+        Connection connection;
+        Statement statement = null;
+
+        try {
+
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            String query = "DELETE FROM QuestTable WHERE quest_name = " + nameQuest + ";";
+            statement.executeUpdate(query);
+            connection.commit();
+            statement.close();
+            connection.close();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
