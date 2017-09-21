@@ -121,7 +121,34 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
         return userID;
     }
+
+    public void updateMentor(String phrase, int userID, String column) {
+
+        Connection conn;
+        Statement stat;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            stat = conn.createStatement();
+            if (column.equals("login")) {
+                column = "login";
+            } else if (column.equals("email")) {
+                column = "email";
+            }
+            String statement = String.format("UPDATE UserTable set '%s' = '%s' where user_id=%d;", column, phrase, userID);
+            stat.executeUpdate(statement);
+            conn.commit();
+
+            stat.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
 
 
 
