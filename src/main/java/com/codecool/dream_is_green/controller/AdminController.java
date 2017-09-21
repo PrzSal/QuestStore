@@ -19,8 +19,7 @@ public class AdminController {
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
-    private static MentorDAO mentorDao = DaoStart.getMentorDao();
-    private static ClassDAO classDao = DaoStart.getClassDao();
+
 
     public MentorModel createMentor() {
 
@@ -31,8 +30,8 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
-        mentorDao.insertMentor(name, surname, email, login, password, className);
-        int userID = mentorDao.getMentorId(login);
+        DaoStart.getMentorDao().insertMentor(name, surname, email, login, password, className);
+        int userID = DaoStart.getMentorDao().getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
@@ -43,7 +42,7 @@ public class AdminController {
         this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
 
-        for (MentorModel mentor : mentorDao.getObjectList()) {
+        for (MentorModel mentor : DaoStart.getMentorDao().getObjectList()) {
             if (mentor.getUserID() == userID) {
                 return mentor;
             }
@@ -53,21 +52,21 @@ public class AdminController {
 
     public void showMentorList() {
 
-        mentorDao.loadMentors();
-        String mentorDaoString = mentorDao.toString();
+        DaoStart.getMentorDao().loadMentors();
+        String mentorDaoString = DaoStart.getMentorDao().toString();
         mentorView.showMentorList(mentorDaoString);
     }
 
     public void showClassList() {
 
-        String classDaoString = classDao.toString();
+        String classDaoString = DaoStart.getClassDao().toString();
         classView.showClassList(classDaoString);
     }
 
 
     public void editMentor(MentorModel mentor) {
 
-        String mentorDaoString = mentorDao.toString();
+        String mentorDaoString = DaoStart.getMentorDao().toString();
         mentorView.showMentorList(mentorDaoString);
 
         String mentorInfo = mentor.toString();
@@ -117,7 +116,7 @@ public class AdminController {
 
         case CREATE_MENTOR :
             MentorModel newMentor = this.createMentor();
-            mentorDao.addObject(newMentor);
+            DaoStart.getMentorDao().addObject(newMentor);
             view.pressToContinue();
             break;
 
@@ -139,7 +138,7 @@ public class AdminController {
 
         case CREATE_CLASS :
             ClassModel newClass = this.createClass();
-            classDao.addObject(newClass);
+            DaoStart.getClassDao().addObject(newClass);
             view.pressToContinue();
             break;
 

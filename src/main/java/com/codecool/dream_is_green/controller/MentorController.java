@@ -21,9 +21,7 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
-    private static StudentDAO studentDao = DaoStart.getStudentDao();
-    private static QuestDAO questDao = DaoStart.getQuestDao();
-    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
+
 
     public void startMentorController() {
 
@@ -92,19 +90,19 @@ public class MentorController {
 
     public void showArtifactList() {
 
-        String artifactDaoString = artifactDao.toString();
+        String artifactDaoString = DaoStart.getArtifactDao().toString();
         artifactView.showArtifactList(artifactDaoString);
     }
 
     public void showQuestList() {
 
-        String questDaoString = questDao.toString();
+        String questDaoString = DaoStart.getArtifactDao().toString();
         questView.showQuestList(questDaoString);
     }
 
     public void showStudentList() {
 
-        String studentDaoString = studentDao.toString();
+        String studentDaoString = DaoStart.getStudentDao().toString();
         studentView.showStudentList(studentDaoString);
     }
 
@@ -119,7 +117,7 @@ public class MentorController {
         String className = uiView.getInput("Enter class name: ");
 
         StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
-        studentDao.addObject(studentModel);
+        DaoStart.getStudentDao().addObject(studentModel);
     }
 
     public void addQuest() {
@@ -128,9 +126,9 @@ public class MentorController {
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String questCategoryStr = uiView.getInput("Enter category: ");
         QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
-        questDao.inserQuest(title, price, questCategoryStr);
+        DaoStart.getQuestDao().inserQuest(title, price, questCategoryStr);
         QuestModel questModel = new QuestModel(title, price, questCategory);
-        questDao.addObject(questModel);
+        DaoStart.getQuestDao().addObject(questModel);
     }
 
     public void addArtifact() {
@@ -139,8 +137,8 @@ public class MentorController {
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String categoryName = uiView.getInput("Enter category: ");
         ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
-        artifactDao.insertArtifact(title, price, categoryName);
+        DaoStart.getArtifactDao().insertArtifact(title, price, categoryName);
         ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
-        artifactDao.addObject(artifactModel);
+        DaoStart.getArtifactDao().addObject(artifactModel);
     }
 }
