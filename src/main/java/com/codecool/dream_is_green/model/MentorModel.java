@@ -2,25 +2,23 @@ package com.codecool.dream_is_green.model;
 
 public class MentorModel extends User {
 
-    public static Integer counter = 0;
-    private String classID;
+    private String className;
 
-    public MentorModel (String name, String surname, String email, String login, String password) {
-        super(name, surname, email, login, password);
-        this.userID = "M_" + counter++;
-        this.classID = null;
+    public MentorModel (int userID, String name, String surname, String email, String login, String password, String className) {
+        super(userID, name, surname, email, login, password);
+        this.className = className;
     }
 
-    public String getClassID() {
-        return classID;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassID(String classID) {
-        this.classID = classID;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + email + " | " + classID +
+        return userID + " | " + name + " | " + surname + " | " + email + " | " + className +
                " | " + login + " | " + password;
     }
 

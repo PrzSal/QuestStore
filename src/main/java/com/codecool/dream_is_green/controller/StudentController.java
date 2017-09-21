@@ -61,7 +61,7 @@ public class StudentController {
 
             case SHOW_QUESTS :
                 this.showQuestList(questDao);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case BUY_ARTIFACT :
@@ -72,17 +72,17 @@ public class StudentController {
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not number");
                 }
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case TEAM_BUY_ARTIFACT :
                 System.out.println("Coming soon ...");
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case SHOW_WALLET :
                 this.showWallet(student);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case EXIT:
@@ -90,7 +90,7 @@ public class StudentController {
 
              default :
                 uiView.printMessage("No option! Try Again!\n");
-                uiView.continueButton();
+                uiView.pressToContinue();
         }
 
     }

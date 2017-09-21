@@ -2,14 +2,15 @@ package com.codecool.dream_is_green.model;
 
 public abstract class User {
 
-    protected String userID;
+    protected int userID;
     protected String name;
     protected String surname;
     protected String email;
     protected String login;
     protected String password;
 
-    public User(String name, String surname, String email, String login, String password) {
+    public User(int userID, String name, String surname, String email, String login, String password) {
+        this.userID = userID;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -21,7 +22,7 @@ public abstract class User {
         return name;
     }
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 

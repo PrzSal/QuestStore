@@ -4,26 +4,23 @@ import java.util.LinkedList;
 
 public class StudentModel extends User {
 
-    public static Integer counter = 0;
     private Integer experience;
     private Integer level;
     private WalletModel wallet;
     private String teamID;
-    private String classID;
+    private String className;
     private LinkedList<QuestModel> questsList;
 
-    public StudentModel(String name, String surname, String email, String login, String password) {
+    public StudentModel(int userID, String name, String surname, String email, String login, String password, String className) {
 
-        super(name, surname, email, login, password);
-
-        this.userID = "S_" + counter++;
+        super(userID, name, surname, email, login, password);
         this.login = login;
         this.password = password;
         this.experience = 0;
         this.level = 0;
         this.wallet = new WalletModel();
         this.teamID = null;
-        this.classID = null;
+        this.className = className;
         this.questsList = new LinkedList<QuestModel>();
     }
 
@@ -64,6 +61,6 @@ public class StudentModel extends User {
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + classID + " | " + teamID;
+        return userID + " | " + name + " | " + surname + " | " + className + " | " + teamID;
     }
 }

@@ -47,7 +47,7 @@ public class MentorController {
 
             case SHOW_STUDENTS :
                 this.showStudentList(studentDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case ADD_QUEST:
@@ -56,13 +56,13 @@ public class MentorController {
                     addQuest(questDAO);
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
-                    uiView.continueButton();
+                    uiView.pressToContinue();
                 }
                 break;
 
             case SHOW_QUESTS :
                 this.showQuestList(questDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case ADD_ARTIFACT:
@@ -71,13 +71,13 @@ public class MentorController {
                     addArtifact(artifactDAO);
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
-                    uiView.continueButton();
+                    uiView.pressToContinue();
                 }
                 break;
 
             case SHOW_ARTIFACTS :
                 this.showArtifactList(artifactDAO);
-                uiView.continueButton();
+                uiView.pressToContinue();
                 break;
 
             case EXIT:
@@ -108,21 +108,24 @@ public class MentorController {
 
     public void addStudent(StudentDAO studentDAO) {
 
+        int userID = uiView.getInputInt("Enter student ID: ");
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
         String email = uiView.getInput("Enter email: ");
         String login = uiView.getInput("Enter login: ");
         String password = uiView.getInput("Enter password: ");
+        String className = uiView.getInput("Enter class name: ");
 
-        StudentModel studentModel = new StudentModel(name, surname, email, login, password);
+        StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
         studentDAO.addObject(studentModel);
     }
 
     public void addQuest(QuestDAO questDAO) {
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        QuestCategoryModel questCategory = new QuestCategoryModel(uiView.getInput("Enter category: "));
-
+        String questCategoryStr = uiView.getInput("Enter category: ");
+        QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
+        questDAO.inserQuest(title, price, questCategoryStr);
         QuestModel questModel = new QuestModel(title, price, questCategory);
         questDAO.addObject(questModel);
     }

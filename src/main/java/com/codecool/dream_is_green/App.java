@@ -18,13 +18,16 @@ public class App {
         QuestDAO questDao = new QuestDAO();
         ArtifactDAO artifactDao = new ArtifactDAO();
 
-        AdminModel admin = new AdminModel("Janek", "Kowalski", "janek.ko@uo.com", "admin", "admin");
+        mentorDao.loadMentors();
+        System.out.println(mentorDao.getObjectList());
+
+        AdminModel admin = new AdminModel(12,"Janek", "Kowalski", "janek.ko@uo.com", "admin", "admin");
         adminDao.addObject(admin);
 
-        MentorModel mentor1 = new MentorModel("Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor");
+        MentorModel mentor1 = new MentorModel(13,"Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor", "klasa1");
         mentorDao.addObject(mentor1);
 
-        StudentModel student1 = new StudentModel("Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student");
+        StudentModel student1 = new StudentModel(14,"Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student", "klasa1");
         studentDao.addObject(student1);
 
         ArtifactCategoryModel category = new ArtifactCategoryModel("owoce");
@@ -85,7 +88,7 @@ public class App {
                 }
                 else {
                     view.printMessage("\nWrong login or password!\n");
-                    view.continueButton();
+                    view.pressToContinue();
                 }
             }
 

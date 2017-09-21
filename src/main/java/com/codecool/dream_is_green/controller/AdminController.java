@@ -22,13 +22,15 @@ public class AdminController {
 
     public MentorModel createMentor() {
 
+        int userID = view.getInputInt("Enter mentor ID: ");
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
         String email = view.getInput("Enter mentor email: ");
         String login = view.getInput("Enter mentor login: ");
         String password = view.getInput("Enter mentor password: ");
+        String className = view.getInput("Enter class name: ");
 
-        MentorModel mentor = new MentorModel(name, surname, email, login, password);
+        MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
     }
@@ -36,13 +38,13 @@ public class AdminController {
     public MentorModel getMentorByID(MentorDAO mentorDao) {
 
         this.showMentorList(mentorDao);
-        String mentorID = view.getInput("Enter mentor ID: ");
+        int userID = view.getInputInt("Enter mentor ID: ");
 
-        for(MentorModel mentor: mentorDao.getObjectList()) {
-            if(mentor.getUserID().equals(mentorID))
+        for (MentorModel mentor : mentorDao.getObjectList()) {
+            if (mentor.getUserID() == userID) {
                 return mentor;
+            }
         }
-
         return null;
     }
 
@@ -79,13 +81,13 @@ public class AdminController {
                 done = true;
             }
             else if(option.equals("2")) {
-                String classID = view.getInput("Enter mentor class ID: ");
-                mentor.setClassID(classID);
+                String className = view.getInput("Enter mentor class name: ");
+                mentor.setClassName(className);
                 done = true;
             }
             else {
                 view.printMessage("Choose 1 or 2.");
-                view.continueButton();
+                view.pressToContinue();
                 view.clearScreen();
                 view.printMessage(mentorInfo);
                 view.printMessage("1) Edit email.\n2) Edit mentor class.");
@@ -112,7 +114,7 @@ public class AdminController {
         case CREATE_MENTOR :
             MentorModel newMentor = this.createMentor();
             mentorDao.addObject(newMentor);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case EDIT_MENTOR :
@@ -123,23 +125,23 @@ public class AdminController {
             } catch (NullPointerException e) {
                 view.printMessage("Wrong ID\n");
             }
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case SHOW_MENTORS :
             this.showMentorList(mentorDao);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case CREATE_CLASS :
             ClassModel newClass = this.createClass();
             classDao.addObject(newClass);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case SHOW_CLASSES :
             this.showClassList(classDao);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case EXIT:
@@ -147,7 +149,7 @@ public class AdminController {
 
          default :
             view.printMessage("No option! Try Again!\n");
-            view.continueButton();
+            view.pressToContinue();
         }
 
     }

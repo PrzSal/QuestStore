@@ -19,11 +19,11 @@ public class UIView {
     public int getInputInt(String message) {
 
         System.out.print(message);
-        int userInput = input.nextInt();
+        int userInput = Integer.parseInt(input.nextLine());
         return userInput;
     }
 
-    public void continueButton() {
+    public void pressToContinue() {
 
         System.out.print("Press enter to continue ...");
         input.nextLine();
@@ -31,6 +31,11 @@ public class UIView {
 
     public void clearScreen() {
 
+
+
+//        for (int i = 0; i < 30; i++) {
+//            System.out.println();
+//        }
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
