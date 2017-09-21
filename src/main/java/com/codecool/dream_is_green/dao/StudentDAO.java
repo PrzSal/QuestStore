@@ -7,14 +7,10 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
 
     public void loadStudents() {
 
-        Connection conn;
-        Statement stat;
-
         try {
 
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
-            stat = conn.createStatement();
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stat = conn.createStatement();
 
 
             String query = "SELECT * FROM StudentsTable JOIN UsersTable ON UsersTable.user_id = StudentsTable.user_id";
