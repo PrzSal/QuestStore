@@ -75,7 +75,7 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
 
             String query = "DELETE FROM QuestsTable WHERE quest_name = ?";
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, nameQuest);;
+            preparedStatement.setString(1, nameQuest);
             preparedStatement.execute();
             connection.commit();
             connection.close();
