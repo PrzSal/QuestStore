@@ -13,8 +13,7 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         Statement statement;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
@@ -46,23 +45,19 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         PreparedStatement preparedStatement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection = DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             String query= "INSERT INTO ArtifactsTable (artifact_name, price, artifact_category) VALUES(?,?,?);";
 
             preparedStatement = connection.prepareStatement(query);
-
             preparedStatement.setString(1, artifactName);
-
             preparedStatement.setInt(2, price);
-
             preparedStatement.setString(3, artifactCategory);
 
             preparedStatement.execute();
-
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,15 +69,17 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         PreparedStatement preparedStatement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection = DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            String query = "DELETE FROM ArtifactTable WHERE artifact_name = ?";
+            String query = "DELETE FROM ArtifactsTable WHERE artifact_name = ?";
+
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, nameArtifact);
             preparedStatement.execute();
+
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
