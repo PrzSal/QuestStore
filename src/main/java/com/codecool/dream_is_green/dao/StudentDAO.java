@@ -33,7 +33,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             }
             result.close();
             stat.close();
-            conn.close();
+
 
         } catch (Exception e) {
             e.printStackTrace();
