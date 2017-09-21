@@ -40,7 +40,7 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         }
     }
 
-    public void inserQuest(String artifactName, Integer price,  String artifactCategory) {
+    public void insertArtifact(String artifactName, Integer price,  String artifactCategory) {
 
         Connection connection;
         PreparedStatement preparedStatement;
@@ -61,6 +61,26 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
 
             preparedStatement.execute();
 
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteArtifact(String nameArtifact) {
+
+        Connection connection;
+        PreparedStatement preparedStatement;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection.setAutoCommit(false);
+
+            String query = "DELETE FROM ArtifactTable WHERE artifact_name = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nameArtifact);
+            preparedStatement.execute();
             connection.commit();
             connection.close();
         } catch (Exception e) {
