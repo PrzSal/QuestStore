@@ -22,12 +22,11 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
 
             while ( resultSet.next() ) {
 
-                int questId = resultSet.getInt("quest_id");
                 String questName = resultSet.getString("quest_name");
                 int price = resultSet.getInt("price");
                 String questCategoryDb = resultSet.getString("quest_category");
                 QuestCategoryModel questCategoryModel = new QuestCategoryModel(questCategoryDb);
-                QuestModel questModel = new QuestModel(questId, questName, price, questCategoryModel);
+                QuestModel questModel = new QuestModel(questName, price, questCategoryModel);
                 this.addObject(questModel);
 
             }
@@ -40,21 +39,42 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         }
     }
 
-    public void deleteQuest(int id) {
-
+    public void inserQuest(String questName, Integer price,  String questCategory) {
 
         Connection connection;
+        Statement statement = null;
 
         try {
+
             connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
 
-            String statement = "DELETE FROM QuestTable WHERE quest_id = ?";
+            String query= "INSERT INTO QuestsTable (quest_name, price, quest_category)" +
+                          "\nVALUES(" + questName +  Integer.toString(price) + questCategory + ")";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setInt(1, id);
             preparedStatement.execute();
             preparedStatement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteQuest(String nameQuest) {
+
+        Connection connection;
+        Statement statement = null;
+
+        try {
+
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            String query = "DELETE FROM QuestTable WHERE quest_name = " + nameQuest + ";";
+            statement.executeUpdate(query);
+            connection.commit();
+            statement.close();
+            connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
