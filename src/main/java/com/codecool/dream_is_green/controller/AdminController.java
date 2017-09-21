@@ -20,9 +20,8 @@ public class AdminController {
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
 
-    public MentorModel createMentor() {
+    public MentorModel createMentor(MentorDAO mentorDAO) {
 
-        int userID = view.getInputInt("Enter mentor ID: ");
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
         String email = view.getInput("Enter mentor email: ");
@@ -30,6 +29,8 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
+        mentorDAO.insertMentor(name, surname, email, login, password, className);
+        int userID = mentorDAO.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
@@ -50,6 +51,7 @@ public class AdminController {
 
     public void showMentorList(MentorDAO mentorDao) {
 
+        mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
     }
@@ -112,7 +114,7 @@ public class AdminController {
         switch(operation) {
 
         case CREATE_MENTOR :
-            MentorModel newMentor = this.createMentor();
+            MentorModel newMentor = this.createMentor(mentorDao);
             mentorDao.addObject(newMentor);
             view.pressToContinue();
             break;

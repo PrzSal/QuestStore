@@ -18,28 +18,27 @@ public class App {
         QuestDAO questDao = new QuestDAO();
         ArtifactDAO artifactDao = new ArtifactDAO();
 
-        mentorDao.loadMentors();
-        System.out.println(mentorDao.getObjectList());
+
 
         AdminModel admin = new AdminModel(12,"Janek", "Kowalski", "janek.ko@uo.com", "admin", "admin");
         adminDao.addObject(admin);
 
-        MentorModel mentor1 = new MentorModel(13,"Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor", "klasa1");
-        mentorDao.addObject(mentor1);
+//        MentorModel mentor1 = new MentorModel(13,"Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor", "klasa1");
+//        mentorDao.addObject(mentor1);
 
-        StudentModel student1 = new StudentModel(14,"Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student", "klasa1");
-        studentDao.addObject(student1);
+//        StudentModel student1 = new StudentModel(14,"Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student", "klasa1");
+//        studentDao.addObject(student1);
 
-        ArtifactCategoryModel category = new ArtifactCategoryModel("owoce");
-        ArtifactModel artifact1 = new ArtifactModel("mentoring", 200, category);
-        artifactDao.addObject(artifact1);
+//        ArtifactCategoryModel category = new ArtifactCategoryModel("owoce");
+//        ArtifactModel artifact1 = new ArtifactModel("mentoring", 200, category);
+//        artifactDao.addObject(artifact1);
 
-        QuestCategoryModel categoryQuest = new QuestCategoryModel("owoce");
-        QuestModel quest1 = new QuestModel("zadanie", 200, categoryQuest);
-        questDao.addObject(quest1);
+//        QuestCategoryModel categoryQuest = new QuestCategoryModel("owoce");
+//        QuestModel quest1 = new QuestModel("zadanie", 200, categoryQuest);
+//        questDao.addObject(quest1);
 
-        ClassModel class1 = new ClassModel("codecoo1");
-        classDao.addObject(class1);
+//        ClassModel class1 = new ClassModel("codecoo1");
+//        classDao.addObject(class1);
 
         loginIntoSystem(adminDao, mentorDao, studentDao, classDao, questDao, artifactDao);
     }
