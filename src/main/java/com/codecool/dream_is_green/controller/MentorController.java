@@ -105,13 +105,15 @@ public class MentorController {
 
     public void showStudentList() {
 
+        studentDao.clearObjectList();
+        studentDao.loadStudents();
         String studentDaoString = studentDao.toString();
         studentView.showStudentList(studentDaoString);
+        studentDao.clearObjectList();
     }
 
     public void addStudent() {
 
-        int userID = uiView.getInputInt("Enter student ID: ");
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
         String email = uiView.getInput("Enter email: ");
@@ -119,6 +121,8 @@ public class MentorController {
         String password = uiView.getInput("Enter password: ");
         String className = uiView.getInput("Enter class name: ");
 
+        studentDao.insertStudent(name, surname, email, login, password, className);
+        int userID = studentDao.getStudentId(login);
         StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
         studentDao.addObject(studentModel);
     }
