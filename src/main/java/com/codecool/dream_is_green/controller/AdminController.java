@@ -87,7 +87,7 @@ public class AdminController {
             }
             else {
                 view.printMessage("Choose 1 or 2.");
-                view.continueButton();
+                view.pressToContinue();
                 view.clearScreen();
                 view.printMessage(mentorInfo);
                 view.printMessage("1) Edit email.\n2) Edit mentor class.");
@@ -114,7 +114,7 @@ public class AdminController {
         case CREATE_MENTOR :
             MentorModel newMentor = this.createMentor();
             mentorDao.addObject(newMentor);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case EDIT_MENTOR :
@@ -125,23 +125,23 @@ public class AdminController {
             } catch (NullPointerException e) {
                 view.printMessage("Wrong ID\n");
             }
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case SHOW_MENTORS :
             this.showMentorList(mentorDao);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case CREATE_CLASS :
             ClassModel newClass = this.createClass();
             classDao.addObject(newClass);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case SHOW_CLASSES :
             this.showClassList(classDao);
-            view.continueButton();
+            view.pressToContinue();
             break;
 
         case EXIT:
@@ -149,7 +149,7 @@ public class AdminController {
 
          default :
             view.printMessage("No option! Try Again!\n");
-            view.continueButton();
+            view.pressToContinue();
         }
 
     }
