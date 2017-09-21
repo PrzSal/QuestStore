@@ -122,7 +122,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         return userID;
     }
 
-    public void updateMentor(String phrase, int userID, String column) {
+    public void updateMentor(String phrase, int userID, String column, String table) {
 
         Connection conn;
         Statement stat;
@@ -132,12 +132,14 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             conn.setAutoCommit(false);
 
             stat = conn.createStatement();
-            if (column.equals("login")) {
-                column = "login";
+            if (column.equals("class_name")) {
+                column = "class_name";
+
             } else if (column.equals("email")) {
                 column = "email";
+
             }
-            String statement = String.format("UPDATE UserTable set '%s' = '%s' where user_id=%d;", column, phrase, userID);
+            String statement = String.format("UPDATE %s set '%s' = '%s' where user_id=%d;", table, column, phrase, userID);
             stat.executeUpdate(statement);
             conn.commit();
 
