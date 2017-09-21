@@ -21,16 +21,19 @@ public class StudentController {
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
+    private static QuestDAO questDao = DaoStart.getQuestDao();
+    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
 
 
-    public void buyArtifact(StudentModel studentModel, ArtifactDAO artifactDAO) {
+
+    public void buyArtifact(StudentModel studentModel) {
 
         ArtifactView artifactView = new ArtifactView();
 
-        LinkedList<ArtifactModel> artifactList = artifactDAO.getObjectList();
+        LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
-        String artifactDAOString = artifactDAO.toString();
-        artifactView.showArtifactList(artifactDAOString);
+        String artifactDaoString = artifactDao.toString();
+        artifactView.showArtifactList(artifactDaoString);
 
         Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
         ArtifactModel artifactToBuy = artifactList.get(index - 1);
@@ -55,18 +58,18 @@ public class StudentController {
         walletController.showWalletContent(student.getWallet());
     }
 
-    public void startMenu(int operation, StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
+    public void startMenu(int operation, StudentModel student) {
 
         switch(operation) {
 
             case SHOW_QUESTS :
-                this.showQuestList(questDao);
+                this.showQuestList();
                 uiView.pressToContinue();
                 break;
 
             case BUY_ARTIFACT :
                 try {
-                    this.buyArtifact(student, artifactDao);
+                    this.buyArtifact(student);
                 } catch (IndexOutOfBoundsException e) {
                     uiView.printMessage("Wrong index.");
                 } catch (NumberFormatException e) {
@@ -95,7 +98,7 @@ public class StudentController {
 
     }
 
-    public void startStudentController(StudentModel student, ArtifactDAO artifactDao, QuestDAO questDao) {
+    public void startStudentController(StudentModel student) {
 
         int operation;
 
@@ -105,12 +108,12 @@ public class StudentController {
             studentView.showMenu();
             operation = uiView.getInputInt("Choice option: ");
             uiView.clearScreen();
-            this.startMenu(operation, student, artifactDao, questDao);
+            this.startMenu(operation, student);
         } while (operation != EXIT);
 
     }
 
-    public void showQuestList(QuestDAO questDao) {
+    public void showQuestList() {
 
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
