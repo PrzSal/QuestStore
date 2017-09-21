@@ -23,6 +23,8 @@ public abstract class AbstractDAO<T> implements DAO<T> {
         return objectsList;
     }
 
+    public void clearObjectList() { objectsList.clear();}
+
     public String toString() {
 
         String toStringList = "";
