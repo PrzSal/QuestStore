@@ -53,15 +53,38 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             String query1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
 
             statement.executeUpdate(query1);
-
+            connection.commit();
             int userId = this.getStudentId(login);
 
-            String query2 = String.format("INSERT INTO StudentsTable (user_id, experience, level_name, class_name) VALUES (%d, '%d', 'noob');", userId);
+            String query2 = String.format("INSERT INTO StudentsTable (user_id, level_name, class_name) VALUES (%d, 'noob', '%s');", userId, className);
 
-            stat.executeUpdate(query2);
+            statement.executeUpdate(query2);
 
             statement.close();
             connection.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteStudent(int id) {
+
+        Connection connection;
+
+            try {
+            connection = DatabaseConnection.getConnection();
+
+            String query1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'student'";
+            String query2 = "DELETE FROM StudentsTable WHERE user_id = ?";
+            PreparedStatement prepStmt1 = connection.prepareStatement(query1);
+            PreparedStatement prepStmt2 = connection.prepareStatement(query2);
+
+            prepStmt1.setInt(1, id);
+            prepStmt2.setInt(1, id);
+            prepStmt1.execute();
+            prepStmt2.execute();
+            prepStmt1.close();
+            prepStmt2.close();
 
         } catch (Exception e) {
             e.printStackTrace();
