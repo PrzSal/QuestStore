@@ -20,6 +20,7 @@ public class StudentController {
 
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
+    private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
     private static QuestDAO questDao = DaoStart.getQuestDao();
     private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
@@ -28,25 +29,31 @@ public class StudentController {
 
     public void buyArtifact(StudentModel studentModel) {
 
-        ArtifactView artifactView = new ArtifactView();
-
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
 
-        Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
-        ArtifactModel artifactToBuy = artifactList.get(index - 1);
-        Integer artifactPrice = artifactToBuy.getPrice();
+        try {
+            Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
+            ArtifactModel artifactToBuy = artifactList.get(index - 1);
+            Integer artifactPrice = artifactToBuy.getPrice();
 
+            if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
 
-        if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
+                ArtifactModel newArtifact = new ArtifactModel(artifactToBuy.getTitle(),
+                                                              artifactToBuy.getPrice(),
+                                                              artifactToBuy.getCategory());
 
-            studentModel.getWallet().addBoughtArtifact(artifactToBuy);
-            studentModel.getWallet().removeCoolCoins(artifactPrice);
-        }
-        else {
-            uiView.printMessage("You don't have enought cool coins");
+                studentModel.getWallet().addBoughtArtifact(newArtifact);
+                studentModel.getWallet().removeCoolCoins(artifactPrice);
+            }
+            else {
+                uiView.printMessage("You don't have enought cool coins");
+            }
+
+        } catch (NumberFormatException e) {
+            uiView.printMessage("Wrong input");
         }
 
     }

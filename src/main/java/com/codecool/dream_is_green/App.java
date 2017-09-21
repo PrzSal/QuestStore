@@ -12,7 +12,12 @@ public class App {
 
         AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
                                           "janek.ko@uo.com", "admin", "admin");
+
+        StudentModel student = new StudentModel(3,"Tomek", "Dupa",
+                "tomcio.ko@uo.com", "student", "student", "2b");
+
         DaoStart.getAdminDao().addObject(admin);
+        DaoStart.getStudentDao().addObject(student);
         loginIntoSystem();
     }
 
