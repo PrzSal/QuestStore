@@ -79,7 +79,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String statement1 = "DELETE FROM UsersTable WHERE user_id = ?";
+            String statement1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'mentor'";
             String statement2 = "DELETE FROM MentorsTable WHERE user_id = ?";
             PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
             PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
