@@ -65,6 +65,7 @@ public class AdminController {
 
     public void showMentorList() {
 
+        mentorDao.clearObjectList();
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
@@ -74,8 +75,11 @@ public class AdminController {
 
     public void showClassList() {
 
+        classDao.clearObjectList();
+        classDao.loadClasses();
         String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
+        classDao.clearObjectList();
     }
 
 
@@ -124,7 +128,9 @@ public class AdminController {
         view.printMessage("Create new class");
 
         String className = view.getInput("Enter class name: ");
+        classDao.insertClass(className);
         ClassModel newClass = new ClassModel(className);
+        classDao.clearObjectList();
 
         return newClass;
     }
