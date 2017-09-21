@@ -16,6 +16,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();
 
+
             String query = "SELECT * FROM MentorsTable JOIN UsersTable ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
@@ -51,14 +52,15 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         try {
             conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();
+            conn.setAutoCommit(false);
 
-            String statement1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES (%s, %s, %s, %s, %s, %s);", name, surname, email, login, password, "mentor");
+            String statement1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'mentor');", name, surname, email, login, password);
 
             stat.executeUpdate(statement1);
 
             int userId = this.getMentorId(login);
 
-            String statement2 = String.format("INSERT INTO MentorsTable (user_id, class_name) VALUES (%d, %s);", userId, className);
+            String statement2 = String.format("INSERT INTO MentorsTable (user_id, class_name) VALUES (%d, '%s');", userId, className);
 
             stat.executeUpdate(statement2);
 
