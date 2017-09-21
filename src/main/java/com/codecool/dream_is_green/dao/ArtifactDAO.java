@@ -2,10 +2,8 @@ package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
 
@@ -24,7 +22,7 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             ResultSet resultSet = statement.executeQuery(query);
 
             while ( resultSet.next() ) {
-                int artifactId = resultSet.getInt("artifact_id");
+
                 String title = resultSet.getString("title");
                 int price = resultSet.getInt("price");
                 String artifactCategoryDb = resultSet.getString("artifact_category");
@@ -38,6 +36,54 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             connection.close();
 
         } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertArtifact(String artifactName, Integer price,  String artifactCategory) {
+
+        Connection connection;
+        PreparedStatement preparedStatement;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection.setAutoCommit(false);
+
+            String query= "INSERT INTO ArtifactsTable (artifact_name, price, artifact_category) VALUES(?,?,?);";
+
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, artifactName);
+
+            preparedStatement.setInt(2, price);
+
+            preparedStatement.setString(3, artifactCategory);
+
+            preparedStatement.execute();
+
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteArtifact(String nameArtifact) {
+
+        Connection connection;
+        PreparedStatement preparedStatement;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection.setAutoCommit(false);
+
+            String query = "DELETE FROM ArtifactTable WHERE artifact_name = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nameArtifact);
+            preparedStatement.execute();
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
