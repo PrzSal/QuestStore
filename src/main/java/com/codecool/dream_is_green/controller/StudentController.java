@@ -28,25 +28,33 @@ public class StudentController {
 
 
     public void buyArtifact(StudentModel studentModel) {
-
+        WalletModel wa = new WalletModel();
+        artifactDao.loadArtifact();
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
+        System.out.println(studentModel.getWallet().getCoolCoins());
 
         try {
             Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
             ArtifactModel artifactToBuy = artifactList.get(index - 1);
+            System.out.println(artifactToBuy.getPrice());
             Integer artifactPrice = artifactToBuy.getPrice();
 
             if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
 
-                ArtifactModel newArtifact = new ArtifactModel(artifactToBuy.getTitle(),
-                                                              artifactToBuy.getPrice(),
-                                                              artifactToBuy.getCategory());
+                String title = artifactToBuy.getTitle();
+                Integer price = artifactToBuy.getPrice();
+                ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
+                Integer id = studentModel.getUserID();
 
+                artifactDao.insertArtifact("StudentsWithArtifacts", title, price, artifactCategoryModel.toString(), id);
+                ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
                 studentModel.getWallet().addBoughtArtifact(newArtifact);
                 studentModel.getWallet().removeCoolCoins(artifactPrice);
+                artifactDao.clearObjectList();
+
             }
             else {
                 uiView.printMessage("You don't have enought cool coins");
@@ -122,7 +130,9 @@ public class StudentController {
 
     public void showQuestList() {
 
+        questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+        questDao.clearObjectList();
     }
 }

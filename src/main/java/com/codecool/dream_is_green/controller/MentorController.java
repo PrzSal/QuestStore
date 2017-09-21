@@ -136,11 +136,12 @@ public class MentorController {
 
     public void addArtifact() {
 
+        String column = "ArtifactsTable";
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String categoryName = uiView.getInput("Enter category: ");
         ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
-        artifactDao.insertArtifact(title, price, categoryName);
+        artifactDao.insertArtifact(column, title, price, categoryName, 0);
         ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
         artifactDao.addObject(artifactModel);
     }
