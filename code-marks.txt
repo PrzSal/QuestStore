@@ -1,0 +1,16 @@
+<file>:<line>, Note: <note>
+/src/main/java/com/codecool/dream_is_green/dao/AbstractDAO.java:8, Note: SQL: now when we use db this list should be removed, objects should be retieved from database
+/src/main/java/com/codecool/dream_is_green/controller/AdminController.java:128, Note: CC: no idea what it does
+/src/main/java/com/codecool/dream_is_green/controller/AdminController.java:58, Note: OOP: should go to DAO
+/src/main/java/com/codecool/dream_is_green/controller/AdminController.java:144, Note: CC: put this after startController
+/src/main/java/com/codecool/dream_is_green/controller/AdminController.java:199, Note: CC: put this at the top of the class
+/src/main/java/com/codecool/dream_is_green/dao/DaoStart.java:3, Note: CC: bad naming, such thing is called a Factory
+/src/main/java/com/codecool/dream_is_green/controller/AdminController.java:22, Note: JA: use enum
+/src/main/java/com/codecool/dream_is_green/App.java:95, Note: CC: no idea why it's placed in App
+/src/main/java/com/codecool/dream_is_green/App.java:67, Note: SQL: should use sql for finding single user
+/src/main/java/com/codecool/dream_is_green/App.java:65, Note: OOP: should be moved to DAO
+/src/main/java/com/codecool/dream_is_green/App.java:45, Note: CC: too many identations that could be avoided
+/src/main/java/com/codecool/dream_is_green/App.java:41, Note: OOP: findUser would be shorter and better
+/README.md:4, Note: CC: outdated readme
+/pom.xml:22, Note: REQ: no fat jar creation
+
