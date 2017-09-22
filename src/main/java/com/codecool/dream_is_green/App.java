@@ -1,7 +1,12 @@
-import com.codecool.dream_is_green.model.*;
-import com.codecool.dream_is_green.controller.*;
-import com.codecool.dream_is_green.view.*;
-import com.codecool.dream_is_green.dao.*;
+import com.codecool.dream_is_green.controller.AdminController;
+import com.codecool.dream_is_green.controller.MentorController;
+import com.codecool.dream_is_green.controller.StudentController;
+import com.codecool.dream_is_green.dao.DaoStart;
+import com.codecool.dream_is_green.dao.DatabaseConnection;
+import com.codecool.dream_is_green.model.AdminModel;
+import com.codecool.dream_is_green.model.MentorModel;
+import com.codecool.dream_is_green.model.StudentModel;
+import com.codecool.dream_is_green.view.UIView;
 
 public class App {
 

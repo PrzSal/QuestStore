@@ -3,7 +3,10 @@ package com.codecool.dream_is_green.dao;
 import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.QuestCategoryModel;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 public class QuestDAO extends AbstractDAO<QuestModel> {
 
