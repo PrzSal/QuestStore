@@ -54,17 +54,11 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
                 statement.executeUpdate(query);
                 connection.commit();
 
-
             } else {
                 String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category, user_id) VALUES('%s', %d, '%s', %d);", table, artifactName, price, artifactCategory, id);
                 statement.executeUpdate(query);
-
                 connection.commit();
-
             }
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +66,7 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
     }
 
     public void deleteArtifact(String nameArtifact) {
-
+//        Method ready to use, pass test, but not implemented in controller
         Connection connection;
         PreparedStatement preparedStatement;
 

@@ -10,6 +10,10 @@ public class UIView {
         System.out.println(message);
     }
 
+    public void printMessage(int number) {
+        System.out.println(number);
+    }
+
     public String getInput(String message) {
 
         System.out.print(message);
@@ -37,8 +41,9 @@ public class UIView {
     }
 
     public void clearScreen() {
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+//      (second) version for terminal clear
+        for (int i = 0; i < 50; i++) System.out.println();
+//        System.out.print("\033[H\033[2J");
+//        System.out.flush();
     }
 }

@@ -1,4 +1,3 @@
-import com.codecool.dream_is_green.interfaces.DAO;
 import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.controller.*;
 import com.codecool.dream_is_green.view.*;
@@ -10,19 +9,10 @@ public class App {
     
     public static void main(String[] args) {
 
-        AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
-                                          "janek.ko@uo.com", "admin", "admin");
-
-        MentorModel mentor = new MentorModel(10, "Michał", "Malinowski",
-                "m.malinowski@gmail.com", "mentor", "mentor", "krk17");
-
-        StudentModel student = new StudentModel(3,"Tomek", "Dupa",
-                "tomcio.ko@uo.com", "student", "student", "2b");
-
-        DaoStart.getAdminDao().addObject(admin);
-        DaoStart.getMentorDao().addObject(mentor);
-        DaoStart.getStudentDao().addObject(student);
-        loginIntoSystem();
+        DatabaseConnection.getConnection();
+        createDefaultUsers();
+        loginIntoSystem();  // admin/admin, mentor/mentor, student/student
+        DatabaseConnection.closeConnection();
     }
 
     public static void loginIntoSystem() {
@@ -33,7 +23,6 @@ public class App {
         do {
 
             view.clearScreen();
-
             operation = view.getInput("~~~ Welcome in CODECOOL SHOP :)\n" +
                                       "~~~ Login into system: press ENTER to continue\n" +
                                       "~~~ Exit: press E\n");
@@ -49,27 +38,22 @@ public class App {
                 StudentModel student = findStudent(login);
 
                 if (mentor != null && mentor.getPassword().equals(password)) {
-
                     MentorController mentorController = new MentorController();
                     mentorController.startMentorController();
 
                 } else if (admin != null && admin.getPassword().equals(password)) {
-
                     AdminController adminController = new AdminController();
                     adminController.startAdminController();
 
                 } else if (student != null && student.getPassword().equals(password)) {
-
                     StudentController studentController = new StudentController();
                     studentController.startStudentController(student);
 
                 } else {
-
                     view.printMessage("\nWrong login or password!\n");
                     view.pressToContinue();
                 }
             }
-
        } while (!operation.equals(EXIT));
     }
 
@@ -101,5 +85,21 @@ public class App {
             }
         }
         return null;
+    }
+
+    public static void createDefaultUsers() {
+
+        AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
+                "janek.ko@uo.com", "admin", "admin");
+
+        MentorModel mentor = new MentorModel(10, "Michał", "Malinowski",
+                "m.malinowski@gmail.com", "mentor", "mentor", "krk17");
+
+        StudentModel student = new StudentModel(3,"Tomek", "Dupa",
+                "tomcio.ko@uo.com", "student", "student", "2b");
+
+        DaoStart.getAdminDao().addObject(admin);
+        DaoStart.getMentorDao().addObject(mentor);
+        DaoStart.getStudentDao().addObject(student);
     }
 }

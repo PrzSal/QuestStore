@@ -13,7 +13,8 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             Statement stat = conn.createStatement();
 
 
-            String query = "SELECT * FROM StudentsTable JOIN UsersTable ON UsersTable.user_id = StudentsTable.user_id";
+            String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
+                           " ON UsersTable.user_id = StudentsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
             int userID;
@@ -28,7 +29,8 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
 
-                StudentModel student = new StudentModel(userID, name, surname, email, login, password, className);
+                StudentModel student = new StudentModel(userID, name, surname, email,
+                                                        login, password, className);
                 this.addObject(student);
             }
             result.close();
@@ -50,13 +52,16 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query1 = String.format("INSERT INTO UsersTable (name, surname, email, login, password, user_type) VALUES ('%s', '%s', '%s', '%s', '%s', 'student');", name, surname, email, login, password);
+            String query1 = String.format("INSERT INTO UsersTable (name, surname, email," +
+                                          " login, password, user_type) VALUES ('%s', '%s'," +
+                                          "'%s', '%s', '%s', 'student');", name, surname, email, login, password);
 
             statement.executeUpdate(query1);
             connection.commit();
             int userId = this.getStudentId(login);
 
-            String query2 = String.format("INSERT INTO StudentsTable (user_id, level_name, class_name) VALUES (%d, 'noob', '%s');", userId, className);
+            String query2 = String.format("INSERT INTO StudentsTable (user_id, level_name, class_name)" +
+                                          " VALUES (%d, 'noob', '%s');", userId, className);
 
             statement.executeUpdate(query2);
 
@@ -68,7 +73,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         }
     }
     public void deleteStudent(int id) {
-
+//        Method ready to use, pass test, but not implemented in controller
         Connection connection;
 
             try {

@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.ClassModel;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;

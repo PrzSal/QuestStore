@@ -9,7 +9,6 @@ import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
 
-
 public class StudentController {
 
     private static final int SHOW_QUESTS = 1;
@@ -22,13 +21,14 @@ public class StudentController {
     private static StudentView studentView = new StudentView();
     private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
+
     private static QuestDAO questDao = DaoStart.getQuestDao();
     private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
 
 
-
     public void buyArtifact(StudentModel studentModel) {
-        WalletModel wa = new WalletModel();
+
+        artifactDao.clearObjectList();
         artifactDao.loadArtifact();
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
@@ -49,7 +49,8 @@ public class StudentController {
                 ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
                 Integer id = studentModel.getUserID();
 
-                artifactDao.insertArtifact("StudentsWithArtifacts", title, price, artifactCategoryModel.toString(), id);
+                artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
+                                           artifactCategoryModel.toString(), id);
                 ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
                 studentModel.getWallet().addBoughtArtifact(newArtifact);
                 studentModel.getWallet().removeCoolCoins(artifactPrice);
@@ -57,19 +58,17 @@ public class StudentController {
 
             }
             else {
-                uiView.printMessage("You don't have enought cool coins");
+                uiView.printMessage("You don't have enough cool coins");
             }
 
         } catch (NumberFormatException e) {
             uiView.printMessage("Wrong input");
         }
-
     }
 
     public void showWallet(StudentModel student) {
 
         WalletController walletController = new WalletController();
-        LinkedList<ArtifactModel> artifactModelList = student.getWallet().getArtifactList();
         walletController.showWalletContent(student.getWallet());
     }
 
