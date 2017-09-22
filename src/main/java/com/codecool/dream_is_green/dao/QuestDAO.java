@@ -62,26 +62,4 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         }
 
     }
-
-    public void deleteQuest(String nameQuest) {
-//        Method ready to use, pass test, but not implemented in controller
-        Connection connection;
-        PreparedStatement preparedStatement;
-
-        try {
-            connection =  DatabaseConnection.getConnection();
-            connection.setAutoCommit(false);
-
-            String query = "DELETE FROM QuestsTable WHERE quest_name = ?";
-
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, nameQuest);
-            preparedStatement.execute();
-
-            connection.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

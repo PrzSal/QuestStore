@@ -41,7 +41,7 @@ public class UIView {
     }
 
     public void clearScreen() {
-//      (second) version for terminal clear
+//      (second) version for terminal clear, first for IDE terminal
         for (int i = 0; i < 50; i++) System.out.println();
 //        System.out.print("\033[H\033[2J");
 //        System.out.flush();
