@@ -93,14 +93,18 @@ public class MentorController {
 
     public void showArtifactList() {
 
+        artifactDao.loadArtifact();
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
+        artifactDao.clearObjectList();
     }
 
     public void showQuestList() {
 
+        questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+        questDao.clearObjectList();
     }
 
     public void showStudentList() {
