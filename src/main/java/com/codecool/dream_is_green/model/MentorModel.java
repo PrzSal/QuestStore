@@ -21,7 +21,6 @@ public class MentorModel extends User {
 
         String str = String.format("%-8s %-12s %-12s %-24s %-12s %-12s %-12s",
                             userID, name, surname, email, className, login, password);
-
         return str;
     }
 

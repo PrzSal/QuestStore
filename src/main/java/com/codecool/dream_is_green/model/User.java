@@ -53,14 +53,4 @@ public abstract class User {
     public void setPassword(String newPassword) {
         password = newPassword;
     }
-
-    public String setDefaultLogin() {
-        login = "kamil";
-        return login;
-    }
-
-    public String setDefaultPassword() {
-        password = "kmiec";
-        return password;
-    }
 }

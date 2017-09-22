@@ -1,6 +1,5 @@
 package com.codecool.dream_is_green.model;
 
-
 public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
     private boolean isUsed;
@@ -18,13 +17,12 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
     @Override
     public String toString() {
 
-        String isUsedState = "";
+        String isUsedState;
 
-        if (this.isUsed == true) {
+        if (this.isUsed) {
             isUsedState = "[X]";
-        }
 
-        else {
+        } else {
             isUsedState = "[ ]";
         }
 
@@ -34,18 +32,9 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         return artifactString;
     }
 
-    public boolean getIsUsed() {
-        return this.isUsed;
-    }
-
     public boolean setIsUsed() {
 
         return this.isUsed = true;
-    }
-
-    public Integer getAmount() {
-
-        return this.amount;
     }
 
     public void setAmount() {
