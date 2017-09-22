@@ -24,7 +24,9 @@ public class StudentView {
 
     public void showStudentList(String studentDAOString) {
 
-        String headline = "\033[1;33mIndex | User ID | Name | Surname | Class ID | Team ID\033[0m\n";
+        String headline = String.format("\033[3;33m %1s %-8s %-12s %-12s %-24s %-12s %-12s %-12s %-12s \033[0m",
+                "No.", "User Id", "Name", "Surname", "Email", "Class name", "Team name", "Login", "Password");
+
         System.out.println(headline);
         System.out.println(studentDAOString);
     }

@@ -5,18 +5,18 @@ import java.util.LinkedList;
 
 public class ClassModel {
 
-    private String classID;
+    private String className;
     private LinkedList<MentorModel> mentorsList;
     private LinkedList<StudentModel> studentsList;
 
-    public ClassModel(String classID) {
-        this.classID = classID;
+    public ClassModel(String className) {
+        this.className = className;
         mentorsList = new LinkedList<MentorModel>();
         studentsList = new LinkedList<StudentModel>();
     }
 
-    public String getclassID() {
-        return classID;
+    public String getClassName() {
+        return className;
     }
 
     public LinkedList<MentorModel> getMentorsList() {
@@ -44,6 +44,9 @@ public class ClassModel {
     }
 
     public String toString() {
-        return classID;
+
+        String str = String.format(className, "%-12");
+
+        return str;
     }
 }

@@ -163,6 +163,7 @@ public class AdminController {
             break;
 
         case CREATE_CLASS :
+            this.showClassList();
             ClassModel newClass = this.createClass();
             classDao.addObject(newClass);
             view.pressToContinue();
@@ -174,6 +175,7 @@ public class AdminController {
             break;
 
         case REMOVE_MENTOR :
+            this.showMentorList();
             this.removeMentor();
             view.pressToContinue();
             break;
