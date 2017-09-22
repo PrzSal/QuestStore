@@ -13,7 +13,7 @@ public class QuestModel extends AbstractTask<QuestCategoryModel> {
     @Override
     public String toString() {
 
-        String stringQuest = String.format("%-12s %-12d %-20s", title, price, category.toString());
+        String stringQuest = String.format("%-24s %-12d %-20s", title, price, category.toString());
 
         return stringQuest;
     }
