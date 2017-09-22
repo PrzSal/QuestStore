@@ -5,7 +5,6 @@ import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
 import java.lang.NullPointerException;
 
-
 public class AdminController {
 
     private static final int CREATE_MENTOR = 1;
@@ -89,33 +88,34 @@ public class AdminController {
         mentorView.showMentorList(mentorDaoString);
 
         int mentorID = mentor.getUserID();
-        System.out.println(mentorID);
+        view.printMessage(mentorID);
 
         String mentorInfo = mentor.toString();
         view.clearScreen();
-        view.printMessage(mentorInfo);
-        view.printMessage("1) Edit email.\n2) Edit mentor class.");
+        view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
         String option = view.getInput("Choose option: ");
 
         Boolean done = false;
 
         while(!done) {
+
             if (option.equals("1")) {
                 String email = view.getInput("Enter mentor email: ");
                 mentorDao.updateMentor(email, mentorID, "email", "UsersTable");
                 mentor.setEmail(email);
                 done = true;
+
             } else if (option.equals("2")) {
                 String className = view.getInput("Enter mentor class name: ");
                 mentorDao.updateMentor(className, mentorID, "class_name", "MentorsTable");
                 mentor.setClassName(className);
                 done = true;
+
             } else {
                 view.printMessage("Choose 1 or 2.");
                 view.pressToContinue();
                 view.clearScreen();
-                view.printMessage(mentorInfo);
-                view.printMessage("1) Edit email.\n2) Edit mentor class.");
+                view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
                 option = view.getInput("Choose option: ");
             }
         }
