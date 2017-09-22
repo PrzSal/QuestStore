@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.MentorModel;
-
 import java.sql.*;
 
 public class MentorDAO extends AbstractDAO<MentorModel> {
@@ -17,7 +16,8 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             stat = conn.createStatement();
 
 
-            String query = "SELECT * FROM MentorsTable JOIN UsersTable ON UsersTable.user_id = MentorsTable.user_id";
+            String query = "SELECT * FROM MentorsTable JOIN UsersTable" +
+                           " ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
             int userID;
@@ -150,7 +150,3 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
     }
 }
-
-
-
-

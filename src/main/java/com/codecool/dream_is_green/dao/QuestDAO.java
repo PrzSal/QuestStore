@@ -64,7 +64,7 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
     }
 
     public void deleteQuest(String nameQuest) {
-
+//        Method ready to use, pass test, but not implemented in controller
         Connection connection;
         PreparedStatement preparedStatement;
 
