@@ -12,9 +12,9 @@ public class WalletController {
         LinkedList<ArtifactModel> artifactsList = walletModel.getArtifactList();
         WalletView walletView = new WalletView();
         Integer index = 0;
-        String message = "";
+        String message;
 
-        walletView.showLineInWallet("Colected artifacts: ");
+        walletView.showLineInWallet("Collected artifacts: ");
 
         for (ArtifactModel artifact : artifactsList) {
 
@@ -23,7 +23,7 @@ public class WalletController {
             index++;
 
         }
-        message = "\n" + "Colected coolCoins: " + String.valueOf(walletModel.getCoolCoins());
+        message = "\nCollected coolCoins: " + String.valueOf(walletModel.getCoolCoins());
         walletView.showLineInWallet(message);
     }
 }
