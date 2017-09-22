@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 public interface DAO<T> {
 
-    public void addObject(T object);
-    public void removeObject(T object);
-    public void setObjectList(LinkedList<T> objectsList);
-    public LinkedList<T> getObjectList();
+    void addObject(T object);
+    void removeObject(T object);
+    void setObjectList(LinkedList<T> objectsList); //Method ready to use, pass test
+    LinkedList<T> getObjectList();
 }
