@@ -3,7 +3,10 @@ package com.codecool.dream_is_green.dao;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
 
-import java.sql.*;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 
 public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
 

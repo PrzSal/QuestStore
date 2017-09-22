@@ -1,13 +1,20 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.dao.ArtifactDAO;
+import com.codecool.dream_is_green.dao.DaoStart;
+import com.codecool.dream_is_green.dao.QuestDAO;
+import com.codecool.dream_is_green.model.ArtifactCategoryModel;
+import com.codecool.dream_is_green.model.ArtifactModel;
 import com.codecool.dream_is_green.model.StudentModel;
-import java.util.LinkedList;
+import com.codecool.dream_is_green.view.ArtifactView;
+import com.codecool.dream_is_green.view.QuestView;
+import com.codecool.dream_is_green.view.StudentView;
+import com.codecool.dream_is_green.view.UIView;
+
 import java.lang.IndexOutOfBoundsException;
 import java.lang.NumberFormatException;
+import java.util.LinkedList;
 
-import com.codecool.dream_is_green.model.*;
-import com.codecool.dream_is_green.view.*;
-import com.codecool.dream_is_green.dao.*;
 
 public class StudentController {
 

@@ -1,6 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
-import com.codecool.dream_is_green.interfaces.*;
+import com.codecool.dream_is_green.interfaces.DAO;
 import java.util.LinkedList;
 
 public abstract class AbstractDAO<T> implements DAO<T> {

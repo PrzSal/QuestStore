@@ -1,8 +1,12 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.dao.ArtifactDAO;
+import com.codecool.dream_is_green.dao.DaoStart;
+import com.codecool.dream_is_green.dao.QuestDAO;
+import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.model.*;
-import com.codecool.dream_is_green.dao.*;
 import com.codecool.dream_is_green.view.*;
+
 
 import java.lang.NumberFormatException;
 
