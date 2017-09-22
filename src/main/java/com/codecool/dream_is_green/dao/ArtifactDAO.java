@@ -13,17 +13,16 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         Statement statement;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
-            String query = "SELECT * FROM StudentsWithArtifacts;";
+            String query = "SELECT * FROM ArtifactsTable;";
             ResultSet resultSet = statement.executeQuery(query);
 
             while ( resultSet.next() ) {
 
-                String title = resultSet.getString("title");
+                String title = resultSet.getString("artifact_name");
                 int price = resultSet.getInt("price");
                 String artifactCategoryDb = resultSet.getString("artifact_category");
                 ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(artifactCategoryDb);
@@ -33,56 +32,56 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             }
             resultSet.close();
             statement.close();
-            connection.close();
 
         } catch ( Exception e ) {
             e.printStackTrace();
         }
     }
 
-    public void insertArtifact(String artifactName, Integer price,  String artifactCategory) {
+    public void insertArtifact(String table, String artifactName, Integer price,  String artifactCategory, int id) {
 
         Connection connection;
-        PreparedStatement preparedStatement;
+        Statement statement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query= "INSERT INTO ArtifactsTable (artifact_name, price, artifact_category) VALUES(?,?,?);";
+            if(table.equals("ArtifactsTable")) {
 
-            preparedStatement = connection.prepareStatement(query);
+                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category) VALUES('%s', %d, '%s');", table, artifactName, price, artifactCategory);
+                statement.executeUpdate(query);
+                connection.commit();
 
-            preparedStatement.setString(1, artifactName);
+            } else {
+                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category, user_id) VALUES('%s', %d, '%s', %d);", table, artifactName, price, artifactCategory, id);
+                statement.executeUpdate(query);
+                connection.commit();
+            }
 
-            preparedStatement.setInt(2, price);
-
-            preparedStatement.setString(3, artifactCategory);
-
-            preparedStatement.execute();
-
-            connection.commit();
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void deleteArtifact(String nameArtifact) {
-
+//        Method ready to use, pass test, but not implemented in controller
         Connection connection;
         PreparedStatement preparedStatement;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+            connection = DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            String query = "DELETE FROM ArtifactTable WHERE artifact_name = ?";
+            String query = "DELETE FROM ArtifactsTable WHERE artifact_name = ?";
+
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, nameArtifact);
             preparedStatement.execute();
+
             connection.commit();
-            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

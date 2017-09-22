@@ -5,7 +5,8 @@ public class ClassView {
 
     public void showClassList(String classDaoString) {
 
-        String headline = "\033[3;33m No | Class ID \033[0m\n";
+        String headline = String.format("\033[3;33m %1s %-16s\033[0m", "No.", "Class name");
+
         System.out.println(headline);
         System.out.println(classDaoString);
     }

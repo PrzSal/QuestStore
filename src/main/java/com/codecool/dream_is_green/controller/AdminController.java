@@ -5,7 +5,6 @@ import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
 import java.lang.NullPointerException;
 
-
 public class AdminController {
 
     private static final int CREATE_MENTOR = 1;
@@ -13,14 +12,17 @@ public class AdminController {
     private static final int SHOW_MENTORS = 3;
     private static final int CREATE_CLASS = 4;
     private static final int SHOW_CLASSES = 5;
+    private static final int REMOVE_MENTOR = 6;
     private static final int EXIT = 0;
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
+    private static MentorDAO mentorDao = DaoStart.getMentorDao();
+    private static ClassDAO classDao = DaoStart.getClassDao();
 
-    public MentorModel createMentor(MentorDAO mentorDAO) {
+    public MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
@@ -29,18 +31,29 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
-        mentorDAO.insertMentor(name, surname, email, login, password, className);
-        int userID = mentorDAO.getMentorId(login);
+        mentorDao.insertMentor(name, surname, email, login, password, className);
+        int userID = mentorDao.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 
         return mentor;
     }
 
-    public MentorModel getMentorByID(MentorDAO mentorDao) {
+    public void removeMentor() {
 
-        this.showMentorList(mentorDao);
+        int mentorID = view.getInputInt("Enter the mentor ID you want to remove ");
+        mentorDao.deleteMentor(mentorID);
+        for (MentorModel mentor : mentorDao.getObjectList()) {
+            if (mentor.getUserID() == mentorID) {
+                mentorDao.removeObject(mentor);
+            }
+        }
+    }
+
+    public MentorModel getMentorByID() {
+
+        this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
-
+        mentorDao.loadMentors();
         for (MentorModel mentor : mentorDao.getObjectList()) {
             if (mentor.getUserID() == userID) {
                 return mentor;
@@ -49,53 +62,64 @@ public class AdminController {
         return null;
     }
 
-    public void showMentorList(MentorDAO mentorDao) {
+    public void showMentorList() {
 
+        mentorDao.clearObjectList();
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
+        mentorDao.clearObjectList();
+
     }
 
-    public void showClassList(ClassDAO classDao) {
+    public void showClassList() {
 
+        classDao.clearObjectList();
+        classDao.loadClasses();
         String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
+        classDao.clearObjectList();
     }
 
 
-    public void editMentor(MentorModel mentor, MentorDAO mentorDao) {
+    public void editMentor(MentorModel mentor) {
 
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
 
+        int mentorID = mentor.getUserID();
+        view.printMessage(mentorID);
+
         String mentorInfo = mentor.toString();
         view.clearScreen();
-        view.printMessage(mentorInfo);
-        view.printMessage("1) Edit email.\n2) Edit mentor class.");
+        view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
         String option = view.getInput("Choose option: ");
 
         Boolean done = false;
 
-        while(!done)
-            if(option.equals("1")) {
+        while(!done) {
+
+            if (option.equals("1")) {
                 String email = view.getInput("Enter mentor email: ");
+                mentorDao.updateMentor(email, mentorID, "email", "UsersTable");
                 mentor.setEmail(email);
                 done = true;
-            }
-            else if(option.equals("2")) {
+
+            } else if (option.equals("2")) {
                 String className = view.getInput("Enter mentor class name: ");
+                mentorDao.updateMentor(className, mentorID, "class_name", "MentorsTable");
                 mentor.setClassName(className);
                 done = true;
-            }
-            else {
+
+            } else {
                 view.printMessage("Choose 1 or 2.");
                 view.pressToContinue();
                 view.clearScreen();
-                view.printMessage(mentorInfo);
-                view.printMessage("1) Edit email.\n2) Edit mentor class.");
+                view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
                 option = view.getInput("Choose option: ");
             }
-
+        }
+        mentorDao.clearObjectList();
     }
 
     public ClassModel createClass() {
@@ -104,26 +128,29 @@ public class AdminController {
         view.printMessage("Create new class");
 
         String className = view.getInput("Enter class name: ");
+        classDao.insertClass(className);
         ClassModel newClass = new ClassModel(className);
+        classDao.clearObjectList();
 
         return newClass;
     }
 
-    public void startMenu(int operation, MentorDAO mentorDao, ClassDAO classDao) {
+    public void startMenu(int operation) {
 
         switch(operation) {
 
         case CREATE_MENTOR :
-            MentorModel newMentor = this.createMentor(mentorDao);
+            MentorModel newMentor = this.createMentor();
             mentorDao.addObject(newMentor);
             view.pressToContinue();
             break;
 
         case EDIT_MENTOR :
-            MentorModel mentor = getMentorByID(mentorDao);
+
+            MentorModel mentor = getMentorByID();
 
             try {
-                this.editMentor(mentor, mentorDao);
+                this.editMentor(mentor);
             } catch (NullPointerException e) {
                 view.printMessage("Wrong ID\n");
             }
@@ -131,18 +158,25 @@ public class AdminController {
             break;
 
         case SHOW_MENTORS :
-            this.showMentorList(mentorDao);
+            this.showMentorList();
             view.pressToContinue();
             break;
 
         case CREATE_CLASS :
+            this.showClassList();
             ClassModel newClass = this.createClass();
             classDao.addObject(newClass);
             view.pressToContinue();
             break;
 
         case SHOW_CLASSES :
-            this.showClassList(classDao);
+            this.showClassList();
+            view.pressToContinue();
+            break;
+
+        case REMOVE_MENTOR :
+            this.showMentorList();
+            this.removeMentor();
             view.pressToContinue();
             break;
 
@@ -156,7 +190,7 @@ public class AdminController {
 
     }
 
-    public void startAdminController(MentorDAO mentorDao, ClassDAO classDao) {
+    public void startAdminController() {
 
         int operation;
 
@@ -165,7 +199,7 @@ public class AdminController {
             adminView.showMenu();
             operation = view.getInputInt("Choice option: ");
             view.clearScreen();
-            this.startMenu(operation, mentorDao, classDao);
+            this.startMenu(operation);
         } while (operation != EXIT);
 
     }

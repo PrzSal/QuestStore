@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.MentorModel;
-
 import java.sql.*;
 
 public class MentorDAO extends AbstractDAO<MentorModel> {
@@ -17,7 +16,8 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             stat = conn.createStatement();
 
 
-            String query = "SELECT * FROM MentorsTable JOIN UsersTable ON UsersTable.user_id = MentorsTable.user_id";
+            String query = "SELECT * FROM MentorsTable JOIN UsersTable" +
+                           " ON UsersTable.user_id = MentorsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
             int userID;
@@ -79,7 +79,7 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         try {
             conn = DatabaseConnection.getConnection();
 
-            String statement1 = "DELETE FROM UsersTable WHERE user_id = ?";
+            String statement1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'mentor'";
             String statement2 = "DELETE FROM MentorsTable WHERE user_id = ?";
             PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
             PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
@@ -121,7 +121,32 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
         return userID;
     }
+
+    public void updateMentor(String phrase, int userID, String column, String table) {
+
+        Connection conn;
+        Statement stat;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            stat = conn.createStatement();
+            if (column.equals("class_name")) {
+                column = "class_name";
+
+            } else if (column.equals("email")) {
+                column = "email";
+
+            }
+            String statement = String.format("UPDATE %s set '%s' = '%s' where user_id=%d;", table, column, phrase, userID);
+            stat.executeUpdate(statement);
+            conn.commit();
+
+            stat.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-
-
-

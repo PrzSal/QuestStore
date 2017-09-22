@@ -10,6 +10,10 @@ public class UIView {
         System.out.println(message);
     }
 
+    public void printMessage(int number) {
+        System.out.println(number);
+    }
+
     public String getInput(String message) {
 
         System.out.print(message);
@@ -19,8 +23,15 @@ public class UIView {
     public int getInputInt(String message) {
 
         System.out.print(message);
-        int userInput = Integer.parseInt(input.nextLine());
-        return userInput;
+
+        try {
+            int userInput = Integer.parseInt(input.nextLine());
+            return userInput;
+        } catch (NumberFormatException e) {
+            System.out.println("Wrong input");
+            return 0;
+        }
+
     }
 
     public void pressToContinue() {
@@ -30,13 +41,9 @@ public class UIView {
     }
 
     public void clearScreen() {
-
-
-
-//        for (int i = 0; i < 30; i++) {
-//            System.out.println();
-//        }
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+//      (second) version for terminal clear
+        for (int i = 0; i < 50; i++) System.out.println();
+//        System.out.print("\033[H\033[2J");
+//        System.out.flush();
     }
 }

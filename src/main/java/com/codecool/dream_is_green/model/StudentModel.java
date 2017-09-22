@@ -5,9 +5,9 @@ import java.util.LinkedList;
 public class StudentModel extends User {
 
     private Integer experience;
-    private Integer level;
+    private String level;
     private WalletModel wallet;
-    private String teamID;
+    private String teamName;
     private String className;
     private LinkedList<QuestModel> questsList;
 
@@ -17,14 +17,14 @@ public class StudentModel extends User {
         this.login = login;
         this.password = password;
         this.experience = 0;
-        this.level = 0;
+        this.level = "noob";
         this.wallet = new WalletModel();
-        this.teamID = null;
+        this.teamName = null;
         this.className = className;
         this.questsList = new LinkedList<QuestModel>();
     }
 
-    public Integer getLevel() {
+    public String getLevel() {
         return this.level;
     }
 
@@ -32,12 +32,12 @@ public class StudentModel extends User {
         return this.experience;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setLevel(String level) {
+        this.level.equals(level);
     }
 
-    public void setTeamID(String teamID) {
-        this.teamID = teamID;
+    public void setTeamID(String teamName) {
+        this.teamName = teamName;
     }
 
     public void addExperience(Integer experience) {
@@ -61,6 +61,11 @@ public class StudentModel extends User {
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + className + " | " + teamID;
+
+        String str = String.format("%-8s %-12s %-12s %-24s %-12s %-12s %-12s %-12s",
+                userID, name, surname, email, className, teamName, login, password);
+
+        return str;
+
     }
 }

@@ -21,8 +21,12 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
+    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
+    private static StudentDAO studentDao = DaoStart.getStudentDao();
+    private static QuestDAO questDao = DaoStart.getQuestDao();
 
-    public void startMentorController(StudentDAO studentDAO, QuestDAO questDAO, ArtifactDAO artifactDAO) {
+
+    public void startMentorController() {
 
         int operation;
 
@@ -30,30 +34,29 @@ public class MentorController {
             uiView.clearScreen();
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
-            chooseOption(operation, studentDAO, questDAO, artifactDAO);
+            chooseOption(operation);
         } while (operation != EXIT);
 
     }
 
-    public void chooseOption(int operation, StudentDAO studentDAO,
-                             QuestDAO questDAO, ArtifactDAO artifactDAO) {
+    public void chooseOption(int operation) {
 
         switch(operation) {
 
             case ADD_STUDENT:
                 uiView.clearScreen();
-                addStudent(studentDAO);
+                addStudent();
                 break;
 
             case SHOW_STUDENTS :
-                this.showStudentList(studentDAO);
+                this.showStudentList();
                 uiView.pressToContinue();
                 break;
 
             case ADD_QUEST:
                 uiView.clearScreen();
                 try {
-                    addQuest(questDAO);
+                    addQuest();
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
                     uiView.pressToContinue();
@@ -61,14 +64,14 @@ public class MentorController {
                 break;
 
             case SHOW_QUESTS :
-                this.showQuestList(questDAO);
+                this.showQuestList();
                 uiView.pressToContinue();
                 break;
 
             case ADD_ARTIFACT:
                 uiView.clearScreen();
                 try {
-                    addArtifact(artifactDAO);
+                    addArtifact();
                 } catch (NumberFormatException e) {
                     uiView.printMessage("This is not integer number");
                     uiView.pressToContinue();
@@ -76,7 +79,7 @@ public class MentorController {
                 break;
 
             case SHOW_ARTIFACTS :
-                this.showArtifactList(artifactDAO);
+                this.showArtifactList();
                 uiView.pressToContinue();
                 break;
 
@@ -88,27 +91,33 @@ public class MentorController {
         }
     }
 
-    public void showArtifactList(ArtifactDAO artifactDAO) {
+    public void showArtifactList() {
 
-        String artifactDaoString = artifactDAO.toString();
+        artifactDao.loadArtifact();
+        String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
+        artifactDao.clearObjectList();
     }
 
-    public void showQuestList(QuestDAO questDAO) {
+    public void showQuestList() {
 
-        String questDaoString = questDAO.toString();
+        questDao.loadQuest();
+        String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+        questDao.clearObjectList();
     }
 
-    public void showStudentList(StudentDAO studentDAO) {
+    public void showStudentList() {
 
-        String studentDaoString = studentDAO.toString();
+        studentDao.clearObjectList();
+        studentDao.loadStudents();
+        String studentDaoString = studentDao.toString();
         studentView.showStudentList(studentDaoString);
+        studentDao.clearObjectList();
     }
 
-    public void addStudent(StudentDAO studentDAO) {
+    public void addStudent() {
 
-        int userID = uiView.getInputInt("Enter student ID: ");
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
         String email = uiView.getInput("Enter email: ");
@@ -116,29 +125,32 @@ public class MentorController {
         String password = uiView.getInput("Enter password: ");
         String className = uiView.getInput("Enter class name: ");
 
+        studentDao.insertStudent(name, surname, email, login, password, className);
+        int userID = studentDao.getStudentId(login);
         StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
-        studentDAO.addObject(studentModel);
+        studentDao.addObject(studentModel);
     }
 
-    public void addQuest(QuestDAO questDAO) {
+    public void addQuest() {
 
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String questCategoryStr = uiView.getInput("Enter category: ");
         QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
-        questDAO.inserQuest(title, price, questCategoryStr);
+        questDao.insertQuest(title, price, questCategoryStr);
         QuestModel questModel = new QuestModel(title, price, questCategory);
-        questDAO.addObject(questModel);
+        questDao.addObject(questModel);
     }
 
-    public void addArtifact(ArtifactDAO artifactDAO) {
+    public void addArtifact() {
 
+        String column = "ArtifactsTable";
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String categoryName = uiView.getInput("Enter category: ");
         ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
-        artifactDAO.insertArtifact(title, price, categoryName);
+        artifactDao.insertArtifact(column, title, price, categoryName, 0);
         ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
-        artifactDAO.addObject(artifactModel);
+        artifactDao.addObject(artifactModel);
     }
 }

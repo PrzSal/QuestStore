@@ -1,21 +1,22 @@
 package com.codecool.dream_is_green.dao;
 
 import java.sql.*;
-import java.util.LinkedList;
 
 import com.codecool.dream_is_green.model.AdminModel;
+import com.codecool.dream_is_green.view.UIView;
 
 public class AdminDAO extends AbstractDAO<AdminModel> {
 
+        private static UIView view = new UIView();
 
         public void loadAdmins() {
-
-            Connection c = null;
-            Statement stmt = null;
+//            Method ready to use, pass test, but not implemented in controller
+            Connection c;
+            Statement stmt;
 
             try {
-                Class.forName("org.sqlite.JDBC");
-                c = DriverManager.getConnection("jdbc:sqlite:quest_store.db");
+
+                c = DatabaseConnection.getConnection();
                 c.setAutoCommit(false);
 
                 stmt = c.createStatement();
@@ -23,6 +24,7 @@ public class AdminDAO extends AbstractDAO<AdminModel> {
                 ResultSet rs = stmt.executeQuery(query);
 
                 while ( rs.next() ) {
+
                     int userId = rs.getInt("user_id");
                     String name = rs.getString("name");
                     String surname = rs.getString("surname");
@@ -36,12 +38,9 @@ public class AdminDAO extends AbstractDAO<AdminModel> {
                 }
                 rs.close();
                 stmt.close();
-                c.close();
+
             } catch ( Exception e ) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                System.exit(0);
+                view.printMessage( e.getClass().getName() + ": " + e.getMessage() );
             }
         }
     }
-
-

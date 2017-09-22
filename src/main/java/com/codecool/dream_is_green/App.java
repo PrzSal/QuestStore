@@ -3,60 +3,29 @@ import com.codecool.dream_is_green.controller.*;
 import com.codecool.dream_is_green.view.*;
 import com.codecool.dream_is_green.dao.*;
 
-import java.util.Arrays;
-
 public class App {
 
     private static final String EXIT = "E";
-
+    
     public static void main(String[] args) {
 
-        AdminDAO adminDao = new AdminDAO();
-        MentorDAO mentorDao = new MentorDAO();
-        StudentDAO studentDao = new StudentDAO();
-        ClassDAO classDao = new ClassDAO();
-        QuestDAO questDao = new QuestDAO();
-        ArtifactDAO artifactDao = new ArtifactDAO();
-
-
-
-        AdminModel admin = new AdminModel(12,"Janek", "Kowalski", "janek.ko@uo.com", "admin", "admin");
-        adminDao.addObject(admin);
-
-//        MentorModel mentor1 = new MentorModel(13,"Asia", "Dobra", "anekk.dobro@asd.com", "mentor", "mentor", "klasa1");
-//        mentorDao.addObject(mentor1);
-
-//        StudentModel student1 = new StudentModel(14,"Rozbil", "Myszolow", "robi.ysz@as.com", "student", "student", "klasa1");
-//        studentDao.addObject(student1);
-
-//        ArtifactCategoryModel category = new ArtifactCategoryModel("owoce");
-//        ArtifactModel artifact1 = new ArtifactModel("mentoring", 200, category);
-//        artifactDao.addObject(artifact1);
-
-//        QuestCategoryModel categoryQuest = new QuestCategoryModel("owoce");
-//        QuestModel quest1 = new QuestModel("zadanie", 200, categoryQuest);
-//        questDao.addObject(quest1);
-
-//        ClassModel class1 = new ClassModel("codecoo1");
-//        classDao.addObject(class1);
-
-        loginIntoSystem(adminDao, mentorDao, studentDao, classDao, questDao, artifactDao);
+        DatabaseConnection.getConnection();
+        createDefaultUsers();
+        loginIntoSystem();  // admin/admin, mentor/mentor, student/student
+        DatabaseConnection.closeConnection();
     }
 
-    public static void loginIntoSystem(AdminDAO adminDao, MentorDAO mentorDao,
-                                       StudentDAO studentDao, ClassDAO classDao,
-                                       QuestDAO questDao, ArtifactDAO artifactDao) {
+    public static void loginIntoSystem() {
 
-        String operation;
         UIView view = new UIView();
+        String operation;
 
         do {
 
             view.clearScreen();
-
             operation = view.getInput("~~~ Welcome in CODECOOL SHOP :)\n" +
-                                             "~~~ Login into system: press ENTER to continue\n" +
-                                             "~~~ Exit: press E\n");
+                                      "~~~ Login into system: press ENTER to continue\n" +
+                                      "~~~ Exit: press E\n");
             operation = operation.toUpperCase();
 
             if (!operation.equals(EXIT)) {
@@ -64,39 +33,33 @@ public class App {
                 String login = view.getInput("Enter login: ");
                 String password = view.getInput("Enter password: ");
 
-                System.out.println(login + " " + password);
-
-                MentorModel mentor = findMentor(login, mentorDao);
-                AdminModel admin = findAdmin(login, adminDao);
-                StudentModel student = findStudent(login, studentDao);
+                MentorModel mentor = findMentor(login);
+                AdminModel admin = findAdmin(login);
+                StudentModel student = findStudent(login);
 
                 if (mentor != null && mentor.getPassword().equals(password)) {
-
                     MentorController mentorController = new MentorController();
-                    mentorController.startMentorController(studentDao, questDao, artifactDao);
-                }
-                else if (admin != null && admin.getPassword().equals(password)) {
+                    mentorController.startMentorController();
 
+                } else if (admin != null && admin.getPassword().equals(password)) {
                     AdminController adminController = new AdminController();
-                    adminController.startAdminController(mentorDao, classDao);
-                }
-                else if (student != null && student.getPassword().equals(password)) {
+                    adminController.startAdminController();
 
+                } else if (student != null && student.getPassword().equals(password)) {
                     StudentController studentController = new StudentController();
-                    studentController.startStudentController(student, artifactDao, questDao);
-                }
-                else {
+                    studentController.startStudentController(student);
+
+                } else {
                     view.printMessage("\nWrong login or password!\n");
                     view.pressToContinue();
                 }
             }
-
        } while (!operation.equals(EXIT));
     }
 
-    public static MentorModel findMentor(String login, MentorDAO mentorDao) {
+    public static MentorModel findMentor(String login) {
 
-        for (MentorModel mentor : mentorDao.getObjectList()) {
+        for (MentorModel mentor : DaoStart.getMentorDao().getObjectList()) {
             if(mentor.getLogin().equals(login)) {
                 return mentor;
             }
@@ -104,9 +67,9 @@ public class App {
         return null;
     }
 
-    public static StudentModel findStudent(String login, StudentDAO studentDao) {
+    public static StudentModel findStudent(String login) {
 
-        for (StudentModel student : studentDao.getObjectList()) {
+        for (StudentModel student : DaoStart.getStudentDao().getObjectList()) {
             if(student.getLogin().equals(login)) {
                 return student;
             }
@@ -114,13 +77,29 @@ public class App {
         return null;
     }
 
-    public static AdminModel findAdmin(String login, AdminDAO adminDao) {
+    public static AdminModel findAdmin(String login) {
 
-        for (AdminModel admin : adminDao.getObjectList()) {
+        for (AdminModel admin : DaoStart.getAdminDao().getObjectList()) {
             if(admin.getLogin().equals(login)) {
                 return admin;
             }
         }
         return null;
+    }
+
+    public static void createDefaultUsers() {
+
+        AdminModel admin = new AdminModel(12,"Janek", "Kowalski",
+                "janek.ko@uo.com", "admin", "admin");
+
+        MentorModel mentor = new MentorModel(10, "Michał", "Malinowski",
+                "m.malinowski@gmail.com", "mentor", "mentor", "krk17");
+
+        StudentModel student = new StudentModel(3,"Tomek", "Dupa",
+                "tomcio.ko@uo.com", "student", "student", "2b");
+
+        DaoStart.getAdminDao().addObject(admin);
+        DaoStart.getMentorDao().addObject(mentor);
+        DaoStart.getStudentDao().addObject(student);
     }
 }

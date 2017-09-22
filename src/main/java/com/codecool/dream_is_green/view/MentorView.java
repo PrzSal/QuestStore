@@ -16,9 +16,12 @@ public class MentorView {
 
     public void showMentorList(String mentorDaoString) {
 
-        String headline = "\033[3;33mNo | User ID | Name | Surname | Email | Class ID | Login | Password\033[0m\n";
+        String headline = String.format("\033[3;33m %1s %-8s %-12s %-12s %-24s %-12s %-12s %-12s \033[0m",
+                "No.", "User Id", "Name", "Surname", "Email", "Class name", "Login", "Password");
+
         System.out.println(headline);
         System.out.println(mentorDaoString);
+
     }
 
 }
