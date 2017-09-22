@@ -7,7 +7,7 @@ public class StudentModel extends User {
     private Integer experience;
     private String level;
     private WalletModel wallet;
-    private String teamID;
+    private String teamName;
     private String className;
     private LinkedList<QuestModel> questsList;
 
@@ -19,7 +19,7 @@ public class StudentModel extends User {
         this.experience = 0;
         this.level = "noob";
         this.wallet = new WalletModel();
-        this.teamID = null;
+        this.teamName = null;
         this.className = className;
         this.questsList = new LinkedList<QuestModel>();
     }
@@ -36,8 +36,8 @@ public class StudentModel extends User {
         this.level.equals(level);
     }
 
-    public void setTeamID(String teamID) {
-        this.teamID = teamID;
+    public void setTeamID(String teamName) {
+        this.teamName = teamName;
     }
 
     public void addExperience(Integer experience) {
@@ -61,6 +61,11 @@ public class StudentModel extends User {
     }
 
     public String toString() {
-        return userID + " | " + name + " | " + surname + " | " + className + " | " + teamID;
+
+        String str = String.format("%-8s %-12s %-12s %-24s %-12s %-12s %-12s %-12s",
+                userID, name, surname, email, className, teamName, login, password);
+
+        return str;
+
     }
 }
