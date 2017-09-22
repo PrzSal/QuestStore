@@ -28,7 +28,7 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
             isUsedState = "[ ]";
         }
 
-        String artifactString = String.format("%-12s %-12d %-20s %-12s",
+        String artifactString = String.format("%-24s %-12d %-20s %-12s",
                                 title, price, category.toString(), isUsedState);
 
         return artifactString;

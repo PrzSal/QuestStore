@@ -10,8 +10,7 @@ public class QuestCategoryModel extends AbstractTaskCategory {
     @Override
     public String toString() {
 
-        String stringQuestCategory = "Name quest category: " + this.name;
+        return this.name;
 
-        return stringQuestCategory;
     }
 }
