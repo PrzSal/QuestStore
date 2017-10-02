@@ -19,16 +19,16 @@ CREATE TABLE "UsersTable" (
 	`user_type`	TEXT,
 	PRIMARY KEY(`user_id`)
 );
-INSERT INTO `UsersTable` VALUES (1,'Jan','Kowalski','j.kowalski@gmail.com','jkow','jkowalski','mentor');
+INSERT INTO `UsersTable` VALUES (1,'Jan','Kowalski','j.kowalski@gmail.com','mentor','mentor','mentor');
 INSERT INTO `UsersTable` VALUES (2,'Agnieszka','Koszany','a.koszany','akosz','akoszany','mentor');
-INSERT INTO `UsersTable` VALUES (3,'Arek','Haffney','a.haffney','arek','haffney','student');
+INSERT INTO `UsersTable` VALUES (3,'Arek','Haffney','a.haffney','student','student','student');
 INSERT INTO `UsersTable` VALUES (4,'Krzysztof','Knutse','k.knutse','knutse','a912','student');
 INSERT INTO `UsersTable` VALUES (5,'Bob','Studer','b.stude','bob','stude','mentor');
 INSERT INTO `UsersTable` VALUES (6,'Jurek','Magnus','j.magnu','jurek','magnus','admin');
 INSERT INTO `UsersTable` VALUES (7,'Asia','Kowalska','a.dobra','asia','kowalsk','mentor');
 INSERT INTO `UsersTable` VALUES (8,'Diana','Dab','d.dab','diana','dab','student');
 INSERT INTO `UsersTable` VALUES (9,'Joasia','Szymanska','j.szymanska','joasia','szym','student');
-INSERT INTO `UsersTable` VALUES (10,'Michalina','Borek','m.borek','michalina','borek','admin');
+INSERT INTO `UsersTable` VALUES (10,'Michalina','Borek','m.borek','admin','admin','admin');
 CREATE TABLE "TeamsTable" (
 	`team_name`	INTEGER UNIQUE
 );
