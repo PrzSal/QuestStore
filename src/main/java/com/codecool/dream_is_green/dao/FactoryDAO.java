@@ -43,4 +43,21 @@ public class FactoryDAO {
 
         return querySql;
     }
+
+    public void createDatabase(String querySql) {
+
+        Connection connection = null;
+        Statement statement = null;
+
+        try {
+
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(querySql);
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
