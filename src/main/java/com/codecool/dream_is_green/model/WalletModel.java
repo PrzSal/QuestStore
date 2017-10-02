@@ -9,23 +9,28 @@ public class WalletModel {
     private LinkedList<ArtifactModel> artifactsList;
 
     public WalletModel() {
+
         this.coolCoins = 1000;
         this.artifactsList = new LinkedList<ArtifactModel>();
     }
 
     public void removeCoolCoins(Integer amount) {
+
         this.coolCoins -= amount;
     }
 
     public Integer getCoolCoins() {
+
         return this.coolCoins;
     }
 
     public LinkedList<ArtifactModel> getArtifactList() {
+
         return this.artifactsList;
     }
 
     public void addCoolCoins(Integer amount) {
+
         this.coolCoins += amount;
     }
 
@@ -36,7 +41,6 @@ public class WalletModel {
                 artifactElem.setAmount();
             }
         }
-
         if (!this.artifactsList.contains(artifact)) {
             this.artifactsList.add(artifact);
         }
@@ -49,6 +53,8 @@ public class WalletModel {
                 artifact.setIsUsed();
             }
         throw new NullPointerException("Artifact not found \n");
+
         }
+
     }
 }

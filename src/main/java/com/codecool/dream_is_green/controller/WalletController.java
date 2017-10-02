@@ -1,8 +1,9 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.model.ArtifactModel;
+import com.codecool.dream_is_green.model.WalletModel;
+import com.codecool.dream_is_green.view.WalletView;
 import java.util.LinkedList;
-import com.codecool.dream_is_green.model.*;
-import com.codecool.dream_is_green.view.*;
 
 public class WalletController {
 

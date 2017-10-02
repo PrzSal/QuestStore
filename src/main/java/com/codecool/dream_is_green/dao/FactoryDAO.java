@@ -14,11 +14,12 @@ public class FactoryDAO {
     UIView uiView = new UIView();
 
     public void checkIsDatabase() {
+      
         File database = new File("quest_store.db");
         boolean exists = database.exists();
 
         if (!exists) {
-
+          
             createDatabase(readSqlFile());
         }
     }

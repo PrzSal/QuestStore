@@ -9,6 +9,5 @@ public class QuestCategoryModel extends AbstractTaskCategory {
     @Override
     public String toString() {
         return this.name;
-
     }
 }

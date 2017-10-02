@@ -1,8 +1,14 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.model.*;
-import com.codecool.dream_is_green.view.*;
-import com.codecool.dream_is_green.dao.*;
+import com.codecool.dream_is_green.dao.ClassDAO;
+import com.codecool.dream_is_green.dao.DaoStart;
+import com.codecool.dream_is_green.dao.MentorDAO;
+import com.codecool.dream_is_green.model.ClassModel;
+import com.codecool.dream_is_green.model.MentorModel;
+import com.codecool.dream_is_green.view.AdminView;
+import com.codecool.dream_is_green.view.ClassView;
+import com.codecool.dream_is_green.view.MentorView;
+import com.codecool.dream_is_green.view.UIView;
 import java.lang.NullPointerException;
 
 public class AdminController {

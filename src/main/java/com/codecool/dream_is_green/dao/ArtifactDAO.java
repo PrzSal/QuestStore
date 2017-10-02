@@ -3,7 +3,10 @@ package com.codecool.dream_is_green.dao;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
 
-import java.sql.*;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 
 public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
 
@@ -59,28 +62,6 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
                 statement.executeUpdate(query);
                 connection.commit();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteArtifact(String nameArtifact) {
-//        Method ready to use, pass test, but not implemented in controller
-        Connection connection;
-        PreparedStatement preparedStatement;
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            connection.setAutoCommit(false);
-
-            String query = "DELETE FROM ArtifactsTable WHERE artifact_name = ?";
-
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, nameArtifact);
-            preparedStatement.execute();
-
-            connection.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

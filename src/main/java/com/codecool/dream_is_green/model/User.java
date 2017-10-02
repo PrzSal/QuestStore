@@ -26,14 +26,6 @@ public abstract class User {
         return userID;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String getLogin() {
         return login;
     }

@@ -2,15 +2,6 @@ package com.codecool.dream_is_green.view;
 
 public class StudentView {
 
-    public static void showLevel(Integer level) {
-
-        System.out.println(level);
-    }
-
-    public static void showExperience(Integer experience) {
-        System.out.println(experience);
-    }
-
     public void showMenu() {
         String menu = " Student Menu \n" +
                       "1) Show quests\n" +
