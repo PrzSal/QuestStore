@@ -1,13 +1,13 @@
 import com.codecool.dream_is_green.dao.DatabaseConnection;
-import com.codecool.dream_is_green.dao.LoginDAO;
+import com.codecool.dream_is_green.controller.LoginPanelController;
 
 public class App {
 
     public static void main(String[] args) {
 
         DatabaseConnection.getConnection();
-        LoginDAO.createDefaultUsers();
-        LoginDAO.loginIntoSystem();  // admin/admin, mentor/mentor, student/student
+        LoginPanelController loginPanel = new LoginPanelController();
+        loginPanel.loginIntoSystem();  // admin/admin, mentor/mentor, student/student
         DatabaseConnection.closeConnection();
     }
 

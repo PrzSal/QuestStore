@@ -45,6 +45,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
+
     public void insertStudent(String name, String surname, String email,
                              String login, String password, String className) {
 
@@ -124,5 +125,43 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
         return userID;
+    }
+
+    public StudentModel getStudent(String login) {
+
+        try {
+
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stat = conn.createStatement();
+
+
+            String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
+                    " ON UsersTable.user_id = StudentsTable.user_id WHERE login = '" + login + "'";
+            ResultSet result = stat.executeQuery(query);
+            String name, surname, email, user_login, password, className;
+            int userID;
+            StudentModel student = null;
+
+            while(result.next()) {
+
+                name = result.getString("name");
+                surname = result.getString("surname");
+                email = result.getString("email");
+                user_login = result.getString("login");
+                password = result.getString("password");
+                userID = result.getInt("user_id");
+                className = result.getString("class_name");
+
+                student = new StudentModel(userID, name, surname, email, user_login, password, className);
+            }
+            result.close();
+            stat.close();
+
+            return student;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
