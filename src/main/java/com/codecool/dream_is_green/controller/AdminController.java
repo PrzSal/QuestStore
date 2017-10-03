@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.enums.AdminEnum;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
@@ -12,13 +13,13 @@ import java.lang.NullPointerException;
 
 public class AdminController {
 
-    private static final int CREATE_MENTOR = 1;
-    private static final int EDIT_MENTOR = 2;
-    private static final int SHOW_MENTORS = 3;
-    private static final int CREATE_CLASS = 4;
-    private static final int SHOW_CLASSES = 5;
-    private static final int REMOVE_MENTOR = 6;
-    private static final int EXIT = 0;
+//    private static final int CREATE_MENTOR = 1;
+//    private static final int EDIT_MENTOR = 2;
+//    private static final int SHOW_MENTORS = 3;
+//    private static final int CREATE_CLASS = 4;
+//    private static final int SHOW_CLASSES = 5;
+//    private static final int REMOVE_MENTOR = 6;
+//    private static final int EXIT = 0;
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
@@ -209,5 +210,4 @@ public class AdminController {
 
         return newClass;
     }
-
 }
