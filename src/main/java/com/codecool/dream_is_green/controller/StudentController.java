@@ -150,7 +150,10 @@ class StudentController {
         this.showWallet(student);
         Integer index = uiView.getInputInt("\nEnter index for chosen artifact: ");
         ArtifactModel artifactToUse = student.getWallet().getArtifactList().get(index);
-        Integer send = 1;
-        artifactToUse.setIsUsed(send);
+        Integer state = 1;
+        artifactToUse.setIsUsed(state);
+        ArtifactDAO artifact = new ArtifactDAO();
+        artifact.updateArtifact("StudentsWithArtifacts", state, student.getUserID());
+
     }
 }
