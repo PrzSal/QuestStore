@@ -92,12 +92,12 @@ class AdminController {
 
     private MentorModel createMentor() {
 
-        String name = view.getInput("Enter mentor name: ");
-        String surname = view.getInput("Enter mentor surname: ");
-        String email = view.getInput("Enter mentor email: ");
-        String login = view.getInput("Enter mentor login: ");
-        String password = view.getInput("Enter mentor password: ");
-        String className = view.getInput("Enter class name: ");
+        String name = view.getInputString("Enter mentor name: ");
+        String surname = view.getInputString("Enter mentor surname: ");
+        String email = view.getInputWithoutSpaces("Enter mentor email: ");
+        String login = view.getInputWithoutSpaces("Enter mentor login: ");
+        String password = view.getInputWithoutSpaces("Enter mentor password: ");
+        String className = view.getInputWithoutSpaces("Enter class name: ");
 
         MentorDAO mentorDao = new MentorDAO();
         mentorDao.insertMentor(name, surname, email, login, password, className);
@@ -162,7 +162,7 @@ class AdminController {
         view.clearScreen();
         String mentorInfo = mentor.toString();
         view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
-        String option = view.getInput("Choose option: ");
+        String option = view.getInputWithoutSpaces("Choose option: ");
 
         chooseOption(mentor, option, mentorDao, mentorID);
     }
@@ -175,13 +175,13 @@ class AdminController {
         while(!done) {
 
             if (option.equals("1")) {
-                String email = view.getInput("Enter mentor email: ");
+                String email = view.getInputWithoutSpaces("Enter mentor email: ");
                 mentorDao.updateMentor(email, mentorID, "email", "UsersTable");
                 mentor.setEmail(email);
                 done = true;
 
             } else if (option.equals("2")) {
-                String className = view.getInput("Enter mentor class name: ");
+                String className = view.getInputWithoutSpaces("Enter mentor class name: ");
                 mentorDao.updateMentor(className, mentorID, "class_name", "MentorsTable");
                 mentor.setClassName(className);
                 done = true;
@@ -191,7 +191,7 @@ class AdminController {
                 view.pressToContinue();
                 view.clearScreen();
                 view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
-                option = view.getInput("Choose option: ");
+                option = view.getInputWithoutSpaces("Choose option: ");
             }
         }
     }
@@ -201,7 +201,7 @@ class AdminController {
         view.clearScreen();
         view.printMessage("Create new class");
 
-        String className = view.getInput("Enter class name: ");
+        String className = view.getInputWithoutSpaces("Enter class name: ");
         ClassDAO classDao = new ClassDAO();
         classDao.insertClass(className);
         ClassModel newClass = new ClassModel(className);

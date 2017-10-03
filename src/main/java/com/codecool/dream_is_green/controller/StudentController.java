@@ -88,7 +88,7 @@ class StudentController {
         uiView.printMessage(studentModel.getWallet().getCoolCoins());
 
         try {
-            Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
+            Integer index = uiView.getInputInt("\nEnter index for chosen artifact: ");
             ArtifactModel artifactToBuy = artifactList.get(index - 1);
             System.out.println(artifactToBuy.getPrice());
             Integer artifactPrice = artifactToBuy.getPrice();
