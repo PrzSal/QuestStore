@@ -114,7 +114,6 @@ public class UIView {
         Scanner input = new Scanner(System.in);
 
         do {
-            error = false;
             System.out.print(informationText);
             userInp = input.nextLine().trim();
             if(userInp.trim().length() == 0) {
