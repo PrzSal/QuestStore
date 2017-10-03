@@ -37,6 +37,7 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             e.printStackTrace();
         }
     }
+
     public void loadArtifactsToWallet(StudentModel student) {
 
         Connection connection;
@@ -64,6 +65,27 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             }
             resultSet.close();
             statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCoolcoins(StudentModel student) {
+
+        Connection connection;
+        Statement statement;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+            connection.setAutoCommit(false);
+
+            Integer coolcoins = student.getWallet().getCoolCoins();
+            String query = "UPDATE WalletTable SET coolcoins = " + coolcoins +  " WHERE user_id = '" + student.getUserID() + "'";
+
+            statement.executeUpdate(query);
+            connection.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
