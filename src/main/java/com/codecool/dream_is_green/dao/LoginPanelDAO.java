@@ -24,7 +24,7 @@ public class LoginPanelDAO {
 
             while (result.next()) {
                 userType = result.getString("user_type");
-                password = result.getString("user_type");
+                password = result.getString("password");
             }
 
             LoginDetailsModel loginDetails = new LoginDetailsModel(userType, password);
