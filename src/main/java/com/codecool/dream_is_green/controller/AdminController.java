@@ -78,6 +78,12 @@ class AdminController {
                 view.pressToContinue();
                 break;
 
+            case DELETE_LEVEL :
+                this.showLevelsList();
+                this.deleteLevel();
+                view.pressToContinue();
+                break;
+
             case EXIT:
                 break;
 
@@ -132,6 +138,18 @@ class AdminController {
         for (MentorModel mentor : mentorDao.getObjectList()) {
             if (mentor.getUserID() == mentorID) {
                 mentorDao.removeObject(mentor);
+            }
+        }
+    }
+
+    private void deleteLevel() {
+
+        LevelDAO levelDao = new LevelDAO();
+        String levelName = view.getInputAllowSpaces("Enter the level name you want to delete ");
+        levelDao.deleteLevel(levelName);
+        for (LevelModel level : levelDao.getObjectList()) {
+            if (level.getLevelName().equals(levelName)) {
+                levelDao.removeObject(level);
             }
         }
     }
