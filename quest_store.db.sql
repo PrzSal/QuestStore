@@ -47,7 +47,7 @@ CREATE TABLE "StudentsWithArtifacts" (
 	`price`	INTEGER,
 	`artifact_category`	TEXT,
 	`user_id`	INTEGER,
-        `state` INTEGER DEFAULT 0
+	`state` INTEGER DEFAULT 0
 );
 CREATE TABLE "StudentsTable" (
 	`user_id`	INTEGER NOT NULL UNIQUE,
@@ -98,7 +98,7 @@ CREATE TABLE "ArtifactsTable" (
 	`artifact_name`	TEXT NOT NULL UNIQUE,
 	`price`	INTEGER,
 	`artifact_category`	INTEGER,
-        `state` INTEGER DEFAULT 0
+	`state` INTEGER DEFAULT 0
 );
 INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun',0);
