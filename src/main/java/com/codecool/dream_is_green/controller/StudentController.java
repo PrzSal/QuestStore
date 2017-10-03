@@ -111,7 +111,6 @@ public class StudentController {
                 ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
                 studentModel.getWallet().addBoughtArtifact(newArtifact);
                 studentModel.getWallet().removeCoolCoins(artifactPrice);
-                artifactDao.clearObjectList();
 
             }
             else {
