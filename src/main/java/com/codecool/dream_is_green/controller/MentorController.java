@@ -25,7 +25,13 @@ class MentorController {
             uiView.clearScreen();
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
-            chooseOption(operation);
+
+             try {
+                 chooseOption(operation);
+             } catch (ArrayIndexOutOfBoundsException e) {
+                 uiView.printMessage("No option in menu :)");
+             }
+
         } while (operation != 0);
 
     }
