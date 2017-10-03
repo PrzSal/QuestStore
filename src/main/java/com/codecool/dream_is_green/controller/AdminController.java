@@ -28,6 +28,75 @@ public class AdminController {
     private static MentorDAO mentorDao = DaoStart.getMentorDao();
     private static ClassDAO classDao = DaoStart.getClassDao();
 
+    public void startMenu(int operation) {
+
+        switch(operation) {
+
+            case CREATE_MENTOR :
+                MentorModel newMentor = this.createMentor();
+                mentorDao.addObject(newMentor);
+                view.pressToContinue();
+                break;
+
+            case EDIT_MENTOR :
+
+                MentorModel mentor = getMentorByID();
+
+                try {
+                    this.editMentor(mentor);
+                } catch (NullPointerException e) {
+                    view.printMessage("Wrong ID\n");
+                }
+                view.pressToContinue();
+                break;
+
+            case SHOW_MENTORS :
+                this.showMentorList();
+                view.pressToContinue();
+                break;
+
+            case CREATE_CLASS :
+                this.showClassList();
+                ClassModel newClass = this.createClass();
+                classDao.addObject(newClass);
+                view.pressToContinue();
+                break;
+
+            case SHOW_CLASSES :
+                this.showClassList();
+                view.pressToContinue();
+                break;
+
+            case REMOVE_MENTOR :
+                this.showMentorList();
+                this.removeMentor();
+                view.pressToContinue();
+                break;
+
+            case EXIT:
+                break;
+
+            default :
+                view.printMessage("No option! Try Again!\n");
+                view.pressToContinue();
+        }
+
+    }
+
+    public void startAdminController() {
+
+        int operation;
+
+        do {
+            view.clearScreen();
+            adminView.showMenu();
+            operation = view.getInputInt("Choice option: ");
+            view.clearScreen();
+            this.startMenu(operation);
+        } while (operation != EXIT);
+
+    }
+
     public MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
@@ -139,75 +208,6 @@ public class AdminController {
         classDao.clearObjectList();
 
         return newClass;
-    }
-
-    public void startMenu(int operation) {
-
-        switch(operation) {
-
-        case CREATE_MENTOR :
-            MentorModel newMentor = this.createMentor();
-            mentorDao.addObject(newMentor);
-            view.pressToContinue();
-            break;
-
-        case EDIT_MENTOR :
-
-            MentorModel mentor = getMentorByID();
-
-            try {
-                this.editMentor(mentor);
-            } catch (NullPointerException e) {
-                view.printMessage("Wrong ID\n");
-            }
-            view.pressToContinue();
-            break;
-
-        case SHOW_MENTORS :
-            this.showMentorList();
-            view.pressToContinue();
-            break;
-
-        case CREATE_CLASS :
-            this.showClassList();
-            ClassModel newClass = this.createClass();
-            classDao.addObject(newClass);
-            view.pressToContinue();
-            break;
-
-        case SHOW_CLASSES :
-            this.showClassList();
-            view.pressToContinue();
-            break;
-
-        case REMOVE_MENTOR :
-            this.showMentorList();
-            this.removeMentor();
-            view.pressToContinue();
-            break;
-
-        case EXIT:
-            break;
-
-         default :
-            view.printMessage("No option! Try Again!\n");
-            view.pressToContinue();
-        }
-
-    }
-
-    public void startAdminController() {
-
-        int operation;
-
-        do {
-            view.clearScreen();
-            adminView.showMenu();
-            operation = view.getInputInt("Choice option: ");
-            view.clearScreen();
-            this.startMenu(operation);
-        } while (operation != EXIT);
-
     }
 
 }
