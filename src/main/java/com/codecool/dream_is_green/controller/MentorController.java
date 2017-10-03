@@ -25,7 +25,6 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
-    private static StudentDAO studentDao = DaoStart.getStudentDao();
     private static QuestDAO questDao = DaoStart.getQuestDao();
 
 
@@ -112,11 +111,10 @@ public class MentorController {
 
     public void showStudentList() {
 
-        studentDao.clearObjectList();
+        StudentDAO studentDao = new StudentDAO();
         studentDao.loadStudents();
         String studentDaoString = studentDao.toString();
         studentView.showStudentList(studentDaoString);
-        studentDao.clearObjectList();
     }
 
     public void addStudent() {
@@ -128,10 +126,8 @@ public class MentorController {
         String password = uiView.getInput("Enter password: ");
         String className = uiView.getInput("Enter class name: ");
 
+        StudentDAO studentDao = new StudentDAO();
         studentDao.insertStudent(name, surname, email, login, password, className);
-        int userID = studentDao.getStudentId(login);
-        StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
-        studentDao.addObject(studentModel);
     }
 
     public void addQuest() {
