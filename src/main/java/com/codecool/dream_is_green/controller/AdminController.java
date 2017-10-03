@@ -76,7 +76,7 @@ public class AdminController {
 
     }
 
-    public void startAdminController() {
+    void startAdminController() {
 
         int operation;
 
@@ -90,7 +90,7 @@ public class AdminController {
 
     }
 
-    public MentorModel createMentor() {
+    private MentorModel createMentor() {
 
         String name = view.getInput("Enter mentor name: ");
         String surname = view.getInput("Enter mentor surname: ");
@@ -107,7 +107,7 @@ public class AdminController {
         return mentor;
     }
 
-    public void removeMentor() {
+    private void removeMentor() {
 
         MentorDAO mentorDao = new MentorDAO();
         int mentorID = view.getInputInt("Enter the mentor ID you want to remove ");
@@ -119,7 +119,7 @@ public class AdminController {
         }
     }
 
-    public MentorModel getMentorByID() {
+    private MentorModel getMentorByID() {
 
         MentorDAO mentorDao = new MentorDAO();
         this.showMentorList();
@@ -133,7 +133,7 @@ public class AdminController {
         return null;
     }
 
-    public void showMentorList() {
+    private void showMentorList() {
 
         MentorDAO mentorDao = new MentorDAO();
         mentorDao.loadMentors();
@@ -141,7 +141,7 @@ public class AdminController {
         mentorView.showMentorList(mentorDaoString);
     }
 
-    public void showClassList() {
+    private void showClassList() {
 
         ClassDAO classDao = new ClassDAO();
         classDao.loadClasses();
@@ -149,24 +149,7 @@ public class AdminController {
         classView.showClassList(classDaoString);
     }
 
-    public void editMentor(MentorModel mentor) {
-
-        MentorDAO mentorDao = new MentorDAO();
-        mentorDao.loadMentors();
-        String mentorDaoString = mentorDao.toString();
-        mentorView.showMentorList(mentorDaoString);
-
-        int mentorID = mentor.getUserID();
-        view.printMessage(mentorID);
-
-        view.clearScreen();
-        String mentorInfo = mentor.toString();
-        view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
-        String option = view.getInput("Choose option: ");
-
-        chooseOption(mentor, option, mentorDao, mentorID);
-
-    public void editMentor(MentorModel mentor) {
+    private void editMentor(MentorModel mentor) {
 
         MentorDAO mentorDao = new MentorDAO();
         mentorDao.loadMentors();
@@ -184,7 +167,7 @@ public class AdminController {
         chooseOption(mentor, option, mentorDao, mentorID);
     }
 
-    public void chooseOption(MentorModel mentor, String option, MentorDAO mentorDao, int mentorID ) {
+    private void chooseOption(MentorModel mentor, String option, MentorDAO mentorDao, int mentorID ) {
 
         String mentorInfo = mentor.toString();
         Boolean done = false;
@@ -213,7 +196,7 @@ public class AdminController {
         }
     }
 
-    public ClassModel createClass() {
+   private ClassModel createClass() {
 
         view.clearScreen();
         view.printMessage("Create new class");
