@@ -55,6 +55,11 @@ class StudentController {
                 uiView.pressToContinue();
                 break;
 
+            case USE_ARTIFACTS :
+                this.useArtifacts(student);
+                uiView.pressToContinue();
+                break;
+
             case EXIT:
                 break;
 
@@ -139,5 +144,13 @@ class StudentController {
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+    }
+
+    private void useArtifacts(StudentModel student) {
+        this.showWallet(student);
+        Integer index = uiView.getInputInt("\nEnter index for chosen artifact: ");
+        ArtifactModel artifactToUse = student.getWallet().getArtifactList().get(index);
+        Integer send = 1;
+        artifactToUse.setIsUsed(send);
     }
 }
