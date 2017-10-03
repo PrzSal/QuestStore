@@ -41,6 +41,10 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         return this.isUsed = status;
     }
 
+    public Integer getIsUsed() {
+        return isUsed;
+    }
+
     public void setAmount() {
 
         this.amount++;
