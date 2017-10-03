@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.enums;
 
 public enum MentorEnum {
-
     EXIT,
     ADD_STUDENT,
     SHOW_STUDENTS,

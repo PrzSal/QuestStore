@@ -6,5 +6,4 @@ public enum StudentEnum {
     BUY_ARTIFACT,
     TEAM_BUY_ARTIFACT,
     SHOW_WALLET,
-
 }
