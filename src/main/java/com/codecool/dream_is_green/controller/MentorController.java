@@ -3,7 +3,9 @@ package com.codecool.dream_is_green.controller;
 import com.codecool.dream_is_green.dao.ArtifactDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
+import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
+import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.*;
 
 
@@ -25,7 +27,13 @@ class MentorController {
             uiView.clearScreen();
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
-            chooseOption(operation);
+
+             try {
+                 chooseOption(operation);
+             } catch (ArrayIndexOutOfBoundsException e) {
+                 uiView.printMessage("No option in menu :)");
+             }
+
         } while (operation != 0);
 
     }
@@ -73,6 +81,11 @@ class MentorController {
 
             case SHOW_ARTIFACTS :
                 this.showArtifactList();
+                uiView.pressToContinue();
+                break;
+
+            case SHOW_SUMMARY_STUDENTS_WALLETS :
+                this.showSummaryStudentsWallets();
                 uiView.pressToContinue();
                 break;
 
@@ -138,5 +151,20 @@ class MentorController {
         String categoryName = uiView.getInputAllowSpaces("Enter category: ");
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.insertArtifact(column, title, price, categoryName, 0);
+    }
+
+    private void showSummaryStudentsWallets() {
+        StudentDAO studentDao = new StudentDAO();
+        StudentController studentController = new StudentController();
+        WalletDAO walletDAO = new WalletDAO();
+
+        studentDao.loadStudents();
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadCoolcoinsToWallet(student);
+            walletDAO.loadArtifactsToWallet(student);
+            uiView.printMessage(student.getName());
+            studentController.showWallet(student);
+
+        }
     }
 }
