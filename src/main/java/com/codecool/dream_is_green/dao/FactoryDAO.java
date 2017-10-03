@@ -39,7 +39,7 @@ public class FactoryDAO {
         return querySql;
     }
 
-    public void createDatabase(String querySql) {
+    private void createDatabase(String querySql) {
         Connection connection;
         Statement statement;
 

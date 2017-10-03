@@ -5,7 +5,7 @@ import com.codecool.dream_is_green.model.WalletModel;
 import com.codecool.dream_is_green.view.WalletView;
 import java.util.LinkedList;
 
-public class WalletController {
+class WalletController {
 
     void showWalletContent(WalletModel walletModel) {
 
