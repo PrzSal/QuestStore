@@ -149,7 +149,6 @@ public class AdminController {
         classView.showClassList(classDaoString);
     }
 
-
     public void editMentor(MentorModel mentor) {
 
         MentorDAO mentorDao = new MentorDAO();
