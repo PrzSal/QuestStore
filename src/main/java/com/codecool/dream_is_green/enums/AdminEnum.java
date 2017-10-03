@@ -10,4 +10,5 @@ public enum AdminEnum {
     REMOVE_MENTOR,
     SHOW_LEVELS,
     CREATE_LEVEL,
+    DELETE_LEVEL,
 }
