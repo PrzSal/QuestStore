@@ -133,7 +133,7 @@ class StudentController {
         walletDAO.updateCoolcoins(studentModel);
     }
 
-    private void showWallet(StudentModel student) {
+    void showWallet(StudentModel student) {
         WalletController walletController = new WalletController();
 
         walletController.showWalletContent(student.getWallet());
