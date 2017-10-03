@@ -169,18 +169,37 @@ class MentorController {
         for (StudentModel student : studentDao.getObjectList()) {
             walletDAO.loadCoolcoinsToWallet(student);
             walletDAO.loadArtifactsToWallet(student);
-            uiView.printMessage(student.getName());
+            uiView.printMessage(student.getFullName());
             studentController.showWallet(student);
         }
     }
 
     private void markArtifact() {
         StudentDAO studentDao = new StudentDAO();
-        this.showStudentList();
-        Integer index = uiView.getInputInt("\nEnter index selected student: ");
-        LinkedList<ArtifactModel> artifactList = studentDao.getObjectList().get(index).getWallet().getArtifactList();
-        
+        WalletDAO walletDAO = new WalletDAO();
+        LinkedList<String> studentsSendArtifacts = new LinkedList<>();
+        studentDao.loadStudents();
 
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadArtifactsToWallet(student);
+            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
+                if (artifact.getIsUsed() == 1) {
+                    studentsSendArtifacts.add(String.valueOf(student.getUserID()));
+                    studentsSendArtifacts.add(artifact.getTitle());
+                    studentsSendArtifacts.add("send");
+                }
+            }
+        }
+        ArtifactView artifactView = new ArtifactView();
+        String studentSendArtifactsString = studentsSendArtifacts.toString();
+        artifactView.showArtifactList(studentSendArtifactsString);
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadArtifactsToWallet(student);
+            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
+                if (String.valueOf(student.getUserID()).contains(studentSendArtifactsString)) {
+                    artifact.setIsUsed(2);
+                }
+            }
         }
 
 
