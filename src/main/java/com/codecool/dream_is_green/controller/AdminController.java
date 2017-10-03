@@ -11,14 +11,14 @@ import com.codecool.dream_is_green.view.MentorView;
 import com.codecool.dream_is_green.view.UIView;
 import java.lang.NullPointerException;
 
-public class AdminController {
+class AdminController {
 
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
 
-    public void startMenu(int operation) {
+    private void startMenu(int operation) {
         AdminEnum choice = AdminEnum.values()[operation];
 
         switch(choice) {
