@@ -6,7 +6,6 @@ import com.codecool.dream_is_green.model.LoginDetailsModel;
 import com.codecool.dream_is_green.view.UIView;
 import com.codecool.dream_is_green.dao.LoginPanelDAO;
 
-
 public class LoginPanelController {
 
     private static final String EXIT = "E";
