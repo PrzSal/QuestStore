@@ -3,20 +3,13 @@ package com.codecool.dream_is_green.controller;
 import com.codecool.dream_is_green.dao.ArtifactDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
+import com.codecool.dream_is_green.enums.MentorEnum;
 import com.codecool.dream_is_green.view.*;
 
 
 import java.lang.NumberFormatException;
 
 public class MentorController {
-
-    private static final int ADD_STUDENT = 1;
-    private static final int SHOW_STUDENTS = 2;
-    private static final int ADD_QUEST = 3;
-    private static final int SHOW_QUESTS = 4;
-    private static final int ADD_ARTIFACT = 5;
-    private static final int SHOW_ARTIFACTS = 6;
-    private static final int EXIT = 0;
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
@@ -33,13 +26,15 @@ public class MentorController {
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
             chooseOption(operation);
-        } while (operation != EXIT);
+        } while (operation != 0);
 
     }
 
     public void chooseOption(int operation) {
 
-        switch(operation) {
+        MentorEnum choice = MentorEnum.values()[operation];
+
+        switch(choice) {
 
             case ADD_STUDENT:
                 uiView.clearScreen();
