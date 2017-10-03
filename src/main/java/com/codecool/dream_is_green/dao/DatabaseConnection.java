@@ -16,9 +16,7 @@ public class DatabaseConnection {
                 System.out.println(e);
             }
         }
-
         return connection;
-
     }
 
     public static void closeConnection() {

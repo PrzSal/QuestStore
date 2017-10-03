@@ -1,36 +1,23 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
-import com.codecool.dream_is_green.dao.DaoStart;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
-import com.codecool.dream_is_green.model.*;
+import com.codecool.dream_is_green.enums.MentorEnum;
 import com.codecool.dream_is_green.view.*;
 
 
 import java.lang.NumberFormatException;
 
-public class MentorController {
-
-    private static final int ADD_STUDENT = 1;
-    private static final int SHOW_STUDENTS = 2;
-    private static final int ADD_QUEST = 3;
-    private static final int SHOW_QUESTS = 4;
-    private static final int ADD_ARTIFACT = 5;
-    private static final int SHOW_ARTIFACTS = 6;
-    private static final int EXIT = 0;
+class MentorController {
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
-    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
-    private static StudentDAO studentDao = DaoStart.getStudentDao();
-    private static QuestDAO questDao = DaoStart.getQuestDao();
 
-
-    public void startMentorController() {
+    void startMentorController() {
 
         int operation;
 
@@ -39,13 +26,15 @@ public class MentorController {
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
             chooseOption(operation);
-        } while (operation != EXIT);
+        } while (operation != 0);
 
     }
 
-    public void chooseOption(int operation) {
+    private void chooseOption(int operation) {
 
-        switch(operation) {
+        MentorEnum choice = MentorEnum.values()[operation];
+
+        switch(choice) {
 
             case ADD_STUDENT:
                 uiView.clearScreen();
@@ -95,66 +84,59 @@ public class MentorController {
         }
     }
 
-    public void showArtifactList() {
+    private void showArtifactList() {
 
+        ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
-        artifactDao.clearObjectList();
     }
 
-    public void showQuestList() {
+    private void showQuestList() {
 
+        QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
-        questDao.clearObjectList();
     }
 
-    public void showStudentList() {
+    private void showStudentList() {
 
-        studentDao.clearObjectList();
+        StudentDAO studentDao = new StudentDAO();
         studentDao.loadStudents();
         String studentDaoString = studentDao.toString();
         studentView.showStudentList(studentDaoString);
-        studentDao.clearObjectList();
     }
 
-    public void addStudent() {
+    private void addStudent() {
 
-        String name = uiView.getInput("Enter name: ");
-        String surname = uiView.getInput("Enter surname: ");
-        String email = uiView.getInput("Enter email: ");
-        String login = uiView.getInput("Enter login: ");
-        String password = uiView.getInput("Enter password: ");
-        String className = uiView.getInput("Enter class name: ");
+        String name = uiView.getInputString("Enter name: ");
+        String surname = uiView.getInputString("Enter surname: ");
+        String email = uiView.getInputWithoutSpaces("Enter email: ");
+        String login = uiView.getInputWithoutSpaces("Enter login: ");
+        String password = uiView.getInputWithoutSpaces("Enter password: ");
+        String className = uiView.getInputWithoutSpaces("Enter class name: ");
 
+        StudentDAO studentDao = new StudentDAO();
         studentDao.insertStudent(name, surname, email, login, password, className);
-        int userID = studentDao.getStudentId(login);
-        StudentModel studentModel = new StudentModel(userID, name, surname, email, login, password, className);
-        studentDao.addObject(studentModel);
     }
 
-    public void addQuest() {
+    private void addQuest() {
 
-        String title = uiView.getInput("Enter title: ");
-        Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        String questCategoryStr = uiView.getInput("Enter category: ");
-        QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
+        String title = uiView.getInputAllowSpaces("Enter title: ");
+        Integer price = uiView.getInputInt("Enter price: ");
+        String questCategoryStr = uiView.getInputAllowSpaces("Enter category: ");
+        QuestDAO questDao = new QuestDAO();
         questDao.insertQuest(title, price, questCategoryStr);
-        QuestModel questModel = new QuestModel(title, price, questCategory);
-        questDao.addObject(questModel);
     }
 
-    public void addArtifact() {
+    private void addArtifact() {
 
         String column = "ArtifactsTable";
-        String title = uiView.getInput("Enter title: ");
-        Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        String categoryName = uiView.getInput("Enter category: ");
-        ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
+        String title = uiView.getInputAllowSpaces("Enter title: ");
+        Integer price = uiView.getInputInt("Enter price: ");
+        String categoryName = uiView.getInputAllowSpaces("Enter category: ");
+        ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.insertArtifact(column, title, price, categoryName, 0);
-        ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
-        artifactDao.addObject(artifactModel);
     }
 }

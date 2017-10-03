@@ -15,15 +15,9 @@ public abstract class AbstractDAO<T> implements DAO<T> {
         objectsList.remove(object);
     }
 
-    public void setObjectList(LinkedList<T> newObjectsList) {
-        objectsList = newObjectsList;
-    }
-
     public LinkedList<T> getObjectList() {
         return objectsList;
     }
-
-    public void clearObjectList() { objectsList.clear();}
 
     public String toString() {
 
