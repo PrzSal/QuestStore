@@ -16,14 +16,14 @@ import java.lang.NumberFormatException;
 import java.util.LinkedList;
 
 
-public class StudentController {
+class StudentController {
 
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
     private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
 
-    public void startMenu(int operation, StudentModel student) {
+    private void startMenu(int operation, StudentModel student) {
         StudentEnum choice = StudentEnum.values()[operation];
 
         switch(choice) {
@@ -64,7 +64,7 @@ public class StudentController {
 
     }
 
-    public void startStudentController(StudentModel student) {
+    void startStudentController(StudentModel student) {
         int operation;
 
         do {
@@ -78,7 +78,7 @@ public class StudentController {
 
     }
 
-    public void buyArtifact(StudentModel studentModel) {
+    private void buyArtifact(StudentModel studentModel) {
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
@@ -94,18 +94,7 @@ public class StudentController {
             Integer artifactPrice = artifactToBuy.getPrice();
 
             if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
-
-                String title = artifactToBuy.getTitle();
-                Integer price = artifactToBuy.getPrice();
-                ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
-                Integer id = studentModel.getUserID();
-
-                artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
-                                           artifactCategoryModel.toString(), id);
-                ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
-                studentModel.getWallet().addBoughtArtifact(newArtifact);
-                studentModel.getWallet().removeCoolCoins(artifactPrice);
-
+                buyArtifactOperation(artifactToBuy, artifactDao, studentModel, artifactPrice);
             }
             else {
                 uiView.printMessage("You don't have enough cool coins");
@@ -116,12 +105,26 @@ public class StudentController {
         }
     }
 
-    public void showWallet(StudentModel student) {
+    private void buyArtifactOperation(ArtifactModel artifactToBuy, ArtifactDAO artifactDao,
+                                     StudentModel studentModel, Integer artifactPrice) {
+        String title = artifactToBuy.getTitle();
+        Integer price = artifactToBuy.getPrice();
+        ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
+        Integer id = studentModel.getUserID();
+
+        artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
+                artifactCategoryModel.toString(), id);
+        ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
+        studentModel.getWallet().addBoughtArtifact(newArtifact);
+        studentModel.getWallet().removeCoolCoins(artifactPrice);
+    }
+
+    private void showWallet(StudentModel student) {
         WalletController walletController = new WalletController();
         walletController.showWalletContent(student.getWallet());
     }
 
-    public void showQuestList() {
+    private void showQuestList() {
         QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
