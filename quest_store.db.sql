@@ -43,8 +43,7 @@ CREATE TABLE "StudentsWithQuests" (
 	`user_id`	INTEGER NOT NULL
 );
 CREATE TABLE "StudentsWithArtifacts" (
-	`artifact_name`	INTEGER NOT NULL,
-	`title`	INTEGER,
+	`artifact_name`	TEXT NOT NULL,
 	`price`	INTEGER,
 	`artifact_category`	TEXT,
 	`user_id`	INTEGER
