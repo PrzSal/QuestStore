@@ -25,7 +25,6 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
-    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
     private static StudentDAO studentDao = DaoStart.getStudentDao();
     private static QuestDAO questDao = DaoStart.getQuestDao();
 
@@ -97,10 +96,10 @@ public class MentorController {
 
     public void showArtifactList() {
 
+        ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
-        artifactDao.clearObjectList();
     }
 
     public void showQuestList() {
@@ -152,9 +151,7 @@ public class MentorController {
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String categoryName = uiView.getInput("Enter category: ");
-        ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
+        ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.insertArtifact(column, title, price, categoryName, 0);
-        ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
-        artifactDao.addObject(artifactModel);
     }
 }
