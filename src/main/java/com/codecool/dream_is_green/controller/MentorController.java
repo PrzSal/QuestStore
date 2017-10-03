@@ -1,10 +1,8 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
-import com.codecool.dream_is_green.dao.DaoStart;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
-import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.view.*;
 
 
@@ -25,8 +23,6 @@ public class MentorController {
     private static StudentView studentView = new StudentView();
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
-    private static QuestDAO questDao = DaoStart.getQuestDao();
-
 
     public void startMentorController() {
 
@@ -103,10 +99,10 @@ public class MentorController {
 
     public void showQuestList() {
 
+        QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
-        questDao.clearObjectList();
     }
 
     public void showStudentList() {
@@ -135,10 +131,8 @@ public class MentorController {
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
         String questCategoryStr = uiView.getInput("Enter category: ");
-        QuestCategoryModel questCategory = new QuestCategoryModel(questCategoryStr);
+        QuestDAO questDao = new QuestDAO();
         questDao.insertQuest(title, price, questCategoryStr);
-        QuestModel questModel = new QuestModel(title, price, questCategory);
-        questDao.addObject(questModel);
     }
 
     public void addArtifact() {
