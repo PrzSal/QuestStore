@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
+import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.StudentEnum;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
@@ -66,7 +67,9 @@ class StudentController {
 
     void startStudentController(StudentModel student) {
         int operation;
-
+        WalletDAO walletDAO = new WalletDAO();
+        walletDAO.loadCoolcoinsToWallet(student);
+        walletDAO.loadArtifactsToWallet(student);
         do {
             uiView.clearScreen();
             System.out.println("Hello " + student.getName() + "\n");
@@ -121,6 +124,7 @@ class StudentController {
 
     private void showWallet(StudentModel student) {
         WalletController walletController = new WalletController();
+
         walletController.showWalletContent(student.getWallet());
     }
 
