@@ -19,8 +19,9 @@ public class AdminController {
     private static ClassView classView = new ClassView();
 
     public void startMenu(int operation) {
+        AdminEnum choice = AdminEnum.values()[operation];
 
-        switch(operation) {
+        switch(choice) {
 
             case CREATE_MENTOR :
                 MentorDAO mentorDao = new MentorDAO();
@@ -85,7 +86,7 @@ public class AdminController {
             operation = view.getInputInt("Choice option: ");
             view.clearScreen();
             this.startMenu(operation);
-        } while (operation != EXIT);
+        } while (operation != 0);
 
     }
 
