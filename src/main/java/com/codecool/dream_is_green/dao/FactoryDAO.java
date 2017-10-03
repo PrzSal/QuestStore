@@ -5,7 +5,6 @@ import com.codecool.dream_is_green.view.UIView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class FactoryDAO {
         }
     }
 
-    public String readSqlFile() {
+    private String readSqlFile() {
         String querySql = "";
         File fileSql = new File("quest_store.db.sql");
 
@@ -41,8 +40,8 @@ public class FactoryDAO {
     }
 
     public void createDatabase(String querySql) {
-        Connection connection = null;
-        Statement statement = null;
+        Connection connection;
+        Statement statement;
 
         try {
 
