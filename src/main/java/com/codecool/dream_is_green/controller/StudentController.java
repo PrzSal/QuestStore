@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
-import com.codecool.dream_is_green.dao.DaoStart;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
@@ -29,19 +28,70 @@ public class StudentController {
     private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
 
-    private static QuestDAO questDao = DaoStart.getQuestDao();
-    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
+    public void startMenu(int operation, StudentModel student) {
 
+        switch(operation) {
+
+            case SHOW_QUESTS :
+                this.showQuestList();
+                uiView.pressToContinue();
+                break;
+
+            case BUY_ARTIFACT :
+                try {
+                    this.buyArtifact(student);
+                } catch (IndexOutOfBoundsException e) {
+                    uiView.printMessage("Wrong index.");
+                } catch (NumberFormatException e) {
+                    uiView.printMessage("This is not number");
+                }
+                uiView.pressToContinue();
+                break;
+
+            case TEAM_BUY_ARTIFACT :
+                System.out.println("Coming soon ...");
+                uiView.pressToContinue();
+                break;
+
+            case SHOW_WALLET :
+                this.showWallet(student);
+                uiView.pressToContinue();
+                break;
+
+            case EXIT:
+                break;
+
+            default :
+                uiView.printMessage("No option! Try Again!\n");
+                uiView.pressToContinue();
+        }
+
+    }
+
+    public void startStudentController(StudentModel student) {
+
+        int operation;
+
+        do {
+            uiView.clearScreen();
+            System.out.println("Hello " + student.getName() + "\n");
+            studentView.showMenu();
+            operation = uiView.getInputInt("Choice option: ");
+            uiView.clearScreen();
+            this.startMenu(operation, student);
+        } while (operation != EXIT);
+
+    }
 
     public void buyArtifact(StudentModel studentModel) {
 
-        artifactDao.clearObjectList();
+        ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
 
         String artifactDaoString = artifactDao.toString();
         artifactView.showArtifactList(artifactDaoString);
-        System.out.println(studentModel.getWallet().getCoolCoins());
+        uiView.printMessage(studentModel.getWallet().getCoolCoins());
 
         try {
             Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
@@ -79,66 +129,11 @@ public class StudentController {
         walletController.showWalletContent(student.getWallet());
     }
 
-    public void startMenu(int operation, StudentModel student) {
-
-        switch(operation) {
-
-            case SHOW_QUESTS :
-                this.showQuestList();
-                uiView.pressToContinue();
-                break;
-
-            case BUY_ARTIFACT :
-                try {
-                    this.buyArtifact(student);
-                } catch (IndexOutOfBoundsException e) {
-                    uiView.printMessage("Wrong index.");
-                } catch (NumberFormatException e) {
-                    uiView.printMessage("This is not number");
-                }
-                uiView.pressToContinue();
-                break;
-
-            case TEAM_BUY_ARTIFACT :
-                System.out.println("Coming soon ...");
-                uiView.pressToContinue();
-                break;
-
-            case SHOW_WALLET :
-                this.showWallet(student);
-                uiView.pressToContinue();
-                break;
-
-            case EXIT:
-                break;
-
-             default :
-                uiView.printMessage("No option! Try Again!\n");
-                uiView.pressToContinue();
-        }
-
-    }
-
-    public void startStudentController(StudentModel student) {
-
-        int operation;
-
-        do {
-            uiView.clearScreen();
-            System.out.println("Hello " + student.getName() + "\n");
-            studentView.showMenu();
-            operation = uiView.getInputInt("Choice option: ");
-            uiView.clearScreen();
-            this.startMenu(operation, student);
-        } while (operation != EXIT);
-
-    }
-
     public void showQuestList() {
 
+        QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
-        questDao.clearObjectList();
     }
 }
