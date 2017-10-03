@@ -12,7 +12,7 @@ import com.codecool.dream_is_green.view.UIView;
 import java.lang.NullPointerException;
 
 public class AdminController {
-  
+
     private static UIView view = new UIView();
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
