@@ -55,9 +55,11 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
                 String artifactName = resultSet.getString("artifact_name");
                 Integer price = resultSet.getInt("price");
                 String artifactCategory = resultSet.getString("artifact_category");
+                Integer state = resultSet.getInt("state");
 
                 ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(artifactCategory);
                 ArtifactModel artifactModel = new ArtifactModel(artifactName, price, artifactCategoryModel);
+                artifactModel.setIsUsed(state);
 
                 student.getWallet().addBoughtArtifact(artifactModel);
 

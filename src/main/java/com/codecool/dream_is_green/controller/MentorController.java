@@ -5,11 +5,13 @@ import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
+import com.codecool.dream_is_green.model.ArtifactModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.*;
 
 
 import java.lang.NumberFormatException;
+import java.util.LinkedList;
 
 class MentorController {
 
@@ -81,6 +83,11 @@ class MentorController {
 
             case SHOW_ARTIFACTS :
                 this.showArtifactList();
+                uiView.pressToContinue();
+                break;
+
+            case MARK_ARTIFACT :
+                this.markArtifact();
                 uiView.pressToContinue();
                 break;
 
@@ -164,7 +171,18 @@ class MentorController {
             walletDAO.loadArtifactsToWallet(student);
             uiView.printMessage(student.getName());
             studentController.showWallet(student);
+        }
+    }
+
+    private void markArtifact() {
+        StudentDAO studentDao = new StudentDAO();
+        this.showStudentList();
+        Integer index = uiView.getInputInt("\nEnter index selected student: ");
+        LinkedList<ArtifactModel> artifactList = studentDao.getObjectList().get(index).getWallet().getArtifactList();
+        
 
         }
+
+
     }
 }

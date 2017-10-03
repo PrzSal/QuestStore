@@ -41,7 +41,8 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         }
     }
 
-    public void insertArtifact(String table, String artifactName, Integer price,  String artifactCategory, int id) {
+    public void insertArtifact(String table, String artifactName, Integer price,
+                               String artifactCategory, int id) {
 
         Connection connection;
         Statement statement;
@@ -62,6 +63,27 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
                 statement.executeUpdate(query);
                 connection.commit();
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateArtifact(String table, Integer state, Integer userID) {
+        Connection conn;
+        Statement stat;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            stat = conn.createStatement();
+
+            String statement = String.format("UPDATE %s set 'state' = '%d' where user_id=%d;", table, state, userID);
+            stat.executeUpdate(statement);
+            conn.commit();
+
+            stat.close();
 
         } catch (Exception e) {
             e.printStackTrace();
