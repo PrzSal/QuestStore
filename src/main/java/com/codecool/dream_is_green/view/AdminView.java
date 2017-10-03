@@ -10,6 +10,7 @@ public class AdminView {
                       "5) Show classes\n" +
                       "6) Remove mentor\n" +
                       "7) Show levels\n" +
+                      "8) Create level\n" +
                       "0) EXIT";
 
         System.out.println(menu);

@@ -49,7 +49,6 @@ class AdminController {
                 break;
 
             case CREATE_CLASS :
-                this.showClassList();
                 ClassModel newClass = this.createClass();
                 ClassDAO classDao = new ClassDAO();
                 classDao.addObject(newClass);
@@ -73,7 +72,6 @@ class AdminController {
                 break;
 
             case CREATE_LEVEL :
-                this.showLevelsList();
                 LevelModel newLevel = this.createLevel();
                 LevelDAO levelDao = new LevelDAO();
                 levelDao.addObject(newLevel);
@@ -219,6 +217,7 @@ class AdminController {
 
         view.clearScreen();
         view.printMessage("Create new class");
+        this.showClassList();
 
         String className = view.getInputWithoutSpaces("Enter class name: ");
         ClassDAO classDao = new ClassDAO();
@@ -232,6 +231,7 @@ class AdminController {
 
         view.clearScreen();
         view.printMessage("Create new level");
+        this.showLevelsList();
 
         String levelName = view.getInputWithoutSpaces("Enter level name: ");
         Integer expRequired = view.getInputInt("Enter exp required: ");
