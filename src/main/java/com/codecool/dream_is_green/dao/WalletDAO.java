@@ -1,12 +1,14 @@
 package com.codecool.dream_is_green.dao;
 
+import com.codecool.dream_is_green.model.StudentModel;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class WalletDAO extends AbstractDAO<WalletDAO> {
 
-    public void loadWallet() {
+    public void loadCoolcoinsToWallet(StudentModel student) {
 
         Connection connection;
         Statement statement;
@@ -15,14 +17,15 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             connection = DatabaseConnection.getConnection();
             statement = connection.createStatement();
 
-            String query = "SELECT * FROM WalletTable";
+            String query = "SELECT * FROM WalletTable WHERE user_id = '" + student.getUserID() + "'";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
 
                 Integer coolcoins = resultSet.getInt("coolcoins");
-                Integer userId = resultSet.getInt("user_id");
-                
+
+                student.getWallet().setCoolCoins(coolcoins);
+
             }
             resultSet.close();
             statement.close();
