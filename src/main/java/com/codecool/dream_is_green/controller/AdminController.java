@@ -1,14 +1,13 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.enums.AdminEnum;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.MentorModel;
-import com.codecool.dream_is_green.view.AdminView;
-import com.codecool.dream_is_green.view.ClassView;
-import com.codecool.dream_is_green.view.MentorView;
-import com.codecool.dream_is_green.view.UIView;
+import com.codecool.dream_is_green.view.*;
+
 import java.lang.NullPointerException;
 
 class AdminController {
@@ -17,6 +16,7 @@ class AdminController {
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
+    private static LevelView levelView = new LevelView();
 
     private void startMenu(int operation) {
         AdminEnum choice = AdminEnum.values()[operation];
@@ -63,6 +63,11 @@ class AdminController {
             case REMOVE_MENTOR :
                 this.showMentorList();
                 this.removeMentor();
+                view.pressToContinue();
+                break;
+
+            case SHOW_LEVELS :
+                this.showLevelsList();
                 view.pressToContinue();
                 break;
 
@@ -144,6 +149,14 @@ class AdminController {
         classDao.loadClasses();
         String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
+    }
+
+    private void showLevelsList() {
+
+        LevelDAO levelDao = new LevelDAO();
+        levelDao.loadLevels();
+        String levelDaoString = levelDao.toString();
+        levelView.showLevelList(levelDaoString);
     }
 
     private void editMentor(MentorModel mentor) {

@@ -1,14 +1,14 @@
 package com.codecool.dream_is_green.model;
 
-public class Level {
+public class LevelModel {
 
     private String levelName;
     private Integer expRequired;
 
-    public Level(String levelName, Integer expRequired){
+    public LevelModel (String levelName, Integer expRequired){
 
-        this.levelName;
-        this.expRequired;
+        this.levelName = levelName;
+        this.expRequired = expRequired;
     }
 
     public String getLevelName() {
@@ -17,6 +17,13 @@ public class Level {
 
     public Integer getExpRequired() {
         return expRequired;
+    }
+
+    public String toString() {
+
+        String str = String.format("%-16s %-16d", levelName, expRequired);
+
+        return str;
     }
 
 
