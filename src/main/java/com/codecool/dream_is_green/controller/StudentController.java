@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
-import com.codecool.dream_is_green.dao.DaoStart;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
@@ -28,56 +27,6 @@ public class StudentController {
     private static StudentView studentView = new StudentView();
     private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
-
-    private static QuestDAO questDao = DaoStart.getQuestDao();
-    private static ArtifactDAO artifactDao = DaoStart.getArtifactDao();
-
-
-    public void buyArtifact(StudentModel studentModel) {
-
-        artifactDao.clearObjectList();
-        artifactDao.loadArtifact();
-        LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
-
-        String artifactDaoString = artifactDao.toString();
-        artifactView.showArtifactList(artifactDaoString);
-        System.out.println(studentModel.getWallet().getCoolCoins());
-
-        try {
-            Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
-            ArtifactModel artifactToBuy = artifactList.get(index - 1);
-            System.out.println(artifactToBuy.getPrice());
-            Integer artifactPrice = artifactToBuy.getPrice();
-
-            if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
-
-                String title = artifactToBuy.getTitle();
-                Integer price = artifactToBuy.getPrice();
-                ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
-                Integer id = studentModel.getUserID();
-
-                artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
-                                           artifactCategoryModel.toString(), id);
-                ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
-                studentModel.getWallet().addBoughtArtifact(newArtifact);
-                studentModel.getWallet().removeCoolCoins(artifactPrice);
-                artifactDao.clearObjectList();
-
-            }
-            else {
-                uiView.printMessage("You don't have enough cool coins");
-            }
-
-        } catch (NumberFormatException e) {
-            uiView.printMessage("Wrong input");
-        }
-    }
-
-    public void showWallet(StudentModel student) {
-
-        WalletController walletController = new WalletController();
-        walletController.showWalletContent(student.getWallet());
-    }
 
     public void startMenu(int operation, StudentModel student) {
 
@@ -112,7 +61,7 @@ public class StudentController {
             case EXIT:
                 break;
 
-             default :
+            default :
                 uiView.printMessage("No option! Try Again!\n");
                 uiView.pressToContinue();
         }
@@ -134,11 +83,56 @@ public class StudentController {
 
     }
 
+    public void buyArtifact(StudentModel studentModel) {
+
+        ArtifactDAO artifactDao = new ArtifactDAO();
+        artifactDao.loadArtifact();
+        LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
+
+        String artifactDaoString = artifactDao.toString();
+        artifactView.showArtifactList(artifactDaoString);
+        uiView.printMessage(studentModel.getWallet().getCoolCoins());
+
+        try {
+            Integer index = Integer.parseInt(uiView.getInput("\nEnter index for chosen artifact: "));
+            ArtifactModel artifactToBuy = artifactList.get(index - 1);
+            System.out.println(artifactToBuy.getPrice());
+            Integer artifactPrice = artifactToBuy.getPrice();
+
+            if (artifactPrice < studentModel.getWallet().getCoolCoins()) {
+
+                String title = artifactToBuy.getTitle();
+                Integer price = artifactToBuy.getPrice();
+                ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
+                Integer id = studentModel.getUserID();
+
+                artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
+                                           artifactCategoryModel.toString(), id);
+                ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
+                studentModel.getWallet().addBoughtArtifact(newArtifact);
+                studentModel.getWallet().removeCoolCoins(artifactPrice);
+
+            }
+            else {
+                uiView.printMessage("You don't have enough cool coins");
+            }
+
+        } catch (NumberFormatException e) {
+            uiView.printMessage("Wrong input");
+        }
+    }
+
+    public void showWallet(StudentModel student) {
+
+        WalletController walletController = new WalletController();
+        walletController.showWalletContent(student.getWallet());
+    }
+
     public void showQuestList() {
 
+        QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
-        questDao.clearObjectList();
     }
 }
