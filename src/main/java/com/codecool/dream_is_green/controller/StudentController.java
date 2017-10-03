@@ -76,7 +76,11 @@ class StudentController {
             studentView.showMenu();
             operation = uiView.getInputInt("Choice option: ");
             uiView.clearScreen();
-            this.startMenu(operation, student);
+            try {
+                this.startMenu(operation, student);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                uiView.printMessage("No option in menu, try again :)");
+            }
         } while (operation != 0);
 
     }
