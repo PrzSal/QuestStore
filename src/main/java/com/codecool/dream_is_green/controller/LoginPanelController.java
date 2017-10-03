@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.model.StudentModel;
+import com.codecool.dream_is_green.model.LoginDetailsModel;
 import com.codecool.dream_is_green.view.UIView;
 import com.codecool.dream_is_green.dao.LoginPanelDAO;
 
@@ -34,21 +35,21 @@ public class LoginPanelController {
     private void chooseUserPanel(String login, String password) {
 
         LoginPanelDAO loginDAO = new LoginPanelDAO();
-        String[] userDetails = loginDAO.getUserDetails(login);
-        String user_type = userDetails[0];
-        String user_password = userDetails[1];
+        LoginDetailsModel userDetails = loginDAO.getUserDetails(login);
+        String userType = userDetails.getUserType();
+        String userPassword = userDetails.getUserPassword();
 
-        if (!user_type.equals("") && user_password.equals(password)) {
+        if (!userType.equals("") && userPassword.equals(password)) {
 
-            if (user_type.equals("mentor")) {
+            if (userType.equals("mentor")) {
                 MentorController mentorController = new MentorController();
                 mentorController.startMentorController();
 
-            } else if (user_type.equals("admin")) {
+            } else if (userType.equals("admin")) {
                 AdminController adminController = new AdminController();
                 adminController.startAdminController();
 
-            } else if (user_type.equals("student")) {
+            } else if (userType.equals("student")) {
                 StudentController studentController = new StudentController();
                 StudentDAO studentDAO = new StudentDAO();
                 StudentModel student = studentDAO.getStudent(login);
