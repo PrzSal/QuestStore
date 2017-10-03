@@ -9,6 +9,16 @@ import java.sql.ResultSet;
 
 public class MentorDAO extends AbstractDAO<MentorModel> {
 
+    public MentorModel getMentorByID(int userID, MentorDAO mentorDao) {
+
+        for (MentorModel mentor : mentorDao.getObjectList()) {
+            if (mentor.getUserID() == userID) {
+                return mentor;
+            }
+        }
+        return null;
+    }
+
     public void loadMentors() {
 
         Connection conn;
