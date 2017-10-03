@@ -26,13 +26,13 @@ public class MentorController {
             mentorView.printMenu();
             operation = uiView.getInputInt("Choice option: ");
             chooseOption(operation);
-        } while (operation != EXIT);
+        } while (operation != 0);
 
     }
 
     public void chooseOption(int operation) {
 
-        MentorEnum choice = MentorEnum.valueOf()[operation];
+        MentorEnum choice = MentorEnum.values()[operation];
 
         switch(choice) {
 
