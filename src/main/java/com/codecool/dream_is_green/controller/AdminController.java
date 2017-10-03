@@ -160,11 +160,17 @@ public class AdminController {
         int mentorID = mentor.getUserID();
         view.printMessage(mentorID);
 
-        String mentorInfo = mentor.toString();
         view.clearScreen();
+        String mentorInfo = mentor.toString();
         view.printMessage(mentorInfo + "\n1) Edit email.\n2) Edit mentor class.");
         String option = view.getInput("Choose option: ");
 
+        chooseOption(mentor, option, mentorDao, mentorID);
+    }
+
+    public void chooseOption(MentorModel mentor, String option, MentorDAO mentorDao, int mentorID ) {
+
+        String mentorInfo = mentor.toString();
         Boolean done = false;
 
         while(!done) {
