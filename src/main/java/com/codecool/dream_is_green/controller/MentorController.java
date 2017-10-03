@@ -9,7 +9,7 @@ import com.codecool.dream_is_green.view.*;
 
 import java.lang.NumberFormatException;
 
-public class MentorController {
+class MentorController {
 
     private static UIView uiView = new UIView();
     private static MentorView mentorView = new MentorView();
@@ -17,7 +17,7 @@ public class MentorController {
     private static QuestView questView = new QuestView();
     private static ArtifactView artifactView = new ArtifactView();
 
-    public void startMentorController() {
+    void startMentorController() {
 
         int operation;
 
@@ -30,7 +30,7 @@ public class MentorController {
 
     }
 
-    public void chooseOption(int operation) {
+    private void chooseOption(int operation) {
 
         MentorEnum choice = MentorEnum.values()[operation];
 
@@ -84,7 +84,7 @@ public class MentorController {
         }
     }
 
-    public void showArtifactList() {
+    private void showArtifactList() {
 
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
@@ -92,7 +92,7 @@ public class MentorController {
         artifactView.showArtifactList(artifactDaoString);
     }
 
-    public void showQuestList() {
+    private void showQuestList() {
 
         QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
@@ -100,7 +100,7 @@ public class MentorController {
         questView.showQuestList(questDaoString);
     }
 
-    public void showStudentList() {
+    private void showStudentList() {
 
         StudentDAO studentDao = new StudentDAO();
         studentDao.loadStudents();
@@ -108,7 +108,7 @@ public class MentorController {
         studentView.showStudentList(studentDaoString);
     }
 
-    public void addStudent() {
+    private void addStudent() {
 
         String name = uiView.getInput("Enter name: ");
         String surname = uiView.getInput("Enter surname: ");
@@ -121,7 +121,7 @@ public class MentorController {
         studentDao.insertStudent(name, surname, email, login, password, className);
     }
 
-    public void addQuest() {
+    private void addQuest() {
 
         String title = uiView.getInput("Enter title: ");
         Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
@@ -130,7 +130,7 @@ public class MentorController {
         questDao.insertQuest(title, price, questCategoryStr);
     }
 
-    public void addArtifact() {
+    private void addArtifact() {
 
         String column = "ArtifactsTable";
         String title = uiView.getInput("Enter title: ");
