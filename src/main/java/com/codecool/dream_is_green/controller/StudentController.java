@@ -120,6 +120,8 @@ class StudentController {
         ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
         studentModel.getWallet().addBoughtArtifact(newArtifact);
         studentModel.getWallet().removeCoolCoins(artifactPrice);
+        WalletDAO walletDAO = new WalletDAO();
+        walletDAO.updateCoolcoins(studentModel);
     }
 
     private void showWallet(StudentModel student) {
