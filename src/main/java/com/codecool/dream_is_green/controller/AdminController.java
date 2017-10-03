@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
-import com.codecool.dream_is_green.dao.DaoStart;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.MentorModel;
@@ -25,14 +24,13 @@ public class AdminController {
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
-    private static ClassDAO classDao = DaoStart.getClassDao();
 
     public void startMenu(int operation) {
 
         switch(operation) {
 
             case CREATE_MENTOR :
-                MentorDAO mentorDao = DaoStart.getMentorDao();
+                MentorDAO mentorDao = new MentorDAO();
                 MentorModel newMentor = this.createMentor();
                 mentorDao.addObject(newMentor);
                 view.pressToContinue();
@@ -58,6 +56,7 @@ public class AdminController {
             case CREATE_CLASS :
                 this.showClassList();
                 ClassModel newClass = this.createClass();
+                ClassDAO classDao = new ClassDAO();
                 classDao.addObject(newClass);
                 view.pressToContinue();
                 break;
@@ -106,7 +105,7 @@ public class AdminController {
         String password = view.getInput("Enter mentor password: ");
         String className = view.getInput("Enter class name: ");
 
-        MentorDAO mentorDao = DaoStart.getMentorDao();
+        MentorDAO mentorDao = new MentorDAO();
         mentorDao.insertMentor(name, surname, email, login, password, className);
         int userID = mentorDao.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
@@ -116,7 +115,7 @@ public class AdminController {
 
     public void removeMentor() {
 
-        MentorDAO mentorDao = DaoStart.getMentorDao();
+        MentorDAO mentorDao = new MentorDAO();
         int mentorID = view.getInputInt("Enter the mentor ID you want to remove ");
         mentorDao.deleteMentor(mentorID);
         for (MentorModel mentor : mentorDao.getObjectList()) {
@@ -128,7 +127,7 @@ public class AdminController {
 
     public MentorModel getMentorByID() {
 
-        MentorDAO mentorDao = DaoStart.getMentorDao();
+        MentorDAO mentorDao = new MentorDAO();
         this.showMentorList();
         int userID = view.getInputInt("Enter mentor ID: ");
         mentorDao.loadMentors();
@@ -142,7 +141,7 @@ public class AdminController {
 
     public void showMentorList() {
 
-        MentorDAO mentorDao = DaoStart.getMentorDao();
+        MentorDAO mentorDao = new MentorDAO();
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
@@ -150,17 +149,16 @@ public class AdminController {
 
     public void showClassList() {
 
-        classDao.clearObjectList();
+        ClassDAO classDao = new ClassDAO();
         classDao.loadClasses();
         String classDaoString = classDao.toString();
         classView.showClassList(classDaoString);
-        classDao.clearObjectList();
     }
 
 
     public void editMentor(MentorModel mentor) {
 
-        MentorDAO mentorDao = DaoStart.getMentorDao();
+        MentorDAO mentorDao = new MentorDAO();
         mentorDao.loadMentors();
         String mentorDaoString = mentorDao.toString();
         mentorView.showMentorList(mentorDaoString);
@@ -205,9 +203,9 @@ public class AdminController {
         view.printMessage("Create new class");
 
         String className = view.getInput("Enter class name: ");
+        ClassDAO classDao = new ClassDAO();
         classDao.insertClass(className);
         ClassModel newClass = new ClassModel(className);
-        classDao.clearObjectList();
 
         return newClass;
     }
