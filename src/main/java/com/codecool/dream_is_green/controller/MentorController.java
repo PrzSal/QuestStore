@@ -110,12 +110,12 @@ public class MentorController {
 
     public void addStudent() {
 
-        String name = uiView.getInput("Enter name: ");
-        String surname = uiView.getInput("Enter surname: ");
-        String email = uiView.getInput("Enter email: ");
-        String login = uiView.getInput("Enter login: ");
-        String password = uiView.getInput("Enter password: ");
-        String className = uiView.getInput("Enter class name: ");
+        String name = uiView.getInputString("Enter name: ");
+        String surname = uiView.getInputString("Enter surname: ");
+        String email = uiView.getInputWithoutSpaces("Enter email: ");
+        String login = uiView.getInputWithoutSpaces("Enter login: ");
+        String password = uiView.getInputWithoutSpaces("Enter password: ");
+        String className = uiView.getInputWithoutSpaces("Enter class name: ");
 
         StudentDAO studentDao = new StudentDAO();
         studentDao.insertStudent(name, surname, email, login, password, className);
@@ -123,9 +123,9 @@ public class MentorController {
 
     public void addQuest() {
 
-        String title = uiView.getInput("Enter title: ");
-        Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        String questCategoryStr = uiView.getInput("Enter category: ");
+        String title = uiView.getInputAllowSpaces("Enter title: ");
+        Integer price = uiView.getInputInt("Enter price: ");
+        String questCategoryStr = uiView.getInputAllowSpaces("Enter category: ");
         QuestDAO questDao = new QuestDAO();
         questDao.insertQuest(title, price, questCategoryStr);
     }
@@ -133,9 +133,9 @@ public class MentorController {
     public void addArtifact() {
 
         String column = "ArtifactsTable";
-        String title = uiView.getInput("Enter title: ");
-        Integer price = Integer.parseInt(uiView.getInput("Enter price: "));
-        String categoryName = uiView.getInput("Enter category: ");
+        String title = uiView.getInputAllowSpaces("Enter title: ");
+        Integer price = uiView.getInputInt("Enter price: ");
+        String categoryName = uiView.getInputAllowSpaces("Enter category: ");
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.insertArtifact(column, title, price, categoryName, 0);
     }

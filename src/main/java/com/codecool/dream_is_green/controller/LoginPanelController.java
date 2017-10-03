@@ -23,8 +23,8 @@ public class LoginPanelController {
             operation = operation.toUpperCase();
 
             if (!operation.equals(EXIT)) {
-                String login = view.getInput("Enter login: ");
-                String password = view.getInput("Enter password: ");
+                String login = view.getInputWithoutSpaces("Enter login: ");
+                String password = view.getInputWithoutSpaces("Enter password: ");
                 chooseUserPanel(login, password);
             }
 
