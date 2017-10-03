@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class LevelDAO extends AbstractDAO<LevelModel> {
 
@@ -34,6 +36,9 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
                 LevelModel level = new LevelModel(name, expRequired);
                 this.addObject(level);
             }
+
+            Collections.sort(objectsList, Comparator.comparing(LevelModel::getExpRequired));
+
             result.close();
             stat.close();
 
