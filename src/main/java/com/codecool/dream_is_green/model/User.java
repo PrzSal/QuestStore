@@ -25,6 +25,9 @@ public abstract class User {
     public int getUserID() {
         return userID;
     }
+    public String getFullName() {
+        return name + " " + surname;
+    }
 
     public String getLogin() {
         return login;

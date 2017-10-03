@@ -3,11 +3,15 @@ package com.codecool.dream_is_green.controller;
 import com.codecool.dream_is_green.dao.ArtifactDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
+import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
+import com.codecool.dream_is_green.model.ArtifactModel;
+import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.*;
 
 
 import java.lang.NumberFormatException;
+import java.util.LinkedList;
 
 class MentorController {
 
@@ -82,6 +86,16 @@ class MentorController {
                 uiView.pressToContinue();
                 break;
 
+            case MARK_ARTIFACT :
+                this.markArtifact();
+                uiView.pressToContinue();
+                break;
+
+            case SHOW_SUMMARY_STUDENTS_WALLETS :
+                this.showSummaryStudentsWallets();
+                uiView.pressToContinue();
+                break;
+
             case EXIT:
                 break;
 
@@ -144,5 +158,50 @@ class MentorController {
         String categoryName = uiView.getInputAllowSpaces("Enter category: ");
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.insertArtifact(column, title, price, categoryName, 0);
+    }
+
+    private void showSummaryStudentsWallets() {
+        StudentDAO studentDao = new StudentDAO();
+        StudentController studentController = new StudentController();
+        WalletDAO walletDAO = new WalletDAO();
+
+        studentDao.loadStudents();
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadCoolcoinsToWallet(student);
+            walletDAO.loadArtifactsToWallet(student);
+            uiView.printMessage(student.getFullName());
+            studentController.showWallet(student);
+        }
+    }
+
+    private void markArtifact() {
+        StudentDAO studentDao = new StudentDAO();
+        WalletDAO walletDAO = new WalletDAO();
+        LinkedList<String> studentsSendArtifacts = new LinkedList<>();
+        studentDao.loadStudents();
+
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadArtifactsToWallet(student);
+            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
+                if (artifact.getIsUsed() == 1) {
+                    studentsSendArtifacts.add(String.valueOf(student.getUserID()));
+                    studentsSendArtifacts.add(artifact.getTitle());
+                    studentsSendArtifacts.add("send");
+                }
+            }
+        }
+        ArtifactView artifactView = new ArtifactView();
+        String studentSendArtifactsString = studentsSendArtifacts.toString();
+        artifactView.showArtifactList(studentSendArtifactsString);
+        for (StudentModel student : studentDao.getObjectList()) {
+            walletDAO.loadArtifactsToWallet(student);
+            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
+                if (String.valueOf(student.getUserID()).contains(studentSendArtifactsString)) {
+                    artifact.setIsUsed(2);
+                }
+            }
+        }
+
+
     }
 }

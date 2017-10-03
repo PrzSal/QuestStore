@@ -8,4 +8,6 @@ public enum MentorEnum {
     SHOW_QUESTS,
     ADD_ARTIFACT,
     SHOW_ARTIFACTS,
+    MARK_ARTIFACT,
+    SHOW_SUMMARY_STUDENTS_WALLETS,
 }

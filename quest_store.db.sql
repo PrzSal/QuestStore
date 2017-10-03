@@ -43,11 +43,11 @@ CREATE TABLE "StudentsWithQuests" (
 	`user_id`	INTEGER NOT NULL
 );
 CREATE TABLE "StudentsWithArtifacts" (
-	`artifact_name`	INTEGER NOT NULL,
-	`title`	INTEGER,
+	`artifact_name`	TEXT NOT NULL,
 	`price`	INTEGER,
 	`artifact_category`	TEXT,
-	`user_id`	INTEGER
+	`user_id`	INTEGER,
+	`state` INTEGER DEFAULT 0
 );
 CREATE TABLE "StudentsTable" (
 	`user_id`	INTEGER NOT NULL UNIQUE,
@@ -97,10 +97,11 @@ INSERT INTO `ClassTable` VALUES ('krk16');
 CREATE TABLE "ArtifactsTable" (
 	`artifact_name`	TEXT NOT NULL UNIQUE,
 	`price`	INTEGER,
-	`artifact_category`	INTEGER
+	`artifact_category`	INTEGER,
+	`state` INTEGER DEFAULT 0
 );
-INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring');
-INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun');
+INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun',0);
 CREATE TABLE `ArtifactCategory` (
 	`artifact_category_name`	TEXT UNIQUE
 );

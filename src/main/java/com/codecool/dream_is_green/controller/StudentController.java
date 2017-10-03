@@ -55,6 +55,11 @@ class StudentController {
                 uiView.pressToContinue();
                 break;
 
+            case USE_ARTIFACTS :
+                this.useArtifacts(student);
+                uiView.pressToContinue();
+                break;
+
             case EXIT:
                 break;
 
@@ -128,7 +133,7 @@ class StudentController {
         walletDAO.updateCoolcoins(studentModel);
     }
 
-    private void showWallet(StudentModel student) {
+    void showWallet(StudentModel student) {
         WalletController walletController = new WalletController();
 
         walletController.showWalletContent(student.getWallet());
@@ -139,5 +144,16 @@ class StudentController {
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+    }
+
+    private void useArtifacts(StudentModel student) {
+        this.showWallet(student);
+        Integer index = uiView.getInputInt("\nEnter index for chosen artifact: ");
+        ArtifactModel artifactToUse = student.getWallet().getArtifactList().get(index);
+        Integer state = 1;
+        artifactToUse.setIsUsed(state);
+        ArtifactDAO artifact = new ArtifactDAO();
+        artifact.updateArtifact("StudentsWithArtifacts", state, student.getUserID());
+
     }
 }
