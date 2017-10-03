@@ -7,8 +7,7 @@ import java.util.LinkedList;
 
 public class WalletController {
 
-    public void showWalletContent(WalletModel walletModel) {
-
+    void showWalletContent(WalletModel walletModel) {
 
         LinkedList<ArtifactModel> artifactsList = walletModel.getArtifactList();
         WalletView walletView = new WalletView();
