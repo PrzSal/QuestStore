@@ -68,23 +68,23 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         }
     }
 
-//    public void deleteLevel(int id) {
-//
-//        Connection conn;
-//
-//        try {
-//            conn = DatabaseConnection.getConnection();
-//
-//            String statement = "DELETE FROM MentorsTable WHERE user_id = ?";
-//            PreparedStatement prepStmt = conn.prepareStatement(statement2);
-//
-//            prepStmt.setInt(1, id);
-//            prepStmt.execute();
-//            prepStmt.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void deleteLevel(String levelName) {
+
+        Connection conn;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+
+            String statement = "DELETE FROM LevelsTable WHERE level_name = ?";
+            PreparedStatement prepStmt = conn.prepareStatement(statement);
+
+            prepStmt.setString(1, levelName);
+            prepStmt.execute();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
