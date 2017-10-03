@@ -97,7 +97,12 @@ class AdminController {
             adminView.showMenu();
             operation = view.getInputInt("Choice option: ");
             view.clearScreen();
-            this.startMenu(operation);
+            try {
+                this.startMenu(operation);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                view.printMessage("No option in menu :)");
+            }
+
         } while (operation != 0);
 
     }
