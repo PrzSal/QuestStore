@@ -64,8 +64,8 @@ CREATE TABLE "QuestsTable" (
 	`price`	INTEGER NOT NULL,
 	`quest_category`	TEXT NOT NULL
 );
-INSERT INTO `QuestsTable` VALUES ('pass_si_week',100,'fun');
-INSERT INTO `QuestsTable` VALUES ('take_part_in_reqruit',400,'mentoring');
+INSERT INTO `QuestsTable` VALUES ('pass si week',100,'fun');
+INSERT INTO `QuestsTable` VALUES ('take part in reqruit',400,'mentoring');
 CREATE TABLE "QuestCategory" (
 	`quest_category_name`	TEXT NOT NULL UNIQUE
 );
@@ -81,13 +81,13 @@ INSERT INTO `MentorsTable` VALUES (7,'krk17');
 INSERT INTO `MentorsTable` VALUES (1,'krk17');
 CREATE TABLE "LevelsTable" (
 	`level_name`	TEXT NOT NULL UNIQUE,
-	`min`	INTEGER NOT NULL
+	`exp_required`	INTEGER NOT NULL
 );
 INSERT INTO `LevelsTable` VALUES ('noob',0);
 INSERT INTO `LevelsTable` VALUES ('beginner',400);
 INSERT INTO `LevelsTable` VALUES ('medium',600);
-INSERT INTO `LevelsTable` VALUES ('java guru',1000);
-INSERT INTO `LevelsTable` VALUES ('replace mentor','22 500');
+INSERT INTO `LevelsTable` VALUES ('java_guru',1000);
+INSERT INTO `LevelsTable` VALUES ('replace_mentor','22 500');
 CREATE TABLE "ClassTable" (
 	`class_name`	TEXT NOT NULL UNIQUE
 );
@@ -98,8 +98,8 @@ CREATE TABLE "ArtifactsTable" (
 	`price`	INTEGER,
 	`artifact_category`	INTEGER
 );
-INSERT INTO `ArtifactsTable` VALUES ('private_mentoring',100,'mentoring');
-INSERT INTO `ArtifactsTable` VALUES ('mentor_ride_on_elephant',200,'fun');
+INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring');
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun');
 CREATE TABLE `ArtifactCategory` (
 	`artifact_category_name`	TEXT UNIQUE
 );

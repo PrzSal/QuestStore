@@ -1,14 +1,14 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.enums.AdminEnum;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
+import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.MentorModel;
-import com.codecool.dream_is_green.view.AdminView;
-import com.codecool.dream_is_green.view.ClassView;
-import com.codecool.dream_is_green.view.MentorView;
-import com.codecool.dream_is_green.view.UIView;
+import com.codecool.dream_is_green.view.*;
+
 import java.lang.NullPointerException;
 
 class AdminController {
@@ -17,6 +17,7 @@ class AdminController {
     private static AdminView adminView = new AdminView();
     private static MentorView mentorView = new MentorView();
     private static ClassView classView = new ClassView();
+    private static LevelView levelView = new LevelView();
 
     private void startMenu(int operation) {
         AdminEnum choice = AdminEnum.values()[operation];
@@ -48,7 +49,6 @@ class AdminController {
                 break;
 
             case CREATE_CLASS :
-                this.showClassList();
                 ClassModel newClass = this.createClass();
                 ClassDAO classDao = new ClassDAO();
                 classDao.addObject(newClass);
@@ -63,6 +63,18 @@ class AdminController {
             case REMOVE_MENTOR :
                 this.showMentorList();
                 this.removeMentor();
+                view.pressToContinue();
+                break;
+
+            case SHOW_LEVELS :
+                this.showLevelsList();
+                view.pressToContinue();
+                break;
+
+            case CREATE_LEVEL :
+                LevelModel newLevel = this.createLevel();
+                LevelDAO levelDao = new LevelDAO();
+                levelDao.addObject(newLevel);
                 view.pressToContinue();
                 break;
 
@@ -146,6 +158,14 @@ class AdminController {
         classView.showClassList(classDaoString);
     }
 
+    private void showLevelsList() {
+
+        LevelDAO levelDao = new LevelDAO();
+        levelDao.loadLevels();
+        String levelDaoString = levelDao.toString();
+        levelView.showLevelList(levelDaoString);
+    }
+
     private void editMentor(MentorModel mentor) {
 
         MentorDAO mentorDao = new MentorDAO();
@@ -197,6 +217,7 @@ class AdminController {
 
         view.clearScreen();
         view.printMessage("Create new class");
+        this.showClassList();
 
         String className = view.getInputWithoutSpaces("Enter class name: ");
         ClassDAO classDao = new ClassDAO();
@@ -204,5 +225,20 @@ class AdminController {
         ClassModel newClass = new ClassModel(className);
 
         return newClass;
+    }
+
+    private LevelModel createLevel() {
+
+        view.clearScreen();
+        view.printMessage("Create new level");
+        this.showLevelsList();
+
+        String levelName = view.getInputWithoutSpaces("Enter level name: ");
+        Integer expRequired = view.getInputInt("Enter exp required: ");
+        LevelDAO levelDao = new LevelDAO();
+        levelDao.insertLevel(levelName, expRequired);
+        LevelModel newLevel = new LevelModel(levelName, expRequired);
+
+        return newLevel;
     }
 }
