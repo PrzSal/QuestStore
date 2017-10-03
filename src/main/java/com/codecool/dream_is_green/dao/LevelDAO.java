@@ -36,7 +36,6 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
                 LevelModel level = new LevelModel(name, expRequired);
                 this.addObject(level);
             }
-
             Collections.sort(objectsList, Comparator.comparing(LevelModel::getExpRequired));
 
             result.close();
@@ -57,7 +56,7 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
             stat = conn.createStatement();
             conn.setAutoCommit(false);
 
-            String statement = String.format("INSERT INTO LevelTable (level_name, exp_required) VALUES ('%s', '%d');", name, expRequired);
+            String statement = String.format("INSERT INTO LevelsTable (level_name, exp_required) VALUES ('%s', '%d');", name, expRequired);
 
             stat.executeUpdate(statement);
 
@@ -88,31 +87,4 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
 //        }
 //    }
 
-//    public void updateMentor(String phrase, int userID, String column, String table) {
-//
-//        Connection conn;
-//        Statement stat;
-//
-//        try {
-//            conn = DatabaseConnection.getConnection();
-//            conn.setAutoCommit(false);
-//
-//            stat = conn.createStatement();
-//            if (column.equals("class_name")) {
-//                column = "class_name";
-//
-//            } else if (column.equals("email")) {
-//                column = "email";
-//
-//            }
-//            String statement = String.format("UPDATE %s set '%s' = '%s' where user_id=%d;", table, column, phrase, userID);
-//            stat.executeUpdate(statement);
-//            conn.commit();
-//
-//            stat.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
