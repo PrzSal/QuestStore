@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
+import com.codecool.dream_is_green.enums.StudentEnum;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
 import com.codecool.dream_is_green.model.StudentModel;
@@ -17,20 +18,15 @@ import java.util.LinkedList;
 
 public class StudentController {
 
-    private static final int SHOW_QUESTS = 1;
-    private static final int BUY_ARTIFACT = 2;
-    private static final int TEAM_BUY_ARTIFACT = 3;
-    private static final int SHOW_WALLET = 4;
-    private static final int EXIT = 0;
-
     private static UIView uiView = new UIView();
     private static StudentView studentView = new StudentView();
     private static ArtifactView artifactView = new ArtifactView();
     private static QuestView questView = new QuestView();
 
     public void startMenu(int operation, StudentModel student) {
+        StudentEnum choice = StudentEnum.values()[operation];
 
-        switch(operation) {
+        switch(choice) {
 
             case SHOW_QUESTS :
                 this.showQuestList();
@@ -69,7 +65,6 @@ public class StudentController {
     }
 
     public void startStudentController(StudentModel student) {
-
         int operation;
 
         do {
@@ -79,12 +74,11 @@ public class StudentController {
             operation = uiView.getInputInt("Choice option: ");
             uiView.clearScreen();
             this.startMenu(operation, student);
-        } while (operation != EXIT);
+        } while (operation != 0);
 
     }
 
     public void buyArtifact(StudentModel studentModel) {
-
         ArtifactDAO artifactDao = new ArtifactDAO();
         artifactDao.loadArtifact();
         LinkedList<ArtifactModel> artifactList = artifactDao.getObjectList();
@@ -123,13 +117,11 @@ public class StudentController {
     }
 
     public void showWallet(StudentModel student) {
-
         WalletController walletController = new WalletController();
         walletController.showWalletContent(student.getWallet());
     }
 
     public void showQuestList() {
-
         QuestDAO questDao = new QuestDAO();
         questDao.loadQuest();
         String questDaoString = questDao.toString();
