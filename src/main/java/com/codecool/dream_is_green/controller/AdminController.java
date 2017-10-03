@@ -5,6 +5,7 @@ import com.codecool.dream_is_green.enums.AdminEnum;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
+import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.MentorModel;
 import com.codecool.dream_is_green.view.*;
 
@@ -68,6 +69,14 @@ class AdminController {
 
             case SHOW_LEVELS :
                 this.showLevelsList();
+                view.pressToContinue();
+                break;
+
+            case CREATE_LEVEL :
+                this.showLevelsList();
+                LevelModel newLevel = this.createLevel();
+                LevelDAO levelDao = new LevelDAO();
+                levelDao.addObject(newLevel);
                 view.pressToContinue();
                 break;
 
@@ -217,5 +226,19 @@ class AdminController {
         ClassModel newClass = new ClassModel(className);
 
         return newClass;
+    }
+
+    private LevelModel createLevel() {
+
+        view.clearScreen();
+        view.printMessage("Create new level");
+
+        String levelName = view.getInputWithoutSpaces("Enter level name: ");
+        Integer expRequired = view.getInputInt("Enter exp required: ");
+        LevelDAO levelDao = new LevelDAO();
+        levelDao.insertLevel(levelName, expRequired);
+        LevelModel newLevel = new LevelModel(levelName, expRequired);
+
+        return newLevel;
     }
 }

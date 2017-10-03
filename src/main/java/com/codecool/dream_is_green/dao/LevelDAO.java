@@ -34,6 +34,7 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
                 LevelModel level = new LevelModel(name, expRequired);
                 this.addObject(level);
             }
+
             result.close();
             stat.close();
 

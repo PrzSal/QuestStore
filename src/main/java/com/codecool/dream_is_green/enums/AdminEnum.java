@@ -9,4 +9,5 @@ public enum AdminEnum {
     SHOW_CLASSES,
     REMOVE_MENTOR,
     SHOW_LEVELS,
+    CREATE_LEVEL,
 }
