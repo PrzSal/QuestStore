@@ -260,8 +260,8 @@ class AdminController {
         String levelName = view.getInputString("Enter level name: ");
         Integer expRequired = view.getInputInt("Enter exp required: ");
         LevelDAO levelDao = new LevelDAO();
-        levelDao.insertLevel(levelName, expRequired);
         LevelModel newLevel = new LevelModel(levelName, expRequired);
+        levelDao.insertLevel(newLevel);
 
         return newLevel;
     }
