@@ -6,10 +6,7 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
     private Integer isUsed;
 
     public ArtifactModel(String title, Integer price, ArtifactCategoryModel artifactCategory) {
-
-        this.title = title;
-        this.price = price;
-        this.category = artifactCategory;
+        super(title, price, artifactCategory);
         this.isUsed = 0;
     }
 
