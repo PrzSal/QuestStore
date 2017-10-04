@@ -4,7 +4,6 @@ package com.codecool.dream_is_green.model;
 public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
 
     private Integer isUsed;
-    private Integer amount;
 
     public ArtifactModel(String title, Integer price, ArtifactCategoryModel artifactCategory) {
 
@@ -12,7 +11,6 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         this.price = price;
         this.category = artifactCategory;
         this.isUsed = 0;
-        this.amount = 0;
     }
 
     @Override
@@ -45,8 +43,4 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         return isUsed;
     }
 
-    public void setAmount() {
-
-        this.amount++;
-    }
 }

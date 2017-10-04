@@ -6,6 +6,7 @@ import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
 import com.codecool.dream_is_green.model.ArtifactModel;
+import com.codecool.dream_is_green.model.PreStudentModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.*;
 
@@ -138,7 +139,8 @@ class MentorController {
         String className = uiView.getInputWithoutSpaces("Enter class name: ");
 
         StudentDAO studentDao = new StudentDAO();
-        studentDao.insertStudent(name, surname, email, login, password, className);
+        PreStudentModel preStudent = new PreStudentModel(name, surname, email, login, password, className);
+        studentDao.insertStudent(preStudent);
     }
 
     private void addQuest() {
