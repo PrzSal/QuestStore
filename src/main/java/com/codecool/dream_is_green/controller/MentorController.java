@@ -6,6 +6,8 @@ import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
 import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.QuestCategoryModel;
+import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.*;
 
@@ -147,7 +149,9 @@ class MentorController {
         Integer price = uiView.getInputInt("Enter price: ");
         String questCategoryStr = uiView.getInputAllowSpaces("Enter category: ");
         QuestDAO questDao = new QuestDAO();
-        questDao.insertQuest(title, price, questCategoryStr);
+        QuestCategoryModel questCategoryModel = new QuestCategoryModel(questCategoryStr);
+        QuestModel quest = new QuestModel(title, price, questCategoryModel);
+        questDao.insertQuest(quest);
     }
 
     private void addArtifact() {
