@@ -45,10 +45,13 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         }
     }
 
-    public void insertLevel(String name, Integer expRequired)  {
+    public void insertLevel(LevelModel level)  {
 
         Connection conn;
         Statement stat;
+
+        String name = level.getLevelName();
+        Integer expRequired = level.getExpRequired();
 
         try {
             conn = DatabaseConnection.getConnection();
