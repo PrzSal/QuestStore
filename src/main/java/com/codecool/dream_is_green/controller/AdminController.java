@@ -255,7 +255,7 @@ class AdminController {
         view.printMessage("Create new level");
         this.showLevelsList();
 
-        String levelName = view.getInputWithoutSpaces("Enter level name: ");
+        String levelName = view.getInputString("Enter level name: ");
         Integer expRequired = view.getInputInt("Enter exp required: ");
         LevelDAO levelDao = new LevelDAO();
         levelDao.insertLevel(levelName, expRequired);

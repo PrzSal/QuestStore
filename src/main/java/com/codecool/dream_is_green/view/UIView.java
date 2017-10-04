@@ -135,7 +135,12 @@ public class UIView {
     }
 
     public void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+//        Commented lines are used in terminal to clear screen in beautiful way :)
+//        System.out.print("\033[H\033[2J");
+//        System.out.flush();
+
+        for (int i = 0; i < 50; i++) {
+            System.out.println("");
+        }
     }
 }
