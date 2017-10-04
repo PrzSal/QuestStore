@@ -21,7 +21,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                            " ON UsersTable.user_id = StudentsTable.user_id";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, login, password, className;
-            int userID;
+            int userID, studentExp;
 
             while(result.next()) {
 
@@ -32,9 +32,11 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 password = result.getString("password");
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
+                studentExp = result.getInt("experience");
+
 
                 StudentModel student = new StudentModel(userID, name, surname, email,
-                                                        login, password, className);
+                                                        login, password, className, studentExp);
                 this.addObject(student);
             }
             result.close();
@@ -139,7 +141,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                     " ON UsersTable.user_id = StudentsTable.user_id WHERE login = '" + login + "'";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, user_login, password, className;
-            int userID;
+            int userID, studentExp;
             StudentModel student = null;
 
             while(result.next()) {
@@ -151,8 +153,9 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 password = result.getString("password");
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
+                studentExp = result.getInt("experience");
 
-                student = new StudentModel(userID, name, surname, email, user_login, password, className);
+                student = new StudentModel(userID, name, surname, email, user_login, password, className, studentExp);
             }
             result.close();
             stat.close();
