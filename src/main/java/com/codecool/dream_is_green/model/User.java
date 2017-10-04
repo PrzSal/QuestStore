@@ -37,6 +37,8 @@ public abstract class User {
         return password;
     }
 
+    public String getEmail() { return  email; }
+
     public void setEmail(String newEmail) {
         email = newEmail;
     }

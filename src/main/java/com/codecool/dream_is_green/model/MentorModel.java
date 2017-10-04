@@ -22,4 +22,8 @@ public class MentorModel extends User {
         return str;
     }
 
+    public String getClassName() {
+        return this.className;
+    }
+
 }
