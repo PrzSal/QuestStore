@@ -87,7 +87,7 @@ class MentorController {
                 break;
 
             case MARK_ARTIFACT :
-                this.markArtifact();
+                uiView.printMessage("Coming soon, be patient :)");
                 uiView.pressToContinue();
                 break;
 
@@ -172,36 +172,5 @@ class MentorController {
             uiView.printMessage(student.getFullName());
             studentController.showWallet(student);
         }
-    }
-
-    private void markArtifact() {
-        StudentDAO studentDao = new StudentDAO();
-        WalletDAO walletDAO = new WalletDAO();
-        LinkedList<String> studentsSendArtifacts = new LinkedList<>();
-        studentDao.loadStudents();
-
-        for (StudentModel student : studentDao.getObjectList()) {
-            walletDAO.loadArtifactsToWallet(student);
-            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
-                if (artifact.getIsUsed() == 1) {
-                    studentsSendArtifacts.add(String.valueOf(student.getUserID()));
-                    studentsSendArtifacts.add(artifact.getTitle());
-                    studentsSendArtifacts.add("send");
-                }
-            }
-        }
-        ArtifactView artifactView = new ArtifactView();
-        String studentSendArtifactsString = studentsSendArtifacts.toString();
-        artifactView.showArtifactList(studentSendArtifactsString);
-        for (StudentModel student : studentDao.getObjectList()) {
-            walletDAO.loadArtifactsToWallet(student);
-            for (ArtifactModel artifact : student.getWallet().getArtifactList()) {
-                if (String.valueOf(student.getUserID()).contains(studentSendArtifactsString)) {
-                    artifact.setIsUsed(2);
-                }
-            }
-        }
-
-
     }
 }
