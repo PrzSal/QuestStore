@@ -7,4 +7,5 @@ public enum StudentEnum {
     TEAM_BUY_ARTIFACT,
     SHOW_WALLET,
     USE_ARTIFACTS,
+    SHOW_LEVEL,
 }
