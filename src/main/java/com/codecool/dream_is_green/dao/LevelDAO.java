@@ -87,4 +87,41 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         }
     }
 
+    public LevelModel getLevelByStudentExp(Integer studentExp) {
+
+        Connection conn;
+        Statement stat;
+
+        try {
+
+            conn = DatabaseConnection.getConnection();
+            stat = conn.createStatement();
+
+
+            String query = String.format("SELECT * FROM LevelsTable where exp_required <= %d;", studentExp);
+            ResultSet result = stat.executeQuery(query);
+            String name;
+            int expRequired;
+
+            while (result.next()) {
+
+                name = result.getString("level_name");
+                expRequired = result.getInt("exp_required");
+
+                LevelModel level = new LevelModel(name, expRequired);
+                this.addObject(level);
+            }
+            Collections.sort(objectsList, Comparator.comparing(LevelModel::getExpRequired));
+
+            result.close();
+            stat.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return objectsList.get(objectsList.size() - 1);
+    }
+
+
 }
