@@ -66,8 +66,8 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             connection.commit();
             int userId = this.getStudentId(login);
 
-            String query2 = String.format("INSERT INTO StudentsTable (user_id, level_name, class_name)" +
-                                          " VALUES (%d, 'noob', '%s');", userId, className);
+            String query2 = String.format("INSERT INTO StudentsTable (user_id, class_name)" +
+                                          " VALUES (%d, '%s');", userId, className);
 
             statement.executeUpdate(query2);
 
