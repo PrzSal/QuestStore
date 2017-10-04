@@ -29,18 +29,8 @@ public class WalletModel {
         return this.artifactsList;
     }
 
-    public void addCoolCoins(Integer amount) {
-
-        this.coolCoins += amount;
-    }
-
     public void addBoughtArtifact(ArtifactModel artifact) {
 
-        for (ArtifactModel artifactElem : this.artifactsList) {
-            if(artifactElem.equals(artifact)) {
-                artifactElem.setAmount();
-            }
-        }
         if (!this.artifactsList.contains(artifact)) {
             this.artifactsList.add(artifact);
         }
