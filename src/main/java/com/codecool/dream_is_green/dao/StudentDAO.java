@@ -1,6 +1,5 @@
 package com.codecool.dream_is_green.dao;
 
-import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
