@@ -5,10 +5,7 @@ import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
-import com.codecool.dream_is_green.model.PreUserModel;
-import com.codecool.dream_is_green.model.QuestCategoryModel;
-import com.codecool.dream_is_green.model.QuestModel;
-import com.codecool.dream_is_green.model.StudentModel;
+import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.view.*;
 
 
@@ -160,7 +157,9 @@ class MentorController {
         Integer price = uiView.getInputInt("Enter price: ");
         String categoryName = uiView.getInputAllowSpaces("Enter category: ");
         ArtifactDAO artifactDao = new ArtifactDAO();
-        artifactDao.insertArtifact(column, title, price, categoryName, 0);
+        ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
+        ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
+        artifactDao.insertArtifact(column, artifactModel, 0);
     }
 
     private void showSummaryStudentsWallets() {

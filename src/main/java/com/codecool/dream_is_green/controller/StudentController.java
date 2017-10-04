@@ -129,10 +129,10 @@ class StudentController {
         String title = artifactToBuy.getTitle();
         Integer price = artifactToBuy.getPrice();
         ArtifactCategoryModel artifactCategoryModel = artifactToBuy.getCategory();
+        ArtifactModel artifact = new ArtifactModel(title, price, artifactCategoryModel);
         Integer id = studentModel.getUserID();
 
-        artifactDao.insertArtifact("StudentsWithArtifacts", title, price,
-                artifactCategoryModel.toString(), id);
+        artifactDao.insertArtifact("StudentsWithArtifacts", artifact, id);
         ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
         studentModel.getWallet().addBoughtArtifact(newArtifact);
         studentModel.getWallet().removeCoolCoins(artifactPrice);
