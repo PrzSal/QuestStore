@@ -5,19 +5,17 @@ import java.util.LinkedList;
 public class StudentModel extends User {
 
     private Integer experience;
-    private String level;
     private WalletModel wallet;
     private String teamName;
     private String className;
     private LinkedList<QuestModel> questsList;
 
-    public StudentModel(int userID, String name, String surname, String email, String login, String password, String className) {
+    public StudentModel(int userID, String name, String surname, String email, String login, String password, String className, Integer experience) {
 
         super(userID, name, surname, email, login, password);
         this.login = login;
         this.password = password;
-        this.experience = 0;
-        this.level = "noob";
+        this.experience = experience;
         this.wallet = new WalletModel();
         this.teamName = null;
         this.className = className;
@@ -26,6 +24,10 @@ public class StudentModel extends User {
 
     public WalletModel getWallet() {
         return this.wallet;
+    }
+
+    public Integer getExperience() {
+        return experience;
     }
 
     public String toString() {

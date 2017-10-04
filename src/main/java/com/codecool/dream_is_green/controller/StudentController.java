@@ -1,11 +1,13 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
+import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.StudentEnum;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
+import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.ArtifactView;
 import com.codecool.dream_is_green.view.QuestView;
@@ -57,6 +59,11 @@ class StudentController {
 
             case USE_ARTIFACTS :
                 this.useArtifacts(student);
+                uiView.pressToContinue();
+                break;
+
+            case SHOW_LEVEL :
+                this.showStudentLevel(student);
                 uiView.pressToContinue();
                 break;
 
@@ -154,6 +161,12 @@ class StudentController {
         artifactToUse.setIsUsed(state);
         ArtifactDAO artifact = new ArtifactDAO();
         artifact.updateArtifact("StudentsWithArtifacts", state, student.getUserID());
+    }
 
+    private void showStudentLevel(StudentModel student) {
+        LevelDAO levelDao = new LevelDAO();
+        LevelModel level = levelDao.getLevelByStudentExp(student.getExperience());
+        uiView.printMessage("Experience: " + student.getExperience());
+        uiView.printMessage("Your level: " + level.getLevelName());
     }
 }
