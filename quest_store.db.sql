@@ -56,17 +56,17 @@ CREATE TABLE "StudentsTable" (
 	`team_id`	INTEGER,
 	`class_name`	TEXT
 );
-INSERT INTO `StudentsTable` VALUES (3,0,'noob','new','krk17');
-INSERT INTO `StudentsTable` VALUES (4,0,'noob','old','krk16');
-INSERT INTO `StudentsTable` VALUES (8,0,'noob','old','krk17');
-INSERT INTO `StudentsTable` VALUES (9,0,'noob','young','krk17');
+INSERT INTO `StudentsTable` VALUES (3,470,'noob','new','krk17');
+INSERT INTO `StudentsTable` VALUES (4,600,'noob','old','krk16');
+INSERT INTO `StudentsTable` VALUES (8,140,'noob','old','krk17');
+INSERT INTO `StudentsTable` VALUES (9,820,'noob','young','krk17');
 CREATE TABLE "QuestsTable" (
 	`quest_name`	TEXT NOT NULL UNIQUE,
 	`price`	INTEGER NOT NULL,
 	`quest_category`	TEXT NOT NULL
 );
-INSERT INTO `QuestsTable` VALUES ('pass si week',100,'fun');
-INSERT INTO `QuestsTable` VALUES ('take part in reqruit',400,'mentoring');
+INSERT INTO `QuestsTable` VALUES ('pass_si_week',100,'fun');
+INSERT INTO `QuestsTable` VALUES ('take_part_in_reqruit',400,'mentoring');
 CREATE TABLE "QuestCategory" (
 	`quest_category_name`	TEXT NOT NULL UNIQUE
 );
@@ -100,8 +100,8 @@ CREATE TABLE "ArtifactsTable" (
 	`artifact_category`	INTEGER,
 	`state` INTEGER DEFAULT 0
 );
-INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring',0);
-INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('private_mentoring',100,'mentoring',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor_ride_on_elephant',200,'fun',0);
 CREATE TABLE `ArtifactCategory` (
 	`artifact_category_name`	TEXT UNIQUE
 );
