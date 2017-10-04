@@ -7,6 +7,7 @@ import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.MentorModel;
+import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.view.*;
 
 import java.lang.NullPointerException;
@@ -123,7 +124,8 @@ class AdminController {
         String className = view.getInputWithoutSpaces("Enter class name: ");
 
         MentorDAO mentorDao = new MentorDAO();
-        mentorDao.insertMentor(name, surname, email, login, password, className);
+        PreUserModel preMentor = new PreUserModel(name, surname, email, login, password, className);
+        mentorDao.insertMentor(preMentor);
         int userID = mentorDao.getMentorId(login);
         MentorModel mentor = new MentorModel(userID, name, surname, email, login, password, className);
 

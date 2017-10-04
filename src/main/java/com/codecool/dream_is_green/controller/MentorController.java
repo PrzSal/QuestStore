@@ -5,14 +5,11 @@ import com.codecool.dream_is_green.dao.QuestDAO;
 import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.MentorEnum;
-import com.codecool.dream_is_green.model.ArtifactModel;
-import com.codecool.dream_is_green.model.PreStudentModel;
-import com.codecool.dream_is_green.model.StudentModel;
+import com.codecool.dream_is_green.model.*;
 import com.codecool.dream_is_green.view.*;
 
 
 import java.lang.NumberFormatException;
-import java.util.LinkedList;
 
 class MentorController {
 
@@ -138,7 +135,7 @@ class MentorController {
         String className = uiView.getInputWithoutSpaces("Enter class name: ");
 
         StudentDAO studentDao = new StudentDAO();
-        PreStudentModel preStudent = new PreStudentModel(name, surname, email, login, password, className);
+        PreUserModel preStudent = new PreUserModel(name, surname, email, login, password, className);
         studentDao.insertStudent(preStudent);
     }
 
@@ -148,7 +145,9 @@ class MentorController {
         Integer price = uiView.getInputInt("Enter price: ");
         String questCategoryStr = uiView.getInputAllowSpaces("Enter category: ");
         QuestDAO questDao = new QuestDAO();
-        questDao.insertQuest(title, price, questCategoryStr);
+        QuestCategoryModel questCategoryModel = new QuestCategoryModel(questCategoryStr);
+        QuestModel quest = new QuestModel(title, price, questCategoryModel);
+        questDao.insertQuest(quest);
     }
 
     private void addArtifact() {
@@ -158,7 +157,9 @@ class MentorController {
         Integer price = uiView.getInputInt("Enter price: ");
         String categoryName = uiView.getInputAllowSpaces("Enter category: ");
         ArtifactDAO artifactDao = new ArtifactDAO();
-        artifactDao.insertArtifact(column, title, price, categoryName, 0);
+        ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(categoryName);
+        ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategory);
+        artifactDao.insertArtifact(column, artifactModel, 0);
     }
 
     private void showSummaryStudentsWallets() {

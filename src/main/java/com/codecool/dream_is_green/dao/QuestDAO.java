@@ -41,11 +41,13 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         }
     }
 
-    public void insertQuest(String questName, Integer price,  String questCategory) {
+    public void insertQuest(QuestModel quest) {
 
         Connection connection;
         PreparedStatement preparedStatement;
-
+        String questName = quest.getTitle();
+        Integer price = quest.getPrice();
+        String questCategory = quest.getCategory().getName();
         try {
             connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
