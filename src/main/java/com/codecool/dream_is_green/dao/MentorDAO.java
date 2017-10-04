@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.MentorModel;
+import com.codecool.dream_is_green.model.PreUserModel;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -57,11 +58,17 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
     }
 
-    public void insertMentor(String name, String surname, String email,
-                          String login, String password, String className) {
+    public void insertMentor(PreUserModel preMentorModel) {
 
         Connection conn;
         Statement stat;
+
+        String name = preMentorModel.getName();
+        String surname = preMentorModel.getSurname();
+        String email = preMentorModel.getEmail();
+        String login = preMentorModel.getLogin();
+        String password = preMentorModel.getPassword();
+        String className = preMentorModel.getClassName();
 
         try {
             conn = DatabaseConnection.getConnection();
