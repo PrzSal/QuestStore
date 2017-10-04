@@ -1,6 +1,6 @@
 package com.codecool.dream_is_green.model;
 
-public class PreStudentModel {
+public class PreUserModel {
 
     private String name;
     private String surname;
@@ -9,8 +9,8 @@ public class PreStudentModel {
     private String password;
     private String className;
 
-    public PreStudentModel(String name, String surname, String email,
-                           String login, String password, String className) {
+    public PreUserModel(String name, String surname, String email,
+                        String login, String password, String className) {
 
         this.name = name;
         this.surname = surname;

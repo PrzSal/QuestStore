@@ -4,7 +4,7 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-import com.codecool.dream_is_green.model.PreStudentModel;
+import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.model.StudentModel;
 
 public class StudentDAO extends AbstractDAO<StudentModel> {
@@ -47,7 +47,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         }
     }
 
-    public void insertStudent(PreStudentModel preStudentModel) {
+    public void insertStudent(PreUserModel preStudentModel) {
 
         Connection connection;
         Statement statement;
