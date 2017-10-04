@@ -8,6 +8,8 @@ public class StudentView {
                       "2) Buy artifact\n" +
                       "3) Buy artifact in team\n" +
                       "4) Show wallet\n" +
+                      "5) Use artifact\n" +
+                      "6) Show level\n" +
                       "0) EXIT";
 
         System.out.println(menu);

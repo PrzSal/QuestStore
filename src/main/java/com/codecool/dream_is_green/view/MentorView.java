@@ -11,6 +11,8 @@ public class MentorView {
                             + "4. Show quests\n"
                             + "5. Add new artifact\n"
                             + "6. Show artifacts\n"
+                            + "7. Mark artifact\n"
+                            + "8. Show summary students wallets\n"
                             + "0. Exit");
     }
 

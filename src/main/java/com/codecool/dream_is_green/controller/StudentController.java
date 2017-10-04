@@ -1,10 +1,13 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ArtifactDAO;
+import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.QuestDAO;
+import com.codecool.dream_is_green.dao.WalletDAO;
 import com.codecool.dream_is_green.enums.StudentEnum;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
+import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.view.ArtifactView;
 import com.codecool.dream_is_green.view.QuestView;
@@ -54,6 +57,16 @@ class StudentController {
                 uiView.pressToContinue();
                 break;
 
+            case USE_ARTIFACTS :
+                this.useArtifacts(student);
+                uiView.pressToContinue();
+                break;
+
+            case SHOW_LEVEL :
+                this.showStudentLevel(student);
+                uiView.pressToContinue();
+                break;
+
             case EXIT:
                 break;
 
@@ -66,14 +79,20 @@ class StudentController {
 
     void startStudentController(StudentModel student) {
         int operation;
-
+        WalletDAO walletDAO = new WalletDAO();
+        walletDAO.loadCoolcoinsToWallet(student);
+        walletDAO.loadArtifactsToWallet(student);
         do {
             uiView.clearScreen();
             System.out.println("Hello " + student.getName() + "\n");
             studentView.showMenu();
             operation = uiView.getInputInt("Choice option: ");
             uiView.clearScreen();
-            this.startMenu(operation, student);
+            try {
+                this.startMenu(operation, student);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                uiView.printMessage("No option in menu, try again :)");
+            }
         } while (operation != 0);
 
     }
@@ -117,10 +136,13 @@ class StudentController {
         ArtifactModel newArtifact = new ArtifactModel(title, price, artifactCategoryModel);
         studentModel.getWallet().addBoughtArtifact(newArtifact);
         studentModel.getWallet().removeCoolCoins(artifactPrice);
+        WalletDAO walletDAO = new WalletDAO();
+        walletDAO.updateCoolcoins(studentModel);
     }
 
-    private void showWallet(StudentModel student) {
+    void showWallet(StudentModel student) {
         WalletController walletController = new WalletController();
+
         walletController.showWalletContent(student.getWallet());
     }
 
@@ -129,5 +151,22 @@ class StudentController {
         questDao.loadQuest();
         String questDaoString = questDao.toString();
         questView.showQuestList(questDaoString);
+    }
+
+    private void useArtifacts(StudentModel student) {
+        this.showWallet(student);
+        Integer index = uiView.getInputInt("\nEnter index for chosen artifact: ");
+        ArtifactModel artifactToUse = student.getWallet().getArtifactList().get(index);
+        Integer state = 1;
+        artifactToUse.setIsUsed(state);
+        ArtifactDAO artifact = new ArtifactDAO();
+        artifact.updateArtifact("StudentsWithArtifacts", state, student.getUserID());
+    }
+
+    private void showStudentLevel(StudentModel student) {
+        LevelDAO levelDao = new LevelDAO();
+        LevelModel level = levelDao.getLevelByStudentExp(student.getExperience());
+        uiView.printMessage("\033[3;33m Experience: \033[0m" + student.getExperience());
+        uiView.printMessage("\033[3;33m Your level: \033[0m" + level.getLevelName());
     }
 }

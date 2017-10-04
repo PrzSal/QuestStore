@@ -10,7 +10,7 @@ public class WalletModel {
 
     public WalletModel() {
 
-        this.coolCoins = 1000;
+        this.coolCoins = 0;
         this.artifactsList = new LinkedList<ArtifactModel>();
     }
 
@@ -50,11 +50,16 @@ public class WalletModel {
 
         for (ArtifactModel artifact : this.artifactsList) {
             if (artifact.title.equals(name)) {
-                artifact.setIsUsed();
+
+                artifact.setIsUsed(0);
             }
         throw new NullPointerException("Artifact not found \n");
 
         }
 
+    }
+
+    public void setCoolCoins(Integer coolCoins) {
+        this.coolCoins = coolCoins;
     }
 }
