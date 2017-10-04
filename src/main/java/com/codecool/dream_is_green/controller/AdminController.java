@@ -162,7 +162,6 @@ class AdminController {
         int userID = view.getInputInt("Enter mentor ID: ");
         MentorModel mentor = mentorDao.getMentorByID(userID, mentorDao);
         return mentor;
-
     }
 
     private void showMentorList() {

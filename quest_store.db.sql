@@ -52,14 +52,13 @@ CREATE TABLE "StudentsWithArtifacts" (
 CREATE TABLE "StudentsTable" (
 	`user_id`	INTEGER NOT NULL UNIQUE,
 	`experience`	INTEGER DEFAULT 0,
-	`level_name`	TEXT,
 	`team_id`	INTEGER,
 	`class_name`	TEXT
 );
-INSERT INTO `StudentsTable` VALUES (3,470,'noob','new','krk17');
-INSERT INTO `StudentsTable` VALUES (4,600,'noob','old','krk16');
-INSERT INTO `StudentsTable` VALUES (8,140,'noob','old','krk17');
-INSERT INTO `StudentsTable` VALUES (9,820,'noob','young','krk17');
+INSERT INTO `StudentsTable` VALUES (3,470,'new','krk17');
+INSERT INTO `StudentsTable` VALUES (4,600,'old','krk16');
+INSERT INTO `StudentsTable` VALUES (8,140,'old','krk17');
+INSERT INTO `StudentsTable` VALUES (9,820,'young','krk17');
 CREATE TABLE "QuestsTable" (
 	`quest_name`	TEXT NOT NULL UNIQUE,
 	`price`	INTEGER NOT NULL,
