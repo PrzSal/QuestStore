@@ -32,7 +32,6 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
                 name = result.getString("level_name");
                 expRequired = result.getInt("exp_required");
 
-
                 LevelModel level = new LevelModel(name, expRequired);
                 this.addObject(level);
             }
@@ -93,10 +92,8 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         Statement stat;
 
         try {
-
             conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();
-
 
             String query = String.format("SELECT * FROM LevelsTable where exp_required <= %d;", studentExp);
             ResultSet result = stat.executeQuery(query);
@@ -119,7 +116,6 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return objectsList.get(objectsList.size() - 1);
     }
 

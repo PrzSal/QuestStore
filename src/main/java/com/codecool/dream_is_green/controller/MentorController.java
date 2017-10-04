@@ -38,7 +38,6 @@ class MentorController {
              }
 
         } while (operation != 0);
-
     }
 
     private void chooseOption(int operation) {
