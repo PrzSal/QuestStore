@@ -79,29 +79,6 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
-    public void deleteStudent(int id) {
-//        Method ready to use, pass test, but not implemented in controller
-        Connection connection;
-
-            try {
-            connection = DatabaseConnection.getConnection();
-
-            String query1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'student'";
-            String query2 = "DELETE FROM StudentsTable WHERE user_id = ?";
-            PreparedStatement prepStmt1 = connection.prepareStatement(query1);
-            PreparedStatement prepStmt2 = connection.prepareStatement(query2);
-
-            prepStmt1.setInt(1, id);
-            prepStmt2.setInt(1, id);
-            prepStmt1.execute();
-            prepStmt2.execute();
-            prepStmt1.close();
-            prepStmt2.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public int getStudentId(String login) {
 
