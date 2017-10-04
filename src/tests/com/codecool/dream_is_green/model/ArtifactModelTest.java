@@ -41,11 +41,11 @@ class ArtifactModelTest {
         ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel("testName");
         ArtifactModel artifactModel = new ArtifactModel("testTitle", 1200, artifactCategory);
 
-        Integer expected = 1;
-        artifactModel.setIsUsed(expected);
+        Integer valueToTest = 1;
+        artifactModel.setIsUsed(valueToTest);
         Integer actual = artifactModel.getIsUsed();
 
-        assertEquals(expected, actual);
+        assertEquals(valueToTest, actual);
     }
 
 

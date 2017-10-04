@@ -38,6 +38,7 @@ public class WalletModel {
 
         for (ArtifactModel artifactElem : this.artifactsList) {
             if(artifactElem.equals(artifact)) {
+                artifactElem.setAmount();
             }
         }
         if (!this.artifactsList.contains(artifact)) {
