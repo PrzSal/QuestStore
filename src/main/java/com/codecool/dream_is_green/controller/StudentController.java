@@ -166,7 +166,7 @@ class StudentController {
     private void showStudentLevel(StudentModel student) {
         LevelDAO levelDao = new LevelDAO();
         LevelModel level = levelDao.getLevelByStudentExp(student.getExperience());
-        uiView.printMessage("Experience: " + student.getExperience());
-        uiView.printMessage("Your level: " + level.getLevelName());
+        uiView.printMessage("\033[3;33m Experience: \033[0m" + student.getExperience());
+        uiView.printMessage("\033[3;33m Your level: \033[0m" + level.getLevelName());
     }
 }
