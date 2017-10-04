@@ -11,7 +11,7 @@ public class WalletModel {
     public WalletModel() {
 
         this.coolCoins = 0;
-        this.artifactsList = new LinkedList<ArtifactModel>();
+        this.artifactsList = new LinkedList<>();
     }
 
     public void removeCoolCoins(Integer amount) {
@@ -34,19 +34,6 @@ public class WalletModel {
         if (!this.artifactsList.contains(artifact)) {
             this.artifactsList.add(artifact);
         }
-    }
-
-    public void setIsUsed(String name) throws NullPointerException {
-
-        for (ArtifactModel artifact : this.artifactsList) {
-            if (artifact.title.equals(name)) {
-
-                artifact.setIsUsed(0);
-            }
-        throw new NullPointerException("Artifact not found \n");
-
-        }
-
     }
 
     public void setCoolCoins(Integer coolCoins) {
