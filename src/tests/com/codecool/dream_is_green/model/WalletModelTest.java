@@ -1,18 +1,21 @@
 package com.codecool.dream_is_green.model;
 
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WalletModelTest {
+class WalletModelTest {
+
+    private WalletModel wallet;
+
+    @BeforeEach
+    public void initWallet() {
+        this.wallet = new WalletModel();
+    }
 
     @Test
     public void testGetCoolcoins() {
-        WalletModel wallet = new WalletModel();
-
         Integer expected = 0;
         assertEquals(expected, wallet.getCoolCoins());
     }
@@ -20,7 +23,6 @@ public class WalletModelTest {
     @Test
     public void testRemoveCoolcoins() {
         Integer value = 500;
-        WalletModel wallet = new WalletModel();
 
         Integer expected = - value;
         wallet.removeCoolCoins(value);
@@ -30,14 +32,11 @@ public class WalletModelTest {
 
     @Test
     public void isArtifactListEmptyOnInitialize() {
-        WalletModel wallet = new WalletModel();
-
         assertTrue(wallet.getArtifactList().isEmpty());
     }
 
     @Test
     public void testAddArtifacts() {
-        WalletModel wallet = new WalletModel();
         ArtifactModel artifact1 = new ArtifactModel("title1", 500, new ArtifactCategoryModel("catName"));
         ArtifactModel artifact2 = new ArtifactModel("title2", 100, new ArtifactCategoryModel("catName"));
         wallet.addBoughtArtifact(artifact1);
@@ -51,8 +50,6 @@ public class WalletModelTest {
 
     @Test
     public void testSetCoolcoins() {
-        WalletModel wallet = new WalletModel();
-
         Integer value = 200;
         wallet.setCoolCoins(value);
 
