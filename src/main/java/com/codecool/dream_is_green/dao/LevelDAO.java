@@ -12,12 +12,6 @@ import java.util.Comparator;
 
 public class LevelDAO extends AbstractDAO<LevelModel> {
 
-    private DataSource ds;
-
-    public LevelDAO() {
-       // this.ds = ds;
-    }
-
 
     public void loadLevels() {
 
