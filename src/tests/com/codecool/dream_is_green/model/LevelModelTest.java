@@ -1,32 +1,36 @@
 package com.codecool.dream_is_green.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LevelModelTest {
 
+    private LevelModel levelModel;
+
+    @BeforeEach
+    void initLevelModel() {
+        this.levelModel = new LevelModel("testName", 1000);
+    }
+
+
     @Test
     void testGetLevelName() {
-        LevelModel levelModel = new LevelModel("testName", 1000);
-
-        assertEquals("testName", levelModel.getLevelName());
+        assertEquals("testName", this.levelModel.getLevelName());
     }
 
     @Test
     void getExpRequired() {
-        LevelModel levelModel = new LevelModel("testName", 1000);
 
-        Integer actualExpRequired = levelModel.getExpRequired();
+        Integer actualExpRequired = this.levelModel.getExpRequired();
         Integer expectedExpRequired = 1000;
         assertEquals(expectedExpRequired, actualExpRequired);
     }
 
     @Test
     void testToString() {
-        LevelModel levelModel = new LevelModel("testName", 1000);
-
-        assertEquals(String.format("%-16s %-16d", "testName", 1000), levelModel.toString());
+        assertEquals(String.format("%-16s %-16d", "testName", 1000), this.levelModel.toString());
     }
 
 }
