@@ -1,3 +1,5 @@
+package com.codecool.dream_is_green;
+
 import com.codecool.dream_is_green.dao.DatabaseConnection;
 import com.codecool.dream_is_green.controller.LoginPanelController;
 import com.codecool.dream_is_green.dao.FactoryDAO;
