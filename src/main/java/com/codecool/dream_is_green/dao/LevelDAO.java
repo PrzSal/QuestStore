@@ -1,6 +1,8 @@
 package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.LevelModel;
+
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -9,6 +11,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class LevelDAO extends AbstractDAO<LevelModel> {
+
+    private DataSource ds;
+
+    public LevelDAO() {
+       // this.ds = ds;
+    }
 
 
     public void loadLevels() {
