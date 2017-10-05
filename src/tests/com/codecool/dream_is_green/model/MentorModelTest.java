@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +9,8 @@ class MentorModelTest {
 
     private MentorModel mentorModel;
 
-    private MentorModelTest() {
+    @BeforeEach
+    void initMentorModel() {
         this.mentorModel = new MentorModel(1, "testName",
                                           "testSurname", "testEmail",
                                           "testLogin", "testPassword",
