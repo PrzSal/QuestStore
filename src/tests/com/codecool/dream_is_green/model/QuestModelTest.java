@@ -1,10 +1,10 @@
 package com.codecool.dream_is_green.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class QuestModelTest {
+class QuestModelTest {
 
     @Test
     public void toStringFormatTest() {
@@ -14,6 +14,4 @@ public class QuestModelTest {
         assertEquals(String.format("%-24s %-12d %-20s",
                 "questName", 500, "categoryName"), quest.toString());
     }
-
-
 }

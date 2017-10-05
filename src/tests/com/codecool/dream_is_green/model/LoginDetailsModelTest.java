@@ -1,22 +1,28 @@
 package com.codecool.dream_is_green.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class LoginDetailsModelTest {
+class LoginDetailsModelTest {
+    private LoginDetailsModel details;
 
-    @Test
-    public void isUserTypeNotNull() {
-        LoginDetailsModel details = new LoginDetailsModel(
+    @BeforeEach
+    public void initDetails() {
+        this.details = new LoginDetailsModel(
                 "user type", "haslo");
-        assertNotNull(details.getUserType());
     }
 
     @Test
-    public void isUserPasswordNotNull() {
-        LoginDetailsModel details = new LoginDetailsModel(
-                "user type", "haslo");
-        assertNotNull(details.getUserPassword());
+    public void testUserType() {
+        String expected = "user type";
+        assertEquals(expected, this.details.getUserType());
+    }
+
+    @Test
+    public void testUserPassword() {
+        String expected = "haslo";
+        assertEquals(expected, this.details.getUserPassword());
     }
 }
