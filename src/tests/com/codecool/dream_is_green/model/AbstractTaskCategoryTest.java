@@ -1,20 +1,26 @@
 package com.codecool.dream_is_green.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractTaskCategoryTest {
 
+    private AbstractTaskCategory abstractTaskCategory;
+
+    @BeforeEach
+    public void initAbstractTaskCategory() {
+        this.abstractTaskCategory = new AbstractTaskCategory("category");
+    }
+
     @Test
-    public void testNameIsNotNull() {
-        AbstractTaskCategory abstractTaskCategory = new AbstractTaskCategory("category");
-        assertNotNull(abstractTaskCategory.getName());
+    public void testGetName() {
+        assertEquals("category", this.abstractTaskCategory.getName());
     }
 
     @Test
     public void testToString() {
-        AbstractTaskCategory abstractTaskCategory = new AbstractTaskCategory("category");
         assertEquals("category", abstractTaskCategory.toString());
     }
 }
