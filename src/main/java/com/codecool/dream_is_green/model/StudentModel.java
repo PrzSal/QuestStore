@@ -8,7 +8,6 @@ public class StudentModel extends User {
     private WalletModel wallet;
     private String teamName;
     private String className;
-    private LinkedList<QuestModel> questsList;
 
     public StudentModel(int userID, String name, String surname, String email, String login, String password, String className, Integer experience) {
 
@@ -19,7 +18,6 @@ public class StudentModel extends User {
         this.wallet = new WalletModel();
         this.teamName = null;
         this.className = className;
-        this.questsList = new LinkedList<QuestModel>();
     }
 
     public WalletModel getWallet() {

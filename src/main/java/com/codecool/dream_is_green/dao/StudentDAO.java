@@ -4,6 +4,7 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.model.StudentModel;
 
 public class StudentDAO extends AbstractDAO<StudentModel> {
@@ -14,7 +15,6 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
 
             Connection conn = DatabaseConnection.getConnection();
             Statement stat = conn.createStatement();
-
 
             String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
                            " ON UsersTable.user_id = StudentsTable.user_id";
@@ -47,11 +47,17 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         }
     }
 
-    public void insertStudent(String name, String surname, String email,
-                             String login, String password, String className) {
+    public void insertStudent(PreUserModel preStudentModel) {
 
         Connection connection;
         Statement statement;
+
+        String name = preStudentModel.getName();
+        String surname = preStudentModel.getSurname();
+        String email = preStudentModel.getEmail();
+        String login = preStudentModel.getLogin();
+        String password = preStudentModel.getPassword();
+        String className = preStudentModel.getClassName();
 
         try {
             connection = DatabaseConnection.getConnection();
@@ -111,7 +117,6 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
 
             Connection conn = DatabaseConnection.getConnection();
             Statement stat = conn.createStatement();
-
 
             String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
                     " ON UsersTable.user_id = StudentsTable.user_id WHERE login = '" + login + "'";

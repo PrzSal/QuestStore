@@ -41,11 +41,13 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         }
     }
 
-    public void insertArtifact(String table, String artifactName, Integer price,
-                               String artifactCategory, int id) {
+    public void insertArtifact(String table, ArtifactModel artifactModel, Integer id) {
 
         Connection connection;
         Statement statement;
+        String artifactName = artifactModel.getTitle();
+        Integer price = artifactModel.getPrice();
+        String artifactCategory = artifactModel.getCategory().getName();
 
         try {
             connection = DatabaseConnection.getConnection();
