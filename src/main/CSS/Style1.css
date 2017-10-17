@@ -1,3 +1,7 @@
+body {
+    background: url(img/background.png) repeat scroll;
+}
+
 .header {
     display: flex;
     justify-content: center;
