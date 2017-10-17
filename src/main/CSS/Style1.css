@@ -1,3 +1,6 @@
+body {
+    background: url("../HTML/img/background.png");
+}
 #navbar ul, ul li {
     display: block;
     list-style: none;
@@ -15,15 +18,14 @@
 
 #navbar ul li {
     float: left;
-    background: url("../images/button/black_button1.png") no-repeat left top;
+    background: url("../HTML/img/black_button1.png") no-repeat left top;
     margin-right: 50px;
 }
 
 #navbar ul a:link, ul a:visited {
-    font-family: 'allura';
     display: block;
     font-weight: bold;
-    background: url("../images/button/black_button2.png") no-repeat right top;
+    background: url("../HTML/img/black_button2.png") no-repeat right top;
     color: white;
     padding: 15px 39px 15px 30px;
     margin-left: 10px;
