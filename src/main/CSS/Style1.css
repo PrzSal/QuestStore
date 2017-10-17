@@ -1,0 +1,36 @@
+
+#navbar ul, ul li {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navbar ul {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #365;
+    padding-left: 275px;
+    padding-top: 50px;
+}
+
+#navbar ul li {
+    float: left;
+    background: url("../images/button/black_button1.png") no-repeat left top;
+    margin-right: 50px;
+}
+
+#navbar ul a:link, ul a:visited {
+    font-family: 'allura';
+    display: block;
+    font-weight: bold;
+    background: url("../images/button/black_button2.png") no-repeat right top;
+    color: white;
+    padding: 15px 39px 15px 30px;
+    margin-left: 10px;
+}
+
+#navbar ul a:hover {
+    color: red;
+    opacity:0.8;
+}
