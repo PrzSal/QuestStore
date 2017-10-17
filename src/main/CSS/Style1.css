@@ -94,3 +94,95 @@ body {
     text-decoration: none;
     font-weight:bold;
 }
+
+/*
+  ========================================
+  Admin
+  ========================================
+*/
+
+.admin-header {
+    display: flex;
+    justify-content: center;
+    transform: scale(2, 2); /* Standard syntax */
+
+}
+
+
+.admin-menu-bar ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 10px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.admin-menu-bar li a {
+    display: block;
+    float: left;
+    text-align: center;
+    font-size: 1.2em;
+    width: 130px;
+    text-decoration: none;
+    color: aqua;
+    background-color: blue;
+    padding: 10px 15px;
+    margin: 0px 1px 1px 0px;
+    border: 1px solid navy;
+    border-radius: 3px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 0px 2px 3px gray;
+    -moz-box-shadow: 0px 2px 3px gray;
+    -webkit-box-shadow: 0px 2px 3px gray;
+}
+
+.admin-menu-bar li a:hover {
+    color: blue;
+    background: aqua;
+    border: 1px solid blue;
+}
+
+.menu {
+    position: absolute;
+    left: 10px;
+    top: 100px;
+}
+
+#menu0 {
+    width: 200px;
+    margin: 10px;
+    padding: 0;
+
+}
+
+#menu0 dt {
+    background-color: #888;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    margin: 10px 0 0 0;
+    padding: 2px;
+}
+
+#menu0 dd {
+    background-color: #eee;
+    color: #000;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #888;
+    margin: 0;
+    padding: 1px 5px;
+    text-align: center;
+}
+
+#menu0 dd a:link {color:black;text-decoration:none;}
+#menu0 dd a:visited {color:black;}
+#menu0 dd a:hover {color:blue;}
+
+#menu0 dd.active {
+    font-weight: bold;
+}

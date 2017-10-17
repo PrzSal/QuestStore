@@ -4,15 +4,53 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="../CSS/Style1.css">
+    <script type="text/javascript" src="menu.js"></script>
 </head>
 
 <body>
 
-    <div class="header">
-        <img src="img/logo_login.png">
+
+    <div class="admin-header">
+        <img src="img/banner_admin.png">
     </div>
+    <!--
+        <div class="admin-menu-bar">
+            <section>
+                <nav>
+                    <ul>
+                        <li><a href="link">Home</a></li>
+                        <li><a href="link">Create mentor</a></li>
+                        <li><a href="link">Create class</a></li>
+                        <li><a href="link">Create level</a></li>
+                        <li><a href="link">Remove mentor</a></li>
+                        <li><a href="link">Remove level</a></li>
+                        <li><a href="link">Show mentors</a></li>
+                </nav>
+            </section>
+        </div>
+    -->
 
+    <dl id="menu0">
+        <dt>Home</dt>
+        <dt>Show</dt>
+            <dd><a href="https://www.google.pl">Mentors</a></dd>
+            <dd><a href="https://www.wykop.pl">Classes</a></dd>
+            <dd><a href="https://www.meczyki.pl">Levels</a></dd>
+        <dt>Create</dt>
+            <dd>Mentor</dd>
+            <dd>Class</dd>
+            <dd>Level</dd>
+        <dt>Remove</dt>
+            <dd>Mentor</dd>
+            <dd>Class</dd>
+            <dd>Level</dd>
+    </dl>
 
+    <script type="text/javascript">
+        // <![CDATA[
+        new Menu('menu0', 'position: absolute', true, true, 0, 100, 0, 250);
+        // ]]>
+    </script>
 
 </body>
 </html>
