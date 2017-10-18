@@ -1,5 +1,6 @@
 body {
     background: url("img/background.png") repeat scroll;
+    margin: 0;
 }
 #navbar ul, ul li {
     display: block;
@@ -102,66 +103,41 @@ body {
   ========================================
 */
 
-.admin-header {
+.admin-menu-bar {
     display: flex;
-    justify-content: center;
-    transform: scale(2, 2); /* Standard syntax */
-
-}
-
-
-.admin-menu-bar ul {
-    float: left;
+    justify-content: flex-start;
+    background-color: #ffe1d7;
+    position: fixed;
+    top: 0;
     width: 100%;
-    padding: 0;
-    margin: 10px;
-    list-style: none;
-    display: flex;
-    justify-content: center;
 }
-
-.admin-menu-bar li a {
-    display: block;
-    float: left;
-    text-align: center;
-    font-size: 1.2em;
-    width: 130px;
-    text-decoration: none;
-    color: aqua;
-    background-color: blue;
-    padding: 10px 15px;
-    margin: 0px 1px 1px 0px;
-    border: 1px solid navy;
-    border-radius: 3px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    box-shadow: 0px 2px 3px gray;
-    -moz-box-shadow: 0px 2px 3px gray;
-    -webkit-box-shadow: 0px 2px 3px gray;
-}
-
-.admin-menu-bar li a:hover {
-    color: blue;
-    background: aqua;
-    border: 1px solid blue;
-}
-
-.menu {
+.left {
     position: absolute;
-    left: 10px;
-    top: 100px;
+    left: 0;
+    top: 43px;
+    bottom: 0;
+    width: 178px;
+    background: red;
 }
 
-#menu0 {
-    width: 200px;
-    margin: 10px;
-    padding: 0;
-
+.main {
+    position: absolute;
+    left:178px;
+    right:0;
+    top: 43px;
+    bottom:0;
 }
 
-#menu0 dt {
-    background-color: #888;
-    color: #fff;
+#menu0 {width: 10%; margin: -5px; left: 40%; padding: 0;}
+#menu1 {width: 10%; margin: 0px; left: 50%; padding: 0;}
+#menu2 {width: 10%; margin: 0px; left: 60%; padding: 0;}
+#menu3 {width: 10%; margin: 0px; left: 70%; padding: 0;}
+#logout {margin: 0px; right: 0%; padding: 0;}
+
+
+#menu0 dt, #menu1 dt, #menu2 dt, #menu3 dt, #logout dt{
+    display: inline-flex;
+    color: tomato;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
@@ -169,22 +145,23 @@ body {
     padding: 2px;
 }
 
-#menu0 dd {
+#menu0 dd, #menu1 dd, #menu2 dd, #menu3 dd, #logout dd {
     background-color: #eee;
     color: #000;
     border-width: 0 1px 1px 1px;
     border-style: solid;
     border-color: #888;
     margin: 0;
-    padding: 1px 5px;
+    padding: 1px 0px;
     text-align: center;
+
 }
 
-#menu0 dd a:link {color:black;text-decoration:none;}
-#menu0 dd a:visited {color:black;}
-#menu0 dd a:hover {color:blue;}
+#menu0 dd a:link, #menu1 dd a:link, #menu2 dd a:link, #menu3 dd a:link {color:black;text-decoration:none;}
+#menu0 dd a:visited, #menu1 dd a:visited, #menu2 dd a:visited, #menu3 dd a:visited {color:black;}
+#menu0 dd a:hover, #menu1 dd a:hover, #menu2 dd a:hover, #menu3 dd a:hover {color:blue;}
 
-#menu0 dd.active {
+#menu0 dd.active, #menu1 dd.active, #menu2 dd.active, #menu3 dd.active {
     font-weight: bold;
 }
 
