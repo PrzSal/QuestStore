@@ -166,6 +166,7 @@ body {
     width: 100%;
 }
 
+
 /*
   ========================================
   Student
@@ -179,12 +180,14 @@ body {
     background-color: #ffe1d7;
     top: 0;
     width: 100%;
-
 }
 
 .tg {
-    margin-left: 35%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15%;
 }
+
 
 .tg td{
 font-family:Arial, sans-serif;font-size:20px;padding:7px 15px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;

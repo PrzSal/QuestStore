@@ -2,37 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Mentor Show Artifact</title>
     <link rel="stylesheet" href="../CSS/Style1.css">
     <script type="text/javascript" src="menu.js"></script>
 </head>
-
 <body>
 
     <div class="mentor-menu-bar">
         <img src="img/banner_mentor.png">
         <dl id="menu0">
             <dt>
-                <a href=login_page.html>
+                <a href=mentor_home.html>
                     <img border="0" alt="logout" src="img/home-button-mentor.png" width=65%>
                 </a>
             </dt>
         </dl>
         <dl id="menu1">
-            <dt>Add</dt>
-                <dd><a href="https://www.google.pl">Add artifact</a></dd>
-                <dd><a href="https://www.wykop.pl">Add student</a></dd>
-                <dd><a href="https://www.meczyki.pl">Add quest</a></dd>
+            <dt>Student</dt>
+            <dd><a href="mentor_show_student.html">Show students list</a></dd>
+            <dd><a href="mentor_add_student.html">Add new student</a></dd>
+            <dd><a href="mentor_show_wallet.html">Show student wallet</a></dd>
         </dl>
         <dl id="menu2">
-            <dt>Show</dt>
-                <dd><a href="https://www.google.pl">Show  artifact</a></dd>
-                <dd><a href="https://www.wykop.pl">Show student</a></dd>
-                <dd><a href="https://www.meczyki.pl">Show student wallet</a></dd>
-                <dd>Show quest</dd>
+            <dt>Quest</dt>
+            <dd><a href="mentor_show_quest.html">Show quests list</a></dd>
+            <dd><a href="mentor_add_quest.html">Add new quest</a></dd>
         </dl>
         <dl id="menu3">
-            <dt>Mark artifact</dt>
+            <dt>Artifact</dt>
+            <dd><a href="mentor_show_artifact.html">Show artifacts list</a></dd>
+            <dd><a href="mentor_add_artifact.html">Add new artifact</a></dd>
+            <dd><a href="mentor_mark_artifact.html">Mark artifact</a></dd>
         </dl>
         <dl id="logout">
             <a href=login_page.html>
@@ -40,36 +40,6 @@
             </a>
         </dl>
     </div>
-
-    <!-- Sidebar -->
-    <div class="left">
-        LEFT
-    </div>
-
-    <div class="table">
-
-        <table class="tg">
-            <tr>
-                <th class="tg-gkax">Name</th>
-                <th class="tg-gkax">Surname</th>
-                <th class="tg-gkax">Collected Artifacts</th>
-                <th class="tg-gkax">Collected Coolcoins</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">Marek</td>
-                <td class="tg-gkax">Nowak</td>
-                <td class="tg-gkax">Private Mentoring</td>
-                <td class="tg-gkax">300</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">Tomasz</td>
-                <td class="tg-gkax">Olszewski</td>
-                <td class="tg-gkax">Absent Day</td>
-                <td class="tg-gkax">600</td>
-            </tr>
-        </table>
-    </div>
-
 
     <script type="text/javascript">
         // <![CDATA[
@@ -81,117 +51,41 @@
         // ]]>
     </script>
 
-</body>
-</html>
+    <!-- Sidebar -->
+    <div class="left">
+        <img border="0" alt="logout" src="img/power_admin.png" width=65%>
+    </div>
 
-    <!-- <div class="table"> -->
+    <!-- Main content -->
+    <div class="main">
 
-    <!-- show level -->
-        <!-- <table class="tg">
-            <tr>
-                <th class="tg-gkax">Level name</th>
-                <th class="tg-gkax">Experience required</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">noob</td>
-                <td class="tg-gkax">200</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">fullstack</td>
-                <td class="tg-gkax">500</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">junior java developer</td>
-                <td class="tg-gkax">350</td>
-            </tr>
-        </table>
-    </div> -->
-    <!-- show student -->
-    <!-- <div class="table">
+        <!-- show artifacts-->
+        <div class="table">
+            <table class="tg">
+                <tr>
+                    <th class="tg-gkax">No.</th>
+                    <th class="tg-gkax">Title</th>
+                    <th class="tg-gkax">Price</th>
+                    <th class="tg-gkax">Category</th>
+                    <th class="tg-gkax">Is used</th>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">1.</td>
+                    <td class="tg-gkax">Private Mentoring</td>
+                    <td class="tg-gkax">125</td>
+                    <td class="tg-gkax">Learning</td>
+                    <td class="tg-gkax"></td>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">2.</td>
+                    <td class="tg-gkax">Absent Day</td>
+                    <td class="tg-gkax">500</td>
+                    <td class="tg-gkax">Holiday</td>
+                    <td class="tg-gkax"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-
-        <table class="tg">
-
-            <tr>
-                <th class="tg-gkax">Nr.</th>
-                <th class="tg-gkax">UserId</th>
-                <th class="tg-gkax">Name</th>
-                <th class="tg-gkax">Surname</th>
-                <th class="tg-gkax">Email</th>
-                <th class="tg-gkax">Class Name</th>
-                <th class="tg-gkax">Team Name</th>
-                <th class="tg-gkax">Login</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">1</td>
-                <td class="tg-gkax">Marek</td>
-                <td class="tg-gkax">Nowak</td>
-                <td class="tg-gkax">mnowak@gmail.com</td>
-                <td class="tg-gkax">krk 2017-1</td>
-                <td class="tg-gkax">Dream Is Green</td>
-                <td class="tg-gkax">mnowak</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">6</td>
-                <td class="tg-gkax">Tomasz</td>
-                <td class="tg-gkax">Wiśniewski</td>
-                <td class="tg-gkax">twisniewski@op.pl</td>
-                <td class="tg-gkax">krk 2016-1</td>
-                <td class="tg-gkax">Coolerzy</td>
-                <td class="tg-gkax">twisniewski</td>
-            </tr>
-        </table>
-    </div> -->
-    <!-- show artifacts
-    <div class="table">
-        <table class="tg">
-            <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Category</th>
-                <th class="tg-gkax">Is used</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">Private Mentoring</td>
-                <td class="tg-gkax">125</td>
-                <td class="tg-gkax">Learning</td>
-                <td class="tg-gkax"></td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">Absent Day</td>
-                <td class="tg-gkax">500</td>
-                <td class="tg-gkax">Holiday</td>
-                <td class="tg-gkax"></td>
-            </tr>
-        </table>
-    </div> -->
-    <!-- show quest -->
-    <!-- <div class="table">
-        <table class="tg">
-            <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Category</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">Checkpoint</td>
-                <td class="tg-gkax">500</td>
-                <td class="tg-gkax">Learning</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">Help with events</td>
-                <td class="tg-gkax">150</td>
-                <td class="tg-gkax">Volunteering</td>
-            </tr>
-        </table>
-    </div> -->
 </body>
 </html>
