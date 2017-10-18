@@ -130,5 +130,31 @@ body {
     font-weight: bold;
 }
 
+/*
+  ========================================
+  Student
+  ========================================
+*/
 
+.student-header {
+    background: url("../HTML/img/banner_student.png") repeat scroll;
+    display: block;
+    justify-content: center;
+    transform: scale(2, 2); /* Standard syntax */
+}
+.tg {
+    margin-left: 35%;
+    
+   
+}
+
+.tg td{
+font-family:Arial, sans-serif;font-size:20px;padding:7px 15px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
+.tg th{
+font-family:Arial, sans-serif;font-size:20px;font-weight:normal;padding:7px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+}
+.tg .tg-gkax{
+font-family:Verdana, Geneva, sans-serif !important;;background-color:#3399FF;text-align:center;vertical-align:top}.tg  {border-collapse:collapse;border-spacing:0;
+}
 
