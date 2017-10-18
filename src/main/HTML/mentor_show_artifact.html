@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentor Show Artifact</title>
+    <link rel="stylesheet" href="../CSS/Style1.css">
+    <script type="text/javascript" src="menu.js"></script>
+</head>
+<body>
+
+    <div class="mentor-menu-bar">
+        <img src="img/banner_mentor.png">
+        <dl id="menu0">
+            <dt>
+                <a href=mentor_home.html>
+                    <img border="0" alt="logout" src="img/home-button-mentor.png" width=65%>
+                </a>
+            </dt>
+        </dl>
+        <dl id="menu1">
+            <dt>Student</dt>
+                <dd><a href="mentor_show_student.html">Show students list</a></dd>
+                <dd><a href="mentor_add_student.html">Add new student</a></dd>
+                <dd><a href="mentor_show_wallet.html">Show student wallet</a></dd>
+        </dl>
+        <dl id="menu2">
+            <dt>Quest</dt>
+                <dd><a href="mentor_show_quest.html">Show quests list</a></dd>
+                <dd><a href="mentor_add_quest.html">Add new quest</a></dd>
+        </dl>
+        <dl id="menu3">
+            <dt>Artifact</dt>
+                <dd><a href="mentor_show_artifact.html">Show artifacts list</a></dd>
+                <dd><a href="mentor_add_artifact.html">Add new artifact</a></dd>
+                <dd><a href="mentor_mark_artifact.html">Mark artifact</a></dd>
+        </dl>
+        <dl id="logout">
+            <a href=login_page.html>
+                <img border="0" alt="logout" src="img/power_mentor.png" width=65%>
+            </a>
+        </dl>
+    </div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+        // ]]>
+    </script>
+
+    <!-- Sidebar -->
+    <div class="left">
+        <img border="0" alt="logout" src="img/power_admin.png" width=65%>
+    </div>
+
+    <!-- Main content -->
+    <div class="main">
+
+        <!-- show artifacts-->
+        <div class="table">
+            <table class="tg">
+                <tr>
+                    <th class="tg-gkax">No.</th>
+                    <th class="tg-gkax">Title</th>
+                    <th class="tg-gkax">Price</th>
+                    <th class="tg-gkax">Category</th>
+                    <th class="tg-gkax">Is used</th>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">1.</td>
+                    <td class="tg-gkax">Private Mentoring</td>
+                    <td class="tg-gkax">125</td>
+                    <td class="tg-gkax">Learning</td>
+                    <td class="tg-gkax"></td>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">2.</td>
+                    <td class="tg-gkax">Absent Day</td>
+                    <td class="tg-gkax">500</td>
+                    <td class="tg-gkax">Holiday</td>
+                    <td class="tg-gkax"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
