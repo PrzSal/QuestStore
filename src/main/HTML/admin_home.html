@@ -9,46 +9,101 @@
 
 <body>
 
-
-    <div class="admin-header">
+    <div class="admin-menu-bar">
         <img src="img/banner_admin.png">
+        <dl id="menu0">
+            <dt>
+                <a href=login_page.html>
+                    <img border="0" alt="logout" src="img/home-button-admin.png" width=65%>
+                </a>
+            </dt>
+        </dl>
+        <dl id="menu1">
+            <dt>Mentor</dt>
+                <dd><a href="https://www.google.pl">Show mentors list</a></dd>
+                <dd><a href="https://www.wykop.pl">Add new mentor</a></dd>
+                <dd><a href="https://www.meczyki.pl">Remove mentor</a></dd>
+        </dl>
+        <dl id="menu2">
+            <dt>Class</dt>
+                <dd>Show classes list</dd>
+                <dd>Add new class</dd>
+                <dd>Remove class</dd>
+        </dl>
+        <dl id="menu3">
+            <dt>Level</dt>
+                <dd>Show levels list</dd>
+                <dd>Create new level</dd>
+                <dd>Remove level</dd>
+        </dl>
+        <dl id="logout">
+            <a href=login_page.html>
+                <img border="0" alt="logout" src="img/power_admin.png" width=65%>
+            </a>
+        </dl>
     </div>
-    <!--
-        <div class="admin-menu-bar">
-            <section>
-                <nav>
-                    <ul>
-                        <li><a href="link">Home</a></li>
-                        <li><a href="link">Create mentor</a></li>
-                        <li><a href="link">Create class</a></li>
-                        <li><a href="link">Create level</a></li>
-                        <li><a href="link">Remove mentor</a></li>
-                        <li><a href="link">Remove level</a></li>
-                        <li><a href="link">Show mentors</a></li>
-                </nav>
-            </section>
-        </div>
-    -->
 
-    <dl id="menu0">
-        <dt>Home</dt>
-        <dt>Show</dt>
-            <dd><a href="https://www.google.pl">Mentors</a></dd>
-            <dd><a href="https://www.wykop.pl">Classes</a></dd>
-            <dd><a href="https://www.meczyki.pl">Levels</a></dd>
-        <dt>Create</dt>
-            <dd>Mentor</dd>
-            <dd>Class</dd>
-            <dd>Level</dd>
-        <dt>Remove</dt>
-            <dd>Mentor</dd>
-            <dd>Class</dd>
-            <dd>Level</dd>
-    </dl>
+    <!-- Sidebar -->
+    <div class="left">
+        LEFT
+    </div>
+
+    <div class="main">
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+        <p>Test text</p>
+    </div>
+
+
 
     <script type="text/javascript">
         // <![CDATA[
-        new Menu('menu0', 'position: absolute', true, true, 0, 100, 0, 250);
+        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
         // ]]>
     </script>
 
