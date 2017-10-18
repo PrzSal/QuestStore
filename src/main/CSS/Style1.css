@@ -2,41 +2,6 @@ body {
     background: url("img/background.png") repeat scroll;
     margin: 0;
 }
-#navbar ul, ul li {
-    display: block;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#navbar ul {
-    float: left;
-    width: 100%;
-    border-bottom: 1px solid #365;
-    padding-left: 275px;
-    padding-top: 50px;
-    margin-bottom: 25%;
-}
-
-#navbar ul li {
-    float: left;
-    background: url("../HTML/img/black_button1.png") no-repeat left top;
-    margin-right: 50px;
-}
-
-#navbar ul a:link, ul a:visited {
-    display: block;
-    font-weight: bold;
-    background: url("../HTML/img/black_button2.png") no-repeat right top;
-    color: white;
-    padding: 15px 39px 15px 30px;
-    margin-left: 10px;
-}
-
-#navbar ul a:hover {
-    color: red;
-    opacity:0.8;
-}
 
 .header {
     display: flex;
@@ -104,39 +69,39 @@ body {
 */
 
 .admin-menu-bar {
+    position: fixed;
     display: flex;
     justify-content: flex-start;
     background-color: #ffe1d7;
-    position: fixed;
     top: 0;
     width: 100%;
+
 }
 .left {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 43px;
     bottom: 0;
     width: 178px;
     background: red;
+    text-align: center;
 }
 
 .main {
-    position: absolute;
-    left:178px;
-    right:0;
-    top: 43px;
-    bottom:0;
+    margin-left:178px;
+    margin-right:0;
+    margin-top: 43px;
+    margin-bottom: 0;
 }
 
-#menu0 {width: 10%; margin: -5px; left: 40%; padding: 0;}
-#menu1 {width: 10%; margin: 0px; left: 50%; padding: 0;}
-#menu2 {width: 10%; margin: 0px; left: 60%; padding: 0;}
-#menu3 {width: 10%; margin: 0px; left: 70%; padding: 0;}
-#logout {margin: 0px; right: 0%; padding: 0;}
+#menu0 {width: 4%; margin: -5px; left: 40%;}
+#menu1 {width: 10%; margin: 0px; left: 50%;}
+#menu2 {width: 10%; margin: 0px; left: 60%;}
+#menu3 {width: 10%; margin: 0px; left: 70%;}
+#logout {width: 4%; margin: 5px; right: 0%; padding: 0;}
 
 
 #menu0 dt, #menu1 dt, #menu2 dt, #menu3 dt, #logout dt{
-    display: inline-flex;
     color: tomato;
     font-weight: bold;
     text-align: center;
@@ -148,7 +113,7 @@ body {
 #menu0 dd, #menu1 dd, #menu2 dd, #menu3 dd, #logout dd {
     background-color: #eee;
     color: #000;
-    border-width: 0 1px 1px 1px;
+    border-width: 0px 1px 1px 1px;
     border-style: solid;
     border-color: #888;
     margin: 0;
