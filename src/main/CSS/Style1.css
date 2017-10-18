@@ -164,6 +164,19 @@ body {
 #menu0 dd.active, #menu1 dd.active, #menu2 dd.active, #menu3 dd.active {
     font-weight: bold;
 }
+/*
+  ========================================
+  Mentor
+  ========================================
+*/
+.mentor-menu-bar {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #3399ff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
 
 /*
   ========================================
@@ -171,14 +184,18 @@ body {
   ========================================
 */
 
-.student-header {
-    background: url("../HTML/img/banner_student.png") repeat scroll;
-    display: block;
-    justify-content: center;
-    transform: scale(2, 2); /* Standard syntax */
+.student-menu-bar {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #99ff66;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
+
 .tg {
-    margin-left: 35%;
+    margin-left: 25%;
+    margin-top: 20%;
     
    
 }
@@ -187,7 +204,7 @@ body {
 font-family:Arial, sans-serif;font-size:20px;padding:7px 15px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
 }
 .tg th{
-font-family:Arial, sans-serif;font-size:20px;font-weight:normal;padding:7px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
+font-family: Verdana, sans-serif;font-size:25px;font-weight:bold;padding:7px 40px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;
 }
 .tg .tg-gkax{
 font-family:Verdana, Geneva, sans-serif !important;;background-color:#3399FF;text-align:center;vertical-align:top}.tg  {border-collapse:collapse;border-spacing:0;
