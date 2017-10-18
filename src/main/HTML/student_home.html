@@ -2,113 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Student Home</title>
     <link rel="stylesheet" href="../CSS/Style1.css">
+    <script type="text/javascript" src="menu.js"></script>
 </head>
 <body>
-    <div class="student-header">
-        <ul></ul>
+
+    <div class="student-menu-bar">
+        <img src="img/banner_student.png">
+        <dl id="menu0">
+            <dt>
+                <a href=login_page.html>
+                    <img border="0" alt="logout" src="img/home-button-student.png" width=65%>
+                </a>
+            </dt>
+        </dl>
+        <dl id="menu1">
+            <dt>Quest</dt>
+                <dd><a href="https://www.google.pl">Show quests list</a></dd>
+                <dd><a href="https://www.wykop.pl">Do quest</a></dd>
+        </dl>
+        <dl id="menu2">
+            <dt>Artifacts</dt>
+                <dd><a href="https://www.google.pl">Show artifacts list</a></dd>
+                <dd><a href="https://www.wykop.pl">Buy artifact</a></dd>
+                <dd><a href="https://www.meczyki.pl">Buy artifact in team</a></dd>
+                <dd><a href="https://www.wykop.pl">Use artifact</a></dd>
+        </dl>
+        <dl id="menu3">
+            <dt>Wallet</dt>
+        </dl>
+        <dl id="menu4">
+            <dt>Level</dt>
+        </dl>
+        <dl id="logout">
+            <a href=login_page.html>
+                <img border="0" alt="logout" src="img/power_admin.png" width=65%>
+            </a>
+        </dl>
     </div>
-    <div id="navbar">
-        <ul>
-            <li><a href="" id="button">HOME</a></li>
-            <li><a href="" id="button">Show quests</a></li>
-            <li><a href="" id="button">Buy artifact</a></li>
-            <li><a href="" id="button">Buy artifact in team</a></li>
-            <li><a href="" id="button">Show wallet</a></li>
-            <li><a href="" id="button">Use artifact</a></li>
-            <li><a href="" id="button">Show level</a></li>
-            <li><a href="" id="logout">Logout</a></li>
-        </ul>
 
+    <script type="text/javascript">
+        // <![CDATA[
+        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu4', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+        // ]]>
+    </script>
+
+    <!-- Sidebar -->
+    <div class="left">
+        <img border="0" alt="logout" src="img/power_admin.png" width=65%>
     </div>
 
-    <div class="table">
+    <!-- Main content -->
+    <div class="main">
+        <p>Test text 1</p>
+        <p>Test text 2</p>
+    </div>
 
-    <!-- show level -->
-        <!-- <table class="tg">
-            <tr>
-                <th class="tg-gkax">Level name</th>
-                <th class="tg-gkax">Experience required</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">noob</td>
-                <td class="tg-gkax">200</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">fullstack</td>
-                <td class="tg-gkax">500</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">junior java developer</td>
-                <td class="tg-gkax">350</td>
-            </tr>
-        </table>
-    </div> -->
-    <!-- show student -->
-    <!-- <div class="table">
-
-
-        <table class="tg">
-
-            <tr>
-                <th class="tg-gkax">Nr.</th>
-                <th class="tg-gkax">User Id</th>
-                <th class="tg-gkax">Name</th>
-                <th class="tg-gkax">Surname</th>
-                <th class="tg-gkax">Email</th>
-                <th class="tg-gkax">Class Name</th>
-                <th class="tg-gkax">Team Name</th>
-                <th class="tg-gkax">Login</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">1</td>
-                <td class="tg-gkax">Marek</td>
-                <td class="tg-gkax">Nowak</td>
-                <td class="tg-gkax">mnowak@gmail.com</td>
-                <td class="tg-gkax">krk 2017-1</td>
-                <td class="tg-gkax">Dream Is Green</td>
-                <td class="tg-gkax">mnowak</td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">6</td>
-                <td class="tg-gkax">Tomasz</td>
-                <td class="tg-gkax">Wiśniewski</td>
-                <td class="tg-gkax">twisniewski@op.pl</td>
-                <td class="tg-gkax">krk 2016-1</td>
-                <td class="tg-gkax">Coolerzy</td>
-                <td class="tg-gkax">twisniewski</td>
-            </tr>
-        </table>
-    </div> -->
-    <!-- show artifacts
-    <div class="table">
-        <table class="tg">
-            <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Category</th>
-                <th class="tg-gkax">Is used</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">Private Mentoring</td>
-                <td class="tg-gkax">125</td>
-                <td class="tg-gkax">Learning</td>
-                <td class="tg-gkax"></td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">Absent Day</td>
-                <td class="tg-gkax">500</td>
-                <td class="tg-gkax">Holiday</td>
-                <td class="tg-gkax"></td>
-            </tr>
-        </table>
-    </div> -->
     <!-- show quest -->
     <div class="table">
         <table class="tg">
@@ -132,5 +87,6 @@
             </tr>
         </table>
     </div>
+
 </body>
 </html>
