@@ -1,5 +1,5 @@
 body {
-    background: url("img/background_pattern.jpg");
+    background: url("img/back_klocki.jpg");
     margin: 0;
 }
 
@@ -182,10 +182,10 @@ body {
     align-items: center;
     position: fixed;
     left: 0;
-    top: 63px;
+    top: 60px;
     bottom: 0;
     width: 220px;
-    background: url("img/background.png") repeat scroll;
+    background-color: whitesmoke;
     text-align: center;
     box-shadow: 1px 1px 10px #888888;
 }
