@@ -8,7 +8,31 @@ body {
     justify-content: center;
 }
 
-.login-form {
+.user_photo img {
+    width: 100%;
+    height: auto;
+    border: 2px solid grey;
+}
+
+
+.user_photo {
+    margin-top: 20px;
+    width: 80%;
+}
+
+.form-in {
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    background-color:#fff;
+    border:2px solid #ccc;
+    border-radius:15px;
+    padding: 30px 50px;
+    margin-top: 10%;
+    transform: scale(0.85, 0.85); /* Standard syntax */
+}
+
+.form {
     width:260px;
     margin:0 auto;
     background-color:#fff;
@@ -20,16 +44,16 @@ body {
 
 }
 
-.login-form label {
+.form label, form-in label {
     display:block;
     margin-bottom:5px;
     font-weight:bold;
     text-transform: uppercase;
-    font-size:12px;
+    font-size:20px;
     color:#555555;
 }
 
-.login-form textarea, .login-form input, .login-form select {
+.form textarea, .form input, .form select, .form-in textarea, .form-in input, .form-in select {
     padding:5px;
     border-radius:3px;
     border:1px solid #ccc;
@@ -37,26 +61,26 @@ body {
     width:245px;
 }
 
-.login-form select {
+.form select, .form-in select {
     display: flex;
     justify-content: center;
 }
 
-.login-form input#submit {
+.form input#submit, .form-in input#submit {
     width:50%;
     cursor: pointer;
     margin-bottom:0px;
 
 }
 
-.login-form p.copy {
+.form p.copy, .form-in p.copy {
     color:#555555;
     margin-bottom:0px;
     font-size:12px;
     text-align: center;
 }
 
-.login-form p.copy a {
+.form p.copy a, .form-in p.copy a {
     color:#555555;
     text-decoration: none;
     font-weight:bold;
@@ -77,10 +101,10 @@ body {
 
 
 #menu0 dt, #menu1 dt, #menu2 dt, #menu3 dt, #menu4 dt, #logout dt{
-    color: black;
+    color: #323232;
     font-weight: lighter;
     text-align: center;
-    font-family: "Dingbats";
+    font-family: "Verdana";
     font-size: 20px;
     cursor: pointer;
     margin: 10px 0 0 0;
@@ -143,6 +167,8 @@ body {
 }
 
 .left {
+    display: flex;
+    justify-content: center;
     position: fixed;
     left: 0;
     top: 63px;
@@ -150,7 +176,7 @@ body {
     width: 220px;
     background: url("img/hexagonal-pattern_1051-833.jpg") repeat scroll;
     text-align: center;
-    box-shadow: 1px 1px 50px #888888;
+    box-shadow: 1px 1px 10px #888888;
 }
 
 .banner {
