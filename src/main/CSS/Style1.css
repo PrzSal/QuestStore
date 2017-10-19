@@ -1,5 +1,5 @@
 body {
-    background: url("img/background_pattern.jpg");
+    background: url("img/back_klocki.jpg");
     margin: 0;
 }
 
@@ -180,10 +180,10 @@ body {
     justify-content: center;
     position: fixed;
     left: 0;
-    top: 63px;
+    top: 60px;
     bottom: 0;
     width: 220px;
-    background: url("img/background.png") repeat scroll;
+    background-color: whitesmoke;
     text-align: center;
     box-shadow: 1px 1px 10px #888888;
 }
@@ -225,8 +225,8 @@ body {
     margin-top: 20%;
 }
 tbody{
-    border-radius: 10px;
-    border: 3px solid #a8a8a8;
+    border-radius: 3px;
+    border: 2px solid #a8a8a8;
     background-color: white;
 }
 
