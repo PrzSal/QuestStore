@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="../../CSS/Style1.css">
+    <script type="text/javascript" src="../menu.js"></script>
+</head>
+
+<body>
+
+<div class="top-menu-bar">
+    <div class="banner">
+        <img src="../img/banner_admin.png">
+    </div>
+
+    <dl id="menu0">
+        <dt>
+            <a href=../login_page.html>
+                <img border="0" alt="logout" src="../img/home-button-admin.png" width=65%>
+            </a>
+        </dt>
+    </dl>
+    <dl id="menu1">
+        <dt>Mentor</dt>
+        <dd><a href="https://www.google.pl">Show mentors list</a></dd>
+        <dd><a href="https://www.wykop.pl">Add new mentor</a></dd>
+        <dd><a href="https://www.meczyki.pl">Remove mentor</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Class</dt>
+        <dd>Show classes list</dd>
+        <dd>Add new class</dd>
+        <dd>Remove class</dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Level</dt>
+        <dd>Show levels list</dd>
+        <dd>Create new level</dd>
+        <dd>Remove level</dd>
+    </dl>
+    <dl id="logout">
+        <a href=login_page.html>
+            <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+        </a>
+    </dl>
+</div>
+
+<script type="text/javascript">
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
+
+<!-- Sidebar -->
+<div class="left">
+    <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    <div class="table">
+        <table class="tg">
+            <tr>
+                <th class="tg-gkax">Nr.</th>
+                <th class="tg-gkax">UserId</th>
+                <th class="tg-gkax">Name</th>
+                <th class="tg-gkax">Surname</th>
+                <th class="tg-gkax">Email</th>
+                <th class="tg-gkax">Class Name</th>
+                <th class="tg-gkax">Login</th>
+            </tr>
+            <tr>
+                <td class="tg-gkax">1.</td>
+                <td class="tg-gkax">3</td>
+                <td class="tg-gkax">Agnieszka</td>
+                <td class="tg-gkax">Koszany</td>
+                <td class="tg-gkax">akoszany@codecool.com</td>
+                <td class="tg-gkax">krk 2017-1</td>
+                <td class="tg-gkax">akoszany</td>
+            </tr>
+            <tr>
+                <td class="tg-gkax">2.</td>
+                <td class="tg-gkax">5</td>
+                <td class="tg-gkax">Mateusz</td>
+                <td class="tg-gkax">Ostrafil</td>
+                <td class="tg-gkax">mostafil@codecool.com</td>
+                <td class="tg-gkax">krk 2017-1</td>
+                <td class="tg-gkax">mostafil</td>
+            </tr>
+            <tr>
+                <td class="tg-gkax">3.</td>
+                <td class="tg-gkax">8</td>
+                <td class="tg-gkax">Mateusz</td>
+                <td class="tg-gkax">Steliga</td>
+                <td class="tg-gkax">msteliga@codecool.com</td>
+                <td class="tg-gkax">krk 2017-1</td>
+                <td class="tg-gkax">msteliga</td>
+            </tr>
+            <tr>
+                <td class="tg-gkax">4.</td>
+                <td class="tg-gkax">11</td>
+                <td class="tg-gkax">Rafal</td>
+                <td class="tg-gkax">Stepien</td>
+                <td class="tg-gkax">mstepien@codecool.com</td>
+                <td class="tg-gkax">krk 2016-1</td>
+                <td class="tg-gkax">rstepien</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="footer">
+    This footer will always be positioned at the bottom of the page,
+    but <strong>not fixed</strong>.
+</div>
+
+</body>
