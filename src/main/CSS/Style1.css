@@ -68,18 +68,6 @@ body {
   ========================================
 */
 
-.top-menu-bar {
-    background: url("img/upper_menu_bar.png") repeat scroll;
-    position: fixed;
-    display: flex;
-    justify-content: flex-start;
-    background-color: #ffe1d7;
-    top: 0;
-    width: 100%;
-    height: 65px;
-
-}
-
 #menu0 {width: 4%; margin: 3px; left: 40%;}
 #menu1 {width: 10%; margin: 8px; left: 50%;}
 #menu2 {width: 10%; margin: 8px; left: 60%;}
@@ -87,11 +75,12 @@ body {
 #menu4 {width: 10%; margin: 8px; left: 80%;}
 #logout {width: 4%; margin: 12px; right: -1%; padding: 0;}
 
-
-
 #menu0 dt, #menu1 dt, #menu2 dt, #menu3 dt, #menu4 dt, #logout dt{
-    font-weight: bold;
+    color: black;
+    font-weight: lighter;
     text-align: center;
+    font-family: "Dingbats";
+    font-size: 20px;
     cursor: pointer;
     margin: 10px 0 0 0;
     padding: 2px;
@@ -132,18 +121,47 @@ body {
   ========================================
 */
 
-.left {
+
+.top-menu-bar {
     position: fixed;
-    left: 0;
-    top: 65px;
+    display: flex;
+    justify-content: flex-start;
+    background-color: white;
+    box-shadow: 1px 1px 50px #888888;
+    top: 0;
+    width: 100%;
+    height: 60px;
+}
+
+.footer {
+    position: fixed;
+    right: 0;
     bottom: 0;
-    width: 220px;
-    background: red;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    box-shadow: 1px 1px 50px #888888;
     text-align: center;
 }
 
+.left {
+    position: fixed;
+    left: 0;
+    top: 63px;
+    bottom: 0;
+    width: 220px;
+    background: url("img/hexagonal-pattern_1051-833.jpg") repeat scroll;
+    text-align: center;
+    box-shadow: 1px 1px 50px #888888;
+}
+
+.banner {
+    position: fixed;
+    top:5px;
+}
+
 .main {
-    margin-left:220px;
+    margin-left:225px;
     margin-right:0;
     margin-top: 65px;
     margin-bottom: 0;
