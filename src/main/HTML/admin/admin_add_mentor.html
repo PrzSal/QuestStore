@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Home</title>
+    <title>Admin Add Mentor</title>
     <link rel="stylesheet" href="../../CSS/Style1.css">
     <script type="text/javascript" src="../menu.js"></script>
 </head>
@@ -23,9 +23,9 @@
         </dl>
         <dl id="menu1">
             <dt>Mentor</dt>
-                <dd><a href="admin_show_mentors.html">Show mentors list</a></dd>
-                <dd><a href="admin_add_mentor.html">Add new mentor</a></dd>
-                <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+            <dd><a href="admin_show_mentors.html">Show mentors list</a></dd>
+            <dd><a href="admin_add_mentor.html">Add new mentor</a></dd>
+            <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
         </dl>
         <dl id="menu2">
             <dt>Class</dt>
@@ -65,26 +65,33 @@
 
     <!-- Main content -->
     <div class="main">
-        <p>Test text 1</p>
-        <p>Test text 2</p>
-        <p>Test text 3</p>
-        <p>Test text 4</p>
-        <p>Test text 5</p>
-        <p>Test text 6</p>
-        <p>Test text 7</p>
-        <p>Test text 8</p>
-        <p>Test text 9</p>
-        <p>Test text 10</p>
-        <p>Test text 11</p>
-        <p>Test text 12</p>
-        <p>Test text 13</p>
-        <p>Test text 14</p>
-        <p>Test text 15</p>
-        <p>Test text 16</p>
-        <p>Test text 17</p>
-        <p>Test text 18</p>
-        <p>Test text 19</p>
-        <p>Test text 20</p>
+        <div class="form-in">
+            <form>
+                <label>Name: </label>
+                <input name="name" placeholder="enter name...">
+
+                <label>Surname: </label>
+                <input name="surname" placeholder="enter surname...">
+
+                <label>Email: </label>
+                <input name="email" placeholder="enter email...">
+
+                <label>Login: </label>
+                <input name="login" placeholder="enter login...">
+
+                <label>Password: </label>
+                <input name="password" placeholder="enter password...">
+
+                <label for="class name">Class name</label>
+                <select id="class name" name="class name">
+                    <option value="australia">Miskolc 2017.1</option>
+                    <option value="canada">Budapest 2017.1</option>
+                    <option value="usa">Cracow 2017.1</option>
+                </select>
+
+                <input id="submit" name="submit" type="submit"  value="Create">
+            </form>
+        </div>
     </div>
 
     <div class="footer">
