@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="../../CSS/Style1.css">
+    <script type="text/javascript" src="../menu.js"></script>
+</head>
+
+<body>
+
+<div class="top-menu-bar">
+    <div class="banner">
+        <img src="../img/banner_admin.png">
+    </div>
+
+    <dl id="menu0">
+        <dt>
+            <a href=../login_page.html>
+                <img border="0" alt="logout" src="../img/home-button-admin.png" width=65%>
+            </a>
+        </dt>
+    </dl>
+    <dl id="menu1">
+        <dt>Mentor</dt>
+        <dd><a href="admin_show_mentors.html">Show mentors list</a></dd>
+        <dd><a href="https://www.wykop.pl">Add new mentor</a></dd>
+        <dd><a href="https://www.meczyki.pl">Remove mentor</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Class</dt>
+        <dd><a href="admin_show_class.html">Show classes list<a/></dd>
+        <dd>Add new class</dd>
+        <dd>Remove class</dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Level</dt>
+        <dd><a href="admin_show_levels.html">Show levels list</a></dd>
+        <dd>Create new level</dd>
+        <dd>Remove level</dd>
+    </dl>
+    <dl id="logout">
+        <a href=login_page.html>
+            <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+        </a>
+    </dl>
+</div>
+
+<script type="text/javascript">
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
+
+<!-- Sidebar -->
+<div class="left">
+    <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    <div class="table">
+
+        Show Levels
+        <table class="tg">
+
+                <th class="tg-gkax">Level name</th>
+                <th class="tg-gkax">Experience required</th>
+                <tr>
+                    <td class="tg-gkax">noob</td>
+                    <td class="tg-gkax">200</td>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">fullstack</td>
+                    <td class="tg-gkax">500</td>
+                </tr>
+                <tr>
+                    <td class="tg-gkax">junior java developer</td>
+                    <td class="tg-gkax">350</td>
+                </tr>
+        </table>
+    </div>
+</div>
+
+<div class="footer">
+    This footer will always be positioned at the bottom of the page,
+    but <strong>not fixed</strong>.
+</div>
+
+</body>
