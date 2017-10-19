@@ -2,84 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="../CSS/Style1.css">
-    <script type="text/javascript" src="menu.js"></script>
+    <title>Student show artifact</title>
+    <link rel="stylesheet" href="../../CSS/Style1.css">
+    <script type="text/javascript" src="../menu.js"></script>
 </head>
-
 <body>
 
-    <div class="student-menu-bar">
-        <img src="img/banner_student.png">
-        <dl id="menu0">
-            <dt>
-                <a href=login_page.html>
-                    <img border="0" alt="logout" src="img/home-button-student.png" width=65%>
-                </a>
-            </dt>
-        </dl>
-        <dl id="menu1">
-            <dt>Show</dt>
-                <dd><a href="https://www.google.pl">Show level</a></dd>
-                <dd><a href="https://www.wykop.pl">Show quest</a></dd>
-                <dd><a href="https://www.meczyki.pl">Show wallet</a></dd>
-        </dl>
-        <dl id="menu2">
-            <dt>Buy</dt>
-                <dd>Buy artifact</dd>
-                <dd>Buy artifact in team</dd>
-        </dl>
-        <dl id="menu3">
-            <dt>Use artifact</dt>
-        </dl>
-        <dl id="logout">
+<div class="top-menu-bar">
+    <img src="../img/banner_student.png">
+    <dl id="menu0">
+        <dt>
             <a href=login_page.html>
-                <img border="0" alt="logout" src="img/power_student.png" width=65%>
+                <img border="0" alt="logout" src="../img/home-button-student.png" width=65%>
             </a>
-        </dl>
-    </div>
+        </dt>
+    </dl>
+    <dl id="menu1">
+        <dt>Quest</dt>
+        <dd><a href="https://www.google.pl">Show quests list</a></dd>
+        <dd><a href="https://www.wykop.pl">Do quest</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Artifacts</dt>
+        <dd><a href="https://www.google.pl">Show artifacts list</a></dd>
+        <dd><a href="https://www.wykop.pl">Buy artifact</a></dd>
+        <dd><a href="https://www.meczyki.pl">Buy artifact in team</a></dd>
+        <dd><a href="https://www.wykop.pl">Use artifact</a></dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Wallet</dt>
+    </dl>
+    <dl id="menu4">
+        <dt>Level</dt>
+    </dl>
+    <dl id="logout">
+        <a href=login_page.html>
+            <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+        </a>
+    </dl>
+</div>
 
-    <!-- Sidebar -->
-    <div class="left">
-        LEFT
-    </div>
+<script type="text/javascript">
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu4', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
 
-    <div class="table">
-        <table class="tg">
-            <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Category</th>
-                <th class="tg-gkax">Is used</th>
-            </tr>
-            <tr>
-                <td class="tg-gkax">1.</td>
-                <td class="tg-gkax">Private Mentoring</td>
-                <td class="tg-gkax">125</td>
-                <td class="tg-gkax">Learning</td>
-                <td class="tg-gkax"></td>
-            </tr>
-            <tr>
-                <td class="tg-gkax">2.</td>
-                <td class="tg-gkax">Absent Day</td>
-                <td class="tg-gkax">500</td>
-                <td class="tg-gkax">Holiday</td>
-                <td class="tg-gkax"></td>
-            </tr>
-        </table>
-    </div>
+<!-- Sidebar -->
+<div class="left">
+    <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+</div>
 
-
-    <script type="text/javascript">
-        // <![CDATA[
-        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
-        // ]]>
-    </script>
+<!-- Main content -->
+<div class="main">
+</div>
 
 </body>
 </html>
