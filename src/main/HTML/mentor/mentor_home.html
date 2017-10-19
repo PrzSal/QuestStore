@@ -5,6 +5,11 @@
     <title>Mentor Home</title>
     <link rel="stylesheet" href="../../CSS/Style1.css">
     <script type="text/javascript" src="../menu.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="../../CSS/calendar.css">
 </head>
 <body>
 
@@ -53,35 +58,20 @@
 
     <!-- Sidebar -->
     <div class="left">
-        <img border="0" alt="logout" src="../img/power_admin.png" width=65%>
+        <div class="user_photo">
+            <img border="0" alt="logout" src="../img/22406434_1446787205399703_6551331845013894306_n.jpg" width=100%>
+        </div>
+
+        <div class="calendar-wrapper">
+            <button id="btnPrev" type="button">Prev</button>
+            <button id="btnNext" type="button">Next</button>
+            <div id="divCal"></div>
+        </div>
     </div>
 
     <!-- Main content -->
     <div class="main">
 
-    <!-- show quest -->
-        <div class="table">
-            <table class="tg">
-                <tr>
-                    <th class="tg-gkax">No.</th>
-                    <th class="tg-gkax">Title</th>
-                    <th class="tg-gkax">Price</th>
-                    <th class="tg-gkax">Category</th>
-                </tr>
-                <tr>
-                    <td class="tg-gkax">1.</td>
-                    <td class="tg-gkax">Checkpoint</td>
-                    <td class="tg-gkax">500</td>
-                    <td class="tg-gkax">Learning</td>
-                </tr>
-                <tr>
-                    <td class="tg-gkax">2.</td>
-                    <td class="tg-gkax">Help with events</td>
-                    <td class="tg-gkax">150</td>
-                    <td class="tg-gkax">Volunteering</td>
-                </tr>
-            </table>
-        </div>
     </div>
 
     <div class="footer">
@@ -89,7 +79,9 @@
         but <strong>not fixed</strong>.
     </div>
 
-        <!-- <div class="table"> -->
+    <script src="../calendar.js"></script>
+
+    <!-- <div class="table"> -->
 
         <!-- show level -->
         <!-- <table class="tg">
