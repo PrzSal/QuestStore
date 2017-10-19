@@ -126,12 +126,14 @@ body {
 */
 
 .admin-menu-bar {
+    background: url("img/upper_menu_bar.png") repeat scroll;
     position: fixed;
     display: flex;
     justify-content: flex-start;
     background-color: #ffe1d7;
     top: 0;
     width: 100%;
+    height: 65px;
 
 }
 .left {
