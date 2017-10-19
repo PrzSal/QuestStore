@@ -239,3 +239,8 @@ tbody :hover{
     background-color: #999999;
     opacity: 0.8;
 }
+.text2 {
+    font-size: 25px;
+    text-align: center;
+    margin-top: 2%;
+}
