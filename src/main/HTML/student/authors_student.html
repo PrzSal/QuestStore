@@ -2,48 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Show Classes</title>
+    <title>Student Home</title>
     <link rel="stylesheet" href="../../CSS/Style1.css">
+    <link rel='shortcut icon' type='image/x-icon' href='../img/favicon.png'/>
     <script type="text/javascript" src="../menu.js"></script>
 
-    <link rel='shortcut icon' type='image/x-icon' href='../img/favicon.png'/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="../../CSS/calendar.css">
 </head>
-
 <body>
 
 <div class="top-menu-bar">
     <div class="banner">
         <img src="../img/banner_admin.png">
     </div>
-
     <dl id="menu0">
         <dt>
-            <a href=admin_home.html>
+            <a href=student_home.html>
                 <i class="fa fa-home" aria-hidden="true"></i>
             </a>
         </dt>
     </dl>
     <dl id="menu1">
-        <dt>Mentor</dt>
-        <dd><a href="admin_show_mentors.html">Show mentors list</a></dd>
-        <dd><a href="admin_add_mentor.html">Add new mentor</a></dd>
-        <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+        <dt>Quest</dt>
+        <dd><a href=student_show_quest.html>Show quests list</a></dd>
+        <dd><a href=student_do_quest.html>Do quest</a></dd>
     </dl>
     <dl id="menu2">
-        <dt>Class</dt>
-        <dd><a href="admin_show_classes.html">Show classes list</a></dd>
-        <dd><a href="admin_add_class.html">Add new class</a></dd>
-        <dd><a href="admin_remove_class.html">Remove class</a></dd>
+        <dt>Artifacts</dt>
+        <dd><a href="student_show_artifact.html">Show artifacts list</a></dd>
+        <dd><a href="student_buy_artifact.html">Buy artifact</a></dd>
+        <dd><a href="student_buy_artifact_team.html">Buy artifact in team</a></dd>
+        <dd><a href="student_use_artifact.html">Use artifact</a></dd>
     </dl>
     <dl id="menu3">
-        <dt>Level</dt>
-        <dd><a href="admin_show_levels.html">Show levels list</a></dd>
-        <dd><a href="admin_create_level.html">Create new level</a></dd>
-        <dd><a href="admin_remove_level.html">Remove level</a></dd>
+        <dt><a href="student_show_wallet.html">Wallet</a></dt>
+    </dl>
+    <dl id="menu4">
+        <dt><a href="student_show_level.html">Level</a></dt>
     </dl>
     <dl id="logout">
         <dt>
@@ -60,6 +58,7 @@
     new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu4', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
     // ]]>
 </script>
@@ -67,7 +66,7 @@
 <!-- Sidebar -->
 <div class="left">
     <div class="user_photo">
-        <img border="0" alt="logout" src="../img/rafon.jpg" width=100%>
+        <img border="0" alt="logout" src="../img/pietrek.jpg" width=100%>
     </div>
 
     <div class="calendar-wrapper">
@@ -78,37 +77,22 @@
 </div>
 
 <!-- Main content -->
-<div class="main">
-    <div class="table">
-        <table class="tg">
-                <div class="text">Classes list</div>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Class</th>
-                <tr>
-                    <td class="tg-gkax">1</td>
-                    <td class="tg-gkax">Bud 2016-1</td>
-                </tr>
-                <tr>
-                    <td class="tg-gkax">2</td>
-                    <td class="tg-gkax">Krk 2016-1</td>
-                </tr>
-                <tr>
-                    <td class="tg-gkax">3</td>
-                    <td class="tg-gkax">Krk 2017-1</td>
-                </tr>
-                <tr>
-                    <td class="tg-gkax">4</td>
-                    <td class="tg-gkax">Krk 2017-2</td>
-                </tr>
-        </table>
+<div class="main-home">
+    <div class="home_img">
+        <div class="autumn-welcome">
+            <p>AUTHORS</p>
+        </div>
+        <br>
+        <img border="0" alt="home_img" src="../img/dream_team.png" width=20%>
     </div>
 </div>
 
-<<div class="footer">
+<div class="footer">
     © 2017 Codecool. All rights reserved. <br>
-    <a href=authors_admin.html> About authors ツ </a>
+    <a href=authors_student.html> About authors ツ </a>
 </div>
 
 <script src="../calendar.js"></script>
 
 </body>
+</html>
