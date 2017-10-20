@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../CSS/Style1.css">
     <script type="text/javascript" src="../menu.js"></script>
 
+    <link rel='shortcut icon' type='image/x-icon' href='../img/favicon.png'/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
@@ -18,7 +19,7 @@
     <dl id="menu0">
         <dt>
             <a href=mentor_home.html>
-                <img border="0" alt="logout" src="../img/home-button-mentor.png" width=65%>
+                <i class="fa fa-home" aria-hidden="true"></i>
             </a>
         </dt>
     </dl>
@@ -40,9 +41,11 @@
         <dd><a href="mentor_mark_artifact.html">Mark artifact</a></dd>
     </dl>
     <dl id="logout">
-        <a href=../login_page.html>
-            <img border="0" alt="logout" src="../img/power_mentor.png" width=65%>
-        </a>
+        <dt>
+            <a href=../login_page.html>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+        </dt>
     </dl>
 </div>
 
@@ -71,6 +74,20 @@
 
 <!-- Main content -->
 <div class="main">
+    <div class="form-in">
+        <form>
+            <label>Artifact name</label>
+            <input name="name" placeholder="artifact name...">
+
+            <label> Price </label>
+            <input name="price" placeholder="price...">
+
+            <label> Category </label>
+            <input name="category" placeholder="category...">
+
+            <input id="submit" name="submit" type="submit"  value="Add">
+        </form>
+    </div>
 </div>
 
 <div class="footer">
