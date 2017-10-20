@@ -25,20 +25,20 @@ body {
     margin: auto;
     text-align: center;
     background-color:#fff;
-    border:2px solid #ccc;
+    border: 2px solid #ccc;
     border-radius:2px;
     padding: 30px 50px;
-    margin-top: 10%;
-    transform: scale(0.85, 0.85); /* Standard syntax */
+    margin-top: 0px;
+    transform: scale(0.85, 0.85);
 }
 
 .form {
     width:260px;
     margin:0 auto;
     background-color:#fff;
-    border:2px solid #ccc;
+    border: 2px solid #ccc;
     border-radius:10px;
-    padding:20px;
+    padding: 20px;
     margin-top: 0px;
     transform: scale(0.85, 0.85); /* Standard syntax */
 
@@ -201,6 +201,13 @@ body {
     margin-bottom: 0;
 }
 
+.main header {
+    margin-top: 10%;
+    text-align: center;
+    font-size: 30px;
+    color: white;
+}
+
 /*
   ========================================
   Mentor
@@ -220,7 +227,7 @@ body {
 }
 
 .text {
-    font-size: 25px;
+    font-size: 30px;
     text-align: center;
     margin-top: 20%;
     color: white;
@@ -251,7 +258,7 @@ body {
 }
 
 .text2 {
-    font-size: 25px;
+    font-size: 30px;
     text-align: center;
     margin-top: 2%;
     color: white;
