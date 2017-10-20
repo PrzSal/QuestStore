@@ -8,6 +8,25 @@ body {
     justify-content: center;
 }
 
+.autumn-welcome {
+    color: white;
+    font-family: "Verdana";
+    font-size: 20px;
+    margin-left: 42%;
+}
+
+.home_img img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #888888;
+    box-shadow: 1px 1px 6px white;
+}
+
+
+.home_img {
+    width: 70%;
+}
+
 .user_photo img {
     width: 100%;
     height: auto;
@@ -191,7 +210,18 @@ body {
 
 .banner {
     position: fixed;
-    top:5px;
+    box-shadow: 1px 1px 10px #888888;
+    padding: 13px;
+}
+
+.main-home {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin-left:300px;
+    margin-right:0;
+    margin-top: 120px;
+    margin-bottom: 0;
 }
 
 .main {
