@@ -212,6 +212,7 @@ body {
     position: fixed;
     box-shadow: 1px 1px 10px #888888;
     padding: 13px;
+    background-color: whitesmoke;
 }
 
 .main-home {
