@@ -94,12 +94,12 @@ body {
   ========================================
 */
 
-#menu0 {width: 10%; margin: -4px; left: 40%;}
-#menu1 {width: 10%; margin: 5px; left: 49%;}
-#menu2 {width: 10%; margin: 5px; left: 60%;}
-#menu3 {width: 10%; margin: 5px; left: 70%;}
-#menu4 {width: 10%; margin: 8px; left: 80%;}
-#logout {width: 10%; margin: -4px; right: -2%;}
+#menu0 {width: 10%; margin: -4px; left: 38%;}
+#menu1 {width: 12%; margin: 5px; left: 46%;}
+#menu2 {width: 12%; margin: 5px; left: 58%;}
+#menu3 {width: 12%; margin: 5px; left: 70%;}
+#menu4 {width: 12%; margin: 5px; left: 82%;}
+#logout {width: 12%; margin: -4px; right: -2%;}
 
 #menu0 dt, #menu1 dt, #menu2 dt, #menu3 dt, #menu4 dt, #logout dt{
     color: #323232;
@@ -116,17 +116,16 @@ body {
 #logout dt{font-size: 40px; color: black}
 
 #menu0 dd, #menu1 dd, #menu2 dd, #menu3 dd, #menu4 dd, #logout dd {
-    background-color: #eee;
+    background-color: white;
     color: #000;
     border-width: 0px 1px 1px 1px;
     font-family: "Verdana";
     font-weight: lighter;
     border-style: solid;
-    border-color: #888;
+    border-color: black;
     margin: 0;
     padding: 1px 0px;
     text-align: center;
-
 }
 
 #menu0 dt a:link, #menu1 dt a:link, #menu2 dt a:link, #menu3 dt a:link, #menu4 dt a:link, #logout dt a:link,
@@ -224,6 +223,7 @@ body {
     font-size: 25px;
     text-align: center;
     margin-top: 20%;
+    color: white;
 }
 
 .table tbody{
@@ -254,6 +254,7 @@ body {
     font-size: 25px;
     text-align: center;
     margin-top: 2%;
+    color: white;
 }
 
 
