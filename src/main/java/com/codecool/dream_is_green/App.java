@@ -1,11 +1,10 @@
 package com.codecool.dream_is_green;
 
+import com.codecool.dream_is_green.controller.controllers.AdminController;
 import com.codecool.dream_is_green.controller.controllers.Static2;
-import com.codecool.dream_is_green.controller.controllers.StudentController;
 import com.codecool.dream_is_green.dao.DatabaseConnection;
 import com.codecool.dream_is_green.controller.LoginPanelController;
 import com.codecool.dream_is_green.dao.FactoryDAO;
-import com.codecool.dream_is_green.model.ClassModel;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.net.InetSocketAddress;
 public class App {
 
     public static void main(String[] args) {
-        StudentController.getClassModels().add(new ClassModel("krk-2017-1"));
         // create a server on port 8000
         HttpServer server = null;
         try {
@@ -24,7 +22,7 @@ public class App {
         }
 
         // set routes
-        server.createContext("/students", new StudentController());
+        server.createContext("/show_class", new AdminController());
         server.createContext("/static", new Static2());
         server.setExecutor(null); // creates a default executor
 

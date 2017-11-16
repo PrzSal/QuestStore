@@ -1,21 +1,17 @@
 package com.codecool.dream_is_green.controller.controllers;
 
-
-import com.codecool.dream_is_green.model.ClassModel;
+import com.codecool.dream_is_green.dao.ClassDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
 
-public class StudentController implements HttpHandler {
-    static ArrayList<ClassModel> classModels = new ArrayList<>();
+public class AdminController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -34,9 +30,12 @@ public class StudentController implements HttpHandler {
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/students.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_classes.html.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("classModels", classModels);
+
+        ClassDAO classDao = new ClassDAO();
+        classDao.loadClasses();
+        model.with("classModels", classDao.getObjectList());
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -53,11 +52,12 @@ public class StudentController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            classModels.add(parseFormData(formData));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/students/\" />";
+            ClassDAO classDao = new ClassDAO();
+            classDao.insertClass(parseFormData(formData));
+            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/show_class/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.html.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("redirect", redirect);
         String response = template.render(model);
@@ -91,7 +91,7 @@ public class StudentController implements HttpHandler {
         return actionData;
     }
 
-    private ClassModel parseFormData(String formData) {
+    private String parseFormData(String formData) {
         System.out.println(formData);
         String className;
 
@@ -103,10 +103,6 @@ public class StudentController implements HttpHandler {
             return null;
         }
 
-        return new ClassModel(className);
-    }
-
-    public static ArrayList<ClassModel> getClassModels() {
-        return classModels;
+        return className;
     }
 }
