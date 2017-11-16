@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller.controllers;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
+import com.codecool.dream_is_green.dao.MentorDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
@@ -19,10 +20,14 @@ public class AdminController implements HttpHandler {
         Map<String, String> actionData = parseURI(uri.getPath());
 
         for (String action : actionData.keySet()) {
-            if (action.equals("add")) {
+            if (action.equals("add_class")) {
                 add(httpExchange);
             } else if (action.equals("edit")) {
                 edit(httpExchange, actionData.get(action));
+            } else if (action.equals("show_classes")) {
+                showClasses(httpExchange);
+            }  else if (action.equals("show_mentors")) {
+                showMentors(httpExchange);
             } else {
                 index(httpExchange);
             }
@@ -30,12 +35,39 @@ public class AdminController implements HttpHandler {
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_home.html.twig");
+        JtwigModel model = JtwigModel.newModel();
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private void showClasses(HttpExchange httpExchange) throws IOException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_classes.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        ClassDAO classDao = new ClassDAO();
-        classDao.loadClasses();
-        model.with("classModels", classDao.getObjectList());
+        ClassDAO classDAO = new ClassDAO();
+        classDAO.loadClasses();
+        model.with("classModels", classDAO.getObjectList());
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+
+    private void showMentors(HttpExchange httpExchange) throws IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_mentors.html.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        MentorDAO mentorDAO = new MentorDAO();
+        mentorDAO.loadMentors();
+        model.with("mentorModels", mentorDAO.getObjectList());
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -54,7 +86,7 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
             classDao.insertClass(parseFormData(formData));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/show_class/\" />";
+            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.html.twig");

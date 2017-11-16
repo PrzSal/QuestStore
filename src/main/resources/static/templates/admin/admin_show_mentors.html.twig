@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Add Class</title>
+    <title>Show Mentors</title>
     <link rel="stylesheet" href="/static/css/Style1.css">
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
@@ -26,7 +26,6 @@
             </a>
         </dt>
     </dl>
-
     <dl id="menu1">
         <dt>Mentor</dt>
         <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
@@ -56,49 +55,54 @@
 
 
 <script type="text/javascript">
-        // <![CDATA[
-        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
-        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
-        // ]]>
-    </script>
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
 
-    <!-- Sidebar -->
-    <div class="left">
-        <div class="user_photo">
-            <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
-        </div>
-
-        <div class="calendar-wrapper">
-            <button id="btnPrev" type="button">Prev</button>
-            <button id="btnNext" type="button">Next</button>
-            <div id="divCal"></div>
-        </div>
+<!-- Sidebar -->
+<div class="left">
+    <div class="user_photo">
+        <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
     </div>
 
-    <!-- Main content -->
-    <div class="main">
+    <div class="calendar-wrapper">
+        <button id="btnPrev" type="button">Prev</button>
+        <button id="btnNext" type="button">Next</button>
+        <div id="divCal"></div>
+    </div>
+</div>
 
-        <header>Add new class</header>
-        <div class="form-in">
+<!-- Main content -->
+<div class="main">
 
+    <div class="table">
+        <table class="tg">
+            <div class="text">Mentors list</div>
 
-            <form method="POST">
-                First name:<br>
-                <input type="text" name="className"><br>
+            {% for mentor in mentorModels %}
+                <tr>
+                    <td class="tg-gkax">{{ mentor.userID }}</td>
+                    <td class="tg-gkax">{{ mentor.name }}</td>
+                    <td class="tg-gkax">{{ mentor.surname }}</td>
+                    <td class="tg-gkax">{{ mentor.email }}</td>
+                    <td class="tg-gkax">{{ mentor.login }}</td>
+                    <td class="tg-gkax">{{ mentor.className }}</td>
+                </tr>
 
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+            {% endfor %}
+        </table>
     </div>
 
-    <div class="footer">
-        ? 2017 Codecool. All rights reserved. <br>
-        <a href=authors_admin.html> About authors ? </a>
-    </div>
+<div class="footer">
+    ? 2017 Codecool. All rights reserved. <br>
+    <a href=authors_admin.html> About authors ? </a>
+</div>
 
-    <script src="/static/js/calendar.js"></script>
+<script src="/static/js/calendar.js"></script>
 </body>
 </html>

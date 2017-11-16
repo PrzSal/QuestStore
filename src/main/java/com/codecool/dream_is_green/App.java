@@ -22,7 +22,7 @@ public class App {
         }
 
         // set routes
-        server.createContext("/show_class", new AdminController());
+        server.createContext("/admin", new AdminController());
         server.createContext("/static", new Static2());
         server.setExecutor(null); // creates a default executor
 
