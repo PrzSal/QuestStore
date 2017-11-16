@@ -3,6 +3,7 @@ package com.codecool.dream_is_green.controller.controllers;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
+import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.MentorModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 import com.sun.net.httpserver.HttpExchange;
@@ -33,6 +34,8 @@ public class AdminController implements HttpHandler {
                 addMentor(httpExchange);
             } else if (action.equals("show_mentors")) {
                 showMentors(httpExchange);
+            } else if (action.equals("add_level")) {
+                addLevel(httpExchange);
             } else if (action.equals("show_levels")) {
                 showLevels(httpExchange);
             } else {
@@ -107,6 +110,33 @@ public class AdminController implements HttpHandler {
         MentorDAO mentorDAO = new MentorDAO();
         mentorDAO.loadMentors();
         model.with("mentorModels", mentorDAO.getObjectList());
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private void addLevel(HttpExchange httpExchange) throws IOException {
+        String method = httpExchange.getRequestMethod();
+        String redirect = "";
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            String levelName = parseFormData(formData).get(0);
+            String expRequired = parseFormData(formData).get(1);
+            LevelDAO levelDAO = new LevelDAO();
+            LevelModel levelModel = new LevelModel(levelName, Integer.valueOf(expRequired));
+            levelDAO.insertLevel(levelModel);
+            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
+        }
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_create_level.html.twig");
+        JtwigModel model = JtwigModel.newModel();
+        model.with("redirect", redirect);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());

@@ -64,6 +64,7 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
 
             stat.executeUpdate(statement);
 
+
             stat.close();
             conn.commit();
 
