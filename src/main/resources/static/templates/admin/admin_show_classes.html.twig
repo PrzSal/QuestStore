@@ -29,7 +29,7 @@
     <dl id="menu1">
         <dt>Mentor</dt>
         <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
-        <dd><a href="admin_add_mentor.html">Add new mentor</a></dd>
+        <dd><a href="/admin/add_mentor">Add new mentor</a></dd>
         <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
     </dl>
     <dl id="menu2">
@@ -40,7 +40,7 @@
     </dl>
     <dl id="menu3">
         <dt>Level</dt>
-        <dd><a href="admin_show_levels.html">Show levels list</a></dd>
+        <dd><a href="/admin/show_levels">Show levels list</a></dd>
         <dd><a href="admin_create_level.html">Create new level</a></dd>
         <dd><a href="admin_remove_level.html">Remove level</a></dd>
     </dl>
@@ -82,12 +82,15 @@
 
     <div class="table">
         <table class="tg">
-                <div class="text">Classes list</div>
+            <div class="text">Classes list</div>
 
+                    <td class="tg-gkax">Nr.</td>
+                    <td class="tg-gkax">Class Name</td>
+                
                 {% for class in classModels %}
                      <tr>
-                     <td class="tg-gkax">{{ class.className }}</td>
-
+                         <td class="tg-gkax">{{ loop.index }}</td>
+                         <td class="tg-gkax">{{ class.className }}</td>
                      </tr>
 
                 {% endfor %}
