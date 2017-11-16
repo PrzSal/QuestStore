@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller.controllers;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
+import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.model.MentorModel;
 import com.codecool.dream_is_green.model.PreUserModel;
@@ -30,8 +31,10 @@ public class AdminController implements HttpHandler {
                 showClasses(httpExchange);
             } else if (action.equals("add_mentor")) {
                 addMentor(httpExchange);
-            }  else if (action.equals("show_mentors")) {
+            } else if (action.equals("show_mentors")) {
                 showMentors(httpExchange);
+            } else if (action.equals("show_levels")) {
+                showLevels(httpExchange);
             } else {
                 index(httpExchange);
             }
@@ -104,6 +107,21 @@ public class AdminController implements HttpHandler {
         MentorDAO mentorDAO = new MentorDAO();
         mentorDAO.loadMentors();
         model.with("mentorModels", mentorDAO.getObjectList());
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+  
+    private void showLevels(HttpExchange httpExchange) throws IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_levels.html.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        LevelDAO levelDAO = new LevelDAO();
+        levelDAO.loadLevels();
+        model.with("levelModels", levelDAO.getObjectList());
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
