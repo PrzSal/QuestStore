@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Home</title>
+    <title>Admin Add Level</title>
     <link rel="stylesheet" href="/static/css/Style1.css">
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
@@ -26,6 +26,7 @@
             </a>
         </dt>
     </dl>
+
     <dl id="menu1">
         <dt>Mentor</dt>
         <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
@@ -78,18 +79,22 @@
 </div>
 
 <!-- Main content -->
+<div class="main">
+
+    <header>Add new level</header>
+    <div class="form-in">
 
 
-<!-- Main content -->
-<div class="main-home">
-    <div class="home_img">
-        <div class="autumn-welcome">
-            <p>ADMIN PANEL</p>
-        </div>
-        <br>
-        <img border="0" alt="home_img" src="/static/img/autumn.png" width=20%>
+        <form method="POST">
+            <label>Level Name </label><br>
+            <input type="text" name="levelName" placeholder="enter level name..." required> <br>
+            <label>Expected Required </label><br>
+            <input type="text" name="expRequired" placeholder="enter expected required..." required> <br>
+            <input type="submit" value="Submit">
+        </form>
     </div>
 </div>
+
 <div class="footer">
     ? 2017 Codecool. All rights reserved. <br>
     <a href=authors_admin.html> About authors ? </a>
@@ -97,4 +102,3 @@
 
 <script src="/static/js/calendar.js"></script>
 </body>
-</html>
