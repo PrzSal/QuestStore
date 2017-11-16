@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Show Mentors</title>
+    <title>Admin Add Class</title>
     <link rel="stylesheet" href="/static/css/Style1.css">
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
@@ -55,47 +55,47 @@
 
 
 <script type="text/javascript">
-    // <![CDATA[
-    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
-    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
-    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
-    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
-    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
-    // ]]>
-</script>
+        // <![CDATA[
+        new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+        new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+        // ]]>
+    </script>
 
-<!-- Sidebar -->
-<div class="left">
-    <div class="user_photo">
-        <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
+    <!-- Sidebar -->
+    <div class="left">
+        <div class="user_photo">
+            <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
+        </div>
+
+        <div class="calendar-wrapper">
+            <button id="btnPrev" type="button">Prev</button>
+            <button id="btnNext" type="button">Next</button>
+            <div id="divCal"></div>
+        </div>
     </div>
 
-    <div class="calendar-wrapper">
-        <button id="btnPrev" type="button">Prev</button>
-        <button id="btnNext" type="button">Next</button>
-        <div id="divCal"></div>
-    </div>
-</div>
+    <!-- Main content -->
+    <div class="main">
 
-<!-- Main content -->
-<div class="main">
+        <div class="table">
+            <table class="tg">
+                <div class="text">Level list</div>
 
-    <div class="table">
-        <table class="tg">
-            <div class="text">Mentors list</div>
+                <td class="tg-gkax">Level name</td>
+                <td class="tg-gkax">Experience required</td>
 
-            {% for mentor in mentorModels %}
-                <tr>
-                    <td class="tg-gkax">{{ mentor.userID }}</td>
-                    <td class="tg-gkax">{{ mentor.name }}</td>
-                    <td class="tg-gkax">{{ mentor.surname }}</td>
-                    <td class="tg-gkax">{{ mentor.email }}</td>
-                    <td class="tg-gkax">{{ mentor.login }}</td>
-                    <td class="tg-gkax">{{ mentor.className }}</td>
-                </tr>
+                {% for level in levelModels %}
+                     <tr>
+                        <td class="tg-gkax">{{ level.levelName }}</td>
+                        <td class="tg-gkax">{{ level.expRequired }}</td>
+                     </tr>
 
-            {% endfor %}
-        </table>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
 <div class="footer">
