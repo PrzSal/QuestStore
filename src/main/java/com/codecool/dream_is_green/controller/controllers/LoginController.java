@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class LoginPage implements HttpHandler {
+public class LoginController implements HttpHandler {
 
     UUID sessionId;
     HttpCookie cookie = null;
@@ -88,7 +88,7 @@ public class LoginPage implements HttpHandler {
         MentorDAO mentorDAO = new MentorDAO();
         String currentPassword = mentorDAO.getUserPassword(userName);
         System.out.println(currentPassword);
-        String userType = mentorDAO.getUserPassword(userName);
+        String userType = mentorDAO.getUserType(userName);
         System.out.println(userType);
 
         if (password.equals(currentPassword) && userType.equals("admin")) {

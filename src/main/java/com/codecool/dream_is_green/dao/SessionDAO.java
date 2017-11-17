@@ -32,6 +32,27 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
         }
     }
 
+    public static void deleteSession(String sessionId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String insertTableSQL = "DELETE FROM SessionTable WHERE session_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, sessionId);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+    }
+
     public static Map<String, String> getSession() {
 
         Map<String, String> sessionsMap = new HashMap<>();

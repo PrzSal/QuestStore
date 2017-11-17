@@ -215,6 +215,7 @@ public class StudentController implements HttpHandler {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie;
         cookie = HttpCookie.parse(cookieStr).get(0);
+        SessionDAO.deleteSession(cookie.getValue());
         httpExchange.getResponseHeaders().add("Set-cookie", "first=" + cookie.getValue() + "; Max-Age=0; Path=/");
 
         httpExchange.getResponseHeaders().set("Location", "/login");

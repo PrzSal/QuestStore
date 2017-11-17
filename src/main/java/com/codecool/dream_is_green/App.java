@@ -21,7 +21,7 @@ public class App {
         }
 
         // set routes
-        server.createContext("/login", new LoginPage());
+        server.createContext("/login", new LoginController());
         server.createContext("/admin", new AdminController());
         server.createContext("/mentor", new MentorController());
         server.createContext("/student", new StudentController());
