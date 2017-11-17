@@ -12,6 +12,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
@@ -38,6 +39,8 @@ public class AdminController implements HttpHandler {
                 addLevel(httpExchange);
             } else if (action.equals("show_levels")) {
                 showLevels(httpExchange);
+            } else if (action.equals("logout")) {
+                clearCookie(httpExchange);
             } else {
                 index(httpExchange);
             }
@@ -192,6 +195,16 @@ public class AdminController implements HttpHandler {
 
     }
 
+    private void clearCookie(HttpExchange httpExchange) throws IOException {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie;
+        cookie = HttpCookie.parse(cookieStr).get(0);
+        httpExchange.getResponseHeaders().add("Set-cookie", "first=" + cookie.getValue() + "; Max-Age=0; Path=/");
+
+        httpExchange.getResponseHeaders().set("Location", "/login");
+        httpExchange.sendResponseHeaders(302,-1);
+    }
+
     private Map<String, String> parseURI (String uri) {
         Map<String, String> actionData = new HashMap<>();
         String[] pairs = uri.split("/");
@@ -200,6 +213,8 @@ public class AdminController implements HttpHandler {
             actionData.put(pairs[2], pairs[3]);
         } else if (pairs.length == 3) {
             actionData.put(pairs[2], "");
+        } else if (pairs.length == 2) {
+            actionData.put(pairs[1], "");
         } else {
             actionData.put("", "");
         }
