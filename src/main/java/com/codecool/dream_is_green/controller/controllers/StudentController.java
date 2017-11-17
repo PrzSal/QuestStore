@@ -52,25 +52,42 @@ public class StudentController implements HttpHandler {
     private void index(HttpExchange httpExchange) throws IOException {
 
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        HttpCookie cookie;
-        cookie = HttpCookie.parse(cookieStr).get(0);
-        String sessionId = cookie.getValue();
-        Map sessionMap = SessionDAO.getSession();
-
-        if (sessionMap.containsKey(sessionId)) {
-
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/student/student_home.twig");
-            JtwigModel model = JtwigModel.newModel();
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
-        } else {
+        if(cookieStr == null) {
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
+
+        } else {
+            HttpCookie cookie;
+            cookie = HttpCookie.parse(cookieStr).get(0);
+            String sessionId = cookie.getValue();
+            Map sessionMap = SessionDAO.getSession();
+
+            if (sessionMap.containsKey(sessionId)) {
+
+                MentorDAO mentorDAO = new MentorDAO();
+                String userName = (String) sessionMap.get(sessionId);
+                String userType = mentorDAO.getUserType(userName);
+
+                if(userType.equals("student")) {
+
+                    JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/student/student_home.twig");
+                    JtwigModel model = JtwigModel.newModel();
+                    String response = template.render(model);
+
+                    httpExchange.sendResponseHeaders(200, response.getBytes().length);
+                    OutputStream os = httpExchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+
+                } else {
+                    httpExchange.getResponseHeaders().set("Location", "/" + userType);
+                    httpExchange.sendResponseHeaders(302,-1);
+                }
+
+            } else {
+                httpExchange.getResponseHeaders().set("Location", "/login");
+                httpExchange.sendResponseHeaders(302,-1);
+            }
         }
     }
 
