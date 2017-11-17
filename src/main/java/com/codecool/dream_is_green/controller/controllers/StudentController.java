@@ -14,9 +14,11 @@ import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AdminController implements HttpHandler {
+public class StudentController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -47,11 +49,11 @@ public class AdminController implements HttpHandler {
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_home.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/student/student_home.twig");
         JtwigModel model = JtwigModel.newModel();
         String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();

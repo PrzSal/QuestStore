@@ -49,23 +49,11 @@ public class LoginPage implements HttpHandler {
             String formData = br.readLine();
 
             Map<String, String> inputs = parseFormData(formData);
-
             String username = inputs.get("username");
             String password = inputs.get("password");
 
-            MentorDAO mentorDAO = new MentorDAO();
-            String currentPassword = mentorDAO.getUserPassword(username);
-            System.out.println(currentPassword);
+            this.loginHandle(httpExchange, username, password);
 
-            if (password.equals(currentPassword)) {
-                SessionDAO.insertSession(cookie.getValue(), username);
-                httpExchange.getResponseHeaders().set("Location", "/admin");
-                httpExchange.sendResponseHeaders(302,-1);
-
-            } else {
-                httpExchange.getResponseHeaders().set("Location", "/login");
-                httpExchange.sendResponseHeaders(302,-1);
-            }
         }
     }
 
@@ -94,5 +82,36 @@ public class LoginPage implements HttpHandler {
 
         return response;
     }
+
+    public void loginHandle(HttpExchange httpExchange, String userName, String password) throws IOException {
+
+        MentorDAO mentorDAO = new MentorDAO();
+        String currentPassword = mentorDAO.getUserPassword(userName);
+        System.out.println(currentPassword);
+        String userType = mentorDAO.getUserPassword(userName);
+        System.out.println(userType);
+
+        if (password.equals(currentPassword) && userType.equals("admin")) {
+            SessionDAO.insertSession(cookie.getValue(), userName);
+            httpExchange.getResponseHeaders().set("Location", "/admin");
+            httpExchange.sendResponseHeaders(302,-1);
+
+        } else if (password.equals(currentPassword) && userType.equals("mentor")) {
+            SessionDAO.insertSession(cookie.getValue(), userName);
+            httpExchange.getResponseHeaders().set("Location", "/mentor");
+            httpExchange.sendResponseHeaders(302,-1);
+
+        } else if (password.equals(currentPassword) && userType.equals("student")) {
+            SessionDAO.insertSession(cookie.getValue(), userName);
+            httpExchange.getResponseHeaders().set("Location", "/student");
+            httpExchange.sendResponseHeaders(302,-1);
+
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/login");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
+    }
+
+
 
 }

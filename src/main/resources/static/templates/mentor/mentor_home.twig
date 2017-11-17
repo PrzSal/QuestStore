@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentor Home</title>
+    <link rel="stylesheet" href="static/css/Style1.css">
+    <script type="text/javascript" src="static/js/menu.js"></script>
+
+    <link rel='shortcut icon' type='image/x-icon' href='static/img/favicon.png'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="static/css/calendar.css">
+    {{ redirect }}
+</head>
+<body>
+
+<div class="top-menu-bar">
+    <div class="banner">
+        <img src="static/img/banner_admin.png">
+    </div>
+    <dl id="menu0">
+        <dt>
+            <a href=mentor_home.html>
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
+    <dl id="menu1">
+        <dt>Student</dt>
+        <dd><a href="mentor_show_student.html">Show students list</a></dd>
+        <dd><a href="mentor_add_student.html">Add new student</a></dd>
+        <dd><a href="mentor_show_wallet.html">Show student wallet</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Quest</dt>
+        <dd><a href="mentor_show_quest.html">Show quests list</a></dd>
+        <dd><a href="mentor_add_quest.html">Add new quest</a></dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Artifact</dt>
+        <dd><a href="mentor_show_artifact.html">Show artifacts list</a></dd>
+        <dd><a href="mentor_add_artifact.html">Add new artifact</a></dd>
+        <dd><a href="mentor_mark_artifact.html">Mark artifact</a></dd>
+    </dl>
+    <dl id="logout">
+        <dt>
+            <a href="admin/logout">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
+</div>
+
+<script type="text/javascript">
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
+
+<!-- Sidebar -->
+<div class="left">
+    <div class="user_photo">
+        <img border="0" alt="logout" src="static/img/agi.jpg" width=100%>
+    </div>
+
+    <div class="calendar-wrapper">
+        <button id="btnPrev" type="button">Prev</button>
+        <button id="btnNext" type="button">Next</button>
+        <div id="divCal"></div>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="main-home">
+    <div class="home_img">
+        <div class="autumn-welcome">
+            <p>MENTOR PANEL</p>
+        </div>
+        <br>
+        <img border="0" alt="home_img" src="static/img/autumn.png" width=20%>
+    </div>
+</div>
+
+<div class="footer">
+    © 2017 Codecool. All rights reserved. <br>
+    <a href=authors_mentor.html> About authors ツ </a>
+</div>
+<script src="static/js/calendar.js"></script>
+
+<!-- <div class="table"> -->
+
+<!-- show level -->
+<!-- <table class="tg">
+    <tr>
+        <th class="tg-gkax">Level name</th>
+        <th class="tg-gkax">Experience required</th>
+    </tr>
+    <tr>
+        <td class="tg-gkax">noob</td>
+        <td class="tg-gkax">200</td>
+    </tr>
+    <tr>
+        <td class="tg-gkax">fullstack</td>
+        <td class="tg-gkax">500</td>
+    </tr>
+    <tr>
+        <td class="tg-gkax">junior java developer</td>
+        <td class="tg-gkax">350</td>
+    </tr>
+</table>
+</div> -->
+<!-- show student -->
+<!-- <div class="table">
+
+
+    <table class="tg">
+
+        <tr>
+            <th class="tg-gkax">Nr.</th>
+            <th class="tg-gkax">UserId</th>
+            <th class="tg-gkax">Name</th>
+            <th class="tg-gkax">Surname</th>
+            <th class="tg-gkax">Email</th>
+            <th class="tg-gkax">Class Name</th>
+            <th class="tg-gkax">Team Name</th>
+            <th class="tg-gkax">Login</th>
+        </tr>
+        <tr>
+            <td class="tg-gkax">1.</td>
+            <td class="tg-gkax">1</td>
+            <td class="tg-gkax">Marek</td>
+            <td class="tg-gkax">Nowak</td>
+            <td class="tg-gkax">mnowak@gmail.com</td>
+            <td class="tg-gkax">krk 2017-1</td>
+            <td class="tg-gkax">Dream Is Green</td>
+            <td class="tg-gkax">mnowak</td>
+        </tr>
+        <tr>
+            <td class="tg-gkax">2.</td>
+            <td class="tg-gkax">6</td>
+            <td class="tg-gkax">Tomasz</td>
+            <td class="tg-gkax">Wiśniewski</td>
+            <td class="tg-gkax">twisniewski@op.pl</td>
+            <td class="tg-gkax">krk 2016-1</td>
+            <td class="tg-gkax">Coolerzy</td>
+            <td class="tg-gkax">twisniewski</td>
+        </tr>
+    </table>
+</div> -->
+<!-- show artifacts
+<div class="table">
+    <table class="tg">
+        <tr>
+            <th class="tg-gkax">No.</th>
+            <th class="tg-gkax">Title</th>
+            <th class="tg-gkax">Price</th>
+            <th class="tg-gkax">Category</th>
+            <th class="tg-gkax">Is used</th>
+        </tr>
+        <tr>
+            <td class="tg-gkax">1.</td>
+            <td class="tg-gkax">Private Mentoring</td>
+            <td class="tg-gkax">125</td>
+            <td class="tg-gkax">Learning</td>
+            <td class="tg-gkax"></td>
+        </tr>
+        <tr>
+            <td class="tg-gkax">2.</td>
+            <td class="tg-gkax">Absent Day</td>
+            <td class="tg-gkax">500</td>
+            <td class="tg-gkax">Holiday</td>
+            <td class="tg-gkax"></td>
+        </tr>
+    </table>
+</div> -->
+<!-- show quest -->
+<!-- <div class="table">
+    <table class="tg">
+        <tr>
+            <th class="tg-gkax">No.</th>
+            <th class="tg-gkax">Title</th>
+            <th class="tg-gkax">Price</th>
+            <th class="tg-gkax">Category</th>
+        </tr>
+        <tr>
+            <td class="tg-gkax">1.</td>
+            <td class="tg-gkax">Checkpoint</td>
+            <td class="tg-gkax">500</td>
+            <td class="tg-gkax">Learning</td>
+        </tr>
+        <tr>
+            <td class="tg-gkax">2.</td>
+            <td class="tg-gkax">Help with events</td>
+            <td class="tg-gkax">150</td>
+            <td class="tg-gkax">Volunteering</td>
+        </tr>
+    </table>
+</div> -->
+
+</body>
+</html>

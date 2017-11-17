@@ -1,8 +1,6 @@
 package com.codecool.dream_is_green;
 
-import com.codecool.dream_is_green.controller.controllers.AdminController;
-import com.codecool.dream_is_green.controller.controllers.LoginPage;
-import com.codecool.dream_is_green.controller.controllers.Static2;
+import com.codecool.dream_is_green.controller.controllers.*;
 import com.codecool.dream_is_green.dao.DatabaseConnection;
 import com.codecool.dream_is_green.controller.LoginPanelController;
 import com.codecool.dream_is_green.dao.FactoryDAO;
@@ -25,6 +23,8 @@ public class App {
         // set routes
         server.createContext("/login", new LoginPage());
         server.createContext("/admin", new AdminController());
+        server.createContext("/mentor", new MentorController());
+        server.createContext("/student", new StudentController());
         server.createContext("/static", new Static2());
         server.setExecutor(null); // creates a default executor
 
