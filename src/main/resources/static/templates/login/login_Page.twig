@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel='shortcut icon' type='image/x-icon' href='static/img/favicon.png'/>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" href="static/css/Style1.css">
+</head>
+
+<body>
+
+<div class="header">
+        <img src="static/img/logo_login.png">
+</div>
+
+<div class="form">
+        <form method="POST">
+                <label for="username">Login:</label>
+                <input type="text" id="username" name="username" placeholder="Your login ..." required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Your password ..." required>
+
+                <label for="city">City</label>
+                <select id="city" name="city">
+                        <option value="australia">Miskolc</option>
+                        <option value="canada">Budapest</option>
+                        <option value="usa">Cracow</option>
+                </select>
+
+                <input id="submit" name="submit" type="submit"  value="Login">
+        </form>
+</div>
+
+</body>
+</html>

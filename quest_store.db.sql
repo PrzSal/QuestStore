@@ -106,4 +106,8 @@ CREATE TABLE `ArtifactCategory` (
 );
 INSERT INTO `ArtifactCategory` VALUES ('fun');
 INSERT INTO `ArtifactCategory` VALUES ('mentoring');
+CREATE TABLE "SessionTable" (
+	`session_id`	TEXT,
+	`user_name`	TEXT 
+);
 COMMIT;
