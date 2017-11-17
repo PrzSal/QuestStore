@@ -3,6 +3,7 @@ package com.codecool.dream_is_green.controller.controllers;
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
+import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 import com.sun.net.httpserver.HttpExchange;
@@ -49,14 +50,28 @@ public class MentorController implements HttpHandler {
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/mentor/mentor_home.twig");
-        JtwigModel model = JtwigModel.newModel();
-        String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie;
+        cookie = HttpCookie.parse(cookieStr).get(0);
+        String sessionId = cookie.getValue();
+        Map sessionMap = SessionDAO.getSession();
+
+        if (sessionMap.containsKey(sessionId)) {
+
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/mentor/mentor_home.twig");
+            JtwigModel model = JtwigModel.newModel();
+            String response = template.render(model);
+
+            httpExchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/login");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void showClasses(HttpExchange httpExchange) throws IOException {
