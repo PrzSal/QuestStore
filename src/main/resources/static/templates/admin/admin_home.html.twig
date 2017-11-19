@@ -26,11 +26,13 @@
             </a>
         </dt>
     </dl>
+
     <dl id="menu1">
         <dt>Mentor</dt>
-        <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
+        <dd><a href="/admin/show_mentors">Show mentors</a></dd>
         <dd><a href="/admin/add_mentor">Add new mentor</a></dd>
         <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+        <dd><a href="/admin/mail"> mail {{ counter }}</a></dd>
     </dl>
     <dl id="menu2">
         <dt>Class</dt>
@@ -73,6 +75,10 @@
         <button id="btnPrev" type="button">Prev</button>
         <button id="btnNext" type="button">Next</button>
         <div id="divCal"></div>
+    </div>
+    <div class="circle">{{ counter }}</div>
+    <div class="mail">
+        <img border="0" alt="logout" src="/static/img/if_aiga_mail_bg_134145.png" width=100%>
     </div>
 </div>
 

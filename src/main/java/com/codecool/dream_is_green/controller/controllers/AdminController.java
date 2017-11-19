@@ -1,9 +1,6 @@
 package com.codecool.dream_is_green.controller.controllers;
 
-import com.codecool.dream_is_green.dao.ClassDAO;
-import com.codecool.dream_is_green.dao.LevelDAO;
-import com.codecool.dream_is_green.dao.MentorDAO;
-import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.dao.*;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 import com.sun.net.httpserver.HttpExchange;
@@ -18,6 +15,8 @@ import java.net.URLDecoder;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
+
+    Integer counter = 0;
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -41,6 +40,8 @@ public class AdminController implements HttpHandler {
                 showLevels(httpExchange);
             } else if (action.equals("logout")) {
                 clearCookie(httpExchange);
+            } else if (action.equals("mail")) {
+                showReadMail(httpExchange);
             } else {
                 index(httpExchange);
             }
@@ -64,12 +65,15 @@ public class AdminController implements HttpHandler {
 
                 MentorDAO mentorDAO = new MentorDAO();
                 String userName = (String) sessionMap.get(sessionId);
+                System.out.println(userName);
+
                 String userType = mentorDAO.getUserType(userName);
 
                 if(userType.equals("admin")) {
-
+                    checkMail(httpExchange);
                     JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_home.html.twig");
                     JtwigModel model = JtwigModel.newModel();
+                    model.with("counter", counter);
                     String response = template.render(model);
 
                     httpExchange.sendResponseHeaders(200, response.length());
@@ -197,6 +201,16 @@ public class AdminController implements HttpHandler {
     private void addClass(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String redirect = "";
+        if (method.equals("GET")) {
+
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.html.twig");
+            JtwigModel model = JtwigModel.newModel();
+            String response = template.render(model);
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -204,12 +218,25 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
             classDao.insertClass(parseFormData(formData).get(0));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
+            httpExchange.sendResponseHeaders(302, -1);
+//            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.html.twig");
+
+//        model.with("redirect", redirect);
+    }
+    private void showReadMail(HttpExchange httpExchange) throws IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_mail.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("redirect", redirect);
+
+        MailBoxDao mailBoxDao = new MailBoxDao();
+        Integer userId = 10;
+
+        mailBoxDao.loadReadMail(userId, 1);
+        model.with("mailModels", mailBoxDao.getObjectList());
+        mailBoxDao.loadReadMail(userId, 0);
+        model.with("readMailModels", mailBoxDao.getObjectList());
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -217,12 +244,18 @@ public class AdminController implements HttpHandler {
         os.write(response.getBytes());
         os.close();
     }
-
     private void edit(HttpExchange httpExchange, String id) {
 
     }
 
     private void delete(int id) {
+
+    }
+
+    private void checkMail(HttpExchange httpExchange) {
+        MailBoxDao mailBoxDao = new MailBoxDao();
+        mailBoxDao.loadReadMail(10, 0);
+        counter = mailBoxDao.getObjectList().size();
 
     }
 

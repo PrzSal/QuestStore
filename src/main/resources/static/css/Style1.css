@@ -39,6 +39,26 @@ body {
     width: 70%;
 }
 
+.circle {
+    padding: 10px 5px;
+    width: 15%;
+    height: auto;
+    background-color: #F34A53;
+    border-radius: 100%;
+    margin-top: 20px;
+    margin-left: 45px;
+}
+.mail img {
+    width: 60%;
+    height: auto;
+    border: 1px solid #888888;
+}
+
+
+.mail {
+    width: 70%;
+}
+
 .form-in {
     width: 25%;
     margin: auto;
