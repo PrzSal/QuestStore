@@ -70,7 +70,7 @@ public class AdminController implements HttpHandler {
                 String userType = mentorDAO.getUserType(userName);
 
                 if(userType.equals("admin")) {
-                    
+
                     checkMail(httpExchange);
                     JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
                     JtwigModel model = JtwigModel.newModel();
@@ -240,9 +240,11 @@ public class AdminController implements HttpHandler {
 //       model.with("redirect", redirect);
     }
     private void showReadMail(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_mail.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
-
+        model.with("title", "Mail Box");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_mail.twig");
         MailBoxDao mailBoxDao = new MailBoxDao();
         Integer userId = 10;
 

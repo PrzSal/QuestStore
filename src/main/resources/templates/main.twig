@@ -13,7 +13,17 @@
     {{ redirect }}
 </head>
 <body>
-
+<script type="text/javascript">
+    // When the user clicks on div, open the popup
+    function myFunction(id) {
+        var idsList = ["lok"];
+        {% for level in levelModels %}
+        idsList.push({{ level.expRequired }});
+        {% endfor %}
+        var popup = document.getElementById(id);
+        popup.classList.toggle("show");
+    }
+</script>
 <div class="top-menu-bar">
     <div class="banner">
         <img src="/static/img/banner_admin.png">
@@ -42,6 +52,10 @@
         <button id="btnPrev" type="button">Prev</button>
         <button id="btnNext" type="button">Next</button>
         <div id="divCal"></div>
+    </div>
+    <div class="circle">{{ counter }}</div>
+    <div class="mail">
+        <a href="admin/mail_box" img border="0" alt="logout" src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
     </div>
 </div>
 
