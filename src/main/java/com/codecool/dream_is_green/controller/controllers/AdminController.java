@@ -123,10 +123,13 @@ public class AdminController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_mentor.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
+        model.with("title", "Add class");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
         model.with("classModels", classDAO.getObjectList());
         model.with("redirect", redirect);
         String response = template.render(model);
