@@ -75,7 +75,7 @@ public class LoginController implements HttpHandler {
 
     private String getLoginTemplate() {
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/login/login_Page.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login/login_Page.twig");
         JtwigModel model = JtwigModel.newModel();
 
         String response = template.render(model);
