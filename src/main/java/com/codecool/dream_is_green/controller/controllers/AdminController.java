@@ -70,10 +70,15 @@ public class AdminController implements HttpHandler {
                 String userType = mentorDAO.getUserType(userName);
 
                 if(userType.equals("admin")) {
+                    
                     checkMail(httpExchange);
-                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_home.html.twig");
+                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
                     JtwigModel model = JtwigModel.newModel();
+                    model.with("title", "Home admin");
+                    model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+                    model.with("main", "classpath:/templates/admin/admin_home.twig");
                     model.with("counter", counter);
+
                     String response = template.render(model);
 
                     httpExchange.sendResponseHeaders(200, response.length());
@@ -127,10 +132,13 @@ public class AdminController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_mentor.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
+        model.with("title", "Add class");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
         model.with("classModels", classDAO.getObjectList());
         model.with("redirect", redirect);
         String response = template.render(model);
@@ -172,8 +180,11 @@ public class AdminController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_create_level.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
+        model.with("title", "Add class");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_create_level.twig");
         model.with("redirect", redirect);
         String response = template.render(model);
 
