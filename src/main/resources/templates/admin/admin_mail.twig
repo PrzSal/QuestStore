@@ -1,35 +1,59 @@
+<script type="text/javascript">
+    // When the user clicks on div, open the popup
+    function myFunction(id) {
+        var idsList = ["lok"];
+        {% for level in levelModels %}
+        idsList.push({{ level.expRequired }});
+        {% endfor %}
+        var popup = document.getElementById(id);
+        popup.classList.toggle("show");
+    }
+</script>
 
-    <meta charset="UTF-8">
-    <title>Admin Show Levels</title>
-    <link rel="stylesheet" href="/static/css/Style1.css">
-    <script type="text/javascript" src="/static/js/menu.js"></script>
-    <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
-    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
-    <link rel="stylesheet" href="/static/css/calendar.css">
-    {{ redirect }}
+<script>
+    var myWindow;
 
-</head>
+    function openResponseForm(id) {
+        myWindow = window.open("", "myWindow", "width=400,height=300");
+        {% for mail in mailModels %}
+        if (id == {{loop.index }}) {
+            myWindow.document.write("<div class=\"form-in\">\n" +
+                "                <form method=\"POST\">\n" +
+                "                    <label>Level Name </label><br>\n" +
+                "                    <input type=\"hidden\" name=\"levelName\" value = \"{{ mail.userID }}\" > <br>\n" +
+                "                    <input type=\"text\" name=\"levelName\" placeholder=\"{{ mail.name }}\"  value = \"{{ mail.name }}\" disabled=\"disabled\"> <br>\n" +
+                "                    <label>Expected Required </label><br>\n" +
+                "                    <input type=\"text\" name=\"expRequired\" placeholder=\"enter expected required...\" required> <br>\n" +
+                "                    <input type=\"submit\" value=\"Submit\">\n" +
+                "                </form>\n" +
+                "            </div>");
 
-    <div class="table">
-        <table class="tg">
+        }
+        {% endfor %}
+    }
 
-            <div class="text">Mail Box</div>
-            <td class="tg-gkax">Sender</td>
-            <td class="tg-gkax">Header</td>
+    function closeWin() {
+        myWindow.close();
+    }
+</script>
+<div class="table">
+    <table class="tg">
+        <div class="text">Mail Box</div>
+        <td class="tg-gkax">Sender</td>
+        <td class="tg-gkax">Header</td>
 
-            {% for mail in mailModels %}
+        {% for mail in mailModels %}
 
-                <tr>
-                    <td class="tg-gkax">{{ mail.name }} </td>
-                    <td class="tg-gkax">
-                        <div class="popup" onclick="myFunction({{ loop.index }})">{{ mail.header }}
-                            <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-              
-        </table>
-    </div>
+            <tr>
+                <td class="tg-gkax">{{ mail.name }} </td>
+                <td class="tg-gkax">
+                    <div class="popup" onclick="myFunction({{ loop.index }})">{{ mail.header }}
+                        <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
+                        <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
