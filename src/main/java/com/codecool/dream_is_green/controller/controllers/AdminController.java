@@ -240,25 +240,35 @@ public class AdminController implements HttpHandler {
 //       model.with("redirect", redirect);
     }
     private void showReadMail(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Mail Box");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_mail.twig");
-        MailBoxDao mailBoxDao = new MailBoxDao();
-        Integer userId = 10;
+        String method = httpExchange.getRequestMethod();
+        if (method.equals("GET")) {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Mail Box");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_mail.twig");
+            MailBoxDao mailBoxDao = new MailBoxDao();
+            Integer userId = 10;
 
-        mailBoxDao.loadReadMail(userId, 1);
-        model.with("mailModels", mailBoxDao.getObjectList());
-        mailBoxDao.loadReadMail(userId, 0);
-        model.with("readMailModels", mailBoxDao.getObjectList());
-        
-        String response = template.render(model);
+            mailBoxDao.loadReadMail(userId, 1);
+            model.with("mailModels", mailBoxDao.getObjectList());
+            mailBoxDao.loadReadMail(userId, 0);
+            model.with("readMailModels", mailBoxDao.getObjectList());
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+            String response = template.render(model);
+
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            System.out.println(parseFormData(formData).get(0));
+        }
     }
     private void edit(HttpExchange httpExchange, String id) {
 
