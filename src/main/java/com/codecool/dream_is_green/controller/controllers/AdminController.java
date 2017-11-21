@@ -214,7 +214,6 @@ public class AdminController implements HttpHandler {
 
     private void addClass(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String redirect = "";
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -222,21 +221,23 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
             classDao.insertClass(parseFormData(formData).get(0));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_add_class.twig");
-        model.with("redirect", redirect);
-        String response = template.render(model);
+        if (method.equals("GET")) {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Add class");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
+            String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 
     private void edit(HttpExchange httpExchange, String id) {
