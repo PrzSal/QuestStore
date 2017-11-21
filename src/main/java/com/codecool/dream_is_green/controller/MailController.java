@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 public class MailController {
 
-    public Integer checkMail(HttpExchange httpExchange, Integer userId ) {
+    public Integer checkMail(Integer userId ) {
 
         MailBoxDao mailBoxDao = new MailBoxDao();
         mailBoxDao.loadReadMail(userId, 1);
@@ -29,7 +29,7 @@ public class MailController {
             mailBoxDao.loadReadMail(userId, 0);
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
-            responseController.sendResponse(httpExchange, mails, "mailModels",
+            responseController.sendResponse(httpExchange, checkMail(userId), mails, "mailModels",
                     "Show Mail", "admin_mail");
         }
 

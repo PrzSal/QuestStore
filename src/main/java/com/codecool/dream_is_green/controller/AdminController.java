@@ -22,7 +22,7 @@ public class AdminController implements HttpHandler {
         URIModel uriModel = parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
         MailController mailController = new MailController();
-        countMail = mailController.checkMail(httpExchange, 10);
+        countMail = mailController.checkMail(10);
 
         if (userAction == null) {
             index(httpExchange);
@@ -110,7 +110,7 @@ public class AdminController implements HttpHandler {
             classDAO.loadClasses();
             LinkedList<ClassModel> classes = classDAO.getObjectList();
             ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, classes, "classModels",
+            responseController.sendResponse(httpExchange, countMail, classes, "classModels",
                     "Add mentor", "admin_add_mentor");
         }
     }
@@ -160,7 +160,7 @@ public class AdminController implements HttpHandler {
         mentorDAO.loadMentors();
         LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
         ResponseController<MentorModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, mentors, "mentorModels",
+        responseController.sendResponse(httpExchange, countMail, mentors, "mentorModels",
                 "Show mentors", "admin_show_mentors");
     }
 
@@ -169,7 +169,7 @@ public class AdminController implements HttpHandler {
         levelDAO.loadLevels();
         LinkedList<LevelModel> levels = levelDAO.getObjectList();
         ResponseController<LevelModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, levels, "levelModels",
+        responseController.sendResponse(httpExchange, countMail, levels, "levelModels",
                 "Show levels", "admin_show_levels");
     }
 
@@ -178,7 +178,7 @@ public class AdminController implements HttpHandler {
         classDAO.loadClasses();
         LinkedList<ClassModel> classes = classDAO.getObjectList();
         ResponseController<ClassModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, classes, "classModels",
+        responseController.sendResponse(httpExchange, countMail, classes, "classModels",
                 "Show classes", "admin_show_classes");
     }
 

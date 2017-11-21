@@ -44,7 +44,7 @@ public class FormDataController<T> {
             return (T)preUser;
         } else if (objectType.equals("mail")) {
             PreMailModel preMail = new PreMailModel(data.get(3), data.get(2),
-                    Integer.valueOf(data.get(0)), Integer.valueOf(data.get(1)));
+                    Integer.valueOf(data.get(1)), Integer.valueOf(data.get(0)));
             return (T) preMail;
         }
         return null;
