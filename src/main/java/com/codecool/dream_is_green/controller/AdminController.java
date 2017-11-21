@@ -185,21 +185,12 @@ public class AdminController implements HttpHandler {
     }
   
     private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-
         LevelDAO levelDAO = new LevelDAO();
         levelDAO.loadLevels();
-        model.with("levelModels", levelDAO.getObjectList());
-        model.with("title", "Show levels");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_levels.twig");
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        LinkedList<LevelModel> levels = levelDAO.getObjectList();
+        ResponseController<LevelModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, levels, "levelModels",
+                                        "Show levels", "admin_show_levels");
     }
 
     private void addClass(HttpExchange httpExchange) throws IOException {
