@@ -4,13 +4,9 @@ import com.codecool.dream_is_green.dao.MailBoxDao;
 import com.codecool.dream_is_green.model.MailBoxModel;
 import com.codecool.dream_is_green.model.PreMailModel;
 import com.sun.net.httpserver.HttpExchange;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.LinkedList;
 
 public class MailController {
