@@ -198,6 +198,9 @@ public class AdminController implements HttpHandler {
         LevelDAO levelDAO = new LevelDAO();
         levelDAO.loadLevels();
         model.with("levelModels", levelDAO.getObjectList());
+        model.with("title", "Show levels");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_show_levels.twig");
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
