@@ -4,10 +4,7 @@ import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
-import com.codecool.dream_is_green.model.ClassModel;
-import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.PreUserModel;
-import com.codecool.dream_is_green.model.URIModel;
+import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
@@ -16,9 +13,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.util.*;
-import java.util.logging.Level;
 
 public class AdminController implements HttpHandler {
 
@@ -91,22 +86,6 @@ public class AdminController implements HttpHandler {
         }
     }
 
-    private void showClasses(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        ClassDAO classDAO = new ClassDAO();
-        classDAO.loadClasses();
-        model.with("classModels", classDAO.getObjectList());
-        model.with("title", "Show classes");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_classes.twig");
-        String response = template.render(model);
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
     private void addMentor(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
@@ -139,24 +118,6 @@ public class AdminController implements HttpHandler {
         }
     }
 
-    private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        MentorDAO mentorDAO = new MentorDAO();
-        mentorDAO.loadMentors();
-        model.with("title", "Show mentors");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_mentors.twig");
-        model.with("mentorModels", mentorDAO.getObjectList());
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
     private void addLevel(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
@@ -185,23 +146,32 @@ public class AdminController implements HttpHandler {
             os.close();
         }
     }
-  
-    private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
 
+    private void showMentors(HttpExchange httpExchange) throws IOException {
+        MentorDAO mentorDAO = new MentorDAO();
+        mentorDAO.loadMentors();
+        LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
+        ResponseController<MentorModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, mentors, "mentorModels",
+                "Show mentors", "admin_show_mentors");
+    }
+
+    private void showLevels(HttpExchange httpExchange) throws IOException {
         LevelDAO levelDAO = new LevelDAO();
         levelDAO.loadLevels();
-        model.with("levelModels", levelDAO.getObjectList());
-        model.with("title", "Show levels");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_levels.twig");
-        String response = template.render(model);
+        LinkedList<LevelModel> levels = levelDAO.getObjectList();
+        ResponseController<LevelModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, levels, "levelModels",
+                "Show levels", "admin_show_levels");
+    }
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+    private void showClasses(HttpExchange httpExchange) throws IOException {
+        ClassDAO classDAO = new ClassDAO();
+        classDAO.loadClasses();
+        LinkedList<ClassModel> classes = classDAO.getObjectList();
+        ResponseController<ClassModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, classes, "classModels",
+                "Show classes", "admin_show_classes");
     }
 
     private void addClass(HttpExchange httpExchange) throws IOException {
