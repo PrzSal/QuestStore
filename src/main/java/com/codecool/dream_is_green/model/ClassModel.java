@@ -21,4 +21,8 @@ public class ClassModel {
 
         return str;
     }
+
+    public String getClassName() {
+        return className;
+    }
 }

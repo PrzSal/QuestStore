@@ -1,0 +1,23 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Mentors list</div>
+        <td class="tg-gkax">Nr.</td>
+        <td class="tg-gkax">User ID</td>
+        <td class="tg-gkax">Name</td>
+        <td class="tg-gkax">Surname</td>
+        <td class="tg-gkax">Email</td>
+        <td class="tg-gkax">Login</td>
+        <td class="tg-gkax">Class Name</td>
+        {% for mentor in mentorModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ mentor.userID }}</td>
+                <td class="tg-gkax">{{ mentor.name }}</td>
+                <td class="tg-gkax">{{ mentor.surname }}</td>
+                <td class="tg-gkax">{{ mentor.email }}</td>
+                <td class="tg-gkax">{{ mentor.login }}</td>
+                <td class="tg-gkax">{{ mentor.className }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
