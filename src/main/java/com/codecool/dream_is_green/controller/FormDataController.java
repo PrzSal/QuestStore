@@ -2,7 +2,6 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.MentorModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 
 import java.io.UnsupportedEncodingException;

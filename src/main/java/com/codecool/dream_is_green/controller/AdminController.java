@@ -16,9 +16,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.util.*;
-import java.util.logging.Level;
 
 public class AdminController implements HttpHandler {
 
