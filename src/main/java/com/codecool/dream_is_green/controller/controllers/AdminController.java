@@ -147,11 +147,14 @@ public class AdminController implements HttpHandler {
     }
 
     private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_mentors.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
 
         MentorDAO mentorDAO = new MentorDAO();
         mentorDAO.loadMentors();
+        model.with("title", "Show mentors");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_show_mentors.twig");
         model.with("mentorModels", mentorDAO.getObjectList());
         String response = template.render(model);
 
@@ -192,7 +195,7 @@ public class AdminController implements HttpHandler {
     }
   
     private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_levels.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
 
         LevelDAO levelDAO = new LevelDAO();
