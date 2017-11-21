@@ -6,6 +6,7 @@ import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.URIModel;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
@@ -20,30 +21,26 @@ import java.util.*;
 public class AdminController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
-
         URI uri = httpExchange.getRequestURI();
-        Map<String, String> actionData = parseURI(uri.getPath());
+        URIModel uriModel = parseURI(uri.getPath());
+        String userAction = uriModel.getUserAction();
 
-        for (String action : actionData.keySet()) {
-            if (action.equals("add_class")) {
-                addClass(httpExchange);
-            } else if (action.equals("edit")) {
-                edit(httpExchange, actionData.get(action));
-            } else if (action.equals("show_classes")) {
-                showClasses(httpExchange);
-            } else if (action.equals("add_mentor")) {
-                addMentor(httpExchange);
-            } else if (action.equals("show_mentors")) {
-                showMentors(httpExchange);
-            } else if (action.equals("add_level")) {
-                addLevel(httpExchange);
-            } else if (action.equals("show_levels")) {
-                showLevels(httpExchange);
-            } else if (action.equals("logout")) {
-                clearCookie(httpExchange);
-            } else {
-                index(httpExchange);
-            }
+        if (userAction == null) {
+            index(httpExchange);
+        } else if (userAction.equals("add_class")) {
+            addClass(httpExchange);
+        } else if (userAction.equals("show_classes")) {
+            showClasses(httpExchange);
+        } else if (userAction.equals("add_mentor")) {
+            addMentor(httpExchange);
+        } else if (userAction.equals("show_mentors")) {
+            showMentors(httpExchange);
+        } else if (userAction.equals("add_level")) {
+            addLevel(httpExchange);
+        } else if (userAction.equals("show_levels")) {
+            showLevels(httpExchange);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
         }
     }
 
@@ -259,21 +256,14 @@ public class AdminController implements HttpHandler {
         httpExchange.sendResponseHeaders(302,-1);
     }
 
-    private Map<String, String> parseURI (String uri) {
-        Map<String, String> actionData = new HashMap<>();
+    private URIModel parseURI (String uri) {
         String[] pairs = uri.split("/");
+        URIModel uriModel = new URIModel();
 
-        if (pairs.length == 4) {
-            actionData.put(pairs[2], pairs[3]);
-        } else if (pairs.length == 3) {
-            actionData.put(pairs[2], "");
-        } else if (pairs.length == 2) {
-            actionData.put(pairs[1], "");
-        } else {
-            actionData.put("", "");
+        if (pairs.length == 3) {
+            uriModel = new URIModel(pairs[2]);
         }
-
-        return actionData;
+        return uriModel;
     }
 
     private ArrayList<String> parseFormData(String formData) {
