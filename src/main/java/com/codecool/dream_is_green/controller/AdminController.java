@@ -101,20 +101,12 @@ public class AdminController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
             ClassDAO classDAO = new ClassDAO();
             classDAO.loadClasses();
-            model.with("title", "Add class");
-            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-            model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
-            model.with("classModels", classDAO.getObjectList());
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            LinkedList<ClassModel> classes = classDAO.getObjectList();
+            ResponseController<ClassModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, classes, "classModels",
+                    "Add mentor", "admin_add_mentor");
         }
     }
 
@@ -133,19 +125,8 @@ public class AdminController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            ResponseController<MentorModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Show mentors", "admin_show_mentors");
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("title", "Add class");
-            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            ResponseController<ClassModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, "Add class", "admin_add_class");
         }
     }
 
