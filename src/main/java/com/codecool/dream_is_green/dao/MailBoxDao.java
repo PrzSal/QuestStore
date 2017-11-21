@@ -50,38 +50,23 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
 
 
 
-    public void insertStudent(PreUserModel preStudentModel) {
+    public void insertStudent(String content, String header, Integer idAddressee, Integer idSender) {
 
         Connection connection;
         Statement statement;
-
-        String name = preStudentModel.getName();
-        String surname = preStudentModel.getSurname();
-        String email = preStudentModel.getEmail();
-        String login = preStudentModel.getLogin();
-        String password = preStudentModel.getPassword();
-        String className = preStudentModel.getClassName();
 
         try {
             connection = DatabaseConnection.getConnection();
             statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query1 = String.format("INSERT INTO UsersTable (name, surname, email," +
-                    " login, password, user_type) VALUES ('%s', '%s'," +
-                    "'%s', '%s', '%s', 'student');", name, surname, email, login, password);
+            String query1 = String.format("INSERT INTO MailBox (content, header, user_id_addressee," +
+                    " user_id_sender) VALUES ('%s', '%s'," +
+                    "'%d', '%d');", content, header, idAddressee, idSender);
 
             statement.executeUpdate(query1);
             connection.commit();
-            int userId = this.getStudentId(login);
 
-            String query2 = String.format("INSERT INTO StudentsTable (user_id, class_name)" +
-                    " VALUES (%d, '%s');", userId, className);
-
-            statement.executeUpdate(query2);
-
-            statement.close();
-            connection.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
