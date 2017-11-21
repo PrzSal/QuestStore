@@ -11,6 +11,15 @@ import java.util.LinkedList;
 
 public class MailController {
 
+    public Integer checkMail(HttpExchange httpExchange, Integer userId ) {
+
+        MailBoxDao mailBoxDao = new MailBoxDao();
+        mailBoxDao.loadReadMail(userId, 1);
+        Integer counter = mailBoxDao.getObjectList().size();
+        return counter;
+
+    }
+
     public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
         String method = httpExchange.getRequestMethod();
         if (method.equals("GET")) {

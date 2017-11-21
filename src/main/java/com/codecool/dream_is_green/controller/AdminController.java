@@ -16,11 +16,13 @@ import java.net.URI;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
-
+    Integer countMail;
     public void handle(HttpExchange httpExchange) throws IOException {
         URI uri = httpExchange.getRequestURI();
         URIModel uriModel = parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
+        MailController mailController = new MailController();
+        countMail = mailController.checkMail(httpExchange, 10);
 
         if (userAction == null) {
             index(httpExchange);
@@ -39,7 +41,7 @@ public class AdminController implements HttpHandler {
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
-            MailController mailController = new MailController();
+            mailController = new MailController();
             mailController.showReadMail(httpExchange, 10);
         }
     }
