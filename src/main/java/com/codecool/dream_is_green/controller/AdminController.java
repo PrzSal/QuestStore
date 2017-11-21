@@ -256,21 +256,14 @@ public class AdminController implements HttpHandler {
         httpExchange.sendResponseHeaders(302,-1);
     }
 
-    private Map<String, String> parseURI (String uri) {
-        Map<String, String> actionData = new HashMap<>();
+    private URIModel parseURI (String uri) {
         String[] pairs = uri.split("/");
+        URIModel uriModel = new URIModel();
 
-        if (pairs.length == 4) {
-            actionData.put(pairs[2], pairs[3]);
-        } else if (pairs.length == 3) {
-            actionData.put(pairs[2], "");
-        } else if (pairs.length == 2) {
-            actionData.put(pairs[1], "");
-        } else {
-            actionData.put("", "");
+        if (pairs.length == 3) {
+            uriModel = new URIModel(pairs[2]);
         }
-
-        return actionData;
+        return uriModel;
     }
 
     private ArrayList<String> parseFormData(String formData) {
