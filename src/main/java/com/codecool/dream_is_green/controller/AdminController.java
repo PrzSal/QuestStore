@@ -1,11 +1,13 @@
-package com.codecool.dream_is_green.controller.controllers;
+package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.URIModel;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
@@ -16,34 +18,31 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.logging.Level;
 
 public class AdminController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
-
         URI uri = httpExchange.getRequestURI();
-        Map<String, String> actionData = parseURI(uri.getPath());
+        URIModel uriModel = parseURI(uri.getPath());
+        String userAction = uriModel.getUserAction();
 
-        for (String action : actionData.keySet()) {
-            if (action.equals("add_class")) {
-                addClass(httpExchange);
-            } else if (action.equals("edit")) {
-                edit(httpExchange, actionData.get(action));
-            } else if (action.equals("show_classes")) {
-                showClasses(httpExchange);
-            } else if (action.equals("add_mentor")) {
-                addMentor(httpExchange);
-            } else if (action.equals("show_mentors")) {
-                showMentors(httpExchange);
-            } else if (action.equals("add_level")) {
-                addLevel(httpExchange);
-            } else if (action.equals("show_levels")) {
-                showLevels(httpExchange);
-            } else if (action.equals("logout")) {
-                clearCookie(httpExchange);
-            } else {
-                index(httpExchange);
-            }
+        if (userAction == null) {
+            index(httpExchange);
+        } else if (userAction.equals("add_class")) {
+            addClass(httpExchange);
+        } else if (userAction.equals("show_classes")) {
+            showClasses(httpExchange);
+        } else if (userAction.equals("add_mentor")) {
+            addMentor(httpExchange);
+        } else if (userAction.equals("show_mentors")) {
+            showMentors(httpExchange);
+        } else if (userAction.equals("add_level")) {
+            addLevel(httpExchange);
+        } else if (userAction.equals("show_levels")) {
+            showLevels(httpExchange);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
         }
     }
 
@@ -95,7 +94,6 @@ public class AdminController implements HttpHandler {
     private void showClasses(HttpExchange httpExchange) throws IOException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
-
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
         model.with("classModels", classDAO.getObjectList());
@@ -103,7 +101,6 @@ public class AdminController implements HttpHandler {
         model.with("menu", "classpath:/templates/admin/menu_admin.twig");
         model.with("main", "classpath:/templates/admin/admin_show_classes.twig");
         String response = template.render(model);
-
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
@@ -112,38 +109,34 @@ public class AdminController implements HttpHandler {
 
     private void addMentor(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String redirect = "";
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             MentorDAO mentorDAO = new MentorDAO();
-            String name = parseFormData(formData).get(0);
-            String surname = parseFormData(formData).get(1);
-            String email = parseFormData(formData).get(2);
-            String login = parseFormData(formData).get(3);
-            String password = parseFormData(formData).get(4);
-            String className = parseFormData(formData).get(5);
-            mentorDAO.insertMentor(new PreUserModel(name, surname, email, login, password, className));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
+            FormDataController<PreUserModel> preUser = new FormDataController<>();
+            mentorDAO.insertMentor(preUser.parseFormData(formData, "preUser"));
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_mentors");
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        ClassDAO classDAO = new ClassDAO();
-        classDAO.loadClasses();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
-        model.with("classModels", classDAO.getObjectList());
-        model.with("redirect", redirect);
-        String response = template.render(model);
+        if (method.equals("GET")) {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            ClassDAO classDAO = new ClassDAO();
+            classDAO.loadClasses();
+            model.with("title", "Add class");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
+            model.with("classModels", classDAO.getObjectList());
+            String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 
     private void showMentors(HttpExchange httpExchange) throws IOException {
@@ -166,32 +159,31 @@ public class AdminController implements HttpHandler {
 
     private void addLevel(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String redirect = "";
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            String levelName = parseFormData(formData).get(0);
-            String expRequired = parseFormData(formData).get(1);
+            FormDataController<LevelModel> level = new FormDataController<>();
             LevelDAO levelDAO = new LevelDAO();
-            LevelModel levelModel = new LevelModel(levelName, Integer.valueOf(expRequired));
-            levelDAO.insertLevel(levelModel);
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
+            levelDAO.insertLevel(level.parseFormData(formData, "level"));
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_levels");
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_create_level.twig");
-        model.with("redirect", redirect);
-        String response = template.render(model);
+        if (method.equals("GET")) {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Add class");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_create_level.twig");
+            String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
   
     private void showLevels(HttpExchange httpExchange) throws IOException {
@@ -214,37 +206,31 @@ public class AdminController implements HttpHandler {
 
     private void addClass(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String redirect = "";
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
+            FormDataController<ClassModel> classModel = new FormDataController<>();
             ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(parseFormData(formData).get(0));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
+            classDao.insertClass(classModel.parseFormData(formData, "class"));
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_add_class.twig");
-        model.with("redirect", redirect);
-        String response = template.render(model);
+        if (method.equals("GET")) {
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Add class");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
+            String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void edit(HttpExchange httpExchange, String id) {
-
-    }
-
-    private void delete(int id) {
-
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
@@ -258,38 +244,13 @@ public class AdminController implements HttpHandler {
         httpExchange.sendResponseHeaders(302,-1);
     }
 
-    private Map<String, String> parseURI (String uri) {
-        Map<String, String> actionData = new HashMap<>();
+    private URIModel parseURI (String uri) {
         String[] pairs = uri.split("/");
+        URIModel uriModel = new URIModel();
 
-        if (pairs.length == 4) {
-            actionData.put(pairs[2], pairs[3]);
-        } else if (pairs.length == 3) {
-            actionData.put(pairs[2], "");
-        } else if (pairs.length == 2) {
-            actionData.put(pairs[1], "");
-        } else {
-            actionData.put("", "");
+        if (pairs.length == 3) {
+            uriModel = new URIModel(pairs[2]);
         }
-
-        return actionData;
-    }
-
-    private ArrayList<String> parseFormData(String formData) {
-        System.out.println(formData);
-        ArrayList<String> dataToModel = new ArrayList<>();
-
-        String[] pairs = formData.split("&");
-        int i = 0;
-        try {
-            for (String pair : pairs) {
-                dataToModel.add(new URLDecoder().decode(pair.split("=")[1], "UTF-8"));
-
-            }
-        } catch (ArrayIndexOutOfBoundsException | UnsupportedEncodingException e) {
-            return null;
-        }
-
-        return dataToModel;
+        return uriModel;
     }
 }

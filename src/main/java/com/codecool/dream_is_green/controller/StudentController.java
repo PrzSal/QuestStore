@@ -1,4 +1,4 @@
-package com.codecool.dream_is_green.controller.controllers;
+package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
@@ -205,7 +205,7 @@ public class StudentController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(parseFormData(formData).get(0));
+            //classDao.insertClass(parseFormData(formData).get(0));
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 

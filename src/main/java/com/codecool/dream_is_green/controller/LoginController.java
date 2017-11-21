@@ -1,4 +1,4 @@
-package com.codecool.dream_is_green.controller.controllers;
+package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
