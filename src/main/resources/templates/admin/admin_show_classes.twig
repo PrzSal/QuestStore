@@ -1,0 +1,13 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Classes list</div>
+        <td class="tg-gkax">Nr.</td>
+        <td class="tg-gkax">Class Name</td>
+        {% for class in classModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ class.className }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

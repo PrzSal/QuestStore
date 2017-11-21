@@ -1,0 +1,13 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Level list</div>
+        <td class="tg-gkax">Level name</td>
+        <td class="tg-gkax">Experience required</td>
+        {% for level in levelModels %}
+            <tr>
+                <td class="tg-gkax">{{ level.levelName }}</td>
+                <td class="tg-gkax">{{ level.expRequired }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
