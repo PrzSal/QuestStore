@@ -118,6 +118,37 @@ public class AdminController implements HttpHandler {
         }
     }
 
+    private void addClass(HttpExchange httpExchange) throws IOException {
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            FormDataController<ClassModel> classModel = new FormDataController<>();
+            ClassDAO classDao = new ClassDAO();
+            classDao.insertClass(classModel.parseFormData(formData, "class"));
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
+            httpExchange.sendResponseHeaders(302, -1);
+        }
+
+        if (method.equals("GET")) {
+            ResponseController<MentorModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, "Show mentors", "admin_show_mentors");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Add class");
+            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
+            String response = template.render(model);
+
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
     private void addLevel(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
@@ -133,17 +164,8 @@ public class AdminController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("title", "Add class");
-            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-            model.with("main", "classpath:/templates/admin/admin_create_level.twig");
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            ResponseController<LevelModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange,"Add level","admin_create_level");
         }
     }
 
@@ -174,42 +196,12 @@ public class AdminController implements HttpHandler {
                 "Show classes", "admin_show_classes");
     }
 
-    private void addClass(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            FormDataController<ClassModel> classModel = new FormDataController<>();
-            ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(classModel.parseFormData(formData, "class"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
-            httpExchange.sendResponseHeaders(302, -1);
-        }
-
-        if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("title", "Add class");
-            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
-    }
-
     private void clearCookie(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie;
         cookie = HttpCookie.parse(cookieStr).get(0);
         SessionDAO.deleteSession(cookie.getValue());
         httpExchange.getResponseHeaders().add("Set-cookie", "first=" + cookie.getValue() + "; Max-Age=0; Path=/");
-
         httpExchange.getResponseHeaders().set("Location", "/login");
         httpExchange.sendResponseHeaders(302,-1);
     }
