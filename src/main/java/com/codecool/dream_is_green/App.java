@@ -1,8 +1,8 @@
 package com.codecool.dream_is_green;
 
+import com.codecool.dream_is_green.controller.Static;
 import com.codecool.dream_is_green.controller.controllers.*;
 import com.codecool.dream_is_green.dao.DatabaseConnection;
-import com.codecool.dream_is_green.controller.LoginPanelController;
 import com.codecool.dream_is_green.dao.FactoryDAO;
 import com.sun.net.httpserver.HttpServer;
 
@@ -25,7 +25,7 @@ public class App {
         server.createContext("/admin", new AdminController());
         server.createContext("/mentor", new MentorController());
         server.createContext("/student", new StudentController());
-        server.createContext("/static", new Static2());
+        server.createContext("/static", new Static());
         server.setExecutor(null); // creates a default executor
 
         // start listening
