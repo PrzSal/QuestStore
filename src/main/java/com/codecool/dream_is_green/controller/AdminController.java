@@ -6,6 +6,7 @@ import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.URIModel;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
