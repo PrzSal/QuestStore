@@ -19,11 +19,13 @@
         if (id == {{loop.index }}) {
             myWindow.document.write("<div class=\"form-in\">\n" +
                 "                <form method=\"POST\">\n" +
-                "                    <label>Level Name </label><br>\n" +
-                "                    <input type=\"hidden\" name=\"levelName\" value = \"{{ mail.userID }}\" > <br>\n" +
-                "                    <input type=\"text\" name=\"levelName\" placeholder=\"{{ mail.name }}\"  value = \"{{ mail.name }}\" disabled=\"disabled\"> <br>\n" +
-                "                    <label>Expected Required </label><br>\n" +
-                "                    <input type=\"text\" name=\"expRequired\" placeholder=\"enter expected required...\" required> <br>\n" +
+                "                    <input type=\"hidden\" name=\"mailId\" value = \"{{ mail.userID }}\" > <br>\n" +
+                "                    <input type=\"hidden\" name=\"mailIdRecipient\" value = \"{{ mail.idRecipient }}\" > <br>\n" +
+                "                    <input type=\"text\" name=\"mailName\" placeholder=\"{{ mail.name }}\"  value = \"{{ mail.name }}\" disabled=\"disabled\"> <br>\n" +
+                "                    <label>Header </label><br>\n" +
+                "                    <input type=\"text\" name=\"header\" placeholder=\"enter header...\" required> <br>\n" +
+                "                    <label>Mail Content </label><br>\n" +
+                "                    <input type=\"text\" name=\"content\" placeholder=\"enter content...\" required> <br>\n" +
                 "                    <input type=\"submit\" value=\"Submit\">\n" +
                 "                </form>\n" +
                 "            </div>");
