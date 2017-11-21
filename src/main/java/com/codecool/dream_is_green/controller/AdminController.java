@@ -38,6 +38,9 @@ public class AdminController implements HttpHandler {
             showLevels(httpExchange);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
+        } else if (userAction.equals("mail")) {
+            MailController mailController = new MailController();
+            mailController.showReadMail(httpExchange, 10);
         }
     }
 
