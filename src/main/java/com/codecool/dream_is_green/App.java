@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green;
 
-import com.codecool.dream_is_green.controller.Static;
-import com.codecool.dream_is_green.controller.controllers.*;
+import com.codecool.dream_is_green.controller.*;
 import com.codecool.dream_is_green.dao.DatabaseConnection;
 import com.codecool.dream_is_green.dao.FactoryDAO;
 import com.sun.net.httpserver.HttpServer;

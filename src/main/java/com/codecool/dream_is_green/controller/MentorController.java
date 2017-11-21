@@ -1,4 +1,4 @@
-package com.codecool.dream_is_green.controller.controllers;
+package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
@@ -15,9 +15,11 @@ import java.io.*;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AdminController implements HttpHandler {
+public class MentorController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -66,16 +68,13 @@ public class AdminController implements HttpHandler {
                 String userName = (String) sessionMap.get(sessionId);
                 String userType = mentorDAO.getUserType(userName);
 
-                if(userType.equals("admin")) {
+                if(userType.equals("mentor")) {
 
-                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/mentor_home.twig");
                     JtwigModel model = JtwigModel.newModel();
-                    model.with("title", "Home admin");
-                    model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-                    model.with("main", "classpath:/templates/admin/admin_home.twig");
                     String response = template.render(model);
 
-                    httpExchange.sendResponseHeaders(200, response.length());
+                    httpExchange.sendResponseHeaders(200, response.getBytes().length);
                     OutputStream os = httpExchange.getResponseBody();
                     os.write(response.getBytes());
                     os.close();
@@ -93,15 +92,12 @@ public class AdminController implements HttpHandler {
     }
 
     private void showClasses(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_classes.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
         model.with("classModels", classDAO.getObjectList());
-        model.with("title", "Show classes");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_classes.twig");
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -129,13 +125,10 @@ public class AdminController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_mentor.html.twig");
         JtwigModel model = JtwigModel.newModel();
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_add_mentor.twig");
         model.with("classModels", classDAO.getObjectList());
         model.with("redirect", redirect);
         String response = template.render(model);
@@ -147,14 +140,11 @@ public class AdminController implements HttpHandler {
     }
 
     private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_mentors.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         MentorDAO mentorDAO = new MentorDAO();
         mentorDAO.loadMentors();
-        model.with("title", "Show mentors");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_mentors.twig");
         model.with("mentorModels", mentorDAO.getObjectList());
         String response = template.render(model);
 
@@ -180,11 +170,8 @@ public class AdminController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_create_level.html.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Add class");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_create_level.twig");
         model.with("redirect", redirect);
         String response = template.render(model);
 
@@ -195,15 +182,12 @@ public class AdminController implements HttpHandler {
     }
   
     private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_levels.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         LevelDAO levelDAO = new LevelDAO();
         levelDAO.loadLevels();
         model.with("levelModels", levelDAO.getObjectList());
-        model.with("title", "Show levels");
-        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-        model.with("main", "classpath:/templates/admin/admin_show_levels.twig");
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -214,6 +198,7 @@ public class AdminController implements HttpHandler {
 
     private void addClass(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
+        String redirect = "";
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -221,23 +206,18 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
             classDao.insertClass(parseFormData(formData).get(0));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
-            httpExchange.sendResponseHeaders(302, -1);
+            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 
-        if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("title", "Add class");
-            model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-            model.with("main", "classpath:/templates/admin/admin_add_class.twig");
-            String response = template.render(model);
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_class.html.twig");
+        JtwigModel model = JtwigModel.newModel();
+        model.with("redirect", redirect);
+        String response = template.render(model);
 
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 
     private void edit(HttpExchange httpExchange, String id) {
@@ -249,6 +229,7 @@ public class AdminController implements HttpHandler {
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
+
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie;
         cookie = HttpCookie.parse(cookieStr).get(0);
