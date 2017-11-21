@@ -29,4 +29,21 @@ public class ResponseController<T> {
         os.close();
     }
 
+    public void sendResponse(HttpExchange httpExchange, String title,
+                             String path) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("title", title);
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/" + path + ".twig");
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
 }
