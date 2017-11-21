@@ -205,7 +205,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(parseFormData(formData).get(0));
+           // classDao.insertClass(parseFormData(formData).get(0));
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 

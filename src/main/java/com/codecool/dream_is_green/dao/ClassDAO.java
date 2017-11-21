@@ -34,11 +34,11 @@ public class ClassDAO extends AbstractDAO<ClassModel> {
         }
     }
 
-    public void insertClass(String className) {
+    public void insertClass(ClassModel classModel) {
 
         Connection conn;
         Statement stat;
-
+        String className = classModel.getClassName();
         try {
             conn = DatabaseConnection.getConnection();
             stat = conn.createStatement();

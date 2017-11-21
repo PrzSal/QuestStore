@@ -4,6 +4,7 @@ import com.codecool.dream_is_green.dao.ClassDAO;
 import com.codecool.dream_is_green.dao.LevelDAO;
 import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.model.ClassModel;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.model.URIModel;
@@ -17,6 +18,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.logging.Level;
 
 public class AdminController implements HttpHandler {
 
@@ -92,7 +94,6 @@ public class AdminController implements HttpHandler {
     private void showClasses(HttpExchange httpExchange) throws IOException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
-
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
         model.with("classModels", classDAO.getObjectList());
@@ -100,7 +101,6 @@ public class AdminController implements HttpHandler {
         model.with("menu", "classpath:/templates/admin/menu_admin.twig");
         model.with("main", "classpath:/templates/admin/admin_show_classes.twig");
         String response = template.render(model);
-
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
@@ -115,13 +115,8 @@ public class AdminController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             MentorDAO mentorDAO = new MentorDAO();
-            String name = parseFormData(formData).get(0);
-            String surname = parseFormData(formData).get(1);
-            String email = parseFormData(formData).get(2);
-            String login = parseFormData(formData).get(3);
-            String password = parseFormData(formData).get(4);
-            String className = parseFormData(formData).get(5);
-            mentorDAO.insertMentor(new PreUserModel(name, surname, email, login, password, className));
+            FormDataController<PreUserModel> preUser = new FormDataController<>();
+            mentorDAO.insertMentor(preUser.parseFormData(formData, "preUser"));
             httpExchange.getResponseHeaders().set("Location", "/admin/show_mentors");
             httpExchange.sendResponseHeaders(302, -1);
         }
@@ -169,11 +164,9 @@ public class AdminController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            String levelName = parseFormData(formData).get(0);
-            String expRequired = parseFormData(formData).get(1);
+            FormDataController<LevelModel> level = new FormDataController<>();
             LevelDAO levelDAO = new LevelDAO();
-            LevelModel levelModel = new LevelModel(levelName, Integer.valueOf(expRequired));
-            levelDAO.insertLevel(levelModel);
+            levelDAO.insertLevel(level.parseFormData(formData, "level"));
             httpExchange.getResponseHeaders().set("Location", "/admin/show_levels");
             httpExchange.sendResponseHeaders(302, -1);
         }
@@ -218,8 +211,9 @@ public class AdminController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
+            FormDataController<ClassModel> classModel = new FormDataController<>();
             ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(parseFormData(formData).get(0));
+            classDao.insertClass(classModel.parseFormData(formData, "class"));
             httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
             httpExchange.sendResponseHeaders(302, -1);
         }
@@ -258,19 +252,5 @@ public class AdminController implements HttpHandler {
             uriModel = new URIModel(pairs[2]);
         }
         return uriModel;
-    }
-
-    private ArrayList<String> parseFormData(String formData) {
-        ArrayList<String> dataToModel = new ArrayList<>();
-        String[] pairs = formData.split("&");
-
-        try {
-            for (String pair : pairs) {
-                dataToModel.add(new URLDecoder().decode(pair.split("=")[1], "UTF-8"));
-            }
-        } catch (ArrayIndexOutOfBoundsException | UnsupportedEncodingException e) {
-            return null;
-        }
-        return dataToModel;
     }
 }
