@@ -70,7 +70,7 @@ public class StudentController implements HttpHandler {
 
                 if(userType.equals("student")) {
 
-                    JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/student/student_home.twig");
+                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/student_home.twig");
                     JtwigModel model = JtwigModel.newModel();
                     String response = template.render(model);
 
@@ -92,7 +92,7 @@ public class StudentController implements HttpHandler {
     }
 
     private void showClasses(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_classes.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_classes.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         ClassDAO classDAO = new ClassDAO();
@@ -125,7 +125,7 @@ public class StudentController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_mentor.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_mentor.html.twig");
         JtwigModel model = JtwigModel.newModel();
         ClassDAO classDAO = new ClassDAO();
         classDAO.loadClasses();
@@ -140,7 +140,7 @@ public class StudentController implements HttpHandler {
     }
 
     private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_mentors.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_mentors.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         MentorDAO mentorDAO = new MentorDAO();
@@ -170,7 +170,7 @@ public class StudentController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_create_level.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_create_level.html.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("redirect", redirect);
         String response = template.render(model);
@@ -182,7 +182,7 @@ public class StudentController implements HttpHandler {
     }
   
     private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_show_levels.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_levels.html.twig");
         JtwigModel model = JtwigModel.newModel();
 
         LevelDAO levelDAO = new LevelDAO();
@@ -209,7 +209,7 @@ public class StudentController implements HttpHandler {
             redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
         }
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/templates/admin/admin_add_class.html.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_class.html.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("redirect", redirect);
         String response = template.render(model);
