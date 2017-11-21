@@ -20,30 +20,26 @@ import java.util.*;
 public class AdminController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
-
         URI uri = httpExchange.getRequestURI();
-        Map<String, String> actionData = parseURI(uri.getPath());
+        URIModel uriModel = parseURI(uri.getPath());
+        String userAction = uriModel.getUserAction();
 
-        for (String action : actionData.keySet()) {
-            if (action.equals("add_class")) {
-                addClass(httpExchange);
-            } else if (action.equals("edit")) {
-                edit(httpExchange, actionData.get(action));
-            } else if (action.equals("show_classes")) {
-                showClasses(httpExchange);
-            } else if (action.equals("add_mentor")) {
-                addMentor(httpExchange);
-            } else if (action.equals("show_mentors")) {
-                showMentors(httpExchange);
-            } else if (action.equals("add_level")) {
-                addLevel(httpExchange);
-            } else if (action.equals("show_levels")) {
-                showLevels(httpExchange);
-            } else if (action.equals("logout")) {
-                clearCookie(httpExchange);
-            } else {
-                index(httpExchange);
-            }
+        if (userAction == null) {
+            index(httpExchange);
+        } else if (userAction.equals("add_class")) {
+            addClass(httpExchange);
+        } else if (userAction.equals("show_classes")) {
+            showClasses(httpExchange);
+        } else if (userAction.equals("add_mentor")) {
+            addMentor(httpExchange);
+        } else if (userAction.equals("show_mentors")) {
+            showMentors(httpExchange);
+        } else if (userAction.equals("add_level")) {
+            addLevel(httpExchange);
+        } else if (userAction.equals("show_levels")) {
+            showLevels(httpExchange);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
         }
     }
 
