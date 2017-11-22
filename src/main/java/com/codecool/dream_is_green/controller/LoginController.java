@@ -23,28 +23,38 @@ public class LoginController implements HttpHandler {
         cookie.handle(httpExchange);
         cookie.redirectIfCookieNull(httpExchange);
 
-        String method = httpExchange.getRequestMethod();
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
 
-        if(method.equals("GET")){
-            String response = this.getLoginTemplate();
+        if(session != null) {
+            String userType = session.getUserType();
+            httpExchange.getResponseHeaders().set("Location", "/" + userType);
+            httpExchange.sendResponseHeaders(302,-1);
 
-            httpExchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
+        } else {
 
-        if(method.equals("POST")){
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
+            String method = httpExchange.getRequestMethod();
 
-            Map<String, String> inputs = parseFormData(formData);
-            String username = inputs.get("username");
-            String password = inputs.get("password");
+            if (method.equals("GET")) {
+                String response = this.getLoginTemplate();
+                httpExchange.sendResponseHeaders(200, response.getBytes().length);
+                OutputStream os = httpExchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
 
-            this.loginHandle(httpExchange, username, password);
+            if (method.equals("POST")) {
+                InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+                BufferedReader br = new BufferedReader(isr);
+                String formData = br.readLine();
 
+                Map<String, String> inputs = parseFormData(formData);
+                String username = inputs.get("username");
+                String password = inputs.get("password");
+
+                this.loginHandle(httpExchange, username, password);
+            }
         }
     }
 
@@ -60,10 +70,8 @@ public class LoginController implements HttpHandler {
     }
 
     private String getLoginTemplate() {
-
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login/login_Page.twig");
         JtwigModel model = JtwigModel.newModel();
-
         String response = template.render(model);
 
         return response;
@@ -74,11 +82,12 @@ public class LoginController implements HttpHandler {
         UserDAO userDAO = new UserDAO();
         String currentPassword = userDAO.getUserPassword(userName);
         String userType = userDAO.getUserType(userName);
-        SessionDAO sessionDAO = new SessionDAO();
 
         if (password.equals(currentPassword)) {
             SessionModel newSession = new SessionModel(cookie.getSessionId(httpExchange), userName, userType);
+            SessionDAO sessionDAO = new SessionDAO();
             sessionDAO.insertSession(newSession);
+
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
 
