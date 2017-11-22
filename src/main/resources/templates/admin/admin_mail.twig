@@ -1,11 +1,8 @@
-<script type="text/javascript">
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
     // When the user clicks on div, open the popup
     function myFunction(id) {
-        var idsList = ["lok"];
-        {% for level in levelModels %}
-        idsList.push({{ level.expRequired }});
-        {% endfor %}
         var popup = document.getElementById(id);
+
         popup.classList.toggle("show");
     }
 </script>
@@ -49,10 +46,18 @@
             <tr>
                 <td class="tg-gkax">{{ mail.name }} </td>
                 <td class="tg-gkax">
-                    <div class="popup" onclick="myFunction({{ loop.index }})">{{ mail.header }}
-                        <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
-                        <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
-                    </div>
+                    {% if mail.read == 1 %}
+                        <div class="popup" onclick="myFunction({{ loop.index }})"><p class="test"> {{ mail.header }}
+                             <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
+                             <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="popup" onclick="myFunction({{ loop.index }})"> {{ mail.header }}
+                                <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
+                                <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

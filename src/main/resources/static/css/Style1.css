@@ -270,7 +270,9 @@ body {
   Table
   ========================================
 */
-
+.test {
+    font-weight: bold;
+}
 .tg {
     display: flex;
     justify-content: center;
