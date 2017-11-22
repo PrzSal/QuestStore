@@ -16,6 +16,8 @@ import java.util.*;
 public class StudentController implements HttpHandler {
 
     Integer countMail;
+    Integer walletStudent;
+
     private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -25,6 +27,8 @@ public class StudentController implements HttpHandler {
         String userAction = uriModel.getUserAction();
         MailController mailController = new MailController();
         countMail = mailController.checkMail(3);
+        walletStudent = showCoolcoins(3);
+
 
         if (userAction == null) {
             index(httpExchange);
@@ -59,6 +63,15 @@ public class StudentController implements HttpHandler {
                     "Team shop", "student_team_shop", "student");
 
         }
+    }
+
+    private Integer showCoolcoins(Integer userId) {
+        StudentDAO studentDAO = new StudentDAO();
+        StudentModel studentModel = studentDAO.getStudent(userId);
+        WalletDAO walletDAO = new WalletDAO();
+        walletDAO.loadCoolcoinsToWallet(studentModel);
+        System.out.println(studentModel.getWallet().getCoolCoins());
+        return studentModel.getWallet().getCoolCoins();
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
