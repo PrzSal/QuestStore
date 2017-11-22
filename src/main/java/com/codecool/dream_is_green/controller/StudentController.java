@@ -17,7 +17,8 @@ public class StudentController implements HttpHandler {
 
     Integer countMail;
     Integer walletStudent;
-    Integer walletTeam;
+    Integer walletTeam = 0;
+    LinkedList<ArtifactModel> li;
 
     private static CookieManager cookie = new CookieManager();
 
@@ -30,7 +31,6 @@ public class StudentController implements HttpHandler {
         countMail = mailController.checkMail(3);
         walletStudent = showCoolcoins(3);
 
-
         if (userAction == null) {
             index(httpExchange);
         } else if (userAction.equals("team_shop")) {
@@ -39,23 +39,6 @@ public class StudentController implements HttpHandler {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, 3);
         }
-    }
-
-    private LinkedList<ArtifactModel> offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
-        LinkedList<ArtifactModel> artifactsModels = new LinkedList<>();
-        ArtifactDAO artifactDAO = new ArtifactDAO();
-        artifactDAO.loadArtifact();
-
-        for (StudentModel member : teamShoppingModels.get(0).getStudentModels()) {
-            walletTeam += showCoolcoins(member.getUserID());
-        }
-
-        for(ArtifactModel artifact : artifactDAO.getObjectList()) {
-            if (walletTeam >= artifact.getPrice()) {
-                artifactsModels.add(artifact);
-            }
-        }
-        return artifactsModels;
     }
 
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
@@ -73,21 +56,58 @@ public class StudentController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
-            responseController.sendResponse(httpExchange, countMail, offerToBuy(teamDao.getObjectList()), "artifactModels",
-                    "Team shop", "student_team_shop", "student");
+            offerToBuy(teamDao.getObjectList());
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+            JtwigModel model = JtwigModel.newModel();
 
+            model.with("artifactModels", li);
+            model.with("title", "Team shop");
+            model.with("counterMail", countMail);
+            model.with("menu", "classpath:/templates/student/menu_student.twig");
+            model.with("main", "classpath:/templates/student/student_team_shop.twig");
+            model.with("data1", "classpath:/templates/student/data.twig");
+
+
+            String response = template.render(model);
+
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+    private void offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
+
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        li = new LinkedList<>();
+        for (StudentModel member : teamShoppingModels.get(0).getStudentModels()) {
+            walletTeam += showCoolcoins(member.getUserID());
+
+        }
+
+        for(ArtifactModel artifact : artifactDAO.getObjectList()) {
+            if (walletTeam >= artifact.getPrice()) {
+
+                li.add(artifact);
+            }
         }
     }
 
+    private Integer checkState(Integer teamId) {
+        TeamDao teamDao = new TeamDao();
+        teamDao.loadDataAboutTeam(teamId);
+        Integer state = 0;
+        return state;
+    }
     private Integer showCoolcoins(Integer userId) {
         StudentDAO studentDAO = new StudentDAO();
         StudentModel studentModel = studentDAO.getStudent(userId);
         WalletDAO walletDAO = new WalletDAO();
         walletDAO.loadCoolcoinsToWallet(studentModel);
-        System.out.println(studentModel.getWallet().getCoolCoins());
         return studentModel.getWallet().getCoolCoins();
     }
 

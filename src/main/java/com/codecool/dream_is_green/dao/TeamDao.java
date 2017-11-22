@@ -31,7 +31,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             ArtifactModel artifactModel;
             TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
             String name, surname, email, login, password, className, title, artifactCategory, teamName, votes;
-            int userID, studentExp, price;
+            int userID, studentExp, price, state;
 
             while(result.next()) {
 
@@ -43,6 +43,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
                 studentExp = result.getInt("experience");
+                state = result.getInt("state");
                 if (!checkFieldArtifact(teamId)) {
                     title = result.getString("artifact_name");
                     price = result.getInt("price");
@@ -61,13 +62,13 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 if (votes == null) {
 
                     if (checkFieldArtifact(teamId)) {
-                        teamShoppingModel = new TeamShoppingModel(students, teamId, teamName);
+                        teamShoppingModel = new TeamShoppingModel(students, teamId, teamName, state);
                     } else {
-                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName);
+                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
                     }
 
                 } else {
-                    teamShoppingModel = new TeamShoppingModel(students, teamId, teamName,votes);
+                    teamShoppingModel = new TeamShoppingModel(students, teamId, teamName, votes, state);
                 }
             }
             this.addObject(teamShoppingModel);
