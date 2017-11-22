@@ -20,7 +20,7 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
                                          "MailBox.user_id_recipient == %d and MailBox.read == %d;", userId, status);
             ResultSet result = stat.executeQuery(query);
             String content, header, name, surname, email, login, password;
-            int userID, userIDSender;
+            int read, userID, userIDSender;
 
             while(result.next()) {
 
@@ -31,10 +31,11 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
                 email = result.getString("email");
                 login = result.getString("login");
                 password = result.getString("password");
+                read = result.getInt("read");
                 userID = result.getInt("user_id_recipient");
                 userIDSender = result.getInt("user_id_sender");
 
-                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender);
+                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender, read);
                 this.addObject(mailBoxModel);
             }
             result.close();
