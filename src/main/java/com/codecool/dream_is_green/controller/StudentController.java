@@ -7,13 +7,15 @@ import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.LevelModel;
 import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.model.URIModel;
+
+import com.codecool.dream_is_green.model.SessionModel;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.Map;
 public class StudentController implements HttpHandler {
 
     Integer countMail;
+    private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -48,53 +51,40 @@ public class StudentController implements HttpHandler {
 
     private void index(HttpExchange httpExchange) throws IOException {
 
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        if(cookieStr == null) {
-            httpExchange.getResponseHeaders().set("Location", "/login");
-            httpExchange.sendResponseHeaders(302,-1);
+        cookie.redirectIfCookieNull(httpExchange);
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
 
-        } else {
-            HttpCookie cookie;
-            cookie = HttpCookie.parse(cookieStr).get(0);
-            String sessionId = cookie.getValue();
-            Map sessionMap = SessionDAO.getSession();
+        if (session != null) {
 
-            if (sessionMap.containsKey(sessionId)) {
+            String userType = session.getUserType();
 
-                MentorDAO mentorDAO = new MentorDAO();
-                String userName = (String) sessionMap.get(sessionId);
-                String userType = mentorDAO.getUserType(userName);
+            if(userType.equals("student")) {
 
-                if(userType.equals("student")) {
+                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/student_home.twig");
+                JtwigModel model = JtwigModel.newModel();
+                String response = template.render(model);
 
-                    JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/student_home.twig");
-                    JtwigModel model = JtwigModel.newModel();
-                    String response = template.render(model);
-
-                    httpExchange.sendResponseHeaders(200, response.getBytes().length);
-                    OutputStream os = httpExchange.getResponseBody();
-                    os.write(response.getBytes());
-                    os.close();
-
-                } else {
-                    httpExchange.getResponseHeaders().set("Location", "/" + userType);
-                    httpExchange.sendResponseHeaders(302,-1);
-                }
+                httpExchange.sendResponseHeaders(200, response.getBytes().length);
+                OutputStream os = httpExchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
 
             } else {
-                httpExchange.getResponseHeaders().set("Location", "/login");
+                httpExchange.getResponseHeaders().set("Location", "/" + userType);
                 httpExchange.sendResponseHeaders(302,-1);
             }
+
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/login");
+            httpExchange.sendResponseHeaders(302,-1);
         }
+
     }
 
-
     private void clearCookie(HttpExchange httpExchange) throws IOException {
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        HttpCookie cookie;
-        cookie = HttpCookie.parse(cookieStr).get(0);
-        SessionDAO.deleteSession(cookie.getValue());
-        httpExchange.getResponseHeaders().add("Set-cookie", "first=" + cookie.getValue() + "; Max-Age=0; Path=/");
+        cookie.cleanCookie(httpExchange);
 
         httpExchange.getResponseHeaders().set("Location", "/login");
         httpExchange.sendResponseHeaders(302,-1);
