@@ -38,7 +38,8 @@ public class CookieManager implements HttpHandler {
     public void cleanCookie(HttpExchange httpExchange) {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         cookie = HttpCookie.parse(cookieStr).get(0);
-        SessionDAO.deleteSession(cookie.getValue());
+        SessionDAO sessionDAO = new SessionDAO();
+        sessionDAO.deleteSession(cookie.getValue());
         httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue() + "; Max-Age=0; Path=/");
     }
 

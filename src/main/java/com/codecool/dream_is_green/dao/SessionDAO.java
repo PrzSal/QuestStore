@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SessionDAO extends AbstractDAO<QuestModel> {
 
-    public static void insertSession(SessionModel newSession) {
+    public void insertSession(SessionModel newSession) {
 
         Connection connection;
 
@@ -40,7 +40,7 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
         }
     }
 
-    public static void deleteSession(String sessionId) {
+    public void deleteSession(String sessionId) {
 
         Connection connection;
 
@@ -61,7 +61,7 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
         }
     }
 
-    public static SessionModel getSession(String sessionId) {
+    public SessionModel getSession(String sessionId) {
 
         SessionModel session = null;
         Connection connection;

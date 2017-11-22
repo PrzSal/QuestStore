@@ -13,7 +13,6 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -55,9 +54,9 @@ public class StudentController implements HttpHandler {
     private void index(HttpExchange httpExchange) throws IOException {
 
         cookie.redirectIfCookieNull(httpExchange);
-
         String sessionId = cookie.getSessionId(httpExchange);
-        SessionModel session = SessionDAO.getSession(sessionId);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
 
         if (session != null) {
 
