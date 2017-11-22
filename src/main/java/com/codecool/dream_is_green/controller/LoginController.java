@@ -1,39 +1,30 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.dao.UserDAO;
+import com.codecool.dream_is_green.model.SessionModel;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class LoginController implements HttpHandler {
 
-    UUID sessionId;
-    HttpCookie cookie = null;
+    private static CookieManager cookie = new CookieManager();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        cookie.handle(httpExchange);
+        cookie.redirectIfCookieNull(httpExchange);
 
-        if (cookieStr != null) {  // SessionCookie already exists
-            cookie = HttpCookie.parse(cookieStr).get(0);
-        } else {
-            sessionId = UUID.randomUUID();
-            cookie = new HttpCookie("SessionId", String.valueOf(sessionId));
-            httpExchange.getResponseHeaders().add("Set-cookie", "first=" + cookie.getValue() + "; Max-Age=300");
-        }
         String method = httpExchange.getRequestMethod();
 
-        // Send a form if it wasn't submitted yet.
         if(method.equals("GET")){
             String response = this.getLoginTemplate();
 
@@ -42,7 +33,7 @@ public class LoginController implements HttpHandler {
             os.write(response.getBytes());
             os.close();
         }
-        // If the form was submitted, retrieve it's content.
+
         if(method.equals("POST")){
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
@@ -57,16 +48,11 @@ public class LoginController implements HttpHandler {
         }
     }
 
-    /**
-     * web.LoginPage data is sent as a urlencoded string. Thus we have to parse this string to get data that we want.
-     * See: https://en.wikipedia.org/wiki/POST_(HTTP)
-     */
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
         for(String pair : pairs){
             String[] keyValue = pair.split("=");
-            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
             String value = new URLDecoder().decode(keyValue[1], "UTF-8");
             map.put(keyValue[0], value);
         }
@@ -85,24 +71,25 @@ public class LoginController implements HttpHandler {
 
     public void loginHandle(HttpExchange httpExchange, String userName, String password) throws IOException {
 
-        MentorDAO mentorDAO = new MentorDAO();
-        String currentPassword = mentorDAO.getUserPassword(userName);
-        System.out.println(currentPassword);
-        String userType = mentorDAO.getUserType(userName);
-        System.out.println(userType);
+        UserDAO userDAO = new UserDAO();
+        String currentPassword = userDAO.getUserPassword(userName);
+        String userType = userDAO.getUserType(userName);
 
         if (password.equals(currentPassword) && userType.equals("admin")) {
-            SessionDAO.insertSession(cookie.getValue(), userName);
+            SessionModel newSession = new SessionModel(cookie.getSessionId(httpExchange), userName, userType);
+            SessionDAO.insertSession(newSession);
             httpExchange.getResponseHeaders().set("Location", "/admin");
             httpExchange.sendResponseHeaders(302,-1);
 
         } else if (password.equals(currentPassword) && userType.equals("mentor")) {
-            SessionDAO.insertSession(cookie.getValue(), userName);
+            SessionModel newSession = new SessionModel(cookie.getSessionId(httpExchange), userName, userType);
+            SessionDAO.insertSession(newSession);
             httpExchange.getResponseHeaders().set("Location", "/mentor");
             httpExchange.sendResponseHeaders(302,-1);
 
         } else if (password.equals(currentPassword) && userType.equals("student")) {
-            SessionDAO.insertSession(cookie.getValue(), userName);
+            SessionModel newSession = new SessionModel(cookie.getSessionId(httpExchange), userName, userType);
+            SessionDAO.insertSession(newSession);
             httpExchange.getResponseHeaders().set("Location", "/student");
             httpExchange.sendResponseHeaders(302,-1);
 
