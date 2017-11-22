@@ -17,6 +17,7 @@ public class StudentController implements HttpHandler {
 
     Integer countMail;
     Integer walletStudent;
+    Integer walletTeam;
 
     private static CookieManager cookie = new CookieManager();
 
@@ -40,6 +41,23 @@ public class StudentController implements HttpHandler {
         }
     }
 
+    private LinkedList<ArtifactModel> offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
+        LinkedList<ArtifactModel> artifactsModels = new LinkedList<>();
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+
+        for (StudentModel member : teamShoppingModels.get(0).getStudentModels()) {
+            walletTeam += showCoolcoins(member.getUserID());
+        }
+
+        for(ArtifactModel artifact : artifactDAO.getObjectList()) {
+            if (walletTeam >= artifact.getPrice()) {
+                artifactsModels.add(artifact);
+            }
+        }
+        return artifactsModels;
+    }
+
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
         String method = httpExchange.getRequestMethod();
 
@@ -55,11 +73,10 @@ public class StudentController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            ResponseController<TeamShoppingModel> responseController = new ResponseController<>();
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
-            LinkedList<TeamShoppingModel> teamShoppingModels = teamDao.getObjectList();
-            responseController.sendResponse(httpExchange, countMail, teamShoppingModels, "teamShopModels",
+            responseController.sendResponse(httpExchange, countMail, offerToBuy(teamDao.getObjectList()), "artifactModels",
                     "Team shop", "student_team_shop", "student");
 
         }

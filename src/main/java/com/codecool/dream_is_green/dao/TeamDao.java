@@ -69,9 +69,8 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 } else {
                     teamShoppingModel = new TeamShoppingModel(students, teamId, teamName,votes);
                 }
-                this.addObject(teamShoppingModel);
-
             }
+            this.addObject(teamShoppingModel);
             result.close();
             stat.close();
 
