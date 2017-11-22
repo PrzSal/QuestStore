@@ -102,7 +102,7 @@ public class AdminController implements HttpHandler {
             LinkedList<ClassModel> classes = classDAO.getObjectList();
             ResponseController<ClassModel> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, classes, "classModels",
-                    "Add mentor", "admin_add_mentor");
+                    "Add mentor", "admin_add_mentor", "admin");
         }
     }
 
@@ -152,7 +152,7 @@ public class AdminController implements HttpHandler {
         LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
         ResponseController<MentorModel> responseController = new ResponseController<>();
         responseController.sendResponse(httpExchange, countMail, mentors, "mentorModels",
-                "Show mentors", "admin_show_mentors");
+                "Show mentors", "admin_show_mentors", "admin");
     }
 
     private void showLevels(HttpExchange httpExchange) throws IOException {
@@ -161,7 +161,7 @@ public class AdminController implements HttpHandler {
         LinkedList<LevelModel> levels = levelDAO.getObjectList();
         ResponseController<LevelModel> responseController = new ResponseController<>();
         responseController.sendResponse(httpExchange, countMail, levels, "levelModels",
-                "Show levels", "admin_show_levels");
+                "Show levels", "admin_show_levels", "admin");
     }
 
     private void showClasses(HttpExchange httpExchange) throws IOException {
@@ -170,7 +170,7 @@ public class AdminController implements HttpHandler {
         LinkedList<ClassModel> classes = classDAO.getObjectList();
         ResponseController<ClassModel> responseController = new ResponseController<>();
         responseController.sendResponse(httpExchange, countMail, classes, "classModels",
-                "Show classes", "admin_show_classes");
+                "Show classes", "admin_show_classes", "admin");
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {

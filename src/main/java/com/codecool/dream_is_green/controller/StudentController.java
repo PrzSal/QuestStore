@@ -1,14 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.dao.ClassDAO;
-import com.codecool.dream_is_green.dao.LevelDAO;
-import com.codecool.dream_is_green.dao.MentorDAO;
-import com.codecool.dream_is_green.dao.SessionDAO;
-import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.PreUserModel;
-import com.codecool.dream_is_green.model.URIModel;
-
-import com.codecool.dream_is_green.model.SessionModel;
+import com.codecool.dream_is_green.dao.*;
+import com.codecool.dream_is_green.model.*;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -18,9 +11,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class StudentController implements HttpHandler {
 
@@ -37,16 +28,37 @@ public class StudentController implements HttpHandler {
 
         if (userAction == null) {
             index(httpExchange);
-        } else if (userAction.equals("team_shopping")) {
-            teamShopping(httpExchange);
+        } else if (userAction.equals("team_shop")) {
+            teamShopping(httpExchange, 1 );
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, 3);
         }
     }
 
-    private void teamShopping(HttpExchange httpExchange) {
+    private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
+        String method = httpExchange.getRequestMethod();
 
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+//            FormDataController<ClassModel> classModel = new FormDataController<>();
+//            ClassDAO classDao = new ClassDAO();
+//            classDao.insertClass(classModel.parseFormData(formData, "class"));
+//            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
+//            httpExchange.sendResponseHeaders(302, -1);
+        }
+
+        if (method.equals("GET")) {
+            ResponseController<TeamShoppingModel> responseController = new ResponseController<>();
+            TeamDao teamDao = new TeamDao();
+            teamDao.loadDataAboutTeam(teamId);
+            LinkedList<TeamShoppingModel> teamShoppingModels = teamDao.getObjectList();
+            responseController.sendResponse(httpExchange, countMail, teamShoppingModels, "teamShopModels",
+                    "Team shop", "student_team_shop", "student");
+
+        }
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
@@ -62,8 +74,11 @@ public class StudentController implements HttpHandler {
 
             if(userType.equals("student")) {
 
-                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/student_home.twig");
+                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
                 JtwigModel model = JtwigModel.newModel();
+                model.with("title", "Home student");
+                model.with("menu", "classpath:/templates/student/menu_student.twig");
+                model.with("main", "classpath:/templates/student/student_home.twig");
                 String response = template.render(model);
 
                 httpExchange.sendResponseHeaders(200, response.getBytes().length);
