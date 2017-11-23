@@ -29,8 +29,9 @@ public class MailController {
             mailBoxDao.loadReadMail(userId, 0);
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
-            responseController.sendResponse(httpExchange, checkMail(userId), mails, "mailModels",
-                    "Show Mail", "admin_mail", "admin");
+            responseController.sendResponse(httpExchange, checkMail(userId), mails,
+                    "mailModels", "Show Mail",
+                    "admin/menu_admin.twig", "admin/admin_mail.twig");
         }
 
         if (method.equals("POST")) {
