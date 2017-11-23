@@ -38,7 +38,7 @@ public class ResponseController<T> {
 
         model.with("title", title);
         model.with("menu", "classpath:/templates/" + menuPath);
-        model.with("main", "classpath:/templates/admin/" + pagePath);
+        model.with("main", "classpath:/templates/" + pagePath);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
