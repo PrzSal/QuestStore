@@ -4,8 +4,6 @@ import com.codecool.dream_is_green.dao.*;
 import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
@@ -56,31 +54,23 @@ public class AdminController implements HttpHandler {
         if (session != null) {
 
             String userType = session.getUserType();
-
-            if(userType.equals("admin")) {
-
-                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-                JtwigModel model = JtwigModel.newModel();
-                model.with("title", "Home admin");
-                model.with("menu", "classpath:/templates/admin/menu_admin.twig");
-                model.with("main", "classpath:/templates/admin/admin_home.twig");
-                String response = template.render(model);
-
-                httpExchange.sendResponseHeaders(200, response.length());
-                OutputStream os = httpExchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
-
-            } else {
-                httpExchange.getResponseHeaders().set("Location", "/" + userType);
-                httpExchange.sendResponseHeaders(302,-1);
-            }
-
+            redirectToAdminHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
+    }
 
+    private void redirectToAdminHome(HttpExchange httpExchange,
+                                     String userType) throws IOException{
+        if(userType.equals("admin")) {
+            ResponseController<User> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, "Home page",
+                    "admin/menu_admin.twig","admin/admin_home.twig");
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/" + userType);
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void addMentor(HttpExchange httpExchange) throws IOException {
@@ -183,7 +173,6 @@ public class AdminController implements HttpHandler {
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
         cookie.cleanCookie(httpExchange);
-
         httpExchange.getResponseHeaders().set("Location", "/login");
         httpExchange.sendResponseHeaders(302,-1);
     }
