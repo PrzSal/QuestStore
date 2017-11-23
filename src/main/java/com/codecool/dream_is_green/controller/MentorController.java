@@ -1,14 +1,10 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.dao.ClassDAO;
-import com.codecool.dream_is_green.dao.LevelDAO;
-import com.codecool.dream_is_green.dao.MentorDAO;
-import com.codecool.dream_is_green.dao.SessionDAO;
-import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.PreUserModel;
-import com.codecool.dream_is_green.model.SessionModel;
+import com.codecool.dream_is_green.dao.*;
+import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -17,6 +13,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class MentorController implements HttpHandler {
@@ -133,21 +130,6 @@ public class MentorController implements HttpHandler {
         os.close();
     }
 
-    private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_mentors.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        MentorDAO mentorDAO = new MentorDAO();
-        mentorDAO.loadMentors();
-        model.with("mentorModels", mentorDAO.getObjectList());
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
     private void addLevel(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String redirect = "";
@@ -214,14 +196,6 @@ public class MentorController implements HttpHandler {
         os.close();
     }
 
-    private void edit(HttpExchange httpExchange, String id) {
-
-    }
-
-    private void delete(int id) {
-
-    }
-
     private void clearCookie(HttpExchange httpExchange) throws IOException {
         cookie.cleanCookie(httpExchange);
 
@@ -263,4 +237,16 @@ public class MentorController implements HttpHandler {
 
         return dataToModel;
     }
+
+    private void showArtifacts(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, artifacts,
+                "artifactModels", "Show artifacts",
+                "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
+    }
+    
+
 }
