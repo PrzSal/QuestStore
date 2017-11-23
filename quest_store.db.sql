@@ -127,6 +127,7 @@ INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3');
 INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2');
 CREATE TABLE "SessionTable" (
 	`session_id`	TEXT,
+	`user_id`	INTEGER,
 	`user_name`	TEXT,
 	`user_type`	TEXT
 );
