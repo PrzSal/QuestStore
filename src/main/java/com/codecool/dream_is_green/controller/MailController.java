@@ -30,7 +30,7 @@ public class MailController {
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
             responseController.sendResponse(httpExchange, checkMail(userId), mails, "mailModels",
-                    "Show Mail", "admin_mail");
+                    "Show Mail", "admin_mail", "admin");
         }
 
         if (method.equals("POST")) {
@@ -41,7 +41,7 @@ public class MailController {
             FormDataController <PreMailModel> formDataController = new FormDataController<>();
             MailBoxDao mailBoxDao = new MailBoxDao();
             mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/mail");
+            httpExchange.getResponseHeaders().set("Location", "/mail");
             httpExchange.sendResponseHeaders(302, -1);
         }
     }

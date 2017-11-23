@@ -1,0 +1,18 @@
+<header>Team shop</header>
+{% include data1 ignore missing %}
+
+<div class="table">
+    <table class="tg">
+        <div class="text">Team Member</div>
+        <td class="tg-gkax">Nr.</td>
+        <td class="tg-gkax">Name </td>
+        <td class="tg-gkax">Artifact </td>
+        {% for shop in artifactModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ shop.title }}</td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</div>
