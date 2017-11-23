@@ -21,8 +21,9 @@ public class TeamShoppingModel {
         this.state = state;
     }
 
-    public TeamShoppingModel(List<StudentModel> studentModels, Integer teamId, String nameTeam, String vote, Integer state) {
+    public TeamShoppingModel(List<StudentModel> studentModels, ArtifactModel artifactModel, Integer teamId, String nameTeam, String vote, Integer state) {
         this.studentModels = studentModels;
+        this.artifactModel = artifactModel;
         this.teamId = teamId;
         this.nameTeam = nameTeam;
         this.vote = vote;

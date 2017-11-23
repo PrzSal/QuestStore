@@ -34,7 +34,7 @@ public class StudentController implements HttpHandler {
         if (userAction == null) {
             index(httpExchange);
         } else if (userAction.equals("team_shop")) {
-            teamShopping(httpExchange, 1 );
+            teamShopping(httpExchange, 3);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, 3);
@@ -62,10 +62,6 @@ public class StudentController implements HttpHandler {
             offerToBuy(teamDao.getObjectList());
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
             JtwigModel model = JtwigModel.newModel();
-            for (ArtifactModel art: li) {
-                System.out.println(art.getTitle());
-            }
-
             model.with("artifactModels", li);
             model.with("title", "Team shop");
             model.with("counterMail", countMail);
@@ -96,15 +92,13 @@ public class StudentController implements HttpHandler {
         ArtifactDAO artifactDAO = new ArtifactDAO();
         artifactDAO.loadArtifact();
         li = new LinkedList<>();
+        walletTeam = 0;
         for (StudentModel member : teamShoppingModels.get(0).getStudentModels()) {
             walletTeam += showCoolcoins(member.getUserID());
 
         }
-        System.out.println(walletTeam);
-
         for(ArtifactModel artifact : artifactDAO.getObjectList()) {
             if (walletTeam >= artifact.getPrice()) {
-                System.out.println(artifact.getTitle());
                 li.add(artifact);
             }
         }

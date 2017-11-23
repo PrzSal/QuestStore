@@ -60,7 +60,6 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                         login, password, className, studentExp);
                 students.add(student);
                 if (votes == null) {
-
                     if (checkFieldArtifact(teamId)) {
                         teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
                     } else {
@@ -68,7 +67,8 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                     }
 
                 } else {
-                    teamShoppingModel = new TeamShoppingModel(students, teamId, teamName, votes, state);
+
+                    teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, votes, state);
                 }
             }
             this.addObject(teamShoppingModel);
