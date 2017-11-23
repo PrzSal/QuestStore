@@ -66,7 +66,7 @@ CREATE TABLE "TeamsTable" (
 );
 INSERT INTO `TeamsTable` VALUES (1,'Dreem Is Green','mentor_ride_on_elephant',NULL,2);
 INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',NULL,2);
-INSERT INTO `TeamsTable` VALUES (3,'young',NULL,'3',1);
+INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring','3',1);
 INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,NULL,0);
 CREATE TABLE "StudentsWithQuests"
 (
