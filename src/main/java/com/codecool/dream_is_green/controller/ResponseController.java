@@ -30,7 +30,6 @@ public class ResponseController<T> {
             model.with("main", "classpath:/templates/student/" + path + ".twig");
         }
         model.with("counterMail", counterMail);
-
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());

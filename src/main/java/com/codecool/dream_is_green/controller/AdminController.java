@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
+    Integer countMail;
 
     Integer countMail;
     private static CookieManager cookie = new CookieManager();
@@ -103,6 +104,7 @@ public class AdminController implements HttpHandler {
             ResponseController<ClassModel> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, classes, "classModels",
                     "Add mentor", "admin_add_mentor", "admin");
+
         }
     }
 
