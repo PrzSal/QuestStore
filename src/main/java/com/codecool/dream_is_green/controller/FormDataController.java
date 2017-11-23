@@ -1,9 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.model.ClassModel;
-import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.MentorModel;
-import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -42,7 +39,21 @@ public class FormDataController<T> {
             PreUserModel preUser = new PreUserModel(data.get(0), data.get(1),
                     data.get(2), data.get(3), data.get(4), data.get(5));
             return (T)preUser;
+        } else if (objectType.equals("mail")) {
+            PreMailModel preMail = new PreMailModel(data.get(3), data.get(2),
+                    Integer.valueOf(data.get(1)), Integer.valueOf(data.get(0)));
+            return (T) preMail;
         }
         return null;
+    }
+
+    public URIModel parseURI (String uri) {
+        String[] pairs = uri.split("/");
+        URIModel uriModel = new URIModel();
+
+        if (pairs.length == 3) {
+            uriModel = new URIModel(pairs[2]);
+        }
+        return uriModel;
     }
 }

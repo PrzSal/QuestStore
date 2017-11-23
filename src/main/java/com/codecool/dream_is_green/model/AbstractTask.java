@@ -5,6 +5,9 @@ public class AbstractTask<T> {
     protected String title;
     protected Integer price;
     protected T category;
+    public AbstractTask() {
+
+    }
 
     public AbstractTask(String title, Integer price, T questCategory) {
         this.title = title;

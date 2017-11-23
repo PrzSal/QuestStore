@@ -111,7 +111,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         return userID;
     }
 
-    public StudentModel getStudent(String login) {
+    public StudentModel getStudent(Integer userId) {
 
         try {
 
@@ -119,7 +119,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             Statement stat = conn.createStatement();
 
             String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
-                    " ON UsersTable.user_id = StudentsTable.user_id WHERE login = '" + login + "'";
+                    " ON UsersTable.user_id = StudentsTable.user_id WHERE UsersTable.user_id = '" + userId + "'";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, user_login, password, className;
             int userID, studentExp;

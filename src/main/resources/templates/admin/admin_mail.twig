@@ -1,0 +1,66 @@
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
+    // When the user clicks on div, open the popup
+    function myFunction(id) {
+        var popup = document.getElementById(id);
+
+        popup.classList.toggle("show");
+    }
+</script>
+
+<script>
+    var myWindow;
+
+    function openResponseForm(id) {
+        myWindow = window.open("", "myWindow", "width=400,height=300");
+        {% for mail in mailModels %}
+        if (id == {{loop.index }}) {
+            myWindow.document.write("<div class=\"form-in\">\n" +
+                "                <form method=\"POST\">\n" +
+                "                    <input type=\"hidden\" name=\"mailId\" value = \"{{ mail.userID }}\" > <br>\n" +
+                "                    <input type=\"hidden\" name=\"mailIdRecipient\" value = \"{{ mail.idRecipient }}\" > <br>\n" +
+                "                    <input type=\"text\" name=\"mailName\" placeholder=\"{{ mail.name }}\"  value = \"{{ mail.name }}\" disabled=\"disabled\"> <br>\n" +
+                "                    <label>Header </label><br>\n" +
+                "                    <input type=\"text\" name=\"header\" placeholder=\"enter header...\" required> <br>\n" +
+                "                    <label>Mail Content </label><br>\n" +
+                "                    <input type=\"text\" name=\"content\" placeholder=\"enter content...\" required> <br>\n" +
+                "                    <input type=\"submit\" value=\"Submit\">\n" +
+                "                </form>\n" +
+                "            </div>");
+
+        }
+        {% endfor %}
+    }
+
+    function closeWin() {
+        myWindow.close();
+    }
+</script>
+<div class="table">
+    <table class="tg">
+        <div class="text">Mail Box</div>
+        <td class="tg-gkax">Sender</td>
+        <td class="tg-gkax">Header</td>
+
+        {% for mail in mailModels %}
+
+            <tr>
+                <td class="tg-gkax">{{ mail.name }} </td>
+                <td class="tg-gkax">
+                    {% if mail.read == 1 %}
+                        <div class="popup" onclick="myFunction({{ loop.index }})"><p class="test"> {{ mail.header }}
+                             <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
+                             <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="popup" onclick="myFunction({{ loop.index }})"> {{ mail.header }}
+                                <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
+                                <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
