@@ -27,7 +27,6 @@ public class UserDAO {
             preparedStatement.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
         return userPassword;
     }
@@ -53,7 +52,6 @@ public class UserDAO {
             preparedStatement.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
         return userType;
     }
