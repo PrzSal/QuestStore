@@ -247,6 +247,16 @@ public class MentorController implements HttpHandler {
                 "artifactModels", "Show artifacts",
                 "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
     }
+    private void showQuests(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        questDAO.loadQuest();
+        LinkedList<QuestModel> quests = questDAO.getObjectList();
+        ResponseController<QuestModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, quests,
+                "questModels", "Show quests",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_quests.twig");
+    }
+
     
 
 }
