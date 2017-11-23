@@ -13,7 +13,7 @@ import java.util.*;
 
 public class AdminController implements HttpHandler {
 
-    Integer countMail;
+    private Integer countMail;
     private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -101,8 +101,10 @@ public class AdminController implements HttpHandler {
             classDAO.loadClasses();
             LinkedList<ClassModel> classes = classDAO.getObjectList();
             ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, classes, "classModels",
-                    "Add mentor", "admin_add_mentor", "admin");
+            responseController.sendResponse(httpExchange, countMail, classes,
+                    "classModels", "Add mentor",
+                    "admin/menu_admin.twig", "admin/admin_add_mentor.twig");
+
         }
     }
 
@@ -122,7 +124,8 @@ public class AdminController implements HttpHandler {
 
         if (method.equals("GET")) {
             ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Add class", "admin_add_class");
+            responseController.sendResponse(httpExchange, "Add class",
+                    "admin/menu_admin.twig","admin/admin_add_class.twig");
         }
     }
 
@@ -142,7 +145,8 @@ public class AdminController implements HttpHandler {
 
         if (method.equals("GET")) {
             ResponseController<LevelModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange,"Add level","admin_create_level");
+            responseController.sendResponse(httpExchange,"Add level",
+                    "admin/menu_admin.twig","admin/admin_create_level.twig");
         }
     }
 
@@ -151,8 +155,9 @@ public class AdminController implements HttpHandler {
         mentorDAO.loadMentors();
         LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
         ResponseController<MentorModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, mentors, "mentorModels",
-                "Show mentors", "admin_show_mentors", "admin");
+        responseController.sendResponse(httpExchange, countMail, mentors,
+                "mentorModels", "Show mentors",
+                "admin/menu_admin.twig", "admin/admin_show_mentors.twig");
     }
 
     private void showLevels(HttpExchange httpExchange) throws IOException {
@@ -160,8 +165,9 @@ public class AdminController implements HttpHandler {
         levelDAO.loadLevels();
         LinkedList<LevelModel> levels = levelDAO.getObjectList();
         ResponseController<LevelModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, levels, "levelModels",
-                "Show levels", "admin_show_levels", "admin");
+        responseController.sendResponse(httpExchange, countMail, levels,
+                "levelModels", "Show levels",
+                "admin/menu_admin.twig","admin/admin_show_levels.twig");
     }
 
     private void showClasses(HttpExchange httpExchange) throws IOException {
@@ -169,8 +175,9 @@ public class AdminController implements HttpHandler {
         classDAO.loadClasses();
         LinkedList<ClassModel> classes = classDAO.getObjectList();
         ResponseController<ClassModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, classes, "classModels",
-                "Show classes", "admin_show_classes", "admin");
+        responseController.sendResponse(httpExchange, countMail, classes,
+                "classModels", "Show classes",
+                "admin/menu_admin.twig", "admin/admin_show_classes.twig");
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
