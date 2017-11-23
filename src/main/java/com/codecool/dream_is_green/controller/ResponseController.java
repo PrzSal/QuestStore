@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 public class ResponseController<T> {
 
-    public void sendResponse(HttpExchange httpExchange, LinkedList<T> objectsList,
+    public void sendResponse(HttpExchange httpExchange, Integer counterMail, LinkedList<T> objectsList,
                              String objectModels, String title,
                              String path) throws IOException {
 
@@ -20,6 +20,7 @@ public class ResponseController<T> {
         model.with(objectModels, objectsList);
         model.with("title", title);
         model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("counterMail", counterMail);
         model.with("main", "classpath:/templates/admin/" + path + ".twig");
         String response = template.render(model);
 

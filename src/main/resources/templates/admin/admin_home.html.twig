@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>Admin Home</title>
     <link rel="stylesheet" href="/static/css/Style1.css">
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
@@ -18,9 +18,42 @@
     <div class="banner">
         <img src="/static/img/banner_admin.png">
     </div>
-    {% include menu ignore missing %}
-</div>
 
+    <dl id="menu0">
+        <dt>
+            <a href="/admin">
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
+
+    <dl id="menu1">
+        <dt>Mentor</dt>
+        <dd><a href="/admin/show_mentors">Show mentors</a></dd>
+        <dd><a href="/admin/add_mentor">Add new mentor</a></dd>
+        <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+        <dd><a href="/admin/mail"> mail {{ counter }}</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Class</dt>
+        <dd><a href="/admin/show_classes">Show classes list</a></dd>
+        <dd><a href="/admin/add_class">Add new class</a></dd>
+        <dd><a href="admin_remove_class.html">Remove class</a></dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Level</dt>
+        <dd><a href="/admin/show_levels">Show levels list</a></dd>
+        <dd><a href="/admin/add_level">Create new level</a></dd>
+        <dd><a href="admin_remove_level.html">Remove level</a></dd>
+    </dl>
+    <dl id="logout">
+        <dt>
+            <a href="admin/logout">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
+</div>
 
 <script type="text/javascript">
     // <![CDATA[
@@ -43,17 +76,25 @@
         <button id="btnNext" type="button">Next</button>
         <div id="divCal"></div>
     </div>
-    <div class="circle">{{ counterMail }}</div>
+    <div class="circle">{{ counter }}</div>
     <div class="mail">
-        <a href="/admin/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+        <img border="0" alt="logout" src="/static/img/if_aiga_mail_bg_134145.png" width=100%>
     </div>
 </div>
 
 <!-- Main content -->
-<div class="main">
-    {% include main ignore missing %}
-</div>
 
+
+<!-- Main content -->
+<div class="main-home">
+    <div class="home_img">
+        <div class="autumn-welcome">
+            <p>ADMIN PANEL</p>
+        </div>
+        <br>
+        <img border="0" alt="home_img" src="/static/img/autumn.png" width=20%>
+    </div>
+</div>
 <div class="footer">
     ? 2017 Codecool. All rights reserved. <br>
     <a href=authors_admin.html> About authors ? </a>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>Admin Add Level</title>
     <link rel="stylesheet" href="/static/css/Style1.css">
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
@@ -18,7 +18,40 @@
     <div class="banner">
         <img src="/static/img/banner_admin.png">
     </div>
-    {% include menu ignore missing %}
+
+    <dl id="menu0">
+        <dt>
+            <a href="/admin">
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
+
+    <dl id="menu1">
+        <dt>Mentor</dt>
+        <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
+        <dd><a href="/admin/add_mentor">Add new mentor</a></dd>
+        <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+    </dl>
+    <dl id="menu2">
+        <dt>Class</dt>
+        <dd><a href="/admin/show_classes">Show classes list</a></dd>
+        <dd><a href="/admin/add_class">Add new class</a></dd>
+        <dd><a href="admin_remove_class.html">Remove class</a></dd>
+    </dl>
+    <dl id="menu3">
+        <dt>Level</dt>
+        <dd><a href="/admin/show_levels">Show levels list</a></dd>
+        <dd><a href="/admin/add_level">Create new level</a></dd>
+        <dd><a href="admin_remove_level.html">Remove level</a></dd>
+    </dl>
+    <dl id="logout">
+        <dt>
+            <a href=../login_page.html>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+        </dt>
+    </dl>
 </div>
 
 
@@ -43,22 +76,29 @@
         <button id="btnNext" type="button">Next</button>
         <div id="divCal"></div>
     </div>
-    <div class="circle">{{ counterMail }}</div>
-    <div class="mail">
-        <a href="/admin/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
-    </div>
 </div>
 
 <!-- Main content -->
 <div class="main">
-    {% include main ignore missing %}
+
+    <header>Add new level</header>
+    <div class="form-in">
+
+
+        <form method="POST">
+            <label>Level Name </label><br>
+            <input type="text" name="levelName" placeholder="enter level name..." required> <br>
+            <label>Expected Required </label><br>
+            <input type="text" name="expRequired" placeholder="enter expected required..." required> <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </div>
 
 <div class="footer">
     ? 2017 Codecool. All rights reserved. <br>
-    <a href=authors_admin.html> About authors ? </a>
+    <a href="/admin/authors_admin"> About authors ? </a>
 </div>
 
 <script src="/static/js/calendar.js"></script>
 </body>
-</html>

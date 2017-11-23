@@ -1,7 +1,5 @@
 package com.codecool.dream_is_green.model;
 
-import java.util.LinkedList;
-
 public class StudentModel extends User {
 
     private Integer experience;
