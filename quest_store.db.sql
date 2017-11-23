@@ -130,7 +130,6 @@ CREATE TABLE "SessionTable" (
 	`user_name`	TEXT,
 	`user_type`	TEXT
 );
-INSERT INTO `SessionTable` VALUES ('06e966d2-7dd4-4e48-9a27-808e058985a5','student','student');
 CREATE TABLE "QuestsTable"
 (
 `quest_name`
