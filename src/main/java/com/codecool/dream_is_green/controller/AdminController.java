@@ -18,7 +18,8 @@ public class AdminController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
         URI uri = httpExchange.getRequestURI();
-        URIModel uriModel = parseURI(uri.getPath());
+        FormDataController formDataController = new FormDataController();
+        URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
         MailController mailController = new MailController();
         countMail = mailController.checkMail(10);
@@ -185,15 +186,5 @@ public class AdminController implements HttpHandler {
 
         httpExchange.getResponseHeaders().set("Location", "/login");
         httpExchange.sendResponseHeaders(302,-1);
-    }
-
-    private URIModel parseURI (String uri) {
-        String[] pairs = uri.split("/");
-        URIModel uriModel = new URIModel();
-
-        if (pairs.length == 3) {
-            uriModel = new URIModel(pairs[2]);
-        }
-        return uriModel;
     }
 }
