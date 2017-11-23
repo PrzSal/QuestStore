@@ -76,17 +76,7 @@ public class AdminController implements HttpHandler {
     private void addMentor(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            MentorDAO mentorDAO = new MentorDAO();
-            FormDataController<PreUserModel> preUser = new FormDataController<>();
-            mentorDAO.insertMentor(preUser.parseFormData(formData, "preUser"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_mentors");
-            httpExchange.sendResponseHeaders(302, -1);
-        }
-
+        addMentorPost(httpExchange, method);
         if (method.equals("GET")) {
             ClassDAO classDAO = new ClassDAO();
             classDAO.loadClasses();
@@ -98,6 +88,21 @@ public class AdminController implements HttpHandler {
 
         }
     }
+
+    private void addMentorPost(HttpExchange httpExchange, String method) throws IOException {
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            MentorDAO mentorDAO = new MentorDAO();
+            FormDataController<PreUserModel> preUser = new FormDataController<>();
+            mentorDAO.insertMentor(preUser.parseFormData(formData, "preUser"));
+            httpExchange.getResponseHeaders().set("Location", "/admin/show_mentors");
+            httpExchange.sendResponseHeaders(302, -1);
+        }
+
+    }
+
 
     private void addClass(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
