@@ -257,6 +257,13 @@ public class MentorController implements HttpHandler {
                 "mentor/menu_mentor.twig", "mentor/mentor_show_quests.twig");
     }
 
-    
-
+    private void showStudents(HttpExchange httpExchange) throws IOException {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = studentDAO.getObjectList();
+        ResponseController<StudentModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, students,
+                "studentModels", "Show students",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_students.twig");
+    }
 }
