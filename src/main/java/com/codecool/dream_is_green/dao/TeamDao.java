@@ -28,7 +28,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             }
             ResultSet result = stat.executeQuery(query);
             List<StudentModel> students = new LinkedList<>();
-            ArtifactModel artifactModel;
+            ArtifactModel artifactModel = new ArtifactModel();
             TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
             String name, surname, email, login, password, className, title, artifactCategory, teamName, votes;
             int userID, studentExp, price, state;
@@ -62,7 +62,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 if (votes == null) {
 
                     if (checkFieldArtifact(teamId)) {
-                        teamShoppingModel = new TeamShoppingModel(students, teamId, teamName, state);
+                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
                     } else {
                         teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
                     }

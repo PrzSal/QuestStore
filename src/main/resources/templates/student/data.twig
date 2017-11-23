@@ -1,27 +1,26 @@
-{#<style onload="disableBtn(2)">Din</style>#}
+<style onload="disableBtn({{ state }})"></style>
 <script>
 function disableBtn(id) {
-    if (id == 3){
-        document.getElementById("addArt").disabled = true
+    if (id == 0){
+        document.getElementById("buyArtifact").disabled = false;
+    } else if(id == 1) {
+        document.getElementById("vote").disabled = false;
     }
 }
 
-function undisableBtn() {
-    document.getElementById("myBtn").disabled = false;
-}
 </script>
 <header>
-<button onclick="myFunction()">Buy artifact also team</button>
+    <button onclick="myFunction()" id="buyArtifact" disabled>Buy artifact also team</button>
 </header>
-
-<p id="demo"></p>
-
+<header>
+    <button onclick="voteFunction()" id="vote" disabled>Vote on Artifact</button>
+</header>
 
 <script>
     function myFunction() {
-        document.getElementById("demo").innerHTML = "<div class=\"form-in\">\n" +
+        document.getElementById("buyArtifact").innerHTML = "<div class=\"form-in\">\n" +
             "    <form method=\"POST\">" +
-            "       <label> Class Name </label> <br>\n" +
+            "       <label> Artifact to buy </label> <br>\n" +
             "        <select  type=\"text\" id=\"class name\" name=\"class name\"><br>\n" +
             "            {% for artifact in artifactModels %}\n" +
             "                <option  type=\"text\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
@@ -29,6 +28,20 @@ function undisableBtn() {
             "        </select>\n" +
             "        <input id=\"submit\" name=\"submit\" type=\"submit\"  value=\"submit\">\n" +
             "    </form>" +
+            "</div>";
+    }
+</script>
+
+<script>
+    function voteFunction() {
+        document.getElementById("vote").innerHTML = "<div class=\"form-in\">\n" +
+            "    <form method=\"POST\">" +
+            "       <label> Vote on {{titleArt }} Price: {{ price }}</label> <br>\n" +
+            "<form action=\"/action_page.php\">\n" +
+            "  <input type=\"checkbox\" name=\"vote\" value=\"1\" > Yes<br>\n" +
+            "  <input type=\"checkbox\" name=\"vote\" value=\"0\" > No<br>\n" +
+            "  <input type=\"submit\" value=\"Submit\">\n" +
+            "</form>" +
             "</div>";
     }
 </script>

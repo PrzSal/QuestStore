@@ -62,6 +62,9 @@ public class StudentController implements HttpHandler {
             offerToBuy(teamDao.getObjectList());
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
             JtwigModel model = JtwigModel.newModel();
+            for (ArtifactModel art: li) {
+                System.out.println(art.getTitle());
+            }
 
             model.with("artifactModels", li);
             model.with("title", "Team shop");
@@ -69,7 +72,16 @@ public class StudentController implements HttpHandler {
             model.with("menu", "classpath:/templates/student/menu_student.twig");
             model.with("main", "classpath:/templates/student/student_team_shop.twig");
             model.with("data1", "classpath:/templates/student/data.twig");
+            model.with("state", checkState(teamId));
+            String titleArt = teamDao.getObjectList().get(0).getArtifactModel().getTitle();
 
+            if (titleArt.length() == 0) {
+                model.with("titleArt", "empty");
+                model.with("price", "0");
+            } else {
+                model.with("titleArt", titleArt);
+                model.with("price", teamDao.getObjectList().get(0).getArtifactModel().getPrice());
+            }
 
             String response = template.render(model);
 
@@ -88,10 +100,11 @@ public class StudentController implements HttpHandler {
             walletTeam += showCoolcoins(member.getUserID());
 
         }
+        System.out.println(walletTeam);
 
         for(ArtifactModel artifact : artifactDAO.getObjectList()) {
             if (walletTeam >= artifact.getPrice()) {
-
+                System.out.println(artifact.getTitle());
                 li.add(artifact);
             }
         }
@@ -100,9 +113,10 @@ public class StudentController implements HttpHandler {
     private Integer checkState(Integer teamId) {
         TeamDao teamDao = new TeamDao();
         teamDao.loadDataAboutTeam(teamId);
-        Integer state = 0;
+        Integer state = teamDao.getObjectList().get(0).getState();
         return state;
     }
+
     private Integer showCoolcoins(Integer userId) {
         StudentDAO studentDAO = new StudentDAO();
         StudentModel studentModel = studentDAO.getStudent(userId);
