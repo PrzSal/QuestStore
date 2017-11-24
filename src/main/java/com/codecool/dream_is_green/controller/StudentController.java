@@ -39,7 +39,9 @@ public class StudentController implements HttpHandler {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
-            mailController.showReadMail(httpExchange, userId);
+            mailController.showReadMail(httpExchange, 3);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
         }
     }
 
@@ -67,8 +69,7 @@ public class StudentController implements HttpHandler {
             model.with("artifactModels", li);
             model.with("title", "Team shop");
             model.with("counterMail", countMail);
-            model.with("teamName", teamDao.getObjectList().get(0).getNameTeam());
-            model.with("menu", "classpath:/templates/student/menu_student.twig");
+            model.with("menu", "classpath:/templates/student/student_menu.twig");
             model.with("main", "classpath:/templates/student/student_team_shop.twig");
             model.with("data1", "classpath:/templates/student/data.twig");
             model.with("state", checkState(teamId));
@@ -140,10 +141,10 @@ public class StudentController implements HttpHandler {
 
             if(userType.equals("student")) {
 
-                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/student_main.twig");
                 JtwigModel model = JtwigModel.newModel();
                 model.with("title", "Home student");
-                model.with("menu", "classpath:/templates/student/menu_student.twig");
+                model.with("menu", "classpath:/templates/student/student_menu.twig");
                 model.with("main", "classpath:/templates/student/student_home.twig");
                 String response = template.render(model);
 
