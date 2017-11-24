@@ -31,7 +31,6 @@ public class LoginController implements HttpHandler {
             String userType = session.getUserType();
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
-
         } else {
 
             String method = httpExchange.getRequestMethod();
