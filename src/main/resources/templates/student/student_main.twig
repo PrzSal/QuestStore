@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/Style1.css">
+    <script type="text/javascript" src="/static/js/menu.js"></script>
+    <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.png'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="/static/css/calendar.css">
+    {{ redirect }}
+</head>
+<body>
+
+<div class="top-menu-bar">
+    <div class="banner">
+        <img src="/static/img/banner_admin.png">
+    </div>
+    {% include menu ignore missing %}
+</div>
+
+
+<script type="text/javascript">
+    // <![CDATA[
+    new Menu('menu0', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu4', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
+    // ]]>
+</script>
+
+<!-- Sidebar -->
+<div class="left">
+    <div class="user_photo">
+        <img border="0" alt="logout" src="/static/img/pietrek.jpg" width=100%>
+    </div>
+
+    <div class="calendar-wrapper">
+        <button id="btnPrev" type="button">Prev</button>
+        <button id="btnNext" type="button">Next</button>
+        <div id="divCal"></div>
+    </div>
+    <div class="circle">{{ counterMail }}</div>
+    <div class="mail">
+        <a href="/admin/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    {% include main ignore missing %}
+</div>
+
+<div class="footer">
+    ? 2017 Codecool. All rights reserved. <br>
+    <a href=authors_admin.html> About authors ? </a>
+</div>
+
+<script src="/static/js/calendar.js"></script>
+</body>
+</html>

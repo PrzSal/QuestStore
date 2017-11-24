@@ -38,11 +38,11 @@ public class AdminController implements HttpHandler {
             addLevel(httpExchange);
         } else if (userAction.equals("show_levels")) {
             showLevels(httpExchange);
-        } else if (userAction.equals("logout")) {
-            clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, 10);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
         }
     }
 
