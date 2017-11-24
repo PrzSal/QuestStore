@@ -21,14 +21,16 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
             connection.setAutoCommit(false);
 
             String sessionId = newSession.getSessionId();
+            Integer userId = newSession.getUserId();
             String userName = newSession.getUserName();
             String userType = newSession.getUserType();
 
-            String insertTableSQL = "INSERT INTO SessionTable (session_id, user_name, user_type) VALUES (?, ?, ?)";
+            String insertTableSQL = "INSERT INTO SessionTable (session_id, user_id, user_name, user_type) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, sessionId);
-            preparedStatement.setString(2, userName);
-            preparedStatement.setString(3, userType);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setString(3, userName);
+            preparedStatement.setString(4, userType);
 
             preparedStatement .executeUpdate();
 
@@ -36,7 +38,6 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
             connection.commit();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
     }
 
@@ -57,7 +58,6 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
             connection.commit();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
     }
 
@@ -75,16 +75,16 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String userSessionId = rs.getString("session_id");
+                Integer userId = rs.getInt("user_id");
                 String userName = rs.getString("user_name");
                 String userType = rs.getString("user_type");
 
-                session = new SessionModel(userSessionId, userName, userType);
+                session = new SessionModel(userSessionId, userId, userName, userType);
             }
 
             preparedStatement.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
         return session;
     }
