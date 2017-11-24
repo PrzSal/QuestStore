@@ -4,17 +4,10 @@ import com.codecool.dream_is_green.dao.*;
 import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class MentorController implements HttpHandler {
 
