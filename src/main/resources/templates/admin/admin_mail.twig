@@ -40,6 +40,7 @@
         <div class="text">Mail Box</div>
         <td class="tg-gkax">Sender</td>
         <td class="tg-gkax">Header</td>
+        <td class="tg-gkax">Response</td>
 
         {% for mail in mailModels %}
 
@@ -49,16 +50,15 @@
                     {% if mail.read == 1 %}
                         <div class="popup" onclick="myFunction({{ loop.index }})"><p class="test"> {{ mail.header }}
                              <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
-                             <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
                             </p>
                         </div>
                     {% else %}
                         <div class="popup" onclick="myFunction({{ loop.index }})"> {{ mail.header }}
                                 <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
-                                <button onclick="openResponseForm({{ loop.index }})">Response to {{ mail.name }}</button>
                         </div>
                     {% endif %}
                 </td>
+                <td class="tg-gkax"><button onclick="openResponseForm({{ loop.index }})">Response</button> </td>
             </tr>
         {% endfor %}
 
