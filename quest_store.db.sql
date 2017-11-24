@@ -56,15 +56,31 @@ INSERT INTO `UsersTable` VALUES (9,'Piotr','Szmytke','pszmytke@','pszmytke','szy
 INSERT INTO `UsersTable` VALUES (10,'Michalina','Borek','m.borek','admin','admin','admin');
 INSERT INTO `UsersTable` VALUES (11,'Karol','Kotarski','op.pl','Uj','Uj','student');
 INSERT INTO `UsersTable` VALUES (12,'Michal','Kowalski','@op.pl','mk','mk12','student');
-CREATE TABLE "TeamsTable" (
-	`team_id`	INTEGER,
-	`team_name`	TEXT UNIQUE,
-	`artifact_id`	INTEGER DEFAULT null,
-	`votes`	TEXT DEFAULT null,
-	`state`	INTEGER DEFAULT 0,
-	PRIMARY KEY(team_id)
+CREATE TABLE "TeamsTable"
+(
+`team_id`
+INTEGER,
+`team_name`
+TEXT
+UNIQUE,
+`artifact_id`
+INTEGER
+DEFAULT
+null,
+`votes`
+TEXT
+DEFAULT
+null,
+`state`
+INTEGER
+DEFAULT
+0,
+PRIMARY
+KEY(team_id)
 );
-INSERT INTO `TeamsTable` VALUES (1,'Dreem Is Green','mentor_ride_on_elephant',NULL,2);
+INSERT INTO `TeamsTable` VALUES (1,'Dreem
+Is
+Green','mentor_ride_on_elephant',NULL,2);
 INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',NULL,2);
 INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring','3',1);
 INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,NULL,0);
@@ -125,11 +141,16 @@ INSERT INTO `StudentsTable` VALUES (9,820,1,'krk2017-1');
 INSERT INTO `StudentsTable` VALUES (12,89,2,'krk2016-1');
 INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3');
 INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2');
-CREATE TABLE "SessionTable" (
-	`session_id`	TEXT,
-	`user_id`	INTEGER,
-	`user_name`	TEXT,
-	`user_type`	TEXT
+CREATE TABLE "SessionTable"
+(
+`session_id`
+TEXT,
+`user_id`
+INTEGER,
+`user_name`
+TEXT,
+`user_type`
+TEXT
 );
 CREATE TABLE "QuestsTable"
 (
@@ -175,37 +196,40 @@ INSERT INTO `MentorsTable` VALUES (7,'krk17');
 INSERT INTO `MentorsTable` VALUES (1,'krk17');
 INSERT INTO `MentorsTable` VALUES (11,'krk16');
 INSERT INTO `MentorsTable` VALUES (12,'Krk-2017-3');
-CREATE TABLE "MailBox" (
-	`id`	INTEGER,
-	`content`	TEXT,
-	`read`	INTEGER DEFAULT 1,
-	`header`	TEXT,
-	`user_id_recipient`	INTEGER,
-	`user_id_sender`	INTEGER,
-	PRIMARY KEY(id)
+CREATE TABLE "MailBox"
+(
+`id`
+INTEGER,
+`content`
+TEXT,
+`read`
+INTEGER
+DEFAULT
+1,
+`header`
+TEXT,
+`user_id_recipient`
+INTEGER,
+`user_id_sender`
+INTEGER,
+PRIMARY
+KEY(id)
 );
-INSERT INTO `MailBox` VALUES (1,'test mail
-',0,'header',10,4);
-INSERT INTO `MailBox` VALUES (2,'mail testbhhidviuj novjnovnjvd nkaknvsvas oasvasonn n nnnnnnnnnnnnn nnnnnnnnnnn nnnvvvosnv lvnVv  VA[SSPLVV MPSOVKAOovonvo  jsasnvnsVBSVIN AVBA  BHJHBD BH ABHAB V OVWNQVIV',1,'header1
-
-',10,5);
-INSERT INTO `MailBox` VALUES (3,'mail',0,'header2',7,6);
-INSERT INTO `MailBox` VALUES (4,'check',1,'read',10,2);
-INSERT INTO `MailBox` VALUES (5,'new',0,'new',10,11);
-INSERT INTO `MailBox` VALUES (6,'hhhhjj',0,'neeww',10,9);
-INSERT INTO `MailBox` VALUES (7,'sprawdzam',0,'newwwdcwckckml',10,7);
-INSERT INTO `MailBox` VALUES (8,'kddnwjwf',0,'test header',10,7);
-INSERT INTO `MailBox` VALUES (9,'tresc wiadomosci',0,'to nowy naglowek',9,10);
-INSERT INTO `MailBox` VALUES (10,'Dziala',0,'Co tam ',10,9);
-INSERT INTO `MailBox` VALUES (11,'dsaac',0,'sadsdssa',2,10);
-INSERT INTO `MailBox` VALUES (12,'dsaac',0,'sadsdssa',2,10);
+INSERT INTO `MailBox` VALUES (9,'tresc
+wiadomosci',0,'to
+nowy
+naglowek',9,10);
+INSERT INTO `MailBox` VALUES (10,'Dziala',0,'Co
+tam
+',10,9);
 INSERT INTO `MailBox` VALUES (13,'testnowy',1,'1131',10,9);
 INSERT INTO `MailBox` VALUES (14,'content1132',1,'naglowek1',10,7);
 INSERT INTO `MailBox` VALUES (15,'aga',1,'czesc',10,2);
 INSERT INTO `MailBox` VALUES (16,'asia',1,'jo',9,10);
-INSERT INTO `MailBox` VALUES (17,'1258',1,'1257',2,10);
-INSERT INTO `MailBox` VALUES (18,'119',1,'nowaaaaanag',10,1);
-INSERT INTO `MailBox` VALUES (19,'content test',1,'header127',3,10);
+INSERT INTO `MailBox` VALUES (19,'content
+test',1,'header127',3,10);
+INSERT INTO `MailBox` VALUES (20,'Hello admin',1,'hello',6,10);
+INSERT INTO `MailBox` VALUES (21,'michalina',1,'hello admin',10,6);
 CREATE TABLE "LevelsTable"
 (
 `level_name`

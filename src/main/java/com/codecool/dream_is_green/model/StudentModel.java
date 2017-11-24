@@ -4,7 +4,7 @@ public class StudentModel extends User {
 
     private Integer experience;
     private WalletModel wallet;
-    private String teamName;
+    private Integer teamId;
     private String className;
 
     public StudentModel(int userID, String name, String surname, String email, String login, String password, String className, Integer experience) {
@@ -14,7 +14,7 @@ public class StudentModel extends User {
         this.password = password;
         this.experience = experience;
         this.wallet = new WalletModel();
-        this.teamName = null;
+        this.teamId = 0;
         this.className = className;
     }
 
@@ -28,10 +28,18 @@ public class StudentModel extends User {
 
     public String toString() {
 
-        String str = String.format("%-8s %-12s %-12s %-24s %-12s %-12s %-12s %-12s",
-                userID, name, surname, email, className, teamName, login, password);
+        String str = String.format("%-8s %-12s %-12s %-24s %-12s  %-12s %-12s",
+                userID, name, surname, email, className, login, password);
 
         return str;
 
+    }
+
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 }
