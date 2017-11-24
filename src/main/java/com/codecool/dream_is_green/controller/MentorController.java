@@ -62,28 +62,23 @@ public class MentorController implements HttpHandler {
         if (session != null) {
 
             String userType = session.getUserType();
-
-            if(userType.equals("mentor")) {
-
-                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/mentor_home.twig");
-                JtwigModel model = JtwigModel.newModel();
-                String response = template.render(model);
-
-                httpExchange.sendResponseHeaders(200, response.getBytes().length);
-                OutputStream os = httpExchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
-
-            } else {
-                httpExchange.getResponseHeaders().set("Location", "/" + userType);
-                httpExchange.sendResponseHeaders(302,-1);
-            }
-
+            redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
+    }
 
+    private void redirectToMentorHome(HttpExchange httpExchange,
+                                     String userType) throws IOException{
+        if(userType.equals("admin")) {
+            ResponseController<User> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, "Home page",
+                    "admin/menu_admin.twig","admin/admin_home.twig");
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/" + userType);
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
@@ -92,7 +87,6 @@ public class MentorController implements HttpHandler {
         httpExchange.getResponseHeaders().set("Location", "/login");
         httpExchange.sendResponseHeaders(302,-1);
     }
-
 
     private void showArtifacts(HttpExchange httpExchange) throws IOException {
         ArtifactDAO artifactDAO = new ArtifactDAO();
@@ -103,6 +97,7 @@ public class MentorController implements HttpHandler {
                 "artifactModels", "Show artifacts",
                 "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
     }
+
     private void showQuests(HttpExchange httpExchange) throws IOException {
         QuestDAO questDAO = new QuestDAO();
         questDAO.loadQuest();
