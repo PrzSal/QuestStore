@@ -12,6 +12,7 @@ import java.util.*;
 public class AdminController implements HttpHandler {
 
     private Integer countMail;
+    private Integer userId;
     private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -40,7 +41,7 @@ public class AdminController implements HttpHandler {
             clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
             mailController = new MailController();
-            mailController.showReadMail(httpExchange, 10);
+            mailController.showReadMail(httpExchange, userId);
         }
     }
 
