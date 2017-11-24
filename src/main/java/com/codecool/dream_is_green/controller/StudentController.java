@@ -15,10 +15,12 @@ import java.util.*;
 
 public class StudentController implements HttpHandler {
 
-    Integer countMail;
-    Integer walletStudent;
-    Integer walletTeam = 0;
-    LinkedList<ArtifactModel> li;
+    private Integer countMail;
+    private Integer userId = 0;
+    private Integer teamId;
+    private Integer walletStudent;
+    private Integer walletTeam = 0;
+    private LinkedList<ArtifactModel> li;
 
     private static CookieManager cookie = new CookieManager();
 
@@ -28,13 +30,13 @@ public class StudentController implements HttpHandler {
         URIModel uriModel = parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
         MailController mailController = new MailController();
-        countMail = mailController.checkMail(3);
-        walletStudent = showCoolcoins(3);
+        countMail = mailController.checkMail(userId);
 
         if (userAction == null) {
             index(httpExchange);
+            walletStudent = showCoolcoins(userId);
         } else if (userAction.equals("team_shop")) {
-            teamShopping(httpExchange, 3);
+            teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, 3);
@@ -131,6 +133,11 @@ public class StudentController implements HttpHandler {
         if (session != null) {
 
             String userType = session.getUserType();
+            userId = session.getUserId();
+            StudentDAO studentDAO = new StudentDAO();
+            StudentModel studentModel = studentDAO.getStudent(userId);
+            teamId = studentModel.getTeamId();
+            System.out.println(teamId);
 
             if(userType.equals("student")) {
 
