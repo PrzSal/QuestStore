@@ -71,10 +71,10 @@ public class MentorController implements HttpHandler {
 
     private void redirectToMentorHome(HttpExchange httpExchange,
                                      String userType) throws IOException{
-        if(userType.equals("admin")) {
+        if(userType.equals("mentor")) {
             ResponseController<User> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, "Home page",
-                    "admin/menu_admin.twig","admin/admin_home.twig");
+                    "mentor/menu_mentor.twig","mentor/mentor_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
