@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,6 +47,31 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
+
+    public void updateStudent(Integer userId, String column, String content) {
+
+        Connection connection;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String statement = "UPDATE StudentsTable\n" +
+                               "SET ? = ?\n" +
+                               "WHERE user_id == ?;";
+            PreparedStatement prepStmt = connection.prepareStatement(statement);
+
+
+            prepStmt.setString(1, column);
+            prepStmt.setString(2, content);
+            prepStmt.setInt(3, userId);
+            prepStmt.execute();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void insertStudent(PreUserModel preStudentModel) {
 
@@ -122,7 +148,7 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                     " ON UsersTable.user_id = StudentsTable.user_id WHERE UsersTable.user_id = '" + userId + "'";
             ResultSet result = stat.executeQuery(query);
             String name, surname, email, user_login, password, className;
-            int userID, studentExp;
+            int userID, studentExp, teamId;
             StudentModel student = null;
 
             while(result.next()) {
@@ -135,8 +161,9 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
                 studentExp = result.getInt("experience");
-
+                teamId = result.getInt("team_id");
                 student = new StudentModel(userID, name, surname, email, user_login, password, className, studentExp);
+                student.setTeamId(teamId);
             }
             result.close();
             stat.close();
