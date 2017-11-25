@@ -43,15 +43,21 @@
                 "    </form>";
 
         } else if ({{ state }} == 1) {
-            document.getElementById("buttonTeamShop").innerHTML =
+            var voted = {{ voted }};
+            if (voted == 0) {
 
-                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">" +
-                "       <label> Vote on {{ titleArt }} Price: {{ price }}</label> <br>\n" +
-                "<input type=\"radio\" name=\"vote\" value=\"1\" onclick=\"valid('1');\" /> Yes \n" +
-                " <input type=\"radio\" name=\"vote\" value=\"0\" onclick=\"valid('0');\" /> No <br />\n" +
-                "    <textarea type=\"text\" rows=\"4\" cols=\"50\" name=\"comment\" placeholder=\"enter header...\" id=\"no\" disabled=\"disabled\" required></textarea>\n" +
-                "  <input type=\"submit\" value=\"Submit\">\n" +
-                "</form>";
+                document.getElementById("buttonTeamShop").innerHTML =
+
+                    "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">" +
+                    "       <label> Vote on {{ titleArt }} Price: {{ price }}</label> <br>\n" +
+                    "<input type=\"radio\" name=\"voteYes\" value=\"1\" onclick=\"valid('1');\" /> Yes \n" +
+                    " <input type=\"radio\" name=\"voteNo\" value=\"0\" onclick=\"valid('0');\" /> No \n" +
+                    "    <textarea type=\"text\" rows=\"4\" cols=\"50\" name=\"comment\" placeholder=\"enter header...\" id=\"no\" disabled=\"disabled\" required></textarea>\n" +
+                    "  <input type=\"submit\" value=\"Submit\">\n" +
+                    "</form>";
+            } else {
+                alert("Hello World!");
+            }
 
         } else {
             alert("Hello World!");

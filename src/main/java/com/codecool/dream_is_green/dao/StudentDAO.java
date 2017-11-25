@@ -55,16 +55,12 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         try {
             connection = DatabaseConnection.getConnection();
 
-            String statement = "UPDATE StudentsTable\n" +
-                               "SET ? = ?\n" +
-                               "WHERE user_id == ?;";
+            String statement = "UPDATE StudentsTable SET voted = ? WHERE user_id == ? ;";
             PreparedStatement prepStmt = connection.prepareStatement(statement);
 
-
-            prepStmt.setString(1, column);
-            prepStmt.setString(2, content);
-            prepStmt.setInt(3, userId);
-            prepStmt.execute();
+            prepStmt.setString(1, content);
+            prepStmt.setInt(2, userId);
+            prepStmt.executeUpdate();
             prepStmt.close();
 
         } catch (Exception e) {

@@ -87,7 +87,18 @@ public class StudentController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            System.out.println(formData);
+
+            if (formData.compareTo("voteYes") > 0) {
+                StudentDAO studentDAO = new StudentDAO();
+                studentDAO.updateStudent(userId, "voted", "yes");
+                FormDataController<TeamShoppingModel> formDataTeamModel = new FormDataController<>();
+                TeamDao teamDao = new TeamDao();
+                teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(formDataTeamModel.parseFormData(formData, "voteYes", teamId, userId).getVotes()));
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/student/team_shop");
+            httpExchange.sendResponseHeaders(302, -1);
+
 //            FormDataController<ClassModel> classModel = new FormDataController<>();
 //            ClassDAO classDao = new ClassDAO();
 //            classDao.insertClass(classModel.parseFormData(formData, "class"));
@@ -102,10 +113,11 @@ public class StudentController implements HttpHandler {
             offerToBuy(teamDao.getObjectList());
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
             JtwigModel model = JtwigModel.newModel();
-
+            System.out.println(checkVoted(userId) + checkVoted(userId));
             model.with("artifactModels", li);
             model.with("title", "Team shop");
             model.with("counterMail", countMail);
+            model.with("voted", checkVoted(userId));
             model.with("menu", "classpath:/templates/student/student_menu.twig");
             model.with("main", "classpath:/templates/student/student_team_shop.twig");
             model.with("data1", "classpath:/templates/student/data.twig");
@@ -150,6 +162,16 @@ public class StudentController implements HttpHandler {
         teamDao.loadDataAboutTeam(teamId);
         Integer state = teamDao.getObjectList().get(0).getState();
         return state;
+    }
+
+    private Integer checkVoted(Integer userId) {
+        StudentDAO studentDAO = new StudentDAO();
+        String voted = studentDAO.getStudent(userId).getVoted();
+        if (voted.equals("yes")) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     private Integer showCoolcoins(Integer userId) {
