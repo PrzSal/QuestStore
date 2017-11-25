@@ -1,49 +1,71 @@
-<style onload="disableBtn({{ state }})"></style>
-<script>
-function disableBtn(id) {
-    if (id == 0){
-        document.getElementById("buyArtifact").disabled = false;
-    } else if(id == 1) {
-        document.getElementById("vote").disabled = false;
-    }
-}
+{#<style onload="disableBtn({{ state }})"></style>#}
+{#<script>#}
+{#function disableBtn(id) {#}
+    {#if (id == 0){#}
+        {#document.getElementById("buyArtifact").disabled = false;#}
+    {#} else if(id == 1) {#}
+        {#document.getElementById("vote").disabled = false;#}
+    {#}#}
+{#}#}
 
-</script>
-<header>
-    <button onclick="myFunction()" id="buyArtifact" disabled>Buy artifact also team</button>
-</header>
-<header>
-    <button onclick="voteFunction()" id="vote" disabled>Vote on Artifact</button>
-</header>
+{#</script>#}
+{#<div class="form-in">#}
 
+    {#<button onclick="myFunction()" id="buyArtifact" >Buy artifact also team</button>#}
+{#</div>#}
+{#<div class="form-in">#}
+    {#<button onclick="voteFunction()" id="vote" disabled>Vote on Artifact</button>#}
+{#</div>#}
+<style onload="buttonFunction()" ></style>
+<div class="form-in">
+    <p id="buttonTeamShop" > </p>
+</div>
 <script>
+
+     if (document.attachEvent) {
+            document.attachEvent("onload", buttonFunction);
+     }
+
     function myFunction() {
-        document.getElementById("buyArtifact").innerHTML = "<div class=\"form-in\">\n" +
-            "    <form method=\"POST\">" +
-            "       <label> Artifact to buy </label> <br>\n" +
-            "        <select  type=\"text\" id=\"class name\" name=\"class name\"><br>\n" +
-            "            {% for artifact in artifactModels %}\n" +
-            "                <option  type=\"text\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
-            "            {% endfor %}\n" +
-            "        </select>\n" +
-            "        <input id=\"submit\" name=\"submit\" type=\"submit\"  value=\"submit\">\n" +
-            "    </form>" +
-            "</div>";
+        alert("Hello World!");
     }
-</script>
+    function buttonFunction() {
+        if ({{ state }} == 0) {
+            document.getElementById("buttonTeamShop").innerHTML =
+                "    <form method=\"POST\">" +
+                "       <label> Artifact to buy </label> <br>\n" +
+                "        <select  type=\"text\" id=\"class name\" name=\"class name\"><br>\n" +
+                "            {% for artifact in artifactModels %}\n" +
+                "                <option  type=\"text\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
+                "            {% endfor %}\n" +
+                "        </select>\n" +
+                "        <input id=\"submit\" name=\"submit\" type=\"submit\"  value=\"submit\">\n" +
+                "    </form>";
 
-<script>
-    function voteFunction() {
-        document.getElementById("vote").innerHTML = "<div class=\"form-in\">\n" +
-            "    <form method=\"POST\">" +
-            "       <label> Vote on {{titleArt }} Price: {{ price }}</label> <br>\n" +
-            "<form action=\"/action_page.php\">\n" +
-            "  <input type=\"checkbox\" name=\"vote\" value=\"1\" > Yes<br>\n" +
-            "  <input type=\"checkbox\" name=\"vote\" value=\"0\" > No<br>\n" +
-            "  <input type=\"submit\" value=\"Submit\">\n" +
-            "</form>" +
-            "</div>";
+        } else if ({{ state }} == 1) {
+            document.getElementById("buttonTeamShop").innerHTML =
+
+                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">" +
+                "       <label> Vote on {{ titleArt }} Price: {{ price }}</label> <br>\n" +
+                "<input type=\"radio\" name=\"vote\" value=\"1\" onclick=\"valid('1');\" /> Yes \n" +
+                " <input type=\"radio\" name=\"vote\" value=\"0\" onclick=\"valid('0');\" /> No <br />\n" +
+                "    <textarea type=\"text\" rows=\"4\" cols=\"50\" name=\"comment\" placeholder=\"enter header...\" id=\"no\" disabled=\"disabled\" required></textarea>\n" +
+                "  <input type=\"submit\" value=\"Submit\">\n" +
+                "</form>";
+
+        } else {
+            alert("Hello World!");
+        }
     }
+     function valid(option)
+     {
+
+         document.getElementById('no').disabled = true;
+         if(option == 1) {
+             document.getElementById('no').reset();}
+         else if(option == 0) { document.getElementById('no').disabled = false; }
+
+     }
 </script>
 {#<div id="buttonAddArtifact">#}
     {#<button id="addArt">Buy artifact also team</button>#}

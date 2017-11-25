@@ -39,7 +39,7 @@ public class StudentController implements HttpHandler {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
-            mailController.showReadMail(httpExchange, 3);
+            mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         }
@@ -56,7 +56,13 @@ public class StudentController implements HttpHandler {
 
             String userType = session.getUserType();
             redirectToStudentHome(httpExchange, userType);
+            userId = session.getUserId();
+            StudentDAO studentDAO = new StudentDAO();
+            teamId = studentDAO.getStudent(userId).getTeamId();
         } else {
+            userId = session.getUserId();
+            StudentDAO studentDAO = new StudentDAO();
+            teamId = studentDAO.getStudent(userId).getTeamId();
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
@@ -81,6 +87,7 @@ public class StudentController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
+            System.out.println(formData);
 //            FormDataController<ClassModel> classModel = new FormDataController<>();
 //            ClassDAO classDao = new ClassDAO();
 //            classDao.insertClass(classModel.parseFormData(formData, "class"));
@@ -89,12 +96,13 @@ public class StudentController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-
+            System.out.println(teamId);
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
             offerToBuy(teamDao.getObjectList());
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
             JtwigModel model = JtwigModel.newModel();
+
             model.with("artifactModels", li);
             model.with("title", "Team shop");
             model.with("counterMail", countMail);
