@@ -56,34 +56,20 @@ INSERT INTO `UsersTable` VALUES (9,'Piotr','Szmytke','pszmytke@','pszmytke','szy
 INSERT INTO `UsersTable` VALUES (10,'Michalina','Borek','m.borek','admin','admin','admin');
 INSERT INTO `UsersTable` VALUES (11,'Karol','Kotarski','op.pl','Uj','Uj','student');
 INSERT INTO `UsersTable` VALUES (12,'Michal','Kowalski','@op.pl','mk','mk12','student');
-CREATE TABLE "TeamsTable"
-(
-`team_id`
-INTEGER,
-`team_name`
-TEXT
-UNIQUE,
-`artifact_id`
-INTEGER
-DEFAULT
-null,
-`votes`
-TEXT
-DEFAULT
-null,
-`state`
-INTEGER
-DEFAULT
-0,
-PRIMARY
-KEY(team_id)
+CREATE TABLE "TeamsTable" (
+	`team_id`	INTEGER,
+	`team_name`	TEXT UNIQUE,
+	`artifact_id`	INTEGER DEFAULT null,
+	`votes`	INTEGER DEFAULT 0,
+	`state`	INTEGER DEFAULT 0,
+	PRIMARY KEY(team_id)
 );
 INSERT INTO `TeamsTable` VALUES (1,'Dreem
 Is
-Green','mentor_ride_on_elephant',NULL,2);
-INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',NULL,2);
-INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring','3',1);
-INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,NULL,0);
+Green','mentor_ride_on_elephant',0,2);
+INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',0,2);
+INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring',3,1);
+INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,0,0);
 CREATE TABLE "StudentsWithQuests"
 (
 `quest_name`
@@ -118,29 +104,20 @@ INTEGER
 DEFAULT
 0
 );
-CREATE TABLE "StudentsTable"
-(
-`user_id`
-INTEGER
-NOT
-NULL
-UNIQUE,
-`experience`
-INTEGER
-DEFAULT
-0,
-`team_id`
-INTEGER,
-`class_name`
-TEXT
+CREATE TABLE "StudentsTable" (
+	`user_id`	INTEGER NOT NULL UNIQUE,
+	`experience`	INTEGER DEFAULT 0,
+	`team_id`	INTEGER,
+	`class_name`	TEXT,
+	`voted`	TEXT DEFAULT 'no'
 );
-INSERT INTO `StudentsTable` VALUES (3,470,1,'krk2017-1');
-INSERT INTO `StudentsTable` VALUES (4,600,1,'krk2017-1');
-INSERT INTO `StudentsTable` VALUES (8,140,1,'krk2017-1');
-INSERT INTO `StudentsTable` VALUES (9,820,1,'krk2017-1');
-INSERT INTO `StudentsTable` VALUES (12,89,2,'krk2016-1');
-INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3');
-INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2');
+INSERT INTO `StudentsTable` VALUES (3,470,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (4,600,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (8,140,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (9,820,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (12,89,2,'krk2016-1','no');
+INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3','no');
+INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2','no');
 CREATE TABLE "SessionTable"
 (
 `session_id`
@@ -230,6 +207,10 @@ INSERT INTO `MailBox` VALUES (19,'content
 test',1,'header127',3,10);
 INSERT INTO `MailBox` VALUES (20,'Hello admin',1,'hello',6,10);
 INSERT INTO `MailBox` VALUES (21,'michalina',1,'hello admin',10,6);
+INSERT INTO `MailBox` VALUES (22,'hello student',1,'hello student',10,3);
+INSERT INTO `MailBox` VALUES (23,'student',1,'test mail to student',3,10);
+INSERT INTO `MailBox` VALUES (24,'pawel',1,'pawel',9,10);
+INSERT INTO `MailBox` VALUES (25,'jedzie na qna',1,'pawel',3,10);
 CREATE TABLE "LevelsTable"
 (
 `level_name`
