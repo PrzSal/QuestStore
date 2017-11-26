@@ -1,0 +1,235 @@
+{#<div class="scroll-table">#}
+    {#<form>#}
+        {#<select class="artifacts" size="3">#}
+            {#{% for artifact in artifactsModels %}#}
+            {#<option>#}
+                {#<tr>#}
+                    {#<td class="tg-gkax">{{ loop.index }}</td>#}
+                    {#<td class="tg-gkax">{{ artifact.title }}</td>#}
+                    {#<td class="tg-gkax">{{ artifact.price }}</td>#}
+                    {#<td class="tg-gkax">{{ artifact.category }}</td>#}
+                    {#<td class="tg-gkax">{{ artifact.isused }}</td>#}
+                {#</tr>#}
+            {#</option>#}
+            {#{% endfor %}#}
+        {#</select>#}
+        {#<br><br>#}
+        {#<input type="submit">#}
+    {#</form>#}
+{#</div>#}
+
+<div class="container">
+    <div class="tab tab-1">
+        <table class="blueTable" id="table" border="1">
+            <thead>
+                <tr>
+                    {#<th>No.</th>#}
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for artifact in artifactsModels %}
+                    <tr onclick="alert()">
+                        {#<td>{{ loop.index }}</td>#}
+                        <td>{{ artifact.title }}</td>
+                        <td>{{ artifact.category }}</td>
+                        <td>{{ artifact.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab tab-2">
+        Title :<input type="text" name="title" id="title">
+        Category :<input type="text" name="category" id="category">
+        Price :<input type="number" name="price" id="price">
+
+        <button onclick="addHtmlTableRow();">Add</button>
+        <button onclick="editHtmlTbleSelectedRow();">Edit</button>
+        <button onclick="removeSelectedRow();">Remove</button>
+    </div>
+</div>
+
+
+<style>
+
+    /*.container {*/
+        /*overflow: hidden;*/
+        /*justify-content: flex-start;*/
+        /*flex-direction: column;*/
+        /*align-items: center;*/
+        /*position: fixed;*/
+    /*}*/
+
+    div.container {
+        height: 10em;
+        position: relative }
+    div.container {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        margin-left: 150px;
+        transform: translate(-50%, -50%) }
+
+
+
+
+    .tab{float: left;}
+    .tab-2{margin-left: 200px}
+    .tab-2 input{display: block;margin-bottom: 10px}
+
+    /*tbody tr{transition:all .25s ease-in-out}*/
+    /*tbody tr:hover{background-color:#EEE;cursor: pointer}*/
+
+    table.blueTable {
+        font-family: Arial, Helvetica, sans-serif;
+        border: 2px solid #1C6EA4;
+        width: 150%;
+        text-align: center;
+    }
+    table.blueTable td, table.blueTable th, .tab-2 {
+        border: 1px solid #AAAAAA;
+        padding: 3px 3px;
+    }
+    table.blueTable tbody tr {
+        transition:all .25s ease-in-out;
+        background: #a4ffff;
+    }
+    table.blueTable tr:nth-child(even) {
+        background: #6fb79c;
+    }
+    table.blueTable thead, .tab-2 {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+    table.blueTable thead th, .tab-2 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #FFFFFF;
+        text-align: center;
+        border-left: 2px solid #D0E4F5;
+    }
+    table.blueTable thead th:first-child {
+        border-left: none;
+    }
+
+    /*table.blueTable tfoot td {*/
+        /*font-size: 14px;*/
+    /*}*/
+    /*table.blueTable tfoot .links {*/
+        /*text-align: right;*/
+    /*}*/
+    /*table.blueTable tfoot .links a{*/
+        /*display: inline-block;*/
+        /*background: #1C6EA4;*/
+        /*color: #FFFFFF;*/
+        /*padding: 2px 8px;*/
+        /*border-radius: 5px;*/
+    /*}*/
+
+    table.blueTable tbody tr:hover{background-color: #3f47ff;cursor: pointer}
+
+
+</style>
+
+
+
+
+<script>
+
+    var rIndex,
+        table = document.getElementById("table");
+
+    // check the empty input
+    function checkEmptyInput()
+    {
+        var isEmpty = false,
+            title = document.getElementById("title").value,
+            category = document.getElementById("category").value,
+            price = document.getElementById("price").value;
+
+        if(title === ""){
+            alert("Title Name Connot Be Empty");
+            isEmpty = true;
+        }
+        else if(category === ""){
+            alert("Category name Connot Be Empty");
+            isEmpty = true;
+        }
+        else if(price === ""){
+            alert("Price Connot Be Empty");
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+    // add Row
+    function addHtmlTableRow()
+    {
+        // get the table by id
+        // create a new row and cells
+        // get value from input text
+        // set the values into row cell's
+        if(!checkEmptyInput()){
+            var newRow = table.insertRow(table.length),
+                cell1 = newRow.insertCell(0),
+                cell2 = newRow.insertCell(1),
+                cell3 = newRow.insertCell(2),
+                title = document.getElementById("title").value,
+                category = document.getElementById("category").value,
+                price = document.getElementById("price").value;
+
+            cell1.innerHTML = title;
+            cell2.innerHTML = category;
+            cell3.innerHTML = price;
+            // call the function to set the event to the new row
+            selectedRowToInput();
+        }
+    }
+
+    // display selected row data into input text
+    function selectedRowToInput()
+    {
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                // get the seected row index
+                rIndex = this.rowIndex;
+                document.getElementById("title").value = this.cells[0].innerHTML;
+                document.getElementById("category").value = this.cells[1].innerHTML;
+                document.getElementById("price").value = this.cells[2].innerHTML;
+            };
+        }
+    }
+    selectedRowToInput();
+
+    function editHtmlTbleSelectedRow()
+    {
+        var title = document.getElementById("title").value,
+            category = document.getElementById("category").value,
+            price = document.getElementById("price").value;
+        if(!checkEmptyInput()){
+            table.rows[rIndex].cells[0].innerHTML = title;
+            table.rows[rIndex].cells[1].innerHTML = category;
+            table.rows[rIndex].cells[2].innerHTML = price;
+        }
+    }
+
+    function removeSelectedRow()
+    {
+        table.deleteRow(rIndex);
+        // clear input text
+        document.getElementById("title").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("price").value = "";
+    }
+</script>

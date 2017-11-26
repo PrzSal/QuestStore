@@ -82,7 +82,6 @@ public class LoginController implements HttpHandler {
         String currentPassword = userDAO.getUserPassword(userName);
         String sessionId = cookie.getSessionId(httpExchange);
         Integer userId = userDAO.getUserId(userName);
-        System.out.println(userId);
         String userType = userDAO.getUserType(userName);
 
         if (password.equals(currentPassword)) {
