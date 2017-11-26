@@ -299,8 +299,12 @@ INTEGER
 DEFAULT
 0
 );
-INSERT INTO `ArtifactsTable` VALUES ('private_mentoring',100,'mentoring',0);
-INSERT INTO `ArtifactsTable` VALUES ('mentor_ride_on_elephant',200,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on dog',300,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on cat',400,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on bird',500,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('mentor ride on cow',600,'fun',0);
 CREATE TABLE `ArtifactCategory`
 (
 `artifact_category_name`

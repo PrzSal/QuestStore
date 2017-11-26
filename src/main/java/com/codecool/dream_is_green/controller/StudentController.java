@@ -34,7 +34,13 @@ public class StudentController implements HttpHandler {
 
         if (userAction == null) {
             index(httpExchange);
-            walletStudent = showCoolcoins(userId);
+            //walletStudent = showCoolcoins(userId);
+        } else if (userAction.equals("show_quests")) {
+            showQuests(httpExchange);
+        } else if (userAction.equals("show_artifacts")) {
+            showArtifacts(httpExchange);
+        } else if (userAction.equals("buy_artifact")) {
+            buyArtifact(httpExchange);
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -78,6 +84,36 @@ public class StudentController implements HttpHandler {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
         }
+    }
+
+    private void showQuests(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        questDAO.loadQuest();
+        LinkedList<QuestModel> quests = questDAO.getObjectList();
+        ResponseController<QuestModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, quests,
+                "questsModels", "Show quests",
+                "student/student_menu.twig", "student/student_show_quests.twig");
+    }
+
+    private void showArtifacts(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, artifacts,
+                "artifactsModels", "Show artifacts",
+                "student/student_menu.twig", "student/student_show_artifacts.twig");
+    }
+
+    private void buyArtifact(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, artifacts,
+                "artifactsModels", "Buy artifact",
+                "student/student_menu.twig", "student/student_buy_artifact.twig");
     }
 
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
