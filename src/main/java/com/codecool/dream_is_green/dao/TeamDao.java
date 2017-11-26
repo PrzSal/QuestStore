@@ -91,9 +91,17 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
         Connection connection;
 
         try {
+            String statement = "";
             connection = DatabaseConnection.getConnection();
-
-            String statement = "UPDATE TeamsTable SET votes = ? WHERE team_id == ?;";
+            if (column.equals("team_name")) {
+                statement = "UPDATE TeamsTable SET team_name = ? WHERE team_id == ?;";
+            } else if (column.equals("artifact_id")) {
+                statement = "UPDATE TeamsTable SET artifact_id = ? WHERE team_id == ?;";
+            } else if (column.equals("votes")) {
+                statement = "UPDATE TeamsTable SET votes = ? WHERE team_id == ?;";
+            } else if (column.equals("state")) {
+                statement = "UPDATE TeamsTable SET state = ? WHERE team_id == ?;";
+            }
             PreparedStatement prepStmt = connection.prepareStatement(statement);
 
             if (column.equals("state") || column.equals("votes")) {
@@ -103,6 +111,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             }
             prepStmt.setInt(2, teamId);
             prepStmt.executeUpdate();
+            connection.commit();
             prepStmt.close();
 
         } catch (Exception e) {
