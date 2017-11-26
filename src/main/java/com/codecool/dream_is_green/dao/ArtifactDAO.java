@@ -3,6 +3,7 @@ package com.codecool.dream_is_green.dao;
 import com.codecool.dream_is_green.model.ArtifactCategoryModel;
 import com.codecool.dream_is_green.model.ArtifactModel;
 
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -89,6 +90,28 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteArtifact(String artifactTitle) {
+
+        Connection connection;
+        String artifactTitleRep = artifactTitle.replaceAll("\\s+","\n");
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String insertTableSQL = "DELETE FROM ArtifactsTable WHERE artifact_name = ? or artifact_name = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setString(2, artifactTitleRep);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 }

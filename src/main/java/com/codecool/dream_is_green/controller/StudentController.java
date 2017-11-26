@@ -41,6 +41,7 @@ public class StudentController implements HttpHandler {
             showArtifacts(httpExchange);
         } else if (userAction.equals("buy_artifact")) {
             buyArtifact(httpExchange);
+
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -107,13 +108,49 @@ public class StudentController implements HttpHandler {
     }
 
     private void buyArtifact(HttpExchange httpExchange) throws IOException {
-        ArtifactDAO artifactDAO = new ArtifactDAO();
-        artifactDAO.loadArtifact();
-        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
-        ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, artifacts,
-                "artifactsModels", "Buy artifact",
-                "student/student_menu.twig", "student/student_buy_artifact.twig");
+
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            ArtifactDAO artifactDAO = new ArtifactDAO();
+            artifactDAO.loadArtifact();
+            LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, artifacts,
+                    "artifactsModels", "Buy artifact",
+                    "student/student_menu.twig", "student/student_buy_artifact.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title");
+            String category = inputs.get("category");
+            String priceStr = inputs.get("price");
+            Integer price = Integer.parseInt(priceStr);
+
+            System.out.println(title);
+            System.out.println(category);
+            System.out.println(price);
+
+            String option = inputs.get("button");
+            ArtifactDAO artifactDAO = new ArtifactDAO();
+
+            if(option.equals("Remove")) {
+                artifactDAO.deleteArtifact(title);
+            } else if(option.equals("Add")) {
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                artifactDAO.insertArtifact("ArtifactsTable", artifact, 0);
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
@@ -276,5 +313,16 @@ public class StudentController implements HttpHandler {
         teamDao.updateDataAboutTeam(teamId, "artifact_id", artifactId);
         teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(state));
         teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(votes));
+    }
+
+    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = formData.split("&");
+        for(String pair : pairs){
+            String[] keyValue = pair.split("=");
+            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
+            map.put(keyValue[0], value);
+        }
+        return map;
     }
 }
