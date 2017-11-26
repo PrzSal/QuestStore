@@ -284,6 +284,7 @@ INSERT INTO `ArtifactsTable` VALUES ('mentor ride on dog',300,'fun',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor ride on cat',400,'fun',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor ride on bird',500,'fun',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor ride on cow',600,'fun',0);
+INSERT INTO `ArtifactsTable` VALUES ('cosss',2300,'funer',0);
 CREATE TABLE `ArtifactCategory`
 (
 `artifact_category_name`
