@@ -60,6 +60,11 @@ public class FormDataController<T> {
             teamShoppingModel.setVotes(votes);
             return (T) teamShoppingModel;
 
+        } else if (objectType.equals("mark")) {
+            teamShoppingModel.getArtifactModel().setTitle(null);
+            teamShoppingModel.setState(Integer.valueOf(data.get(0)));
+            teamShoppingModel.setVotes(Integer.valueOf(data.get(0)));
+            return (T) teamShoppingModel;
         }
         return null;
     }
