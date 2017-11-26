@@ -66,9 +66,9 @@ CREATE TABLE "TeamsTable" (
 );
 INSERT INTO `TeamsTable` VALUES (1,'Dreem
 Is
-Green','mentor_ride_on_elephant',0,2);
-INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',0,2);
-INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring',3,1);
+Green',NULL,0,0);
+INSERT INTO `TeamsTable` VALUES (2,'gwarki','private_mentoring',0,1);
+INSERT INTO `TeamsTable` VALUES (3,'young','private_mentoring',1,2);
 INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,0,0);
 CREATE TABLE "StudentsWithQuests"
 (
@@ -116,7 +116,7 @@ INSERT INTO `StudentsTable` VALUES (4,600,1,'krk2017-1','no');
 INSERT INTO `StudentsTable` VALUES (8,140,1,'krk2017-1','no');
 INSERT INTO `StudentsTable` VALUES (9,820,1,'krk2017-1','no');
 INSERT INTO `StudentsTable` VALUES (12,89,2,'krk2016-1','no');
-INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3','no');
+INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3','yes');
 INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2','no');
 CREATE TABLE "SessionTable"
 (
