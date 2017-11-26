@@ -89,23 +89,46 @@ public class StudentController implements HttpHandler {
             String formData = br.readLine();
             FormDataController<TeamShoppingModel> formDataTeamModel = new FormDataController<>();
             StudentDAO studentDAO = new StudentDAO();
+            studentDAO.loadStudents();
             TeamDao teamDao = new TeamDao();
-
+            teamDao.loadDataAboutTeam(teamId);
+            MailController mailController = new MailController();
+            System.out.println(formData);
             if (formData.compareTo("voteYes") > 0) {
-
                 studentDAO.updateStudent(userId, "voted", "yes");
                 teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(formDataTeamModel.parseFormData(formData, "voteYes", teamId, userId).getVotes()));
+
+            }  else if (formData.compareTo("voteNo") > 0) {
+                FormDataController<PreMailModel> formDataController = new FormDataController<>();
+                PreMailModel preMailModel = formDataController.parseFormData(formData, "voteNo", teamId, userId);
+                TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
+                List<StudentModel> students = teamShoppingModel.getStudentModels();
+                String header = preMailModel.getHeader();
+                String content = preMailModel.getContent();
+                mailController.sendMultiplyMailToStudents(students, content, header, userId);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+
+            } else if (formData.compareTo("newPurchase") > 0) {
+                System.out.println("newPur");
+
+                TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
+                System.out.println(teamShoppingModel.getArtifactModel().getTitle());
+                System.out.println(teamShoppingModel.getState());
+                teamDao.updateDataAboutTeam(teamId, "artifact_id", teamShoppingModel.getArtifactModel().getTitle());
+                teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(teamShoppingModel.getState()));
+
             } else if (formData.compareTo("mark") > 0) {
-                System.out.println(formData);
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "mark", teamId, userId);
-                Integer state = teamShoppingModel.getState();
-                Integer votes = teamShoppingModel.getVotes();
-                String artifact_id = teamShoppingModel.getArtifactModel().getTitle();
-                System.out.println(state + votes + artifact_id);
-                studentDAO.updateStudent(userId, "voted", "no");
-                teamDao.updateDataAboutTeam(teamId, "artifact_id", artifact_id);
-                teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(state));
-                teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(votes));
+                String header = "Use an artifact";
+                String content = "Dear Codecooler \n, Your team use an artifact: " + teamShoppingModel.getArtifactModel().getTitle() + ". \n" +
+                                 "You will receive detailed information soon from the Mentor. \n" +
+                                 "Regards, Your Mentor ";
+                MentorDAO mentorDAO = new MentorDAO();
+                mentorDAO.loadMentors();
+                List<MentorModel> mentors = mentorDAO.getMentors(studentDAO.getStudent(userId), mentorDAO);
+                mailController.sendMultiplyMailToStudents(teamShoppingModel.getStudentModels(), content, header, mentors.get(0).getUserID());
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/team_shop");
@@ -204,5 +227,21 @@ public class StudentController implements HttpHandler {
             uriModel = new URIModel(pairs[2]);
         }
         return uriModel;
+    }
+
+    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao) {
+        teamShoppingModel.setState(0);
+        teamShoppingModel.setVotes(0);
+        Integer state = teamShoppingModel.getState();
+        Integer votes = teamShoppingModel.getVotes();
+        teamShoppingModel.getArtifactModel().setTitle(null);
+        String artifact_id = teamShoppingModel.getArtifactModel().getTitle();
+        System.out.println(state + votes + artifact_id);
+        for (StudentModel student : teamShoppingModel.getStudentModels()) {
+            studentDAO.updateStudent(student.getUserID(), "voted", "no");
+        }
+        teamDao.updateDataAboutTeam(teamId, "artifact_id", artifact_id);
+        teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(state));
+        teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(votes));
     }
 }
