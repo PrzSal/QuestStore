@@ -1,21 +1,3 @@
-{#<style onload="disableBtn({{ state }})"></style>#}
-{#<script>#}
-{#function disableBtn(id) {#}
-    {#if (id == 0){#}
-        {#document.getElementById("buyArtifact").disabled = false;#}
-    {#} else if(id == 1) {#}
-        {#document.getElementById("vote").disabled = false;#}
-    {#}#}
-{#}#}
-
-{#</script>#}
-{#<div class="form-in">#}
-
-    {#<button onclick="myFunction()" id="buyArtifact" >Buy artifact also team</button>#}
-{#</div>#}
-{#<div class="form-in">#}
-    {#<button onclick="voteFunction()" id="vote" disabled>Vote on Artifact</button>#}
-{#</div>#}
 <style onload="buttonFunction()" ></style>
 <div class="form-in">
     <p id="buttonTeamShop" > </p>
@@ -26,9 +8,6 @@
             document.attachEvent("onload", buttonFunction);
      }
 
-    function myFunction() {
-        alert("Hello World!");
-    }
     function buttonFunction() {
         if ({{ state }} == 0) {
             document.getElementById("buttonTeamShop").innerHTML =
@@ -43,8 +22,8 @@
                 "    </form>";
 
         } else if ({{ state }} == 1) {
-            var voted = {{ voted }};
-            if (voted == 0) {
+
+            if ({{ voted }} == 0) {
 
                 document.getElementById("buttonTeamShop").innerHTML =
 
@@ -56,11 +35,22 @@
                     "  <input type=\"submit\" value=\"Submit\">\n" +
                     "</form>";
             } else {
-                alert("Hello World!");
+                document.getElementById("buttonTeamShop").innerHTML =
+                "       <label> Voted for:  {{ titleArt }} ; Price artifact: {{ price }}</label> <br>\n" +
+                "       <label> Wait for the end of voting</label> <br>\n"
             }
 
+        } else if ({{ state }} == 2) {
+             document.getElementById("buttonTeamShop").innerHTML =
+
+                "  <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">" +
+                "     <label> Use  {{ titleArt }} Price: {{ price }}</label> <br>\n" +
+                "     <input type=\"hidden\" name=\"mark\" value=\"0\" > <br> \n" +
+                "     <input type=\"submit\" value=\"use {{ titleArt }}\">\n" +
+                "  </form>";
+
         } else {
-            alert("Hello World!");
+            alert("Sorry for failure");
         }
     }
      function valid(option)
@@ -73,7 +63,3 @@
 
      }
 </script>
-{#<div id="buttonAddArtifact">#}
-    {#<button id="addArt">Buy artifact also team</button>#}
-    {#<br><br>#}
-{#</div>#}

@@ -65,4 +65,8 @@ public class TeamShoppingModel {
     public Integer getState() {
         return state;
     }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
 }
