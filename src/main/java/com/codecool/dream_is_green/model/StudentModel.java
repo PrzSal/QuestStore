@@ -52,4 +52,12 @@ public class StudentModel extends User {
     public void setVoted(String voted) {
         this.voted = voted;
     }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 }
