@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
+import com.codecool.dream_is_green.dao.TeamDao;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -47,4 +48,34 @@ public class ResponseController<T> {
         os.close();
     }
 
+    public void sendResponseTeaamShop(HttpExchange httpExchange, Integer countMail, LinkedList<T> objectsList,
+                             Integer state, Integer voted, TeamDao teamDao) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+        model.with("artifactModels", objectsList);
+        model.with("title", "Team shop");
+        model.with("counterMail", countMail);
+        model.with("voted", voted);
+        model.with("menu", "classpath:/templates/student/student_menu.twig");
+        model.with("main", "classpath:/templates/student/student_team_shop.twig");
+        model.with("data1", "classpath:/templates/student/data.twig");
+        model.with("state", state );
+        String titleArt = teamDao.getObjectList().get(0).getArtifactModel().getTitle();
+
+        if (titleArt.length() == 0) {
+            model.with("titleArt", "empty");
+            model.with("price", "0");
+        } else {
+            model.with("titleArt", titleArt);
+            model.with("price", teamDao.getObjectList().get(0).getArtifactModel().getPrice());
+        }
+
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
 }

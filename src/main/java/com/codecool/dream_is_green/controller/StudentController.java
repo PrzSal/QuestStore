@@ -149,11 +149,7 @@ public class StudentController implements HttpHandler {
                 resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
 
             } else if (formData.compareTo("newPurchase") > 0) {
-                System.out.println("newPur");
-
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
-                System.out.println(teamShoppingModel.getArtifactModel().getTitle());
-                System.out.println(teamShoppingModel.getState());
                 teamDao.updateDataAboutTeam(teamId, "artifact_id", teamShoppingModel.getArtifactModel().getTitle());
                 teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(teamShoppingModel.getState()));
 
@@ -182,39 +178,17 @@ public class StudentController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
-            offerToBuy(teamDao.getObjectList());
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("artifactModels", li);
-            model.with("title", "Team shop");
-            model.with("counterMail", countMail);
-            model.with("voted", checkVoted(userId));
-            model.with("menu", "classpath:/templates/student/student_menu.twig");
-            model.with("main", "classpath:/templates/student/student_team_shop.twig");
-            model.with("data1", "classpath:/templates/student/data.twig");
-            model.with("state", checkState(teamId));
-            String titleArt = teamDao.getObjectList().get(0).getArtifactModel().getTitle();
-
-            if (titleArt.length() == 0) {
-                model.with("titleArt", "empty");
-                model.with("price", "0");
-            } else {
-                model.with("titleArt", titleArt);
-                model.with("price", teamDao.getObjectList().get(0).getArtifactModel().getPrice());
-            }
-
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            LinkedList<ArtifactModel> artifactToBuy = offerToBuy(teamDao.getObjectList());
+            Integer voted = checkVoted(userId);
+            Integer state = checkState(teamId);
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+            responseController.sendResponseTeaamShop(httpExchange, countMail, artifactToBuy, state, voted, teamDao);
         }
     }
-    private void offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
+
+    private LinkedList<ArtifactModel> offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
 
         ArtifactDAO artifactDAO = new ArtifactDAO();
         artifactDAO.loadArtifact();
@@ -229,6 +203,7 @@ public class StudentController implements HttpHandler {
                 li.add(artifact);
             }
         }
+        return li;
     }
 
     private Integer checkState(Integer teamId) {
