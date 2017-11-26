@@ -6,6 +6,7 @@ public class StudentModel extends User {
     private WalletModel wallet;
     private Integer teamId;
     private String className;
+    private String voted;
 
     public StudentModel(int userID, String name, String surname, String email, String login, String password, String className, Integer experience) {
 
@@ -16,6 +17,7 @@ public class StudentModel extends User {
         this.wallet = new WalletModel();
         this.teamId = 0;
         this.className = className;
+        this.voted = "no";
     }
 
     public WalletModel getWallet() {
@@ -41,5 +43,21 @@ public class StudentModel extends User {
 
     public void setTeamId(Integer teamId) {
         this.teamId = teamId;
+    }
+
+    public String getVoted() {
+        return voted;
+    }
+
+    public void setVoted(String voted) {
+        this.voted = voted;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

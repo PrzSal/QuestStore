@@ -46,7 +46,7 @@ public class StudentController implements HttpHandler {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
-            mailController.showReadMail(httpExchange, 3);
+            mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         }
@@ -63,7 +63,13 @@ public class StudentController implements HttpHandler {
 
             String userType = session.getUserType();
             redirectToStudentHome(httpExchange, userType);
+            userId = session.getUserId();
+            StudentDAO studentDAO = new StudentDAO();
+            teamId = studentDAO.getStudent(userId).getTeamId();
         } else {
+            userId = session.getUserId();
+            StudentDAO studentDAO = new StudentDAO();
+            teamId = studentDAO.getStudent(userId).getTeamId();
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
@@ -144,13 +150,6 @@ public class StudentController implements HttpHandler {
         }
     }
 
-
-
-
-
-//    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
         String method = httpExchange.getRequestMethod();
 
@@ -158,46 +157,72 @@ public class StudentController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-//            FormDataController<ClassModel> classModel = new FormDataController<>();
-//            ClassDAO classDao = new ClassDAO();
-//            classDao.insertClass(classModel.parseFormData(formData, "class"));
-//            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
-//            httpExchange.sendResponseHeaders(302, -1);
+            FormDataController<TeamShoppingModel> formDataTeamModel = new FormDataController<>();
+            StudentDAO studentDAO = new StudentDAO();
+            studentDAO.loadStudents();
+            TeamDao teamDao = new TeamDao();
+            teamDao.loadDataAboutTeam(teamId);
+            MailController mailController = new MailController();
+            TeamShoppingModel temporary = temporaryTeamModel(teamDao);
+
+            if (formData.compareTo("voteYes") > 0) {
+                studentDAO.updateStudent(userId, "voted", "yes");
+                TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "voteYes", teamId, userId);
+                teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(teamShoppingModel.getVotes()));
+                checkMaxVotes(teamShoppingModel);
+                teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(teamShoppingModel.getState()));
+
+            }  else if (formData.compareTo("voteNo") > 0) {
+                FormDataController<PreMailModel> formDataController = new FormDataController<>();
+                PreMailModel preMailModel = formDataController.parseFormData(formData, "voteNo", teamId, userId);
+                TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
+                List<StudentModel> students = teamShoppingModel.getStudentModels();
+                String header = preMailModel.getHeader();
+                String content = preMailModel.getContent();
+                mailController.sendMultiplyMailToStudents(students, content, header, userId);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+
+            } else if (formData.compareTo("newPurchase") > 0) {
+                TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
+                teamDao.updateDataAboutTeam(teamId, "artifact_id", teamShoppingModel.getArtifactModel().getTitle());
+                teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(teamShoppingModel.getState()));
+
+            } else if (formData.compareTo("mark") > 0) {
+                TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "mark", teamId, userId);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+                String header = "Use an artifact";
+                String content = "Dear Codecooler \n, Your team use an artifact: " + teamShoppingModel.getArtifactModel().getTitle() + ". " +
+                                 "You will receive detailed information soon from the Mentor. " +
+                                 "Regards, Your Mentor ";
+                MentorDAO mentorDAO = new MentorDAO();
+                mentorDAO.loadMentors();
+                StudentModel studentModel = teamShoppingModel.getStudentModels().get(0);
+                List<MentorModel> mentors = mentorDAO.getMentors(studentModel);
+                mailController.sendMultiplyMailToStudents(teamShoppingModel.getStudentModels(), content, header, mentors.get(0).getUserID());
+
+                header = "New group purchase from " + temporary.getNameTeam() + " .";
+                content = "Dear Mentors, team " + temporary.getNameTeam() + " buy artifact: " + temporary.getArtifactModel().getTitle() +
+                          ". Please contact the team to discuss the purchase. Regards Admin";
+                mailController.sendMultiplyMailToMentors(mentors, content, header, 1);
+
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/student/team_shop");
+            httpExchange.sendResponseHeaders(302, -1);
         }
 
         if (method.equals("GET")) {
-
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
-            offerToBuy(teamDao.getObjectList());
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
-            JtwigModel model = JtwigModel.newModel();
-            model.with("artifactModels", li);
-            model.with("title", "Team shop");
-            model.with("counterMail", countMail);
-            model.with("menu", "classpath:/templates/student/student_menu.twig");
-            model.with("main", "classpath:/templates/student/student_team_shop.twig");
-            model.with("data1", "classpath:/templates/student/data.twig");
-            model.with("state", checkState(teamId));
-            String titleArt = teamDao.getObjectList().get(0).getArtifactModel().getTitle();
-
-            if (titleArt.length() == 0) {
-                model.with("titleArt", "empty");
-                model.with("price", "0");
-            } else {
-                model.with("titleArt", titleArt);
-                model.with("price", teamDao.getObjectList().get(0).getArtifactModel().getPrice());
-            }
-
-            String response = template.render(model);
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            LinkedList<ArtifactModel> artifactToBuy = offerToBuy(teamDao.getObjectList());
+            Integer voted = checkVoted(userId);
+            Integer state = checkState(teamId);
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+            responseController.sendResponseTeaamShop(httpExchange, countMail, artifactToBuy, state, voted, teamDao);
         }
     }
-    private void offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
+
+    private LinkedList<ArtifactModel> offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
 
         ArtifactDAO artifactDAO = new ArtifactDAO();
         artifactDAO.loadArtifact();
@@ -212,6 +237,7 @@ public class StudentController implements HttpHandler {
                 li.add(artifact);
             }
         }
+        return li;
     }
 
     private Integer checkState(Integer teamId) {
@@ -219,6 +245,24 @@ public class StudentController implements HttpHandler {
         teamDao.loadDataAboutTeam(teamId);
         Integer state = teamDao.getObjectList().get(0).getState();
         return state;
+    }
+
+    private Integer checkVoted(Integer userId) {
+        StudentDAO studentDAO = new StudentDAO();
+        String voted = studentDAO.getStudent(userId).getVoted();
+        System.out.println(voted);
+        if (voted.equals("yes")) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private void checkMaxVotes(TeamShoppingModel teamShoppingModel) {
+        Integer counterVotes =  teamShoppingModel.getStudentModels().size();
+        if (teamShoppingModel.getVotes() == counterVotes) {
+            teamShoppingModel.setState(2);
+        }
     }
 
     private Integer showCoolcoins(Integer userId) {
@@ -244,6 +288,28 @@ public class StudentController implements HttpHandler {
             uriModel = new URIModel(pairs[2]);
         }
         return uriModel;
+    }
+
+    private TeamShoppingModel temporaryTeamModel(TeamDao teamDao) {
+        TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
+        return teamShoppingModel;
+    }
+
+    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao) {
+        teamShoppingModel.setState(0);
+        teamShoppingModel.setVotes(0);
+        Integer state = teamShoppingModel.getState();
+        Integer votes = teamShoppingModel.getVotes();
+        teamShoppingModel.getArtifactModel().setTitle(null);
+        String artifactId = teamShoppingModel.getArtifactModel().getTitle();
+
+        for (StudentModel student : teamShoppingModel.getStudentModels()) {
+            studentDAO.updateStudent(student.getUserID(), "voted", "no");
+        }
+
+        teamDao.updateDataAboutTeam(teamId, "artifact_id", artifactId);
+        teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(state));
+        teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(votes));
     }
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
