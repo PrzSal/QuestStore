@@ -13,11 +13,12 @@
             document.getElementById("buttonTeamShop").innerHTML =
                 "    <form method=\"POST\">" +
                 "       <label> Artifact to buy </label> <br>\n" +
-                "        <select  type=\"text\" id=\"class name\" name=\"class name\"><br>\n" +
+                "        <select  type=\"text\" id=\"artifactName\" name=\"newPurchase\"> <br>\n" +
                 "            {% for artifact in artifactModels %}\n" +
-                "                <option  type=\"text\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
+                "                <option  type=\"text\" name=\"newArtifact\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
                 "            {% endfor %}\n" +
                 "        </select>\n" +
+                "     <input type=\"hidden\" name=\"state\" value=\"1\" > <br> \n" +
                 "        <input id=\"submit\" name=\"submit\" type=\"submit\"  value=\"submit\">\n" +
                 "    </form>";
 
