@@ -124,17 +124,26 @@ public class StudentController implements HttpHandler {
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title");
             String category = inputs.get("category");
-            String price = inputs.get("price");
+            String priceStr = inputs.get("price");
+            Integer price = Integer.parseInt(priceStr);
+
             System.out.println(title);
             System.out.println(category);
             System.out.println(price);
 
+            String option = inputs.get("button");
             ArtifactDAO artifactDAO = new ArtifactDAO();
-            artifactDAO.deleteArtifact(title);
+
+            if(option.equals("Remove")) {
+                artifactDAO.deleteArtifact(title);
+            } else if(option.equals("Add")) {
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                artifactDAO.insertArtifact("ArtifactsTable", artifact, 0);
+            }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
             httpExchange.sendResponseHeaders(302,-1);
-
         }
     }
 

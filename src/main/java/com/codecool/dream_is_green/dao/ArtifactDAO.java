@@ -96,15 +96,16 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
     public void deleteArtifact(String artifactTitle) {
 
         Connection connection;
-        artifactTitle = artifactTitle.replaceAll("\\s+","\n");
+        String artifactTitleRep = artifactTitle.replaceAll("\\s+","\n");
 
         try {
             connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            String insertTableSQL = "DELETE FROM ArtifactsTable WHERE artifact_name = ?;";
+            String insertTableSQL = "DELETE FROM ArtifactsTable WHERE artifact_name = ? or artifact_name = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setString(2, artifactTitleRep);
 
             preparedStatement .executeUpdate();
             preparedStatement.close();

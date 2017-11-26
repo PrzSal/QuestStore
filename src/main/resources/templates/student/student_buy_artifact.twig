@@ -23,14 +23,15 @@
     </div>
     <div class="tab tab-2">
         <form method="POST">
-            Title :<input type="text" name="title" id="title">
-            Category :<input type="text" name="category" id="category">
-            Price :<input type="number" name="price" id="price">
+            Title :<input type="text" name="title" id="title" required>
+            Category :<input type="text" name="category" id="category" required>
+            Price :<input type="number" name="price" id="price" required>
 
             {#<button onclick="addHtmlTableRow();">Add</button>#}
             {#<button onclick="editHtmlTableSelectedRow();">Edit</button>#}
             {#<button id="submit" name="submit" type="submit" onclick="removeSelectedRow();">Remove</button>#}
-            <input id="submit" name="submit" type="submit"  value="Remove">
+            <input id="submit" name="button" type="submit"  value="Add">
+            <input id="submit" name="button" type="submit"  value="Remove">
         </form>
     </div>
 </div>
