@@ -51,13 +51,18 @@ public class FormDataController<T> {
         TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
         Integer idSendMail = teamShoppingModel.getStudentModels().get(0).getUserID();
         if (objectType.equals("voteNo")) {
-            PreMailModel preMailModel = new PreMailModel(data.get(1), "cancel group purchase", userId, idSendMail);
+            PreMailModel preMailModel = new PreMailModel(data.get(1), "cancel of group purchase", userId, idSendMail);
             return (T) preMailModel;
 
         } else if (objectType.equals("voteYes")) {
             Integer votes = teamShoppingModel.getVotes();
             votes += Integer.valueOf(data.get(0));
             teamShoppingModel.setVotes(votes);
+            return (T) teamShoppingModel;
+
+        }  else if (objectType.equals("newPurchase")) {
+            teamShoppingModel.getArtifactModel().setTitle(data.get(0));
+            teamShoppingModel.setState(Integer.valueOf(data.get(1)));
             return (T) teamShoppingModel;
 
         } else if (objectType.equals("mark")) {
