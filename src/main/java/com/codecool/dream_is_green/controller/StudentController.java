@@ -127,18 +127,15 @@ public class StudentController implements HttpHandler {
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
 
-            System.out.println(title);
-            System.out.println(category);
-            System.out.println(price);
-
             String option = inputs.get("button");
             ArtifactDAO artifactDAO = new ArtifactDAO();
 
             if(option.equals("Remove")) {
                 artifactDAO.deleteArtifact(title);
             } else if(option.equals("Add")) {
+                String titleRep = title.replaceAll("\\s+","\n");
                 ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
-                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                ArtifactModel artifact = new ArtifactModel(titleRep, price, artifactCategory);
                 artifactDAO.insertArtifact("ArtifactsTable", artifact, 0);
             }
 
