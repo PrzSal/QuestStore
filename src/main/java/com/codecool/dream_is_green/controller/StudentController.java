@@ -146,7 +146,7 @@ public class StudentController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-            
+
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
             offerToBuy(teamDao.getObjectList());
