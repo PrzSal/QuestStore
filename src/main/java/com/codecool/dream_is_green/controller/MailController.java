@@ -1,13 +1,14 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.MailBoxDao;
-import com.codecool.dream_is_green.model.MailBoxModel;
-import com.codecool.dream_is_green.model.PreMailModel;
+import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MailController {
 
@@ -38,12 +39,27 @@ public class MailController {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            System.out.println(formData);
             FormDataController <PreMailModel> formDataController = new FormDataController<>();
             MailBoxDao mailBoxDao = new MailBoxDao();
             mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
             httpExchange.getResponseHeaders().set("Location", "/mail");
             httpExchange.sendResponseHeaders(302, -1);
+        }
+    }
+
+    public void sendMultiplyMailToMentors(List<MentorModel> mentorsToSendMail, String content, String header, Integer idSender) {
+        MailBoxDao mailBoxDao = new MailBoxDao();
+        for (MentorModel mentor : mentorsToSendMail) {
+            PreMailModel preMailModel = new PreMailModel(content, header, mentor.getUserID(), idSender);
+            mailBoxDao.insertMail(preMailModel);
+        }
+    }
+
+    public void sendMultiplyMailToStudents(List<StudentModel> studentsToSendMail, String content, String header, Integer idSender) {
+        MailBoxDao mailBoxDao = new MailBoxDao();
+        for (StudentModel student : studentsToSendMail) {
+            PreMailModel preMailModel = new PreMailModel(content, header, student.getUserID(), idSender);
+            mailBoxDao.insertMail(preMailModel);
         }
     }
 }
