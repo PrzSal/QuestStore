@@ -78,4 +78,25 @@ public class ResponseController<T> {
         os.write(response.getBytes());
         os.close();
     }
+
+    public void sendResponseWallet(HttpExchange httpExchange, Integer counterMail, LinkedList<T> objectsList,
+                             String objectModels, String title, Integer coolCoins,
+                             String menuPath, String pagePath) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with(objectModels, objectsList);
+        model.with("title", title);
+        model.with("coolCoins", coolCoins);
+        model.with("menu", "classpath:/templates/" + menuPath);
+        model.with("main", "classpath:/templates/" + pagePath);
+        model.with("counterMail", counterMail);
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
 }
