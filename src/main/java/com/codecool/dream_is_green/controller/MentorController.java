@@ -108,6 +108,6 @@ public class MentorController implements HttpHandler {
         ResponseController<StudentModel> responseController = new ResponseController<>();
         responseController.sendResponse(httpExchange, countMail, students,
                 "studentModels", "Show students",
-                "mentor/menu_mentor.twig", "mentor/mentor_show_students.twig");
+                "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
     }
 }
