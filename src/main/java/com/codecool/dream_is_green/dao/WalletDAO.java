@@ -1,13 +1,14 @@
 package com.codecool.dream_is_green.dao;
 
-import com.codecool.dream_is_green.model.ArtifactCategoryModel;
-import com.codecool.dream_is_green.model.ArtifactModel;
-import com.codecool.dream_is_green.model.StudentModel;
-import com.codecool.dream_is_green.model.WalletModel;
+import com.codecool.dream_is_green.model.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class WalletDAO extends AbstractDAO<WalletDAO> {
 
@@ -92,5 +93,62 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public LinkedList<ArtifactModel> getStudentArtifacts(Integer userId) {
+
+        LinkedList<ArtifactModel> studentArtifacts = new LinkedList<>();
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM StudentsWithArtifacts WHERE user_Id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("artifact_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("artifact_category");
+                Integer state = rs.getInt("state");
+
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                artifact.setIsUsed(state);
+                studentArtifacts.add(artifact);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return studentArtifacts;
+    }
+
+    public Integer getStudentCoolCoins(Integer userId) {
+
+        Integer coolCoins = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT coolcoins FROM WalletTable WHERE user_Id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Integer studentCoins = rs.getInt("coolcoins");
+                coolCoins = studentCoins;
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return coolCoins;
     }
 }

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="buy_artifact_container">
     <div class="tab tab-1">
-        <table class="blueTable" id="table" border="1">
+        <table class="buy_artifact_Table" id="table" border="1">
             <thead>
                 <tr>
                     {#<th>No.</th>#}
@@ -35,7 +35,7 @@
 
 <style>
 
-    div.container {
+    div.buy_artifact_container {
         display: flex;
         justify-content: center;
         margin-top: 20%;
@@ -48,7 +48,7 @@
 
 
 
-    table.blueTable {
+    table.buy_artifact_Table {
         font-family: Arial, Helvetica, sans-serif;
         border: 2px solid #1C6EA4;
         width: 180%;
@@ -65,35 +65,35 @@
     }
 
 
-    table.blueTable td, table.blueTable th, .tab-2 {
+    table.buy_artifact_Table td, table.buy_artifact_Table th, .tab-2 {
         border: 1px solid #AAAAAA;
         padding: 3px 3px;
     }
-    table.blueTable tbody tr {
+    table.buy_artifact_Table tbody tr {
         transition:all .25s ease-in-out;
         background: #a4ffff;
     }
-    table.blueTable tr:nth-child(even) {
+    table.buy_artifact_Table tr:nth-child(even) {
         background: #6fb79c;
     }
-    table.blueTable thead, .tab-2 {
+    table.buy_artifact_Table thead, .tab-2 {
         background: #1C6EA4;
         background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         border-bottom: 2px solid #444444;
     }
-    table.blueTable thead th, .tab-2 {
+    table.buy_artifact_Table thead th, .tab-2 {
         font-size: 18px;
         font-weight: bold;
         color: #FFFFFF;
         text-align: center;
     }
-    table.blueTable thead th:first-child {
+    table.buy_artifact_Table thead th:first-child {
         border-left: none;
     }
 
-    table.blueTable tbody tr:hover {
+    table.buy_artifact_Table tbody tr:hover {
         background-color: #3f47ff; cursor: pointer
     }
 
