@@ -2,22 +2,22 @@
     <div class="tab tab-1">
         <table class="blueTable" id="table" border="1">
             <thead>
-                <tr>
-                    {#<th>No.</th>#}
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                </tr>
+            <tr>
+                {#<th>No.</th>#}
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
             </thead>
             <tbody>
-                {% for artifact in artifactsModels %}
-                    <tr>
-                        {#<td>{{ loop.index }}</td>#}
-                        <td>{{ artifact.title }}</td>
-                        <td>{{ artifact.category }}</td>
-                        <td>{{ artifact.price }}</td>
-                    </tr>
-                {% endfor %}
+            {% for artifact in artifactsModels %}
+                <tr>
+                    {#<td>{{ loop.index }}</td>#}
+                    <td>{{ artifact.title }}</td>
+                    <td>{{ artifact.category }}</td>
+                    <td>{{ artifact.price }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -27,7 +27,8 @@
             Category :<input type="text" name="category" id="category" required>
             Price :<input type="number" name="price" id="price" required>
 
-            <input id="submit" name="button" type="submit"  value="Buy">
+            <input id="submit" name="button" type="submit"  value="Add">
+            <input id="submit" name="button" type="submit"  value="Remove">
         </form>
     </div>
 </div>

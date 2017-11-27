@@ -113,4 +113,98 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
+
+    public ArtifactModel getArtifact(String artifactTitle) {
+
+        ArtifactModel artifact = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM ArtifactsTable WHERE artifact_name = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, artifactTitle);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("artifact_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("artifact_category");
+                Integer state = rs.getInt("state");
+
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                artifact = new ArtifactModel(title, price, artifactCategory);
+                artifact.setIsUsed(state);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return artifact;
+    }
+
+    public ArtifactModel getUserArtifact(String artifactTitle, Integer userId) {
+
+        ArtifactModel artifact = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM StudentsWithArtifacts WHERE artifact_name = ? and user_Id =?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setInt(2, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("artifact_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("artifact_category");
+                Integer state = rs.getInt("state");
+
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                artifact = new ArtifactModel(title, price, artifactCategory);
+                artifact.setIsUsed(state);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return artifact;
+    }
+
+    public void insertUserArtifact(ArtifactModel artifact, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String title = artifact.getTitle();
+            Integer price = artifact.getPrice();
+            ArtifactCategoryModel artifactCategory = artifact.getCategory();
+            String category = artifactCategory.getName();
+            Integer state = artifact.getIsUsed();
+
+            String insertTableSQL = "INSERT INTO StudentsWithArtifacts (artifact_name, price, artifact_category, user_Id, state) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, price);
+            preparedStatement.setString(3, category);
+            preparedStatement.setInt(4, userId);
+            preparedStatement.setInt(5, state);
+
+            preparedStatement .executeUpdate();
+
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
 }

@@ -285,19 +285,10 @@ INSERT INTO `ClassTable` VALUES ('krk-2017-2');
 INSERT INTO `ClassTable` VALUES ('bud2016-3');
 CREATE TABLE "ArtifactsTable"
 (
-`artifact_name`
-TEXT
-NOT
-NULL
-UNIQUE,
-`price`
-INTEGER,
-`artifact_category`
-INTEGER,
-`state`
-INTEGER
-DEFAULT
-0
+`artifact_name` TEXT NOT NULL UNIQUE,
+`price` INTEGER,
+`artifact_category` TEXT,
+`state` INTEGER DEFAULT 0
 );
 INSERT INTO `ArtifactsTable` VALUES ('private mentoring',100,'mentoring',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor ride on elephant',200,'fun',0);
