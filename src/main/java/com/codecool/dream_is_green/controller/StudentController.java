@@ -155,16 +155,6 @@ public class StudentController implements HttpHandler {
         }
     }
 
-    private void showWallet(HttpExchange httpExchange) throws IOException {
-        zz artifactDAO = new ArtifactDAO();
-        artifactDAO.loadArtifact();
-        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
-        ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, artifacts,
-                "artifactsModels", "Show artifacts",
-                "student/student_menu.twig", "student/student_show_artifacts.twig");
-    }
-
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
         String method = httpExchange.getRequestMethod();
 
