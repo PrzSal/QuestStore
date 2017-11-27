@@ -6,7 +6,6 @@ public class AbstractTask<T> {
     protected Integer price;
     protected T category;
     public AbstractTask() {
-
     }
 
     public AbstractTask(String title, Integer price, T questCategory) {
@@ -26,5 +25,9 @@ public class AbstractTask<T> {
 
     public T getCategory() {
         return category;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

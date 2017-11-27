@@ -2,24 +2,26 @@ package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.MentorModel;
 import com.codecool.dream_is_green.model.PreUserModel;
+import com.codecool.dream_is_green.model.StudentModel;
+import com.codecool.dream_is_green.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MentorDAO extends AbstractDAO<MentorModel> {
 
-    public MentorModel getMentorByID(int userID, MentorDAO mentorDao) {
-
-        for (MentorModel mentor : mentorDao.getObjectList()) {
-            if (mentor.getUserID() == userID) {
-                return mentor;
+    public ArrayList<MentorModel> getMentors(StudentModel studentModel) {
+        loadMentors();
+        ArrayList<MentorModel> mentors = new ArrayList<>();
+        for (MentorModel mentor : getObjectList()) {
+            if (mentor.getClassName().equals(studentModel.getClassName())) {
+                mentors.add(mentor);
             }
         }
-        return null;
+        return mentors;
     }
 
     public void loadMentors() {

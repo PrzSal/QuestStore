@@ -1,54 +1,48 @@
 package com.codecool.dream_is_green.controller;
 
-import com.codecool.dream_is_green.dao.ClassDAO;
-import com.codecool.dream_is_green.dao.LevelDAO;
-import com.codecool.dream_is_green.dao.MentorDAO;
-import com.codecool.dream_is_green.dao.SessionDAO;
-import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.PreUserModel;
-import com.codecool.dream_is_green.model.SessionModel;
+import com.codecool.dream_is_green.dao.*;
+import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 public class MentorController implements HttpHandler {
 
+    private Integer countMail;
     private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
-
         URI uri = httpExchange.getRequestURI();
-        Map<String, String> actionData = parseURI(uri.getPath());
+        FormDataController formDataController = new FormDataController();
+        URIModel uriModel = formDataController.parseURI(uri.getPath());
+        String userAction = uriModel.getUserAction();
+        MailController mailController = new MailController();
+        countMail = mailController.checkMail(10);
 
-        for (String action : actionData.keySet()) {
-            if (action.equals("add_class")) {
-                addClass(httpExchange);
-            } else if (action.equals("edit")) {
-                edit(httpExchange, actionData.get(action));
-            } else if (action.equals("show_classes")) {
-                showClasses(httpExchange);
-            } else if (action.equals("add_mentor")) {
-                addMentor(httpExchange);
-            } else if (action.equals("show_mentors")) {
-                showMentors(httpExchange);
-            } else if (action.equals("add_level")) {
-                addLevel(httpExchange);
-            } else if (action.equals("show_levels")) {
-                showLevels(httpExchange);
-            } else if (action.equals("logout")) {
-                clearCookie(httpExchange);
-            } else {
-                index(httpExchange);
-            }
+        if (userAction == null) {
+            index(httpExchange);
+//        } else if (userAction.equals("add_student")) {
+//            addClass(httpExchange);
+//        } else if (userAction.equals("add_artifact")) {
+//            showClasses(httpExchange);
+//        } else if (userAction.equals("add_quest")) {
+//            addMentor(httpExchange);
+        } else if (userAction.equals("show_students")) {
+            showStudents(httpExchange);
+        } else if (userAction.equals("show_artifacts")) {
+            showArtifacts(httpExchange);
+        } else if (userAction.equals("show_quests")) {
+            showQuests(httpExchange);
+        } else if (userAction.equals("logout")) {
+            clearCookie(httpExchange);
+        } else if (userAction.equals("mail")) {
+            mailController = new MailController();
+            mailController.showReadMail(httpExchange, 10);
         }
+
     }
 
     private void index(HttpExchange httpExchange) throws IOException {
@@ -61,165 +55,23 @@ public class MentorController implements HttpHandler {
         if (session != null) {
 
             String userType = session.getUserType();
-
-            if(userType.equals("mentor")) {
-
-                JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/mentor_home.twig");
-                JtwigModel model = JtwigModel.newModel();
-                String response = template.render(model);
-
-                httpExchange.sendResponseHeaders(200, response.getBytes().length);
-                OutputStream os = httpExchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
-
-            } else {
-                httpExchange.getResponseHeaders().set("Location", "/" + userType);
-                httpExchange.sendResponseHeaders(302,-1);
-            }
-
+            redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
-
     }
 
-    private void showClasses(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_classes.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        ClassDAO classDAO = new ClassDAO();
-        classDAO.loadClasses();
-        model.with("classModels", classDAO.getObjectList());
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void addMentor(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-        String redirect = "";
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            MentorDAO mentorDAO = new MentorDAO();
-            String name = parseFormData(formData).get(0);
-            String surname = parseFormData(formData).get(1);
-            String email = parseFormData(formData).get(2);
-            String login = parseFormData(formData).get(3);
-            String password = parseFormData(formData).get(4);
-            String className = parseFormData(formData).get(5);
-            mentorDAO.insertMentor(new PreUserModel(name, surname, email, login, password, className));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_mentors/\" />";
+    private void redirectToMentorHome(HttpExchange httpExchange,
+                                     String userType) throws IOException{
+        if(userType.equals("mentor")) {
+            ResponseController<User> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, "Home page",
+                    "mentor/menu_mentor.twig","mentor/mentor_home.twig");
+        } else {
+            httpExchange.getResponseHeaders().set("Location", "/" + userType);
+            httpExchange.sendResponseHeaders(302,-1);
         }
-
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_mentor.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-        ClassDAO classDAO = new ClassDAO();
-        classDAO.loadClasses();
-        model.with("classModels", classDAO.getObjectList());
-        model.with("redirect", redirect);
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void showMentors(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_mentors.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        MentorDAO mentorDAO = new MentorDAO();
-        mentorDAO.loadMentors();
-        model.with("mentorModels", mentorDAO.getObjectList());
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void addLevel(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-        String redirect = "";
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            String levelName = parseFormData(formData).get(0);
-            String expRequired = parseFormData(formData).get(1);
-            LevelDAO levelDAO = new LevelDAO();
-            LevelModel levelModel = new LevelModel(levelName, Integer.valueOf(expRequired));
-            levelDAO.insertLevel(levelModel);
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_levels/\" />";
-        }
-
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_create_level.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("redirect", redirect);
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void showLevels(HttpExchange httpExchange) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_show_levels.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        LevelDAO levelDAO = new LevelDAO();
-        levelDAO.loadLevels();
-        model.with("levelModels", levelDAO.getObjectList());
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void addClass(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-        String redirect = "";
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            ClassDAO classDao = new ClassDAO();
-           // classDao.insertClass(parseFormData(formData).get(0));
-            redirect = "<meta http-equiv=\"refresh\" content=\"0; url=/admin/show_classes/\" />";
-        }
-
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/admin_add_class.html.twig");
-        JtwigModel model = JtwigModel.newModel();
-        model.with("redirect", redirect);
-        String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private void edit(HttpExchange httpExchange, String id) {
-
-    }
-
-    private void delete(int id) {
-
     }
 
     private void clearCookie(HttpExchange httpExchange) throws IOException {
@@ -229,38 +81,33 @@ public class MentorController implements HttpHandler {
         httpExchange.sendResponseHeaders(302,-1);
     }
 
-    private Map<String, String> parseURI (String uri) {
-        Map<String, String> actionData = new HashMap<>();
-        String[] pairs = uri.split("/");
-
-        if (pairs.length == 4) {
-            actionData.put(pairs[2], pairs[3]);
-        } else if (pairs.length == 3) {
-            actionData.put(pairs[2], "");
-        } else if (pairs.length == 2) {
-            actionData.put(pairs[1], "");
-        } else {
-            actionData.put("", "");
-        }
-
-        return actionData;
+    private void showArtifacts(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, artifacts,
+                "artifactModels", "Show artifacts",
+                "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
     }
 
-    private ArrayList<String> parseFormData(String formData) {
-        System.out.println(formData);
-        ArrayList<String> dataToModel = new ArrayList<>();
+    private void showQuests(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        questDAO.loadQuest();
+        LinkedList<QuestModel> quests = questDAO.getObjectList();
+        ResponseController<QuestModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, quests,
+                "questModels", "Show quests",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_quests.twig");
+    }
 
-        String[] pairs = formData.split("&");
-        int i = 0;
-        try {
-            for (String pair : pairs) {
-                dataToModel.add(new URLDecoder().decode(pair.split("=")[1], "UTF-8"));
-
-            }
-        } catch (ArrayIndexOutOfBoundsException | UnsupportedEncodingException e) {
-            return null;
-        }
-
-        return dataToModel;
+    private void showStudents(HttpExchange httpExchange) throws IOException {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = studentDAO.getObjectList();
+        ResponseController<StudentModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, students,
+                "studentModels", "Show students",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
     }
 }

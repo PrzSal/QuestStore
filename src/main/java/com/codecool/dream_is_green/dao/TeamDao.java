@@ -6,8 +6,10 @@ import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.model.TeamShoppingModel;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             List<StudentModel> students = new LinkedList<>();
             ArtifactModel artifactModel = new ArtifactModel();
             TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
-            String name, surname, email, login, password, className, title, artifactCategory, teamName, votes;
-            int userID, studentExp, price, state;
+            String name, surname, email, login, password, className, title, artifactCategory, teamName, voted;
+            int userID, studentExp, price, state, votes;
 
             while(result.next()) {
 
@@ -42,6 +44,7 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 password = result.getString("password");
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
+                voted = result.getString("voted");
                 studentExp = result.getInt("experience");
                 state = result.getInt("state");
                 if (!checkFieldArtifact(teamId)) {
@@ -55,15 +58,17 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 }
 
                 teamName = result.getString("team_name");
-                votes = result.getString("votes");
+                votes = result.getInt("votes");
                 StudentModel student = new StudentModel(userID, name, surname, email,
                         login, password, className, studentExp);
+                student.setVoted(voted);
+                student.setTeamId(teamId);
                 students.add(student);
-                if (votes == null) {
+                if (votes == 0) {
                     if (checkFieldArtifact(teamId)) {
-                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
+                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, votes, state);
                     } else {
-                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, state);
+                        teamShoppingModel = new TeamShoppingModel(students, artifactModel, teamId, teamName, votes, state);
                     }
 
                 } else {
@@ -75,6 +80,39 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             result.close();
             stat.close();
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateDataAboutTeam(Integer teamId, String column, String content) {
+
+        Connection connection;
+
+        try {
+            String statement = "";
+            connection = DatabaseConnection.getConnection();
+            if (column.equals("team_name")) {
+                statement = "UPDATE TeamsTable SET team_name = ? WHERE team_id == ?;";
+            } else if (column.equals("artifact_id")) {
+                statement = "UPDATE TeamsTable SET artifact_id = ? WHERE team_id == ?;";
+            } else if (column.equals("votes")) {
+                statement = "UPDATE TeamsTable SET votes = ? WHERE team_id == ?;";
+            } else if (column.equals("state")) {
+                statement = "UPDATE TeamsTable SET state = ? WHERE team_id == ?;";
+            }
+            PreparedStatement prepStmt = connection.prepareStatement(statement);
+
+            if (column.equals("state") || column.equals("votes")) {
+                prepStmt.setInt(1, Integer.valueOf(content));
+            } else {
+                prepStmt.setString(1, content);
+            }
+            prepStmt.setInt(2, teamId);
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
 
         } catch (Exception e) {
             e.printStackTrace();

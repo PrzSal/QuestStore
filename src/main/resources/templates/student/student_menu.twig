@@ -1,32 +1,32 @@
 <dl id="menu0">
     <dt>
-        <a href="/admin">
+        <a href="/student">
             <i class="fa fa-home" aria-hidden="true"></i>
         </a>
     </dt>
 </dl>
 
 <dl id="menu1">
-    <dt>Mentor</dt>
-    <dd><a href="/admin/show_mentors">Show mentors list</a></dd>
-    <dd><a href="/admin/add_mentor">Add new mentor</a></dd>
-    <dd><a href="admin_remove_mentor.html">Remove mentor</a></dd>
+    <dt>Quest</dt>
+    <dd><a href="/student/show_quests">Show quests</a></dd>
+    <dd><a href=student_do_quest.html">Do quest</a></dd>
 </dl>
 <dl id="menu2">
-    <dt>Class</dt>
-    <dd><a href="/admin/show_classes">Show classes list</a></dd>
-    <dd><a href="/admin/add_class">Add new class</a></dd>
-    <dd><a href="admin_remove_class.html">Remove class</a></dd>
+    <dt>Artifacts</dt>
+    <dd><a href="/student/show_artifacts">Show artifacts</a></dd>
+    <dd><a href="/student/buy_artifact">Buy artifact</a></dd>
+    <dd><a href="/student/team_shop">Buy artifact in team</a></dd>
+    <dd><a href="student_use_artifact.html">Use artifact</a></dd>
 </dl>
 <dl id="menu3">
-    <dt>Level</dt>
-    <dd><a href="/admin/show_levels">Show levels list</a></dd>
-    <dd><a href="/admin/add_level">Create new level</a></dd>
-    <dd><a href="admin_remove_level.html">Remove level</a></dd>
+    <dt><a href="/student/show_wallet">Wallet</a></dt>
+</dl>
+<dl id="menu4">
+    <dt><a href="student_show_level.html">Level</a></dt>
 </dl>
 <dl id="logout">
     <dt>
-        <a href="/admin/logout">
+        <a href="/student/logout">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
         </a>
     </dt>
@@ -38,6 +38,7 @@
     new Menu('menu1', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('menu2', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('menu3', 'position: absolute', true, true, 50, 50, 0, 250);
+    new Menu('menu4', 'position: absolute', true, true, 50, 50, 0, 250);
     new Menu('logout', 'position: absolute', true, true, 50, 50, 0, 250);
     // ]]>
 </script>

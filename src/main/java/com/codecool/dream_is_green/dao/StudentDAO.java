@@ -1,5 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,8 +20,8 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
                            " ON UsersTable.user_id = StudentsTable.user_id";
             ResultSet result = stat.executeQuery(query);
-            String name, surname, email, login, password, className;
-            int userID, studentExp;
+            String name, surname, email, login, password, className, voted;
+            int userID, studentExp, teamID;
 
             while(result.next()) {
 
@@ -29,13 +30,17 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 email = result.getString("email");
                 login = result.getString("login");
                 password = result.getString("password");
+                voted = result.getString("voted");
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
                 studentExp = result.getInt("experience");
+                teamID = result.getInt("team_id");
 
 
                 StudentModel student = new StudentModel(userID, name, surname, email,
                                                         login, password, className, studentExp);
+                student.setVoted(voted);
+                student.setTeamId(teamID);
                 this.addObject(student);
             }
             result.close();
@@ -46,6 +51,28 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             e.printStackTrace();
         }
     }
+
+    public void updateStudent(Integer userId, String column, String content) {
+
+        Connection connection;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String statement = "UPDATE StudentsTable SET voted = ? WHERE user_id == ? ;";
+            PreparedStatement prepStmt = connection.prepareStatement(statement);
+
+            prepStmt.setString(1, content);
+            prepStmt.setInt(2, userId);
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void insertStudent(PreUserModel preStudentModel) {
 
@@ -121,8 +148,8 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
             String query = "SELECT * FROM StudentsTable JOIN UsersTable" +
                     " ON UsersTable.user_id = StudentsTable.user_id WHERE UsersTable.user_id = '" + userId + "'";
             ResultSet result = stat.executeQuery(query);
-            String name, surname, email, user_login, password, className;
-            int userID, studentExp;
+            String name, surname, email, user_login, password, className, voted;
+            int userID, studentExp, teamId;
             StudentModel student = null;
 
             while(result.next()) {
@@ -134,9 +161,12 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
                 password = result.getString("password");
                 userID = result.getInt("user_id");
                 className = result.getString("class_name");
+                voted = result.getString("voted");
                 studentExp = result.getInt("experience");
-
+                teamId = result.getInt("team_id");
                 student = new StudentModel(userID, name, surname, email, user_login, password, className, studentExp);
+                student.setTeamId(teamId);
+                student.setVoted(voted);
             }
             result.close();
             stat.close();

@@ -8,7 +8,7 @@ public class TeamShoppingModel {
     ArtifactModel artifactModel;
     Integer teamId;
     String nameTeam;
-    String vote;
+    Integer votes;
     Integer state;
 
     public TeamShoppingModel() {
@@ -21,13 +21,13 @@ public class TeamShoppingModel {
         this.state = state;
     }
 
-    public TeamShoppingModel(List<StudentModel> studentModels, ArtifactModel artifactModel, Integer teamId, String nameTeam, String vote, Integer state) {
+    public TeamShoppingModel(List<StudentModel> studentModels, ArtifactModel artifactModel, Integer teamId, String nameTeam, Integer votes, Integer state) {
         this.studentModels = studentModels;
         this.artifactModel = artifactModel;
         this.teamId = teamId;
         this.nameTeam = nameTeam;
-        this.vote = vote;
         this.state = state;
+        this.votes = votes;
     }
 
     public TeamShoppingModel(List<StudentModel> studentModels, ArtifactModel artifactModel, Integer teamId, String nameTeam, Integer state) {
@@ -46,12 +46,12 @@ public class TeamShoppingModel {
         return artifactModel;
     }
 
-    public String getVote() {
-        return vote;
+    public Integer getVotes() {
+        return votes;
     }
 
-    public void setVote(String vote) {
-        this.vote = vote;
+    public void setVotes(Integer vote) {
+        this.votes = vote;
     }
 
     public Integer getTeamId() {
@@ -64,5 +64,9 @@ public class TeamShoppingModel {
 
     public Integer getState() {
         return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }

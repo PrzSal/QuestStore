@@ -1,0 +1,19 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Quests list</div>
+        <tr>
+            <th class="tg-gkax">No.</th>
+            <th class="tg-gkax">Title</th>
+            <th class="tg-gkax">Price</th>
+            <th class="tg-gkax">Category</th>
+        </tr>
+        {% for quest in questsModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ quest.title }}</td>
+                <td class="tg-gkax">{{ quest.price }}</td>
+                <td class="tg-gkax">{{ quest.category }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

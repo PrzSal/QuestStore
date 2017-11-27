@@ -1,0 +1,22 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Artifacts list</div>
+        <tr>
+            <th class="tg-gkax">No.</th>
+            <th class="tg-gkax">Title</th>
+            <th class="tg-gkax">Price</th>
+            <th class="tg-gkax">Category</th>
+            <th class="tg-gkax">Is used</th>
+        </tr>
+        {% for artifact in artifactsModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ artifact.title }}</td>
+                <td class="tg-gkax">{{ artifact.price }}</td>
+                <td class="tg-gkax">{{ artifact.category }}</td>
+                <td class="tg-gkax">{{ artifact.isused }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>

@@ -31,7 +31,6 @@ public class LoginController implements HttpHandler {
             String userType = session.getUserType();
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
-
         } else {
 
             String method = httpExchange.getRequestMethod();
@@ -81,10 +80,12 @@ public class LoginController implements HttpHandler {
 
         UserDAO userDAO = new UserDAO();
         String currentPassword = userDAO.getUserPassword(userName);
+        String sessionId = cookie.getSessionId(httpExchange);
+        Integer userId = userDAO.getUserId(userName);
         String userType = userDAO.getUserType(userName);
 
         if (password.equals(currentPassword)) {
-            SessionModel newSession = new SessionModel(cookie.getSessionId(httpExchange), userName, userType);
+            SessionModel newSession = new SessionModel(sessionId, userId, userName, userType);
             SessionDAO sessionDAO = new SessionDAO();
             sessionDAO.insertSession(newSession);
 
