@@ -151,4 +151,57 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
         }
         return coolCoins;
     }
+
+    public LinkedList<ArtifactModel> getStudentUnUsedArtifacts(Integer userId) {
+
+        LinkedList<ArtifactModel> studentArtifacts = new LinkedList<>();
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM StudentsWithArtifacts WHERE user_Id = ? AND state = 0;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("artifact_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("artifact_category");
+                Integer state = rs.getInt("state");
+
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                artifact.setIsUsed(state);
+                studentArtifacts.add(artifact);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return studentArtifacts;
+    }
+
+    public void setArtifactOnUsed(String artifactTitle, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "UPDATE StudentsWithArtifacts SET state = 1 WHERE artifact_name = ? AND user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+
 }

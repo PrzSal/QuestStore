@@ -42,6 +42,8 @@ public class StudentController implements HttpHandler {
             showWallet(httpExchange);
         } else if (userAction.equals("buy_artifact")) {
             buyArtifact(httpExchange);
+        } else if (userAction.equals("use_artifact")) {
+            useArtifact(httpExchange);
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -151,6 +153,46 @@ public class StudentController implements HttpHandler {
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
+    }
+
+    private void useArtifact(HttpExchange httpExchange) throws IOException {
+
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            String sessionId = cookie.getSessionId(httpExchange);
+            SessionDAO sessionDAO = new SessionDAO();
+            SessionModel session = sessionDAO.getSession(sessionId);
+            Integer userId = session.getUserId();
+
+            WalletDAO walletDAO = new WalletDAO();
+            LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentUnUsedArtifacts(userId);
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, studentArtifacts,
+                    "artifactsModels", "Show wallet",
+                    "student/student_menu.twig", "student/student_use_artifact.twig");
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title").trim();
+            String titleRep = title.replaceAll("\\s+","\n");
+
+            String sessionId = cookie.getSessionId(httpExchange);
+            SessionDAO sessionDAO = new SessionDAO();
+            SessionModel session = sessionDAO.getSession(sessionId);
+            Integer userId = session.getUserId();
+
+            WalletDAO walletDAO = new WalletDAO();
+            walletDAO.setArtifactOnUsed(title, userId);
+
+            httpExchange.getResponseHeaders().set("Location", "/student/use_artifact");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }
