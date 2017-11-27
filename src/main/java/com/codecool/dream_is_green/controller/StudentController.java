@@ -163,9 +163,10 @@ public class StudentController implements HttpHandler {
 
         WalletDAO walletDAO = new WalletDAO();
         LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentArtifacts(userId);
+        Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
         ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, studentArtifacts,
-                "artifactsModels", "Show wallet",
+        responseController.sendResponseWallet(httpExchange, countMail, studentArtifacts,
+                "artifactsModels", "Show wallet", studentCoolCoins,
                 "student/student_menu.twig", "student/student_show_wallet.twig");
     }
 
