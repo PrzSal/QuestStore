@@ -32,6 +32,8 @@ public class MentorController implements HttpHandler {
 //            addMentor(httpExchange);
         } else if (userAction.equals("show_students")) {
             showStudents(httpExchange);
+        } else if (userAction.equals("create_team")) {
+            createTeam(httpExchange);
         } else if (userAction.equals("show_artifacts")) {
             showArtifacts(httpExchange);
         } else if (userAction.equals("show_quests")) {
@@ -109,5 +111,15 @@ public class MentorController implements HttpHandler {
         responseController.sendResponse(httpExchange, countMail, students,
                 "studentModels", "Show students",
                 "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
+    }
+
+    private void createTeam(HttpExchange httpExchange) throws IOException {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = studentDAO.getObjectList();
+        ResponseController<StudentModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, students,
+                "studentModels", "Create Team",
+                "mentor/menu_mentor.twig", "mentor/mentor_create_team.twig");
     }
 }
