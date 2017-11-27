@@ -1,0 +1,25 @@
+<div class="table">
+    <table class="tg">
+        <div class="text">Students list</div>
+        <td class="tg-gkax">Nr.</td>
+        <td class="tg-gkax">User ID</td>
+        <td class="tg-gkax">Name</td>
+        <td class="tg-gkax">Surname</td>
+        <td class="tg-gkax">Email</td>
+        <td class="tg-gkax">Login</td>
+        <td class="tg-gkax">Class Name</td>
+        <td class="tg-gkax">Team ID</td>
+        {% for student in studentModels %}
+            <tr>
+                <td class="tg-gkax">{{ loop.index }}</td>
+                <td class="tg-gkax">{{ student.userID }}</td>
+                <td class="tg-gkax">{{ student.name }}</td>
+                <td class="tg-gkax">{{ student.surname }}</td>
+                <td class="tg-gkax">{{ student.email }}</td>
+                <td class="tg-gkax">{{ student.login }}</td>
+                <td class="tg-gkax">{{ student.className }}</td>
+                <td class="tg-gkax">{{ student.teamId }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
