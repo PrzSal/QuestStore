@@ -18,7 +18,6 @@ public class StudentController implements HttpHandler {
     private Integer countMail;
     private Integer userId = 0;
     private Integer teamId;
-    private Integer walletStudent;
     private Integer walletTeam = 0;
     private LinkedList<ArtifactModel> li;
 
@@ -39,9 +38,10 @@ public class StudentController implements HttpHandler {
             showQuests(httpExchange);
         } else if (userAction.equals("show_artifacts")) {
             showArtifacts(httpExchange);
+        } else if (userAction.equals("show_wallet")) {
+            showWallet(httpExchange);
         } else if (userAction.equals("buy_artifact")) {
             buyArtifact(httpExchange);
-
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -128,26 +128,45 @@ public class StudentController implements HttpHandler {
             String formData = br.readLine();
 
             Map<String, String> inputs = parseFormData(formData);
-            String title = inputs.get("title");
-            String category = inputs.get("category");
+            String title = inputs.get("title").trim();
+            String titleRep = title.replaceAll("\\s+","\n");
+
+            String category = inputs.get("category").trim();
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
 
-            String option = inputs.get("button");
             ArtifactDAO artifactDAO = new ArtifactDAO();
 
-            if(option.equals("Remove")) {
-                artifactDAO.deleteArtifact(title);
-            } else if(option.equals("Add")) {
-                String titleRep = title.replaceAll("\\s+","\n");
+            String sessionId = cookie.getSessionId(httpExchange);
+            SessionDAO sessionDAO = new SessionDAO();
+            SessionModel session = sessionDAO.getSession(sessionId);
+            Integer userId = session.getUserId();
+            ArtifactModel testArtifact = artifactDAO.getUserArtifact(title, userId);
+            System.out.println(testArtifact);
+
+            if(testArtifact == null) {
                 ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
                 ArtifactModel artifact = new ArtifactModel(titleRep, price, artifactCategory);
-                artifactDAO.insertArtifact("ArtifactsTable", artifact, 0);
+                artifactDAO.insertUserArtifact(artifact, userId);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
             httpExchange.sendResponseHeaders(302,-1);
         }
+    }
+
+    private void showWallet(HttpExchange httpExchange) throws IOException {
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+        Integer userId = session.getUserId();
+
+        WalletDAO walletDAO = new WalletDAO();
+        LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentArtifacts(userId);
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, studentArtifacts,
+                "artifactsModels", "Show wallet",
+                "student/student_menu.twig", "student/student_show_wallet.twig");
     }
 
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
@@ -280,16 +299,6 @@ public class StudentController implements HttpHandler {
         httpExchange.sendResponseHeaders(302,-1);
     }
 
-    private URIModel parseURI (String uri) {
-        String[] pairs = uri.split("/");
-        URIModel uriModel = new URIModel();
-
-        if (pairs.length == 3) {
-            uriModel = new URIModel(pairs[2]);
-        }
-        return uriModel;
-    }
-
     private TeamShoppingModel temporaryTeamModel(TeamDao teamDao) {
         TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
         return teamShoppingModel;
@@ -310,6 +319,16 @@ public class StudentController implements HttpHandler {
         teamDao.updateDataAboutTeam(teamId, "artifact_id", artifactId);
         teamDao.updateDataAboutTeam(teamId, "state", String.valueOf(state));
         teamDao.updateDataAboutTeam(teamId, "votes", String.valueOf(votes));
+    }
+
+    private URIModel parseURI (String uri) {
+        String[] pairs = uri.split("/");
+        URIModel uriModel = new URIModel();
+
+        if (pairs.length == 3) {
+            uriModel = new URIModel(pairs[2]);
+        }
+        return uriModel;
     }
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
