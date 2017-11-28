@@ -8,10 +8,15 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.URI;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MentorController implements HttpHandler {
 
     private Integer countMail;
+    private Integer userId = 0;
+    private Integer state = 0;
+    private LinkedList<StudentModel> temporaryStudents;
+    private TeamShoppingModel teamShoppingModel;
     private static CookieManager cookie = new CookieManager();
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -57,6 +62,7 @@ public class MentorController implements HttpHandler {
         if (session != null) {
 
             String userType = session.getUserType();
+            userId = session.getUserId();
             redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
@@ -115,23 +121,78 @@ public class MentorController implements HttpHandler {
 
     private void createTeam(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        System.out.println(method);
+        LinkedList<StudentModel> students = new LinkedList<>();
+
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            System.out.println(formData);
+            TeamDao teamDao = new TeamDao();
+            System.out.println(state + formData);
+            if (formData.compareTo("name") > 0 && state == 0) {
+                FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
+                teamShoppingModel = formDataController.parseFormData(formData, "nextChooseTeam");
+                teamDao.insertNewTeam(teamShoppingModel);
+                changeState(1);
+            } else if (formData.compareTo("nextPage") > 0 && state == 1) {
+                System.out.println(formData + state);
+                FormDataController<LinkedList<StudentModel>> formDataController = new FormDataController<>();
+                students = formDataController.chooseStudentsFromUser(formData);
+                temporaryStudents = temporaryStudentsList(students);
+                changeState(2);
+            } else if (formData.compareTo("confirm") > 0 && state == 2) {
+                updateStudents();
+                changeState(0);
+            }
+
             httpExchange.getResponseHeaders().set("Location", "/mentor/create_team");
             httpExchange.sendResponseHeaders(302, -1);
         }
         if (method.equals("GET")) {
-            StudentDAO studentDAO = new StudentDAO();
-            studentDAO.loadStudents();
-            LinkedList<StudentModel> students = studentDAO.getObjectList();
+            if (state <= 1) {
+                students = chooseStudents();
+            }
+            if (students.size() == 0) {
+                students = temporaryStudents;
+
+            }
             ResponseController<StudentModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, students,
-                    "studentModels", "Create Team",
-                    "mentor/menu_mentor.twig", "mentor/mentor_create_team.twig");
+            responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+        }
+    }
+    private void changeState(Integer newState) {
+        state = newState;
+    }
+
+    private LinkedList<StudentModel> temporaryStudentsList(LinkedList<StudentModel> students) {
+        LinkedList<StudentModel> studentsNew = students;
+        return students;
+    }
+
+    private LinkedList<StudentModel> chooseStudents() {
+        MentorDAO mentorDAO = new MentorDAO();
+        StudentDAO studentDAO = new StudentDAO();
+        MentorModel mentorModel = mentorDAO.getMentor(userId);
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = new LinkedList<>();
+        for (StudentModel student : studentDAO.getObjectList()) {
+            if (student.getClassName().equals(mentorModel.getClassName())) {
+                if (student.getTeamId() == 0) {
+                    students.add(student);
+                }
+            }
+        }
+        return students;
+    }
+
+    private void updateStudents() {
+        StudentDAO studentDAO = new StudentDAO();
+        TeamDao teamDao = new TeamDao();
+        Integer teamId = teamDao.getTeamId(teamShoppingModel);
+        for (StudentModel student : temporaryStudents) {
+
+//            System.out.println(student.getName() + teamId);
+            studentDAO.updateStudent(student.getUserID(), "team_id", String.valueOf(teamId));
         }
     }
 }
