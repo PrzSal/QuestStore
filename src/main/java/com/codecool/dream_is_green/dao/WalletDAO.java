@@ -203,5 +203,24 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
         }
     }
 
+    public void updateStudentCoolCoins(Integer coolCoins, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "UPDATE WalletTable SET coolcoins = ? WHERE user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, coolCoins);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
 
 }
