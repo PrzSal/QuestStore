@@ -44,6 +44,8 @@ public class StudentController implements HttpHandler {
             buyArtifact(httpExchange);
         } else if (userAction.equals("use_artifact")) {
             useArtifact(httpExchange);
+        } else if (userAction.equals("do_quest")) {
+            doQuest(httpExchange);
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -150,6 +152,10 @@ public class StudentController implements HttpHandler {
                 ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
                 ArtifactModel artifact = new ArtifactModel(titleRep, price, artifactCategory);
                 artifactDAO.insertUserArtifact(artifact, userId);
+
+                WalletDAO walletDAO = new WalletDAO();
+                Integer currentCoolCoins = walletDAO.getStudentCoolCoins(userId);
+                walletDAO.updateStudentCoolCoins(currentCoolCoins - price, userId);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
@@ -161,17 +167,17 @@ public class StudentController implements HttpHandler {
 
         String method = httpExchange.getRequestMethod();
 
-        if (method.equals("GET")) {
-            String sessionId = cookie.getSessionId(httpExchange);
-            SessionDAO sessionDAO = new SessionDAO();
-            SessionModel session = sessionDAO.getSession(sessionId);
-            Integer userId = session.getUserId();
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+        Integer userId = session.getUserId();
 
+        if (method.equals("GET")) {
             WalletDAO walletDAO = new WalletDAO();
             LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentUnUsedArtifacts(userId);
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, studentArtifacts,
-                    "artifactsModels", "Show wallet",
+                    "artifactsModels", "Use artifact",
                     "student/student_menu.twig", "student/student_use_artifact.twig");
         }
 
@@ -183,11 +189,6 @@ public class StudentController implements HttpHandler {
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
             String titleRep = title.replaceAll("\\s+","\n");
-
-            String sessionId = cookie.getSessionId(httpExchange);
-            SessionDAO sessionDAO = new SessionDAO();
-            SessionModel session = sessionDAO.getSession(sessionId);
-            Integer userId = session.getUserId();
 
             WalletDAO walletDAO = new WalletDAO();
             walletDAO.setArtifactOnUsed(title, userId);
@@ -202,17 +203,13 @@ public class StudentController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            String sessionId = cookie.getSessionId(httpExchange);
-            SessionDAO sessionDAO = new SessionDAO();
-            SessionModel session = sessionDAO.getSession(sessionId);
-            Integer userId = session.getUserId();
-
-            WalletDAO walletDAO = new WalletDAO();
-            LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentUnUsedArtifacts(userId);
-            ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, studentArtifacts,
-                    "artifactsModels", "Show wallet",
-                    "student/student_menu.twig", "student/student_use_artifact.twig");
+            QuestDAO questDAO = new QuestDAO();
+            questDAO.loadQuest();
+            LinkedList<QuestModel> quests = questDAO.getObjectList();
+            ResponseController<QuestModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, quests,
+                    "questsModels", "Do quest",
+                    "student/student_menu.twig", "student/student_do_quest.twig");
         }
 
         if (method.equals("POST")) {
@@ -224,15 +221,10 @@ public class StudentController implements HttpHandler {
             String title = inputs.get("title").trim();
             String titleRep = title.replaceAll("\\s+","\n");
 
-            String sessionId = cookie.getSessionId(httpExchange);
-            SessionDAO sessionDAO = new SessionDAO();
-            SessionModel session = sessionDAO.getSession(sessionId);
-            Integer userId = session.getUserId();
+//            WalletDAO walletDAO = new WalletDAO();
+//            walletDAO.setArtifactOnUsed(title, userId);
 
-            WalletDAO walletDAO = new WalletDAO();
-            walletDAO.setArtifactOnUsed(title, userId);
-
-            httpExchange.getResponseHeaders().set("Location", "/student/use_artifact");
+            httpExchange.getResponseHeaders().set("Location", "/student/do_quest");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }
