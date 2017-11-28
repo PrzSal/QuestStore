@@ -2,16 +2,13 @@
     <div class="tab tab-1">
         <table class="useArtifactTable" id="table" border="1">
             <thead>
-            {#{% if artifactsModels.size() == 0 %}#}
-            {#<a class="no_art_info">NO ARTIFACTS TO USE</a>#}
-            {#{% else %}#}
             <tr>
                 <th class="tg-gkax">No.</th>
                 <th class="tg-gkax">Title</th>
                 <th class="tg-gkax">Category</th>
                 <th class="tg-gkax">Price</th>
+                <th class="tg-gkax">Status</th>
             </tr>
-            {#{% endif %}#}
             </thead>
             <tbody>
                 {% for quest in questsModels %}
@@ -20,13 +17,13 @@
                         <td class="tg-gkax">{{ quest.title }}</td>
                         <td class="tg-gkax">{{ quest.category }}</td>
                         <td class="tg-gkax">{{ quest.price }}</td>
-                        {#<td>#}
-                            {#{% if quest.isUsed == 0 %}#}
-                                {#NO#}
-                            {#{% else %}#}
-                                {#YES#}
-                            {#{% endif %}#}
-                        {#</td>#}
+                        <td class="tg-gkax">
+                            {% if studentWithQuest.contains(quest) %}
+                                Pending
+                            {% else %}
+                                To do
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -36,8 +33,9 @@
         <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
             Title :<input type="text" name="title" id="title" required>
             Category :<input type="text" name="category" id="category" required>
+            Price :<input type="number" name="price" id="price" required>
 
-            <input id="submit" name="button" type="submit"  value="Use">
+            <input id="submit" name="button" type="submit"  value="Send request">
         </form>
     </div>
 </div>
@@ -135,9 +133,9 @@
             {
                 // get the selected row index
                 rIndex = this.rowIndex;
-                document.getElementById("title").value = this.cells[0].innerText;
-                document.getElementById("category").value = this.cells[1].innerText;
-                document.getElementById("price").value = this.cells[2].innerHTML;
+                document.getElementById("title").value = this.cells[1].innerText;
+                document.getElementById("category").value = this.cells[2].innerText;
+                document.getElementById("price").value = this.cells[3].innerHTML;
             };
         }
     }
