@@ -69,4 +69,8 @@ public class TeamShoppingModel {
     public void setState(Integer state) {
         this.state = state;
     }
+
+    public void setNameTeam(String nameTeam) {
+        this.nameTeam = nameTeam;
+    }
 }
