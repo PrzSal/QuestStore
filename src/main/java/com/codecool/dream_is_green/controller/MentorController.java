@@ -100,7 +100,7 @@ public class MentorController implements HttpHandler {
         ResponseController<QuestModel> responseController = new ResponseController<>();
         responseController.sendResponse(httpExchange, countMail, quests,
                 "questModels", "Show quests",
-                "mentor/menu_mentor.twig", "mentor/mentor_show_quests.twig");
+                "mentor/menu_mentor.twig", "mentor/mentor_show_quest.twig");
     }
 
     private void showStudents(HttpExchange httpExchange) throws IOException {
