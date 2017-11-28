@@ -7,6 +7,7 @@ import com.codecool.dream_is_green.model.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FormDataController<T> {
@@ -41,9 +42,15 @@ public class FormDataController<T> {
             PreMailModel preMail = new PreMailModel(data.get(3), data.get(2),
                     Integer.valueOf(data.get(1)), Integer.valueOf(data.get(0)));
             return (T) preMail;
+        } else if (objectType.equals("nextChooseTeam")) {
+            TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
+            System.out.println(data.get(0));
+            teamShoppingModel.setNameTeam(data.get(0));
+            return (T) teamShoppingModel;
         }
         return null;
     }
+
 
     private T chooseActionTeam(List<String> data, String objectType, Integer teamId, Integer userId) {
         TeamDao teamDao = new TeamDao();
@@ -96,5 +103,17 @@ public class FormDataController<T> {
             return null;
         }
         return data;
+    }
+
+    public LinkedList<StudentModel> chooseStudentsFromUser(String formData) {
+
+        List<String> data = dataProcessing(formData);
+        LinkedList<StudentModel> chooseStudents = new LinkedList<>();
+        StudentDAO studentDAO = new StudentDAO();
+        for (String elem : data) {
+            StudentModel student = studentDAO.getStudent(Integer.valueOf(elem));
+            chooseStudents.add(student);
+        }
+        return chooseStudents;
     }
 }

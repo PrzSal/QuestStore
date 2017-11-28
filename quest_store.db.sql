@@ -60,7 +60,7 @@ INSERT INTO `UsersTable` VALUES (14,'Konrad','Gadzina','kg','kg','kg','mentor');
 INSERT INTO `UsersTable` VALUES (15,'Jan','Kowalski','j.kowalski@gmail.com','mentor','mentor','mentor');
 CREATE TABLE "TeamsTable" (
 	`team_id`	INTEGER,
-	`team_name`	TEXT UNIQUE,
+	`team_name`	TEXT DEFAULT null,
 	`artifact_id`	INTEGER DEFAULT null,
 	`votes`	INTEGER DEFAULT 0,
 	`state`	INTEGER DEFAULT 0,
@@ -75,7 +75,7 @@ INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,0,0);
 CREATE TABLE "StudentsWithQuests"
 (
 `quest_name`
-TEXT
+INTEGER
 NOT
 NULL,
 `quest_category`
@@ -83,7 +83,7 @@ TEXT,
 `price`
 INTEGER,
 `title`
-TEXT,
+INTEGER,
 `user_id`
 INTEGER
 NOT
@@ -106,30 +106,39 @@ INTEGER
 DEFAULT
 0
 );
-CREATE TABLE "StudentsTable" (
-	`user_id`	INTEGER NOT NULL UNIQUE,
-	`experience`	INTEGER DEFAULT 0,
-	`team_id`	INTEGER,
-	`class_name`	TEXT,
-	`voted`	TEXT DEFAULT 'no'
+CREATE TABLE "StudentsTable"
+(
+`user_id`
+INTEGER
+NOT
+NULL
+UNIQUE,
+`experience`
+INTEGER
+DEFAULT
+0,
+`team_id`
+INTEGER,
+`class_name`
+TEXT,
+`voted`
+TEXT
+DEFAULT
+'no'
 );
-INSERT INTO `StudentsTable` VALUES (3,470,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (3,470,0,'krk2017-1','no');
 INSERT INTO `StudentsTable` VALUES (4,600,1,'krk2017-1','no');
-INSERT INTO `StudentsTable` VALUES (8,140,1,'krk2017-1','no');
-INSERT INTO `StudentsTable` VALUES (9,820,1,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (8,140,0,'krk2017-1','no');
+INSERT INTO `StudentsTable` VALUES (9,820,0,'krk2017-1','no');
 INSERT INTO `StudentsTable` VALUES (12,89,2,'krk2016-1','no');
 INSERT INTO `StudentsTable` VALUES (5,77,3,'bud2016-3','yes');
 INSERT INTO `StudentsTable` VALUES (11,120,4,'krk2017-2','no');
-CREATE TABLE "SessionTable"
-(
-`session_id`
-TEXT,
-`user_id`
-INTEGER,
-`user_name`
-TEXT,
-`user_type`
-TEXT
+CREATE TABLE "SessionTable" (
+	`session_id`	TEXT,
+	`user_id`	INTEGER,
+	`user_name`	TEXT,
+	`user_type`	TEXT,
+	`team_id`	INTEGER DEFAULT null
 );
 CREATE TABLE "QuestsTable"
 (
@@ -206,50 +215,195 @@ INSERT INTO `MailBox` VALUES (15,'aga',1,'czesc',1,2);
 INSERT INTO `MailBox` VALUES (16,'asia',1,'jo',9,10);
 INSERT INTO `MailBox` VALUES (19,'content
 test',1,'header127',3,1);
-INSERT INTO `MailBox` VALUES (20,'Hello admin',1,'hello',6,10);
-INSERT INTO `MailBox` VALUES (21,'michalina',1,'hello admin',1,6);
-INSERT INTO `MailBox` VALUES (22,'hello student',1,'hello student',10,3);
-INSERT INTO `MailBox` VALUES (23,'student',1,'test mail to student',3,10);
+INSERT INTO `MailBox` VALUES (20,'Hello
+admin',1,'hello',6,10);
+INSERT INTO `MailBox` VALUES (21,'michalina',1,'hello
+admin',1,6);
+INSERT INTO `MailBox` VALUES (22,'hello
+student',1,'hello
+student',10,3);
+INSERT INTO `MailBox` VALUES (23,'student',1,'test
+mail
+to
+student',3,10);
 INSERT INTO `MailBox` VALUES (24,'pawel',1,'pawel',9,10);
-INSERT INTO `MailBox` VALUES (25,'jedzie na qna',1,'pawel',3,10);
-INSERT INTO `MailBox` VALUES (26,'Dear Codecooler 
-, Your team use an artifact: null. You will receive detailed information soon from the Mentor. Regards, Your Mentor ',1,'Use an artifact',3,2);
-INSERT INTO `MailBox` VALUES (27,'Dear Codecooler 
-, Your team use an artifact: null. You will receive detailed information soon from the Mentor. Regards, Your Mentor ',1,'Use an artifact',4,2);
-INSERT INTO `MailBox` VALUES (28,'Dear Codecooler 
-, Your team use an artifact: null. You will receive detailed information soon from the Mentor. Regards, Your Mentor ',1,'Use an artifact',8,2);
-INSERT INTO `MailBox` VALUES (29,'Dear Codecooler 
-, Your team use an artifact: null. You will receive detailed information soon from the Mentor. Regards, Your Mentor ',1,'Use an artifact',9,2);
-INSERT INTO `MailBox` VALUES (30,'Dear Mentors, team Dreem
+INSERT INTO `MailBox` VALUES (25,'jedzie
+na
+qna',1,'pawel',3,10);
+INSERT INTO `MailBox` VALUES (26,'Dear
+Codecooler
+,
+Your
+team
+use
+an
+artifact:
+null.
+You
+will
+receive
+detailed
+information
+soon
+from
+the
+Mentor.
+Regards,
+Your
+Mentor
+',1,'Use
+an
+artifact',3,2);
+INSERT INTO `MailBox` VALUES (27,'Dear
+Codecooler
+,
+Your
+team
+use
+an
+artifact:
+null.
+You
+will
+receive
+detailed
+information
+soon
+from
+the
+Mentor.
+Regards,
+Your
+Mentor
+',1,'Use
+an
+artifact',4,2);
+INSERT INTO `MailBox` VALUES (28,'Dear
+Codecooler
+,
+Your
+team
+use
+an
+artifact:
+null.
+You
+will
+receive
+detailed
+information
+soon
+from
+the
+Mentor.
+Regards,
+Your
+Mentor
+',1,'Use
+an
+artifact',8,2);
+INSERT INTO `MailBox` VALUES (29,'Dear
+Codecooler
+,
+Your
+team
+use
+an
+artifact:
+null.
+You
+will
+receive
+detailed
+information
+soon
+from
+the
+Mentor.
+Regards,
+Your
+Mentor
+',1,'Use
+an
+artifact',9,2);
+INSERT INTO `MailBox` VALUES (30,'Dear
+Mentors,
+team
+Dreem
 Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
+Green
+buy
+artifact:
+private_mentoring.
+Please
+contact
+the
+team
+to
+discuss
+the
+purchase.
+Regards
+Admin',1,'New
+group
+purchase
+from
+Dreem
 Is
-Green .',2,1);
-INSERT INTO `MailBox` VALUES (31,'Dear Mentors, team Dreem
+Green
+.',2,1);
+INSERT INTO `MailBox` VALUES (34,'Dear
+Mentors,
+team
+Dreem
 Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
+Green
+buy
+artifact:
+private_mentoring.
+Please
+contact
+the
+team
+to
+discuss
+the
+purchase.
+Regards
+Admin',1,'New
+group
+purchase
+from
+Dreem
 Is
-Green .',13,1);
-INSERT INTO `MailBox` VALUES (32,'Dear Mentors, team Dreem
+Green
+.',13,1);
+INSERT INTO `MailBox` VALUES (35,'Dear
+Mentors,
+team
+Dreem
 Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
+Green
+buy
+artifact:
+private_mentoring.
+Please
+contact
+the
+team
+to
+discuss
+the
+purchase.
+Regards
+Admin',1,'New
+group
+purchase
+from
+Dreem
 Is
-Green .',15,1);
-INSERT INTO `MailBox` VALUES (33,'Dear Mentors, team Dreem
-Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
-Is
-Green .',2,1);
-INSERT INTO `MailBox` VALUES (34,'Dear Mentors, team Dreem
-Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
-Is
-Green .',13,1);
-INSERT INTO `MailBox` VALUES (35,'Dear Mentors, team Dreem
-Is
-Green buy artifact: private_mentoring. Please contact the team to discuss the purchase. Regards Admin',1,'New group purchase from Dreem
-Is
-Green .',15,1);
+Green
+.',15,1);
 CREATE TABLE "LevelsTable"
 (
 `level_name`
@@ -284,10 +438,19 @@ INSERT INTO `ClassTable` VALUES ('krk-2017-2');
 INSERT INTO `ClassTable` VALUES ('bud2016-3');
 CREATE TABLE "ArtifactsTable"
 (
-`artifact_name` TEXT NOT NULL UNIQUE,
-`price` INTEGER,
-`artifact_category` TEXT,
-`state` INTEGER DEFAULT 0
+`artifact_name`
+TEXT
+NOT
+NULL
+UNIQUE,
+`price`
+INTEGER,
+`artifact_category`
+TEXT,
+`state`
+INTEGER
+DEFAULT
+0
 );
 INSERT INTO `ArtifactsTable` VALUES ('private_mentoring',100,'mentoring',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor_ride_on_elephant',200,'fun',0);

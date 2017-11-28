@@ -174,4 +174,40 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
             e.printStackTrace();
         }
     }
+
+    public MentorModel getMentor(Integer userId) {
+
+        try {
+
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stat = conn.createStatement();
+
+            String query = "SELECT * FROM MentorsTable JOIN UsersTable" +
+                    " ON UsersTable.user_id = MentorsTable.user_id WHERE UsersTable.user_id = '" + userId + "'";
+            ResultSet result = stat.executeQuery(query);
+            String name, surname, email, user_login, password, className;
+            int userID;
+            MentorModel mentor = null;
+
+            while(result.next()) {
+
+                name = result.getString("name");
+                surname = result.getString("surname");
+                email = result.getString("email");
+                user_login = result.getString("login");
+                password = result.getString("password");
+                userID = result.getInt("user_id");
+                className = result.getString("class_name");
+                mentor = new MentorModel(userID, name, surname, email, user_login, password, className);
+            }
+            result.close();
+            stat.close();
+
+            return mentor;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

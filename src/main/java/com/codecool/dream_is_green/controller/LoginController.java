@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.dao.UserDAO;
 import com.codecool.dream_is_green.model.SessionModel;
 import com.sun.net.httpserver.HttpExchange;
@@ -87,8 +88,13 @@ public class LoginController implements HttpHandler {
         if (password.equals(currentPassword)) {
             SessionModel newSession = new SessionModel(sessionId, userId, userName, userType);
             SessionDAO sessionDAO = new SessionDAO();
-            sessionDAO.insertSession(newSession);
 
+            if (userType.equals("student")) {
+                StudentDAO studentDAO = new StudentDAO();
+                Integer teamId = studentDAO.getStudent(userId).getTeamId();
+                newSession.setTeamId(teamId);
+            }
+            sessionDAO.insertSession(newSession);
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302,-1);
 

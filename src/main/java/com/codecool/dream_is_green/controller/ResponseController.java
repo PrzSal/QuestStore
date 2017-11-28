@@ -101,6 +101,27 @@ public class ResponseController<T> {
         os.close();
     }
 
+    public void sendResponseCreateTeam(HttpExchange httpExchange, Integer countMail, LinkedList<T> objectsList,
+                                      Integer state) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+        model.with("studentModels", objectsList);
+        model.with("title", "Create Team");
+        model.with("counterMail", countMail);
+        model.with("menu", "classpath:/templates/mentor/menu_mentor.twig");
+        model.with("main", "classpath:/templates/mentor/mentor_create_team.twig");
+        model.with("state", state );
+
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+
     public void sendResponseWallet(HttpExchange httpExchange, Integer counterMail, LinkedList<T> objectsList,
                              String objectModels, String title, Integer coolCoins,
                              String menuPath, String pagePath) throws IOException {

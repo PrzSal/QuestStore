@@ -17,7 +17,7 @@ public class StudentController implements HttpHandler {
 
     private Integer countMail;
     private Integer userId = 0;
-    private Integer teamId;
+    private Integer teamId = 0;
     private Integer walletTeam = 0;
     private LinkedList<ArtifactModel> li;
 
@@ -62,18 +62,13 @@ public class StudentController implements HttpHandler {
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
         SessionModel session = sessionDAO.getSession(sessionId);
+        userId = session.getUserId();
+        teamId = session.getTeamId();
 
         if (session != null) {
-
             String userType = session.getUserType();
             redirectToStudentHome(httpExchange, userType);
-            userId = session.getUserId();
-            StudentDAO studentDAO = new StudentDAO();
-            teamId = studentDAO.getStudent(userId).getTeamId();
         } else {
-            userId = session.getUserId();
-            StudentDAO studentDAO = new StudentDAO();
-            teamId = studentDAO.getStudent(userId).getTeamId();
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302,-1);
         }
@@ -318,6 +313,7 @@ public class StudentController implements HttpHandler {
 
         if (method.equals("GET")) {
             TeamDao teamDao = new TeamDao();
+            System.out.println(teamId);
             teamDao.loadDataAboutTeam(teamId);
             LinkedList<ArtifactModel> artifactToBuy = offerToBuy(teamDao.getObjectList());
             Integer voted = checkVoted(userId);
