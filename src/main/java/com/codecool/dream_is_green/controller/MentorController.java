@@ -99,7 +99,6 @@ public class MentorController implements HttpHandler {
 
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
-            String titleRep = title.replaceAll("\\s+","\n");
 
             String category = inputs.get("category").trim();
             String priceStr = inputs.get("price");
