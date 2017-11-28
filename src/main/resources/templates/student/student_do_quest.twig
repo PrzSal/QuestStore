@@ -17,7 +17,13 @@
                         <td class="tg-gkax">{{ quest.title }}</td>
                         <td class="tg-gkax">{{ quest.category }}</td>
                         <td class="tg-gkax">{{ quest.price }}</td>
-                        <td class="tg-gkax">{{ quest.status }}</td>
+                        <td class="tg-gkax">
+                            {% if studentWithQuest.contains(quest) %}
+                                Pending
+                            {% else %}
+                                To do
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
