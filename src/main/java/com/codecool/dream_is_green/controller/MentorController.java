@@ -114,12 +114,24 @@ public class MentorController implements HttpHandler {
     }
 
     private void createTeam(HttpExchange httpExchange) throws IOException {
-        StudentDAO studentDAO = new StudentDAO();
-        studentDAO.loadStudents();
-        LinkedList<StudentModel> students = studentDAO.getObjectList();
-        ResponseController<StudentModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, students,
-                "studentModels", "Create Team",
-                "mentor/menu_mentor.twig", "mentor/mentor_create_team.twig");
+        String method = httpExchange.getRequestMethod();
+        System.out.println(method);
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            System.out.println(formData);
+            httpExchange.getResponseHeaders().set("Location", "/mentor/create_team");
+            httpExchange.sendResponseHeaders(302, -1);
+        }
+        if (method.equals("GET")) {
+            StudentDAO studentDAO = new StudentDAO();
+            studentDAO.loadStudents();
+            LinkedList<StudentModel> students = studentDAO.getObjectList();
+            ResponseController<StudentModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, students,
+                    "studentModels", "Create Team",
+                    "mentor/menu_mentor.twig", "mentor/mentor_create_team.twig");
+        }
     }
 }
