@@ -6,6 +6,7 @@ public class SessionModel {
     private Integer userId;
     private String userName;
     private String userType;
+    private Integer teamId;
 
     public SessionModel(String sessionId, Integer userId, String userName, String userType) {
 
@@ -13,6 +14,7 @@ public class SessionModel {
         this.userId = userId;
         this.userName = userName;
         this.userType = userType;
+        this.teamId = 0;
     }
 
     public String getSessionId() {
@@ -29,5 +31,13 @@ public class SessionModel {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 }
