@@ -18,7 +18,7 @@
                         <td class="tg-gkax">{{ quest.category }}</td>
                         <td class="tg-gkax">{{ quest.price }}</td>
                         <td class="tg-gkax">
-                            {% if studentWithQuest.contains(quest) %}
+                            {% if studentWithQuest.contains(quest.title) %}
                                 Pending
                             {% else %}
                                 To do

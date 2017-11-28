@@ -1,7 +1,5 @@
 package com.codecool.dream_is_green.dao;
 
-import com.codecool.dream_is_green.model.ArtifactCategoryModel;
-import com.codecool.dream_is_green.model.ArtifactModel;
 import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.QuestCategoryModel;
 
@@ -13,27 +11,23 @@ import java.util.LinkedList;
 
 public class QuestDAO extends AbstractDAO<QuestModel> {
 
-    public LinkedList<QuestModel> loadStudentsWithQuests(int studentID) {
-        LinkedList<QuestModel> studentsWithQuests = new LinkedList<>();
+    public LinkedList<String> loadStudentsWithQuests(int studentID) {
+        LinkedList<String> studentsWithQuests = new LinkedList<>();
         Connection connection;
 
         try {
             connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            String selectSQL = "SELECT * FROM StudentsWithQuests WHERE user_id = ?;";
+            String selectSQL = "SELECT quest_name FROM StudentsWithQuests WHERE user_id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
             preparedStatement.setInt(1, studentID);
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String title = rs.getString("quest_name");
-                Integer price = rs.getInt("price");
-                String category = rs.getString("quest_category");
 
-                QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
-                QuestModel quest = new QuestModel(title, price, questCategoryModel);
-                studentsWithQuests.add(quest);
+                studentsWithQuests.add(title);
             }
 
         } catch ( Exception e ) {
