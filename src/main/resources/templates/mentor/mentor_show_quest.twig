@@ -1,29 +1,16 @@
 <div class="table">
     <table class="tg">
         <div class="text">Quests list</div>
+        <td class="tg-gkax">Nr.</td>
+        <td class="tg-gkax">Title</td>
+        <td class="tg-gkax">Price</td>
+        <td class="tg-gkax">Quest category</td>
+        {% for quest in questModels %}
         <tr>
-            <th class="tg-gkax">No.</th>
-            <th class="tg-gkax">Title</th>
-            <th class="tg-gkax">Price</th>
-            <th class="tg-gkax">Category</th>
-        </tr>
-        <tr>
-            <td class="tg-gkax">1.</td>
-            <td class="tg-gkax">Checkpoint</td>
-            <td class="tg-gkax">500</td>
-            <td class="tg-gkax">Learning</td>
-        </tr>
-        <tr>
-            <td class="tg-gkax">2.</td>
-            <td class="tg-gkax">Help with events</td>
-            <td class="tg-gkax">150</td>
-            <td class="tg-gkax">Volunteering</td>
-        </tr>
-        <tr>
-            <td class="tg-gkax">3.</td>
-            <td class="tg-gkax">Run with Codecooler</td>
-            <td class="tg-gkax">250</td>
-            <td class="tg-gkax">Sport</td>
-        </tr>
+            <td class="tg-gkax">{{ loop.index }}</td>
+            <td class="tg-gkax">{{ quest.title }}</td>
+            <td class="tg-gkax">{{ quest.price }}</td>
+            <td class="tg-gkax">{{ quest.category }}</td>
+            {% endfor %}
     </table>
 </div>
