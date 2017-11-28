@@ -202,6 +202,11 @@ public class StudentController implements HttpHandler {
 
         String method = httpExchange.getRequestMethod();
 
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+        Integer studentID = session.getUserId();
+
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
@@ -219,10 +224,14 @@ public class StudentController implements HttpHandler {
 
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
-            String titleRep = title.replaceAll("\\s+","\n");
+            String category = inputs.get("category").trim();
+            Integer price = Integer.valueOf(inputs.get("price"));
 
-//            WalletDAO walletDAO = new WalletDAO();
-//            walletDAO.setArtifactOnUsed(title, userId);
+            QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
+            QuestModel questModel = new QuestModel(title, price, questCategoryModel);
+
+            QuestDAO questDAO = new QuestDAO();
+            questDAO.insertStudentQuest(questModel, studentID);
 
             httpExchange.getResponseHeaders().set("Location", "/student/do_quest");
             httpExchange.sendResponseHeaders(302,-1);
