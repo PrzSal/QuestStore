@@ -140,28 +140,6 @@ CREATE TABLE "SessionTable" (
 	`user_type`	TEXT,
 	`team_id`	INTEGER DEFAULT null
 );
-INSERT INTO `SessionTable` VALUES ('ea81c25a-1fc9-4f81-aefe-5ec1e0cd5be4',3,'student','student',1);
-INSERT INTO `SessionTable` VALUES ('87607d9a-f254-442e-aac6-5ba67a1190a5',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('4f3bf283-e8a4-48ee-836b-1290b6ebdc85',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('9d30963c-3cec-42f6-9316-39a2e6889ccc',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('086748d5-44b5-4a18-9fc7-5a467c8cff0e',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('3b7a8049-a399-4039-a509-71a2aadbf2e7',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('adbadaa2-5577-43a1-894f-944f935b8ddd',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('8f12b25e-f4aa-4549-b12f-24e29c8d8eb6',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('cbfe8ef0-6f00-4f2e-b2a6-dfc060c4f56b',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('1e8301db-58c2-4aca-bb8c-010e97f6de5b',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('e3a1fac7-59c1-4f88-be30-dd48cdcc54d8',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('5e6a2e6f-af79-4292-9e35-61e96211d4c1',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('f8856400-b13a-4711-897d-2c835047c39f',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('d3b72b76-b65b-417a-86bc-71ce6a8fe897',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('74d01158-d38c-4036-a40c-30c451d8af67',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('dc6ad54b-7fee-4ebe-aa98-6188f67b4323',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('17df3f36-2f08-4b64-81b3-350999384a32',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('eaa3a651-f4f0-4ac7-9ce2-5e245f1a9b33',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('f2dea10e-bba0-4f59-a7eb-3f65d06a8290',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('8faece6e-e2af-4c5a-93c8-f91b20fbfb57',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('6a9bd823-81c8-4109-9699-c3d5143a8d74',15,'mentor','mentor',0);
-INSERT INTO `SessionTable` VALUES ('17823206-21bf-4599-82f8-573b2f6ad08c',15,'mentor','mentor',0);
 CREATE TABLE "QuestsTable"
 (
 `quest_name`
@@ -349,84 +327,6 @@ Mentor
 an
 artifact',9,2);
 INSERT INTO `MailBox` VALUES (30,'Dear
-Mentors,
-team
-Dreem
-Is
-Green
-buy
-artifact:
-private_mentoring.
-Please
-contact
-the
-team
-to
-discuss
-the
-purchase.
-Regards
-Admin',1,'New
-group
-purchase
-from
-Dreem
-Is
-Green
-.',2,1);
-INSERT INTO `MailBox` VALUES (31,'Dear
-Mentors,
-team
-Dreem
-Is
-Green
-buy
-artifact:
-private_mentoring.
-Please
-contact
-the
-team
-to
-discuss
-the
-purchase.
-Regards
-Admin',1,'New
-group
-purchase
-from
-Dreem
-Is
-Green
-.',13,1);
-INSERT INTO `MailBox` VALUES (32,'Dear
-Mentors,
-team
-Dreem
-Is
-Green
-buy
-artifact:
-private_mentoring.
-Please
-contact
-the
-team
-to
-discuss
-the
-purchase.
-Regards
-Admin',1,'New
-group
-purchase
-from
-Dreem
-Is
-Green
-.',15,1);
-INSERT INTO `MailBox` VALUES (33,'Dear
 Mentors,
 team
 Dreem
