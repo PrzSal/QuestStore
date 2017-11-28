@@ -15,27 +15,6 @@ public class ArtifactModel extends AbstractTask<ArtifactCategoryModel> {
         this.isUsed = 0;
     }
 
-    @Override
-    public String toString() {
-
-        String isUsedState;
-
-        if (this.isUsed == 2) {
-            isUsedState = "[USED]";
-
-        } else if (this.isUsed == 1) {
-            isUsedState = "[SEND]";
-
-        } else {
-            isUsedState = "[ ]";
-        }
-
-        String artifactString = String.format("%-24s %-12d %-20s %-12s",
-                                title, price, category.toString(), isUsedState);
-
-        return artifactString;
-    }
-
     public Integer setIsUsed(Integer status) {
 
         return this.isUsed = status;

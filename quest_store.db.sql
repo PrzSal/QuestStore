@@ -131,7 +131,6 @@ TEXT,
 `user_type`
 TEXT
 );
-INSERT INTO `SessionTable` VALUES ('06e966d2-7dd4-4e48-9a27-808e058985a5',3,'student','student');
 CREATE TABLE "QuestsTable"
 (
 `quest_name`
@@ -285,19 +284,10 @@ INSERT INTO `ClassTable` VALUES ('krk-2017-2');
 INSERT INTO `ClassTable` VALUES ('bud2016-3');
 CREATE TABLE "ArtifactsTable"
 (
-`artifact_name`
-TEXT
-NOT
-NULL
-UNIQUE,
-`price`
-INTEGER,
-`artifact_category`
-INTEGER,
-`state`
-INTEGER
-DEFAULT
-0
+`artifact_name` TEXT NOT NULL UNIQUE,
+`price` INTEGER,
+`artifact_category` TEXT,
+`state` INTEGER DEFAULT 0
 );
 INSERT INTO `ArtifactsTable` VALUES ('private_mentoring',100,'mentoring',0);
 INSERT INTO `ArtifactsTable` VALUES ('mentor_ride_on_elephant',200,'fun',0);
