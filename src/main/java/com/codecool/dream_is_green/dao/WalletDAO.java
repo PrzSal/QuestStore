@@ -221,6 +221,4 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
-
-
 }
