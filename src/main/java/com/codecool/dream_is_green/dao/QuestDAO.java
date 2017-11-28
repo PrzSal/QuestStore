@@ -65,6 +65,32 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void insertStudentQuest(QuestModel quest, int studentID) {
+
+        Connection connection;
+        PreparedStatement preparedStatement;
+        String questName = quest.getTitle();
+        Integer price = quest.getPrice();
+        String questCategory = quest.getCategory().getName();
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            String query= "INSERT INTO StudentsWithQuests (quest_name, quest_category, price, title, user_id) VALUES(?,?,?,?,?);";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, questName);
+            preparedStatement.setString(2, questCategory);
+            preparedStatement.setInt(3, price);
+            preparedStatement.setString(4,"title");
+            preparedStatement.setInt(5, studentID);
+            preparedStatement.execute();
+
+            connection.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
