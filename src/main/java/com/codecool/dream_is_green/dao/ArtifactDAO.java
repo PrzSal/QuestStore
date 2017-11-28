@@ -72,39 +72,71 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
         }
     }
 
-    public void updateArtifact(String table, Integer state, Integer userID) {
-        Connection conn;
-        Statement stat;
+    public void updateArtifactStudents(ArtifactModel artifactModel) {
+
+        Connection connection;
+        String title = artifactModel.getTitle();
+        int price = artifactModel.getPrice();
+        String category = artifactModel.getCategory().getName();
 
         try {
-            conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);
+            connection = DatabaseConnection.getConnection();
 
-            stat = conn.createStatement();
+            String updateArtifactsStudents = "UPDATE StudentsWithArtifacts SET price = ?, artifact_category = ? WHERE artifact_name = ?;";
+            PreparedStatement artifactsStudentStatement = connection.prepareStatement(updateArtifactsStudents);
 
-            String statement = String.format("UPDATE %s set 'state' = '%d' where user_id=%d;", table, state, userID);
-            stat.executeUpdate(statement);
-            conn.commit();
+            artifactsStudentStatement.setInt(1, price);
+            artifactsStudentStatement.setString(2, category);
+            artifactsStudentStatement.setString(3, title);
 
-            stat.close();
+            artifactsStudentStatement.executeUpdate();
+            artifactsStudentStatement.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public void updateArtifactsTable(ArtifactModel artifactModel) {
+
+        Connection connection;
+        String title = artifactModel.getTitle();
+        int price = artifactModel.getPrice();
+        String category = artifactModel.getCategory().getName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String updateArtifactsTable = "UPDATE ArtifactsTable SET price = ?, artifact_category = ? WHERE artifact_name = ?;";
+            PreparedStatement artifactsStatement = connection.prepareStatement(updateArtifactsTable);
+
+            artifactsStatement.setInt(1, price);
+            artifactsStatement.setString(2, category);
+            artifactsStatement.setString(3, title);
+
+            artifactsStatement.executeUpdate();
+            artifactsStatement.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 
     public void deleteArtifact(String artifactTitle) {
 
         Connection connection;
-        artifactTitle = artifactTitle.replaceAll("\\s+","\n");
+        String artifactTitleRep = artifactTitle.replaceAll("\\s+", "\n");
+        System.out.println(artifactTitle);
 
         try {
             connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            String insertTableSQL = "DELETE FROM ArtifactsTable WHERE artifact_name = ?;";
+            String insertTableSQL = "DELETE FROM ArtifactsTable WHERE artifact_name = ? or artifact_name = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setString(2, artifactTitleRep);
+
 
             preparedStatement .executeUpdate();
             preparedStatement.close();
