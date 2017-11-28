@@ -1,0 +1,149 @@
+<div class="use_container">
+    <div class="tab tab-1">
+        <table class="useArtifactTable" id="table" border="1">
+            <thead>
+            {#{% if artifactsModels.size() == 0 %}#}
+            {#<a class="no_art_info">NO ARTIFACTS TO USE</a>#}
+            {#{% else %}#}
+            <tr>
+                <th class="tg-gkax">No.</th>
+                <th class="tg-gkax">Title</th>
+                <th class="tg-gkax">Category</th>
+                <th class="tg-gkax">Price</th>
+            </tr>
+            {#{% endif %}#}
+            </thead>
+            <tbody>
+                {% for quest in questsModels %}
+                    <tr>
+                        <td class="tg-gkax">{{ loop.index }}</td>
+                        <td class="tg-gkax">{{ quest.title }}</td>
+                        <td class="tg-gkax">{{ quest.category }}</td>
+                        <td class="tg-gkax">{{ quest.price }}</td>
+                        {#<td>#}
+                            {#{% if quest.isUsed == 0 %}#}
+                                {#NO#}
+                            {#{% else %}#}
+                                {#YES#}
+                            {#{% endif %}#}
+                        {#</td>#}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab tab-2wallet">
+        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+            Title :<input type="text" name="title" id="title" required>
+            Category :<input type="text" name="category" id="category" required>
+
+            <input id="submit" name="button" type="submit"  value="Use">
+        </form>
+    </div>
+</div>
+
+<style>
+
+    div.use_container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20%;
+        transform: scale(1.2, 1.2);
+
+    }
+
+    .tab{float: left;}
+    .tab-2 input{display: block;margin-bottom: 10px}
+
+    table.useArtifactTable {
+        font-family: Arial, Helvetica, sans-serif;
+        border: 2px solid #1C6EA4;
+        width: 180%;
+        text-align: center;
+
+    }
+
+    .tab-2wallet {
+        font-family: Arial, Helvetica, sans-serif;
+        border: 2px solid #1C6EA4;
+        width: 14.5%;
+        text-align: center;
+        margin-left: 30%;
+    }
+
+
+    table.useArtifactTable td, table.useArtifactTable th, .tab-2wallet {
+        border: 1px solid #AAAAAA;
+        padding: 3px 3px;
+    }
+    table.useArtifactTable tbody tr {
+        transition:all .25s ease-in-out;
+        background: #a4ffff;
+    }
+    table.useArtifactTable tr:nth-child(even) {
+        background: #6fb79c;
+    }
+    table.useArtifactTable thead, .tab-2wallet {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+    table.useArtifactTable thead th, .tab-2wallet {
+        font-size: 18px;
+        font-weight: bold;
+        color: #FFFFFF;
+        text-align: center;
+    }
+    table.useArtifactTable thead th:first-child {
+        border-left: none;
+    }
+
+    table.useArtifactTable tbody tr:hover {
+        background-color: #3f47ff; cursor: pointer
+    }
+
+    .no_art_info {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        font-family: Arial, Helvetica, sans-serif;
+        border: 2px solid #1C6EA4;
+        border-bottom: 0px solid #444444;
+        font-size: 18px;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+
+</style>
+
+
+<script type="text/javascript">
+
+    var rIndex,
+        table = document.getElementById("table");
+
+    // display selected row data into input text
+    function selectedRowToInput()
+    {
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                // get the selected row index
+                rIndex = this.rowIndex;
+                document.getElementById("title").value = this.cells[0].innerText;
+                document.getElementById("category").value = this.cells[1].innerText;
+                document.getElementById("price").value = this.cells[2].innerHTML;
+            };
+        }
+    }
+    selectedRowToInput();
+
+</script>
+
+
+
