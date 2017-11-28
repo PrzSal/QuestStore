@@ -119,6 +119,53 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
         }
     }
 
+    public int getTeamId(TeamShoppingModel teamShoppingModel) {
+
+        Connection connection;
+        Statement statement;
+        int teamID = 0;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+
+            String query = "SELECT team_id FROM TeamsTable WHERE team_name = '" + teamShoppingModel.getNameTeam() + "';";
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                teamID = result.getInt("team_id");
+            }
+
+            result.close();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return teamID;
+    }
+
+    public void insertNewTeam(TeamShoppingModel teamShoppingModel) {
+
+        Connection connection;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            String statement = "INSERT INTO TeamsTable (team_name)\n" +
+                    "VALUES (?);";
+            PreparedStatement prepStmt = connection.prepareStatement(statement);
+            System.out.println(teamShoppingModel.getNameTeam());
+            prepStmt.setString(1, teamShoppingModel.getNameTeam());
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean checkFieldArtifact(Integer teamId) {
         boolean empty = true;
         try {

@@ -55,15 +55,21 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
     public void updateStudent(Integer userId, String column, String content) {
 
         Connection connection;
-
         try {
             connection = DatabaseConnection.getConnection();
-
+            connection.setAutoCommit(false);
+            PreparedStatement prepStmt;
             String statement = "UPDATE StudentsTable SET voted = ? WHERE user_id == ? ;";
-            PreparedStatement prepStmt = connection.prepareStatement(statement);
-
-            prepStmt.setString(1, content);
-            prepStmt.setInt(2, userId);
+            if (column.equals("team_id")) {
+                statement = "UPDATE StudentsTable SET team_id = ? WHERE user_id == ? ;";
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setInt(1, Integer.valueOf(content));
+                prepStmt.setInt(2, userId);
+            } else {
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setString(1, content);
+                prepStmt.setInt(2, userId);
+            }
             prepStmt.executeUpdate();
             connection.commit();
             prepStmt.close();
