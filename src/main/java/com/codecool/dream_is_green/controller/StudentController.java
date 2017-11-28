@@ -205,7 +205,7 @@ public class StudentController implements HttpHandler {
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
-            LinkedList<QuestModel> studentWithQuests = questDAO.loadStudentsWithQuests(studentID);
+            LinkedList<String> studentWithQuests = questDAO.loadStudentsWithQuests(studentID);
             LinkedList<QuestModel> quests = questDAO.getObjectList();
             System.out.println(studentWithQuests);
             ResponseController<QuestModel> responseController = new ResponseController<>();
