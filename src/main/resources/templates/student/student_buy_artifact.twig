@@ -69,13 +69,14 @@
         border: 1px solid #AAAAAA;
         padding: 3px 3px;
     }
-    table.buy_artifact_Table tbody tr {
+    tbody tr {
         transition:all .25s ease-in-out;
         background: #a4ffff;
     }
-    table.buy_artifact_Table tr:nth-child(even) {
-        background: #6fb79c;
-    }
+    /*tbody tr:nth-child(even) {*/
+        /*transition:all .25s ease-in-out;*/
+        /*background: #6fb79c;*/
+    /*}*/
     table.buy_artifact_Table thead, .tab-2 {
         background: #1C6EA4;
         background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
@@ -97,10 +98,13 @@
         background-color: #3f47ff; cursor: pointer
     }
 
+    tbody tr{cursor: pointer; transition: all .25s ease-in-out}
+    .selected{background-color: #3f47ff; color: #fff;}
+
 </style>
 
 
-<script type="text/javascript">
+<script>
 
     var rIndex,
         table = document.getElementById("table");
@@ -118,6 +122,17 @@
                 document.getElementById("title").value = this.cells[0].innerText;
                 document.getElementById("category").value = this.cells[1].innerText;
                 document.getElementById("price").value = this.cells[2].innerHTML;
+
+                // remove the background from the previous selected row
+                if(typeof index !== "undefined"){
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+                console.log(typeof index);
             };
         }
     }
