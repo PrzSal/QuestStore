@@ -75,7 +75,7 @@ INSERT INTO `TeamsTable` VALUES (4,'lorem',NULL,0,0);
 CREATE TABLE "StudentsWithQuests"
 (
 `quest_name`
-INTEGER
+TEXT
 NOT
 NULL,
 `quest_category`
@@ -83,7 +83,7 @@ TEXT,
 `price`
 INTEGER,
 `title`
-INTEGER,
+TEXT,
 `user_id`
 INTEGER
 NOT
