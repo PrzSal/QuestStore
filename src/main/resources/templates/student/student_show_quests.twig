@@ -1,102 +1,28 @@
-<div class="show_quest_container">
-    <div class="tab tab-1">
-        <table class="showQuestTable" id="table" border="1">
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
             <thead>
-            {#{% if artifactsModels.size() == 0 %}#}
-                {#<a class="no_art_info">NO ARTIFACTS IN WALLET</a>#}
-            {#{% else %}#}
                 <tr>
-                    <th class="tg-gkax">No.</th>
-                    <th class="tg-gkax">Title</th>
-                    <th class="tg-gkax">Category</th>
-                    <th class="tg-gkax">Price</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Price</th>
                 </tr>
-            {#{% endif %}#}
             </thead>
             <tbody>
             {% for quest in questsModels %}
                 <tr>
-                    <td class="tg-gkax">{{ loop.index }}</td>
-                    <td class="tg-gkax">{{ quest.title }}</td>
-                    <td class="tg-gkax">{{ quest.category }}</td>
-                    <td class="tg-gkax">{{ quest.price }}</td>
+                    <td>{{ quest.title }}</td>
+                    <td>{{ quest.category }}</td>
+                    <td>{{ quest.price }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+    {% if questsModels.size() == 0 %}
+        <a class="emptyList">Empty list</a>
+    {% endif %}
 </div>
-
-
-
-<style>
-
-    div.show_quest_container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20%;
-        transform: scale(1.2, 1.2);
-
-    }
-
-    .tab{float: left;}
-    .tab-2 input{display: block;margin-bottom: 10px}
-
-    table.showQuestTable {
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        width: 150%;
-        text-align: center;
-        margin-left: -30%;
-    }
-
-    table.showQuestTable td, table.showQuestTable th {
-        border: 1px solid #AAAAAA;
-        padding: 3px 3px;
-    }
-    table.showQuestTable tbody tr {
-        transition:all .25s ease-in-out;
-        background: #a4ffff;
-    }
-    table.showQuestTable tr:nth-child(even) {
-        background: #6fb79c;
-    }
-    table.showQuestTable thead {
-        background: #1C6EA4;
-        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        border-bottom: 2px solid #444444;
-    }
-    table.showQuestTable thead th {
-        font-size: 18px;
-        font-weight: bold;
-        color: #FFFFFF;
-        text-align: center;
-    }
-    table.showQuestTable thead th:first-child {
-        border-left: none;
-    }
-
-    table.showQuestTable tbody tr:hover {
-        background-color: #3f47ff; cursor: pointer
-    }
-
-    .no_art_info {
-        background: #1C6EA4;
-        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        border-bottom: 0px solid #444444;
-        font-size: 18px;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-
-</style>
-
 
 
 
