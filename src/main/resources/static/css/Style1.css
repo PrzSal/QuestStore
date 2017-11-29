@@ -422,7 +422,7 @@ body {
     to {opacity:1 ;}
 }
 
-#buttonTeamShop {
+#buttonShowTeam {
     background-color: white;
     border: none;
     color: black;
@@ -434,7 +434,7 @@ body {
     margin: 4px 2px;
     cursor: pointer;
 }
-#buttonTeamShop:hover {background-color: #e7e7e7;}
+#buttonShowTeam:hover {background-color: #e7e7e7;}
 
 /* SCROLL TABLE */
 
