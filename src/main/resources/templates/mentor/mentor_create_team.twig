@@ -1,0 +1,72 @@
+<style onload="buttonFunction()" ></style>
+<div class="table">
+    <header>
+        <p id="buttonTeamShop"> </p>
+    </header>
+</div>
+<script>
+    if (document.attachEvent) {
+        document.attachEvent("onload", buttonFunction);
+    }
+    function buttonFunction() {
+        if ({{ state }} == 1) {
+            document.getElementById("buttonTeamShop").innerHTML =
+                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+                "    <table class=\"tg\">\n" +
+                "        <td class=\"tg-gkax\">Nr.</td>\n" +
+                "        <td class=\"tg-gkax\">Name</td>\n" +
+                "        <td class=\"tg-gkax\">Surname</td>\n" +
+                "        <td class=\"tg-gkax\">Email</td>\n" +
+                "        <td class=\"tg-gkax\">Login</td>\n" +
+                "        <td class=\"tg-gkax\">Class Name</td>\n" +
+                "        {% for student in studentModels %}\n" +
+                "            <tr>\n" +
+                "                <td class=\"tg-gkax\">{{ loop.index }}</td>\n" +
+                "                <td class=\"tg-gkax\">{{ student.name }}</td>\n" +
+                "                <td class=\"tg-gkax\">{{ student.surname }}</td>\n" +
+                "                <td class=\"tg-gkax\">{{ student.email }}</td>\n" +
+                "                <td class=\"tg-gkax\">{{ student.login }}</td>\n" +
+                "                <td class=\"tg-gkax\">{{ student.className }}</td>\n" +
+                "                <td class=\"tg-gkax\"> <input type=\"checkbox\" name=\"nextPage\" value=\"{{ student.userID }}\"> </td>\n" +
+                "            </tr>\n" +
+                "        {% endfor %}\n" +
+                "    </table>\n" +
+                "        <label></label><br>\n" +
+                "        <input type=\"submit\" value=\"nextPage\">\n" +
+                "    </form>";
+        } else if ({{ state }} == 0) {
+            document.getElementById("buttonTeamShop").innerHTML =
+                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+                "        <label>Team Name </label><br>\n" +
+                "        <input type=\"text\" name=\"name\" placeholder=\"enter team name...\" required> <br>\n" +
+                "        <input type=\"submit\" name=\"name\" value=\"Submit\">\n" +
+                "    </form>\n";
+        } else if ({{ state }} == 2) {
+            document.getElementById("buttonTeamShop").innerHTML =
+            "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+            "        <label>Team Name </label><br>\n" +
+            "    <table class=\"tg\">\n" +
+            "        <td class=\"tg-gkax\">Nr.</td>\n" +
+            "        <td class=\"tg-gkax\">Name</td>\n" +
+            "        <td class=\"tg-gkax\">Surname</td>\n" +
+            "        <td class=\"tg-gkax\">Email</td>\n" +
+            "        <td class=\"tg-gkax\">Login</td>\n" +
+            "        <td class=\"tg-gkax\">Class Name</td>\n" +
+            "        {% for student in studentModels %}\n" +
+            "            <tr>\n" +
+            "                <td class=\"tg-gkax\">{{ loop.index }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.name }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.surname }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.email }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.login }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.className }}</td>\n" +
+            "            </tr>\n" +
+            "        {% endfor %}\n" +
+            "    </table>\n" +
+            "        <input type=\"hidden\" name=\"confirm\" placeholder=\"enter team name...\"> <br>\n" +
+            "        <input type=\"submit\" value=\"Confirm\">\n" +
+            "    </form>";
+        }
+    }
+
+</script>

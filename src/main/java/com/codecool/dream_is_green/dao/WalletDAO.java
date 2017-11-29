@@ -74,27 +74,6 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
         }
     }
 
-    public void updateCoolcoins(StudentModel student) {
-
-        Connection connection;
-        Statement statement;
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.createStatement();
-            connection.setAutoCommit(false);
-
-            Integer coolcoins = student.getWallet().getCoolCoins();
-            String query = "UPDATE WalletTable SET coolcoins = " + coolcoins +  " WHERE user_id = '" + student.getUserID() + "'";
-
-            statement.executeUpdate(query);
-            connection.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public LinkedList<ArtifactModel> getStudentArtifacts(Integer userId) {
 
         LinkedList<ArtifactModel> studentArtifacts = new LinkedList<>();
@@ -150,5 +129,75 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
         return coolCoins;
+    }
+
+    public LinkedList<ArtifactModel> getStudentUnUsedArtifacts(Integer userId) {
+
+        LinkedList<ArtifactModel> studentArtifacts = new LinkedList<>();
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM StudentsWithArtifacts WHERE user_Id = ? AND state = 0;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("artifact_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("artifact_category");
+                Integer state = rs.getInt("state");
+
+                ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
+                ArtifactModel artifact = new ArtifactModel(title, price, artifactCategory);
+                artifact.setIsUsed(state);
+                studentArtifacts.add(artifact);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return studentArtifacts;
+    }
+
+    public void setArtifactOnUsed(String artifactTitle, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "UPDATE StudentsWithArtifacts SET state = 1 WHERE artifact_name = ? AND user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, artifactTitle);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public void updateStudentCoolCoins(Integer coolCoins, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "UPDATE WalletTable SET coolcoins = ? WHERE user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, coolCoins);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
     }
 }

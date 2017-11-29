@@ -4,11 +4,6 @@ import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.SessionModel;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class SessionDAO extends AbstractDAO<QuestModel> {
 
@@ -24,13 +19,15 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
             Integer userId = newSession.getUserId();
             String userName = newSession.getUserName();
             String userType = newSession.getUserType();
+            Integer teamId = newSession.getTeamId();
 
-            String insertTableSQL = "INSERT INTO SessionTable (session_id, user_id, user_name, user_type) VALUES (?, ?, ?, ?)";
+            String insertTableSQL = "INSERT INTO SessionTable (session_id, user_id, user_name, user_type, team_id) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, sessionId);
             preparedStatement.setInt(2, userId);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, userType);
+            preparedStatement.setInt(5, teamId);
 
             preparedStatement .executeUpdate();
 
@@ -78,8 +75,10 @@ public class SessionDAO extends AbstractDAO<QuestModel> {
                 Integer userId = rs.getInt("user_id");
                 String userName = rs.getString("user_name");
                 String userType = rs.getString("user_type");
+                Integer teamId = rs.getInt("team_id");
 
                 session = new SessionModel(userSessionId, userId, userName, userType);
+                session.setTeamId(teamId);
             }
 
             preparedStatement.close();
