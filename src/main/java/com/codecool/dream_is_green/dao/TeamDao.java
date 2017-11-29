@@ -22,11 +22,11 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             String query;
             if (checkFieldArtifact(teamId)) {
                 query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
-                        "join UsersTable on StudentsTable.user_id = UsersTable.user_id where TeamsTable.team_id == %d;", teamId);
+                            "join UsersTable on StudentsTable.user_id = UsersTable.user_id where TeamsTable.team_id == %d;", teamId);
             } else {
                 query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
-                        "join UsersTable on StudentsTable.user_id = UsersTable.user_id join ArtifactsTable on TeamsTable.artifact_id =" +
-                        " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
+                            "join UsersTable on StudentsTable.user_id = UsersTable.user_id join ArtifactsTable on TeamsTable.artifact_id =" +
+                            " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
             }
             ResultSet result = stat.executeQuery(query);
             List<StudentModel> students = new LinkedList<>();
@@ -77,6 +77,59 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 }
             }
             this.addObject(teamShoppingModel);
+            result.close();
+            stat.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadTeams() {
+
+        try {
+            LinkedList<String> temporaryTeamName = new LinkedList<>();
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stat = conn.createStatement();
+            String query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
+                       "join UsersTable on StudentsTable.user_id = UsersTable.user_id;");
+            ResultSet result = stat.executeQuery(query);
+            List<StudentModel> students = new LinkedList<>();
+            String name, surname, email, login, className, teamName, password;
+            int userID, studentExp, teamId;
+            LinkedList<TeamShoppingModel> temporaryTeams = new LinkedList<>();
+
+            while(result.next()) {
+                TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
+                name = result.getString("name");
+                surname = result.getString("surname");
+                email = result.getString("email");
+                login = result.getString("login");
+                teamName = result.getString("team_name");
+                userID = result.getInt("user_id");
+                className = result.getString("class_name");
+                studentExp = result.getInt("experience");
+                teamId = result.getInt("team_id");
+                password = result.getString("password");
+                teamShoppingModel.setNameTeam(teamName);
+                teamShoppingModel.setTeamId(teamId);
+                StudentModel student = new StudentModel(userID, name, surname, email,
+                        login, password, className, studentExp);
+                student.setTeamId(teamId);
+                temporaryTeamName.add(teamName);
+
+                if (checkElementInList(temporaryTeamName, teamName) == false) {
+                    System.out.println("wcodzifalse");
+                    students.clear();
+                    students.add(student);
+                } else {
+                    System.out.println("true");
+                    students.add(student);
+                }
+                teamShoppingModel.setStudentModels(students);
+                this.objectsList.add(teamShoppingModel);
+                temporaryTeams.add(teamShoppingModel);
+            }
             result.close();
             stat.close();
 
@@ -155,7 +208,6 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             String statement = "INSERT INTO TeamsTable (team_name)\n" +
                     "VALUES (?);";
             PreparedStatement prepStmt = connection.prepareStatement(statement);
-            System.out.println(teamShoppingModel.getNameTeam());
             prepStmt.setString(1, teamShoppingModel.getNameTeam());
             prepStmt.executeUpdate();
             connection.commit();
@@ -172,9 +224,8 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
 
             Connection conn = DatabaseConnection.getConnection();
             Statement stat = conn.createStatement();
-
             String query = String.format("SELECT artifact_name FROM TeamsTable join ArtifactsTable on TeamsTable.artifact_id =" +
-                    " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
+                        " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
             ResultSet result = stat.executeQuery(query);
             String name;
             while(result.next()) {
@@ -194,6 +245,17 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             e.printStackTrace();
         }
         return empty;
+    }
+
+    private boolean checkElementInList(LinkedList<String> temps, String nameTeam) {
+        boolean isInList = false;
+
+        for (String temp: temps) {
+            if (temp.equals(nameTeam)) {
+                isInList = true;
+            }
+        }
+        return isInList;
     }
 
 }
