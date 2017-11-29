@@ -36,8 +36,8 @@ public class MentorController implements HttpHandler {
 //            addStudent(httpExchange);
         } else if (userAction.equals("add_artifact")) {
             manageArtifact(httpExchange);
-//        } else if (userAction.equals("add_quest")) {
-//            addMentor(httpExchange);
+        } else if (userAction.equals("mark_quest")) {
+            markQuest(httpExchange);
         } else if (userAction.equals("show_students")) {
             showStudents(httpExchange);
         } else if (userAction.equals("create_team")) {
@@ -85,6 +85,78 @@ public class MentorController implements HttpHandler {
         }
     }
 
+    private void clearCookie(HttpExchange httpExchange) throws IOException {
+        cookie.cleanCookie(httpExchange);
+
+        httpExchange.getResponseHeaders().set("Location", "/login");
+        httpExchange.sendResponseHeaders(302,-1);
+    }
+
+    private void showArtifacts(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.loadArtifact();
+        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+        ResponseController<ArtifactModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, artifacts,
+                "artifactModels", "Show artifacts",
+                "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
+    }
+
+    private void showQuests(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        questDAO.loadQuest();
+        LinkedList<QuestModel> quests = questDAO.getObjectList();
+        ResponseController<QuestModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, quests,
+                "questModels", "Show quests",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_quest.twig");
+    }
+
+    private void showStudents(HttpExchange httpExchange) throws IOException {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = studentDAO.getObjectList();
+        ResponseController<StudentModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, countMail, students,
+                "studentModels", "Show students",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
+    }
+
+    private void markQuest(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            LinkedList<StudentQuestModel> studentQuestModels = questDAO.loadStudentsWithQuests();
+            ResponseController<StudentQuestModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, studentQuestModels,
+                    "studentQuestModels", "Mark quest",
+                    "mentor/menu_mentor.twig", "mentor/mentor_mark_quest.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title").trim();
+            String category = inputs.get("category").trim();
+            Integer price = Integer.valueOf(inputs.get("price"));
+            Integer studentID = Integer.valueOf(inputs.get("studentID"));
+
+            QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
+            StudentQuestModel studentQuestModel = new StudentQuestModel(title, price, questCategoryModel, studentID);
+
+            questDAO.deleteStudentWithQuest(studentQuestModel);
+
+            httpExchange.getResponseHeaders().set("Location", "/mentor/mark_quest");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
+    }
+
+
     private void manageArtifact(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
@@ -128,44 +200,6 @@ public class MentorController implements HttpHandler {
             httpExchange.getResponseHeaders().set("Location", "/mentor/add_artifact");
             httpExchange.sendResponseHeaders(302,-1);
         }
-    }
-
-
-    private void clearCookie(HttpExchange httpExchange) throws IOException {
-        cookie.cleanCookie(httpExchange);
-
-        httpExchange.getResponseHeaders().set("Location", "/login");
-        httpExchange.sendResponseHeaders(302,-1);
-    }
-
-    private void showArtifacts(HttpExchange httpExchange) throws IOException {
-        ArtifactDAO artifactDAO = new ArtifactDAO();
-        artifactDAO.loadArtifact();
-        LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
-        ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, artifacts,
-                "artifactModels", "Show artifacts",
-                "mentor/menu_mentor.twig","mentor/mentor_show_artifact.twig");
-    }
-
-    private void showQuests(HttpExchange httpExchange) throws IOException {
-        QuestDAO questDAO = new QuestDAO();
-        questDAO.loadQuest();
-        LinkedList<QuestModel> quests = questDAO.getObjectList();
-        ResponseController<QuestModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, quests,
-                "questModels", "Show quests",
-                "mentor/menu_mentor.twig", "mentor/mentor_show_quest.twig");
-    }
-
-    private void showStudents(HttpExchange httpExchange) throws IOException {
-        StudentDAO studentDAO = new StudentDAO();
-        studentDAO.loadStudents();
-        LinkedList<StudentModel> students = studentDAO.getObjectList();
-        ResponseController<StudentModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, students,
-                "studentModels", "Show students",
-                "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
     }
 
     private void createTeam(HttpExchange httpExchange) throws IOException {
