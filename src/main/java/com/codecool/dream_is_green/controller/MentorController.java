@@ -171,6 +171,7 @@ public class MentorController implements HttpHandler {
     private void createTeam(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         LinkedList<StudentModel> students = new LinkedList<>();
+        LinkedList<TeamShoppingModel> teamShoppingModels = showTeams();
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -209,12 +210,10 @@ public class MentorController implements HttpHandler {
                 responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
 
             } else if (students.size() == 0) {
-                System.out.println("io");
-                System.out.println(temporaryStudents.size());
                 if (temporaryStudents.size() == 0) {
                     ResponseController<StudentModel> responseController = new ResponseController<>();
                     state = 10;
-                    responseController.sendResponseEmptyCreateTeam(httpExchange, countMail, state);
+                    responseController.sendResponseEmptyCreateTeam(httpExchange, countMail, state, teamShoppingModels);
                 } else {
                     students = temporaryStudents;
                     ResponseController<StudentModel> responseController = new ResponseController<>();
@@ -223,6 +222,14 @@ public class MentorController implements HttpHandler {
             }
         }
     }
+    private LinkedList<TeamShoppingModel> showTeams() {
+        TeamDao teamDao = new TeamDao();
+        teamDao.loadTeams();
+        LinkedList<TeamShoppingModel> teamShoppingModels = teamDao.getObjectList();
+        System.out.println(teamShoppingModels.size());
+        return teamShoppingModels;
+    }
+
     private void changeState(Integer newState) {
         state = newState;
     }

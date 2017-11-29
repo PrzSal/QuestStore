@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
 import com.codecool.dream_is_green.model.QuestModel;
+import com.codecool.dream_is_green.model.TeamShoppingModel;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -121,7 +122,7 @@ public class ResponseController<T> {
         os.close();
     }
 
-    public void sendResponseEmptyCreateTeam(HttpExchange httpExchange, Integer countMail, Integer state) throws IOException {
+    public void sendResponseEmptyCreateTeam(HttpExchange httpExchange, Integer countMail, Integer state, LinkedList<TeamShoppingModel> teams) throws IOException {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
@@ -129,7 +130,8 @@ public class ResponseController<T> {
         model.with("counterMail", countMail);
         model.with("menu", "classpath:/templates/mentor/menu_mentor.twig");
         model.with("main", "classpath:/templates/mentor/mentor_full_team.twig");
-        model.with("state", state );
+        model.with("state", state);
+        model.with("teams", teams);
 
         String response = template.render(model);
 
