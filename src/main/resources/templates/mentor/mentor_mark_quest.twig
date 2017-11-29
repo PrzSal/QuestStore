@@ -23,6 +23,9 @@
             </tbody>
         </table>
     </div>
+    {% if studentQuestModels.size() == 0 %}
+       <a class="emptyList">Empty list</a>
+    {% else %}
     <div class="markSubmitTable">
         <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
             Title :<input type="text" name="title" id="title" required readonly>
@@ -33,16 +36,31 @@
             <input class="markSubmit" id="submit" name="button" type="submit"  value="Mark as done">
         </form>
     </div>
+    {% endif %}
 </div>
 
 <style>
+
+    .emptyList {
+        font-family: "Arial Black", Gadget, sans-serif;
+        text-align: center;
+        display: flex;
+        margin-left: 10%;
+        background-color: #4A4A4A;
+        width: 79%;
+        border: 2px solid #000000;
+        padding: 10px  2px;
+        justify-content: center;
+        color: white;
+    }
+
     div.markAllTable {
         display: flex;
         justify-content: center;
-        transform: scale(1.2, 1.2);
     }
 
     table.markTable {
+        padding: 10px 10px;
         font-family: "Arial Black", Gadget, sans-serif;
         border: 2px solid #000000;
         background-color: #4A4A4A;
@@ -83,7 +101,7 @@
         padding: 5px 2%;
     }
     table.markTable tbody td {
-        font-size: 13px;
+        font-size: 17px;
         color: #ffffff;
     }
 
@@ -102,8 +120,12 @@
         border-left: none;
     }
 
+    table.markTable tr {
+        line-height: 20px;
+    }
+
     table.markTable tfoot td {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     table.markTable tbody tr:hover {
