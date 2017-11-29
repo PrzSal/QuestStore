@@ -33,7 +33,7 @@ public class ResponseController<T> {
     }
 
     public void sendQuestResponse(HttpExchange httpExchange, Integer counterMail, LinkedList<T> objectsList,
-                                  LinkedList<QuestModel> foundObject, String objectModels, String title,
+                                  LinkedList<String> foundObject, String objectModels, String title,
                                   String menuPath, String pagePath) throws IOException {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
