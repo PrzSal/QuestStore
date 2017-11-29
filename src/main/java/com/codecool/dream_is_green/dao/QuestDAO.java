@@ -173,4 +173,27 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             e.printStackTrace();
         }
     }
+
+    public void deleteQuest(String questTitle) {
+
+        Connection connection;
+        String questTitleRep = questTitle.replaceAll("\\s+", "\n");
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String insertTableSQL = "DELETE FROM QuestsTable WHERE quest_name = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, questTitleRep);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+    
+
 }
