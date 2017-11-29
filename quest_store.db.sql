@@ -423,7 +423,6 @@ INSERT INTO `LevelsTable` VALUES ('java_guru',1000);
 INSERT INTO `LevelsTable` VALUES ('replace_mentor','22
 500');
 INSERT INTO `LevelsTable` VALUES ('Fullstack',400000);
-INSERT INTO `LevelsTable` VALUES ('test``',3);
 CREATE TABLE "ClassTable"
 (
 `class_name`
