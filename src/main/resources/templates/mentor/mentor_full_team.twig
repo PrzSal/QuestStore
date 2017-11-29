@@ -1,22 +1,63 @@
 {#<style onload="buttonFunction()" ></style>#}
 <div class="table">
     <header>
+        <button onclick="openTableWithTeams()" id="buttonShowTeam">Show teams</button>
         <form name="myform" action="" method="POST" id="myForm">
             <label>Reset Team </label><br>
-            <input type="text" name="name" placeholder="enter team name..." required> <br>
-            <input type="button" onclick="myFunction()" value="Reset">
+            <input type="hidden" name="name" value="reset" required> <br>
+            <input type="button" onclick="confirmFun()" value="Reset">
         </form>
     </header>
 </div>
 <script>
+    function openTableWithTeams() {
+        myWindow = window.open("", "myWindow", "width=1200,height=900");
+        myWindow.document.write(
+            "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <title>{{ title }}</title>\n" +
+            "    <link rel=\"stylesheet\" href=\"/static/css/Style1.css\">\n" +
+"</head>\n"+
+"<body>\n" +
 
-    function myFunction() {
-        if (confirm("Press a button!") == true) {
+            "<div class=\"table\">\n" +
+            "    <table class=\"tg\">\n" +
+            "        <td class=\"tg-gkax\">Nr.</td>\n" +
+            "        <td class=\"tg-gkax\">Team id</td>\n" +
+            "        <td class=\"tg-gkax\">Team name</td>\n" +
+            "        <td class=\"tg-gkax\">Name</td>\n" +
+            "        <td class=\"tg-gkax\">Surname</td>\n" +
+            "        <td class=\"tg-gkax\">Email</td>\n" +
+            "        <td class=\"tg-gkax\">Login</td>\n" +
+            "        <td class=\"tg-gkax\">Class Name</td>\n" +
+            "        {% for team in teams %}\n" +
+            "            <tr>\n" +
+            "        {% for student in team.studentModels %}\n" +
+            "                <td class=\"tg-gkax\">{{ loop.index }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ team.teamId }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ team.nameTeam }}</td><br>\n" +
+            "                <td class=\"tg-gkax\">{{ student.name }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.surname }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.email }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.login }}</td>\n" +
+            "                <td class=\"tg-gkax\">{{ student.className }}</td>\n" +
+            "            </tr>\n" +
+            "        {% endfor %}\n" +
+            "        {% endfor %}\n" +
+            "    </table>\n" + "</div>\n" +
+"</body>\n" +
+            "</html>");
+    }
+
+    function confirmFun() {
+        if (confirm("Confirm remove all team!") == true) {
 
             document.getElementById("myForm").submit();
         } else {
 
-            alert("No students to team!");
+            alert("Full teams!");
 
         }
 
