@@ -18,7 +18,7 @@ public class MentorController implements HttpHandler {
     private Integer countMail;
     private Integer userId = 0;
     private Integer state = 0;
-    private LinkedList<StudentModel> temporaryStudents;
+    private LinkedList<StudentModel> temporaryStudents = new LinkedList<>();
     private TeamShoppingModel teamShoppingModel;
     private static CookieManager cookie = new CookieManager();
 
@@ -177,36 +177,50 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(state + formData);
+
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
                 teamShoppingModel = formDataController.parseFormData(formData, "nextChooseTeam");
                 teamDao.insertNewTeam(teamShoppingModel);
                 changeState(1);
+
             } else if (formData.compareTo("nextPage") > 0 && state == 1) {
-                System.out.println(formData + state);
                 FormDataController<LinkedList<StudentModel>> formDataController = new FormDataController<>();
                 students = formDataController.chooseStudentsFromUser(formData);
                 temporaryStudents = temporaryStudentsList(students);
                 changeState(2);
+
             } else if (formData.compareTo("confirm") > 0 && state == 2) {
                 updateStudents();
+                temporaryStudents.clear();
+                students.clear();
                 changeState(0);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/create_team");
             httpExchange.sendResponseHeaders(302, -1);
         }
-        if (method.equals("GET")) {
-            if (state <= 1) {
-                students = chooseStudents();
-            }
-            if (students.size() == 0) {
-                students = temporaryStudents;
 
+        if (method.equals("GET")) {
+
+            if (state <= 1 && chooseStudents().size()>0) {
+                students = chooseStudents();
+                ResponseController<StudentModel> responseController = new ResponseController<>();
+                responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+
+            } else if (students.size() == 0) {
+                System.out.println("io");
+                System.out.println(temporaryStudents.size());
+                if (temporaryStudents.size() == 0) {
+                    ResponseController<StudentModel> responseController = new ResponseController<>();
+                    state = 10;
+                    responseController.sendResponseEmptyCreateTeam(httpExchange, countMail, state);
+                } else {
+                    students = temporaryStudents;
+                    ResponseController<StudentModel> responseController = new ResponseController<>();
+                    responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+                }
             }
-            ResponseController<StudentModel> responseController = new ResponseController<>();
-            responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
         }
     }
     private void changeState(Integer newState) {
