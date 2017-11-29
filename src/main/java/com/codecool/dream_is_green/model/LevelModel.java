@@ -19,12 +19,4 @@ public class LevelModel {
         return expRequired;
     }
 
-    public String toString() {
-
-        String str = String.format("%-16s %-16d", levelName, expRequired);
-
-        return str;
-    }
-
-
 }

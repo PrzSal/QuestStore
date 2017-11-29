@@ -5,8 +5,6 @@ import com.codecool.dream_is_green.model.*;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URI;
@@ -38,7 +36,7 @@ public class StudentController implements HttpHandler {
             showQuests(httpExchange);
         } else if (userAction.equals("show_artifacts")) {
             showArtifacts(httpExchange);
-        } else if (userAction.equals("show_wallet")) {
+        } else if (userAction.equals("wallet")) {
             showWallet(httpExchange);
         } else if (userAction.equals("buy_artifact")) {
             buyArtifact(httpExchange);
@@ -46,6 +44,8 @@ public class StudentController implements HttpHandler {
             useArtifact(httpExchange);
         } else if (userAction.equals("do_quest")) {
             doQuest(httpExchange);
+        } else if (userAction.equals("level")) {
+            showLevel(httpExchange);
         } else if (userAction.equals("team_shop")) {
             teamShopping(httpExchange, teamId);
         }  else if (userAction.equals("mail")) {
@@ -246,8 +246,28 @@ public class StudentController implements HttpHandler {
         Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
         ResponseController<ArtifactModel> responseController = new ResponseController<>();
         responseController.sendResponseWallet(httpExchange, countMail, studentArtifacts,
-                "artifactsModels", "Show wallet", studentCoolCoins,
+                "artifactsModels", "Wallet", studentCoolCoins,
                 "student/student_menu.twig", "student/student_show_wallet.twig");
+    }
+
+    private void showLevel(HttpExchange httpExchange) throws IOException {
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+        Integer userId = session.getUserId();
+
+        WalletDAO walletDAO = new WalletDAO();
+        Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
+        LevelDAO levelDAO = new LevelDAO();
+        Integer studentExp = studentCoolCoins - 1000;
+        LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentExp);
+        LevelModel previousLevel = levelDAO.getPreviousLevel(studentExp);
+        LevelModel nextLevel = levelDAO.getNextLevel(studentExp);
+
+        ResponseController<LevelModel> responseController = new ResponseController<>();
+        responseController.sendResponseLevel(httpExchange, countMail, "Level",
+                studentExp, studentLevel, previousLevel, nextLevel,
+                "student/student_menu.twig", "student/student_show_level.twig");
     }
 
     private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{

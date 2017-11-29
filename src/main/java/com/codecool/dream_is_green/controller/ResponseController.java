@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
+import com.codecool.dream_is_green.model.LevelModel;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -131,6 +132,29 @@ public class ResponseController<T> {
         model.with(objectModels, objectsList);
         model.with("title", title);
         model.with("coolCoins", coolCoins);
+        model.with("menu", "classpath:/templates/" + menuPath);
+        model.with("main", "classpath:/templates/" + pagePath);
+        model.with("counterMail", counterMail);
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    public void sendResponseLevel(HttpExchange httpExchange, Integer counterMail, String title,
+                                  Integer studentExp, LevelModel studentLevel, LevelModel previousLevel, LevelModel nextLevel,
+                                  String menuPath, String pagePath) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("studentLevel", studentLevel);
+        model.with("previousLevel", previousLevel);
+        model.with("nextLevel", nextLevel);
+        model.with("studentExp", studentExp);
+        model.with("title", title);
         model.with("menu", "classpath:/templates/" + menuPath);
         model.with("main", "classpath:/templates/" + pagePath);
         model.with("counterMail", counterMail);
