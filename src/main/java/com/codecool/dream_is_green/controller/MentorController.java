@@ -32,9 +32,7 @@ public class MentorController implements HttpHandler {
 
         if (userAction == null) {
             index(httpExchange);
-//        } else if (userAction.equals("add_student")) {
-//            addStudent(httpExchange);
-        } else if (userAction.equals("add_artifact")) {
+        } else if (userAction.equals("manage_artifacts")) {
             manageArtifact(httpExchange);
         } else if (userAction.equals("mark_quest")) {
             markQuest(httpExchange);
@@ -167,8 +165,8 @@ public class MentorController implements HttpHandler {
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, artifacts,
-                    "artifactsModels", "Add artifact",
-                    "mentor/menu_mentor.twig", "mentor/mentor_add_artifact.twig");
+                    "artifactsModels", "Manage artifacts",
+                    "mentor/menu_mentor.twig", "mentor/mentor_manage_artifacts.twig");
 
         }
 
@@ -184,6 +182,7 @@ public class MentorController implements HttpHandler {
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
             String option = inputs.get("button");
+
             ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
             ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
 
@@ -196,7 +195,7 @@ public class MentorController implements HttpHandler {
                 artifactDAO.updateArtifactStudents(artifactModel);
             }
 
-            httpExchange.getResponseHeaders().set("Location", "/mentor/add_artifact");
+            httpExchange.getResponseHeaders().set("Location", "/mentor/manage_artifacts");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }

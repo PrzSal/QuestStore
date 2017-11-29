@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
+            <thead>
+            <tr>
+                {#<th>No.</th>#}
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for artifact in artifactsModels %}
+                <tr>
+                    {#<td>{{ loop.index }}</td>#}
+                    <td>{{ artifact.title }}</td>
+                    <td>{{ artifact.category }}</td>
+                    <td>{{ artifact.price }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="submitTable">
+        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+            Title :<input type="text" name="title" id="title" required>
+            Category :<input type="text" name="category" id="category" required>
+            Price :<input type="number" name="price" id="price" required>
+            <br>
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Add">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Remove">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Update">
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var rIndex,
+        table = document.getElementById("table");
+
+    // display selected row data into input text
+    function selectedRowToInput()
+    {
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                // get the selected row index
+                rIndex = this.rowIndex;
+                document.getElementById("title").value = this.cells[0].innerText;
+                document.getElementById("category").value = this.cells[1].innerText;
+                document.getElementById("price").value = this.cells[2].innerHTML;
+
+                // remove the background from the previous selected row
+                if(typeof index !== "undefined"){
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+                console.log(typeof index);
+            };
+        }
+    }
+    selectedRowToInput();
+
+</script>
