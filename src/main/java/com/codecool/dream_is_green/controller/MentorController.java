@@ -147,6 +147,9 @@ public class MentorController implements HttpHandler {
             QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
             StudentQuestModel studentQuestModel = new StudentQuestModel(title, price, questCategoryModel, studentID);
 
+            WalletDAO walletDAO = new WalletDAO();
+            Integer coolCoins = walletDAO.getStudentCoolCoins(studentID);
+            walletDAO.updateStudentCoolCoins(coolCoins + price, studentID);
             questDAO.deleteStudentWithQuest(studentQuestModel);
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/mark_quest");
@@ -156,11 +159,10 @@ public class MentorController implements HttpHandler {
 
 
     private void manageArtifact(HttpExchange httpExchange) throws IOException {
-
+        ArtifactDAO artifactDAO = new ArtifactDAO();
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            ArtifactDAO artifactDAO = new ArtifactDAO();
             artifactDAO.loadArtifact();
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
@@ -184,7 +186,6 @@ public class MentorController implements HttpHandler {
             String option = inputs.get("button");
             ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
             ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
-            ArtifactDAO artifactDAO = new ArtifactDAO();
 
             if (option.equals("Add")) {
                 artifactDAO.insertArtifact("ArtifactsTable", artifactModel, 0);
