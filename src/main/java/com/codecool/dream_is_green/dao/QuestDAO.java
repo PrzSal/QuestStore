@@ -219,4 +219,29 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
+
+    public void updateQuestTable(QuestModel questModel) {
+
+        Connection connection;
+        String title = questModel.getTitle();
+        int price = questModel.getPrice();
+        String category = questModel.getCategory().getName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String updateQuestTable = "UPDATE QuestsTable SET price = ?, quest_category = ? WHERE quest_name = ?;";
+            PreparedStatement artifactsStatement = connection.prepareStatement(updateQuestTable);
+
+            artifactsStatement.setInt(1, price);
+            artifactsStatement.setString(2, category);
+            artifactsStatement.setString(3, title);
+
+            artifactsStatement.executeUpdate();
+            artifactsStatement.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
 }
