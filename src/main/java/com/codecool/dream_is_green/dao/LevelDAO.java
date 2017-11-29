@@ -125,5 +125,59 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         return objectsList.get(objectsList.size() - 1);
     }
 
+    public LevelModel getNextLevel(Integer exp) {
+
+        LevelModel nextLevel = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT level_name, min(exp_required) FROM LevelsTable WHERE exp_required > ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, exp);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String levelName = rs.getString("level_name");
+                Integer expRequired = rs.getInt("min(exp_required)");
+
+                nextLevel = new LevelModel(levelName, expRequired);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return nextLevel;
+    }
+
+    public LevelModel getPreviousLevel(Integer exp) {
+
+        LevelModel previousLevel = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT level_name, max(exp_required) FROM LevelsTable WHERE exp_required < ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, exp);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String levelName = rs.getString("level_name");
+                Integer expRequired = rs.getInt("max(exp_required)");
+
+                previousLevel = new LevelModel(levelName, expRequired);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return previousLevel;
+    }
+
 
 }

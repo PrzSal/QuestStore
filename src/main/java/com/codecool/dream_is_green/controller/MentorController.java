@@ -18,7 +18,7 @@ public class MentorController implements HttpHandler {
     private Integer countMail;
     private Integer userId = 0;
     private Integer state = 0;
-    private LinkedList<StudentModel> temporaryStudents;
+    private LinkedList<StudentModel> temporaryStudents = new LinkedList<>();
     private TeamShoppingModel teamShoppingModel;
     private static CookieManager cookie = new CookieManager();
 
@@ -32,9 +32,7 @@ public class MentorController implements HttpHandler {
 
         if (userAction == null) {
             index(httpExchange);
-//        } else if (userAction.equals("add_student")) {
-//            addStudent(httpExchange);
-        } else if (userAction.equals("add_artifact")) {
+        } else if (userAction.equals("manage_artifacts")) {
             manageArtifact(httpExchange);
         } else if (userAction.equals("mark_quest")) {
             markQuest(httpExchange);
@@ -167,8 +165,8 @@ public class MentorController implements HttpHandler {
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, artifacts,
-                    "artifactsModels", "Add artifact",
-                    "mentor/menu_mentor.twig", "mentor/mentor_add_artifact.twig");
+                    "artifactsModels", "Manage artifacts",
+                    "mentor/menu_mentor.twig", "mentor/mentor_manage_artifacts.twig");
 
         }
 
@@ -184,6 +182,7 @@ public class MentorController implements HttpHandler {
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
             String option = inputs.get("button");
+
             ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
             ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
 
@@ -196,7 +195,7 @@ public class MentorController implements HttpHandler {
                 artifactDAO.updateArtifactStudents(artifactModel);
             }
 
-            httpExchange.getResponseHeaders().set("Location", "/mentor/add_artifact");
+            httpExchange.getResponseHeaders().set("Location", "/mentor/manage_artifacts");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }
@@ -204,51 +203,77 @@ public class MentorController implements HttpHandler {
     private void createTeam(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         LinkedList<StudentModel> students = new LinkedList<>();
+        LinkedList<TeamShoppingModel> teamShoppingModels = showTeams();
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(state + formData);
+            System.out.println(formData + 10);
+
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
                 teamShoppingModel = formDataController.parseFormData(formData, "nextChooseTeam");
                 teamDao.insertNewTeam(teamShoppingModel);
                 changeState(1);
+
             } else if (formData.compareTo("nextPage") > 0 && state == 1) {
-                System.out.println(formData + state);
                 FormDataController<LinkedList<StudentModel>> formDataController = new FormDataController<>();
                 students = formDataController.chooseStudentsFromUser(formData);
                 temporaryStudents = temporaryStudentsList(students);
                 changeState(2);
+
             } else if (formData.compareTo("confirm") > 0 && state == 2) {
                 updateStudents();
+                temporaryStudents.clear();
+                students.clear();
+                changeState(0);
+            } else if (formData.compareTo("reset") > 0 && state == 10) {
+                System.out.println("wchodzidoreseta");
+                teamShoppingModel.setTeamId(0);
+                removeStudentsFromTeam();
                 changeState(0);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/create_team");
             httpExchange.sendResponseHeaders(302, -1);
         }
-        if (method.equals("GET")) {
-            if (state <= 1) {
-                students = chooseStudents();
-            }
-            if (students.size() == 0) {
-                students = temporaryStudents;
 
+        if (method.equals("GET")) {
+
+            if (state <= 1 && chooseStudents().size()>0) {
+                students = chooseStudents();
+                ResponseController<StudentModel> responseController = new ResponseController<>();
+                responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+
+            } else if (students.size() == 0) {
+                if (temporaryStudents.size() == 0) {
+                    ResponseController<StudentModel> responseController = new ResponseController<>();
+                    state = 10;
+                    responseController.sendResponseEmptyCreateTeam(httpExchange, countMail, state, teamShoppingModels);
+                } else {
+                    students = temporaryStudents;
+                    ResponseController<StudentModel> responseController = new ResponseController<>();
+                    responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+                }
             }
-            ResponseController<StudentModel> responseController = new ResponseController<>();
-            responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
         }
     }
+    private LinkedList<TeamShoppingModel> showTeams() {
+        TeamDao teamDao = new TeamDao();
+        teamDao.loadTeams();
+        LinkedList<TeamShoppingModel> teamShoppingModels = teamDao.getObjectList();
+        return teamShoppingModels;
+    }
+
     private void changeState(Integer newState) {
         state = newState;
     }
 
     private LinkedList<StudentModel> temporaryStudentsList(LinkedList<StudentModel> students) {
         LinkedList<StudentModel> studentsNew = students;
-        return students;
+        return studentsNew;
     }
 
     private LinkedList<StudentModel> chooseStudents() {
@@ -265,6 +290,13 @@ public class MentorController implements HttpHandler {
             }
         }
         return students;
+    }
+    private void removeStudentsFromTeam() {
+        TeamDao teamDao = new TeamDao();
+        MentorDAO mentorDAO = new MentorDAO();
+        MentorModel mentorModel = mentorDAO.getMentor(userId);
+        teamDao.removeAllRecordsFromTeamstable(mentorModel);
+        updateStudents();
     }
 
     private void updateStudents() {

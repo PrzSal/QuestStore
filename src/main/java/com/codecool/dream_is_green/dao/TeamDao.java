@@ -1,9 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
-import com.codecool.dream_is_green.model.ArtifactCategoryModel;
-import com.codecool.dream_is_green.model.ArtifactModel;
-import com.codecool.dream_is_green.model.StudentModel;
-import com.codecool.dream_is_green.model.TeamShoppingModel;
+import com.codecool.dream_is_green.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,11 +19,11 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             String query;
             if (checkFieldArtifact(teamId)) {
                 query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
-                        "join UsersTable on StudentsTable.user_id = UsersTable.user_id where TeamsTable.team_id == %d;", teamId);
+                            "join UsersTable on StudentsTable.user_id = UsersTable.user_id where TeamsTable.team_id == %d;", teamId);
             } else {
                 query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
-                        "join UsersTable on StudentsTable.user_id = UsersTable.user_id join ArtifactsTable on TeamsTable.artifact_id =" +
-                        " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
+                            "join UsersTable on StudentsTable.user_id = UsersTable.user_id join ArtifactsTable on TeamsTable.artifact_id =" +
+                            " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
             }
             ResultSet result = stat.executeQuery(query);
             List<StudentModel> students = new LinkedList<>();
@@ -77,6 +74,58 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 }
             }
             this.addObject(teamShoppingModel);
+            result.close();
+            stat.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadTeams() {
+
+        try {
+            LinkedList<String> temporaryTeamName = new LinkedList<>();
+            Connection conn = DatabaseConnection.getConnection();
+            Statement stat = conn.createStatement();
+            String query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
+                       "join UsersTable on StudentsTable.user_id = UsersTable.user_id;");
+            ResultSet result = stat.executeQuery(query);
+            LinkedList<StudentModel> students = new LinkedList<>();
+            String name, surname, email, login, className, teamName, password;
+            int userID, studentExp, teamId;
+            LinkedList<TeamShoppingModel> temporaryTeams = new LinkedList<>();
+
+            while(result.next()) {
+
+                TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
+                name = result.getString("name");
+                surname = result.getString("surname");
+                email = result.getString("email");
+                login = result.getString("login");
+                teamName = result.getString("team_name");
+                userID = result.getInt("user_id");
+                className = result.getString("class_name");
+                studentExp = result.getInt("experience");
+                teamId = result.getInt("team_id");
+                password = result.getString("password");
+                teamShoppingModel.setNameTeam(teamName);
+                teamShoppingModel.setTeamId(teamId);
+                StudentModel student = new StudentModel(userID, name, surname, email,
+                        login, password, className, studentExp);
+                student.setTeamId(teamId);
+                temporaryTeamName.add(teamName);
+
+                if (checkElementInList(temporaryTeamName, teamName) == true) {
+                    students = new LinkedList<>();
+                    students.add(student);
+                } else {
+                    students.add(student);
+                }
+                teamShoppingModel.setStudentModels(students);
+                temporaryTeams.add(teamShoppingModel);
+            }
+            addToMainList(temporaryTeams);
             result.close();
             stat.close();
 
@@ -155,7 +204,6 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             String statement = "INSERT INTO TeamsTable (team_name)\n" +
                     "VALUES (?);";
             PreparedStatement prepStmt = connection.prepareStatement(statement);
-            System.out.println(teamShoppingModel.getNameTeam());
             prepStmt.setString(1, teamShoppingModel.getNameTeam());
             prepStmt.executeUpdate();
             connection.commit();
@@ -166,15 +214,37 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
         }
     }
 
+    public void removeAllRecordsFromTeamstable(MentorModel mentorModel) {
+
+        Connection connection;
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement prepStmt;
+            String statement = "DELETE FROM TeamsTable WHERE TeamsTable.team_id IN\n" +
+                               "(SELECT team_id FROM StudentsTable WHERE class_name =?)";
+            System.out.println(mentorModel.getClassName());
+            prepStmt = connection.prepareStatement(statement);
+            prepStmt.setString(1, mentorModel.getClassName());
+
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private boolean checkFieldArtifact(Integer teamId) {
         boolean empty = true;
         try {
 
             Connection conn = DatabaseConnection.getConnection();
             Statement stat = conn.createStatement();
-
             String query = String.format("SELECT artifact_name FROM TeamsTable join ArtifactsTable on TeamsTable.artifact_id =" +
-                    " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
+                        " ArtifactsTable.artifact_name where TeamsTable.team_id == %d;", teamId);
             ResultSet result = stat.executeQuery(query);
             String name;
             while(result.next()) {
@@ -194,6 +264,39 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             e.printStackTrace();
         }
         return empty;
+    }
+
+    private boolean checkElementInList(LinkedList<String> temps, String nameTeam) {
+        boolean isInList = false;
+        if (temps.size() > 1) {
+            if (temps.get(temps.size()-2).equals(nameTeam)) {
+                isInList = false;
+            } else {
+                isInList = true;
+            }
+        } else {
+            isInList = false;
+        }
+        return isInList;
+    }
+
+    private void addToMainList(LinkedList<TeamShoppingModel> teams) {
+        int i = 0;
+        TeamShoppingModel tempModel = new TeamShoppingModel();
+        System.out.println(teams.size()+"addToMainLis");
+        for (TeamShoppingModel teamShoppingModel : teams) {
+            if (i >= 1) {
+                tempModel = teams.get(i-1);
+            }
+            if (!teamShoppingModel.getNameTeam().equals(tempModel.getNameTeam())) {
+                if (i >= 1) {
+                    this.getObjectList().add(tempModel);
+                } else {
+                    this.getObjectList().add(teamShoppingModel);
+                }
+            }
+            i++;
+        }
     }
 
 }

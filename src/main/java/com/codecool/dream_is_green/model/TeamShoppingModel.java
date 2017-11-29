@@ -73,4 +73,12 @@ public class TeamShoppingModel {
     public void setNameTeam(String nameTeam) {
         this.nameTeam = nameTeam;
     }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
+
+    public void setStudentModels(List<StudentModel> studentModels) {
+        this.studentModels = studentModels;
+    }
 }
