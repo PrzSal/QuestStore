@@ -1,9 +1,6 @@
 package com.codecool.dream_is_green.dao;
 
-import com.codecool.dream_is_green.model.ArtifactCategoryModel;
-import com.codecool.dream_is_green.model.ArtifactModel;
-import com.codecool.dream_is_green.model.StudentModel;
-import com.codecool.dream_is_green.model.TeamShoppingModel;
+import com.codecool.dream_is_green.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -94,12 +91,13 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
             String query = String.format("SELECT * FROM TeamsTable join StudentsTable on TeamsTable.team_id = StudentsTable.team_id  " +
                        "join UsersTable on StudentsTable.user_id = UsersTable.user_id;");
             ResultSet result = stat.executeQuery(query);
-            List<StudentModel> students = new LinkedList<>();
+            LinkedList<StudentModel> students = new LinkedList<>();
             String name, surname, email, login, className, teamName, password;
             int userID, studentExp, teamId;
             LinkedList<TeamShoppingModel> temporaryTeams = new LinkedList<>();
 
             while(result.next()) {
+
                 TeamShoppingModel teamShoppingModel = new TeamShoppingModel();
                 name = result.getString("name");
                 surname = result.getString("surname");
@@ -118,18 +116,16 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
                 student.setTeamId(teamId);
                 temporaryTeamName.add(teamName);
 
-                if (checkElementInList(temporaryTeamName, teamName) == false) {
-                    System.out.println("wcodzifalse");
-                    students.clear();
+                if (checkElementInList(temporaryTeamName, teamName) == true) {
+                    students = new LinkedList<>();
                     students.add(student);
                 } else {
-                    System.out.println("true");
                     students.add(student);
                 }
                 teamShoppingModel.setStudentModels(students);
-                this.objectsList.add(teamShoppingModel);
                 temporaryTeams.add(teamShoppingModel);
             }
+            addToMainList(temporaryTeams);
             result.close();
             stat.close();
 
@@ -218,6 +214,29 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
         }
     }
 
+    public void removeAllRecordsFromTeamstable(MentorModel mentorModel) {
+
+        Connection connection;
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement prepStmt;
+            String statement = "DELETE FROM TeamsTable WHERE TeamsTable.team_id IN\n" +
+                               "(SELECT team_id FROM StudentsTable WHERE class_name =?)";
+            System.out.println(mentorModel.getClassName());
+            prepStmt = connection.prepareStatement(statement);
+            prepStmt.setString(1, mentorModel.getClassName());
+
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private boolean checkFieldArtifact(Integer teamId) {
         boolean empty = true;
         try {
@@ -249,13 +268,35 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
 
     private boolean checkElementInList(LinkedList<String> temps, String nameTeam) {
         boolean isInList = false;
-
-        for (String temp: temps) {
-            if (temp.equals(nameTeam)) {
+        if (temps.size() > 1) {
+            if (temps.get(temps.size()-2).equals(nameTeam)) {
+                isInList = false;
+            } else {
                 isInList = true;
             }
+        } else {
+            isInList = false;
         }
         return isInList;
+    }
+
+    private void addToMainList(LinkedList<TeamShoppingModel> teams) {
+        int i = 0;
+        TeamShoppingModel tempModel = new TeamShoppingModel();
+        System.out.println(teams.size()+"addToMainLis");
+        for (TeamShoppingModel teamShoppingModel : teams) {
+            if (i >= 1) {
+                tempModel = teams.get(i-1);
+            }
+            if (!teamShoppingModel.getNameTeam().equals(tempModel.getNameTeam())) {
+                if (i >= 1) {
+                    this.getObjectList().add(tempModel);
+                } else {
+                    this.getObjectList().add(teamShoppingModel);
+                }
+            }
+            i++;
+        }
     }
 
 }
