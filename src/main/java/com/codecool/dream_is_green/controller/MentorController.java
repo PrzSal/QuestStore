@@ -211,6 +211,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
+            System.out.println(formData + 10);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -228,6 +229,11 @@ public class MentorController implements HttpHandler {
                 updateStudents();
                 temporaryStudents.clear();
                 students.clear();
+                changeState(0);
+            } else if (formData.compareTo("reset") > 0 && state == 10) {
+                System.out.println("wchodzidoreseta");
+                teamShoppingModel.setTeamId(0);
+                removeStudentsFromTeam();
                 changeState(0);
             }
 
@@ -259,7 +265,6 @@ public class MentorController implements HttpHandler {
         TeamDao teamDao = new TeamDao();
         teamDao.loadTeams();
         LinkedList<TeamShoppingModel> teamShoppingModels = teamDao.getObjectList();
-        System.out.println(teamShoppingModels.size());
         return teamShoppingModels;
     }
 
@@ -269,7 +274,7 @@ public class MentorController implements HttpHandler {
 
     private LinkedList<StudentModel> temporaryStudentsList(LinkedList<StudentModel> students) {
         LinkedList<StudentModel> studentsNew = students;
-        return students;
+        return studentsNew;
     }
 
     private LinkedList<StudentModel> chooseStudents() {
@@ -286,6 +291,13 @@ public class MentorController implements HttpHandler {
             }
         }
         return students;
+    }
+    private void removeStudentsFromTeam() {
+        TeamDao teamDao = new TeamDao();
+        MentorDAO mentorDAO = new MentorDAO();
+        MentorModel mentorModel = mentorDAO.getMentor(userId);
+        teamDao.removeAllRecordsFromTeamstable(mentorModel);
+        updateStudents();
     }
 
     private void updateStudents() {
