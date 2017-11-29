@@ -1,0 +1,24 @@
+{#<style onload="buttonFunction()" ></style>#}
+<div class="table">
+    <header>
+        <form name="myform" action="" method="POST" id="myForm">
+            <label>Reset Team </label><br>
+            <input type="text" name="name" placeholder="enter team name..." required> <br>
+            <input type="button" onclick="myFunction()" value="Reset">
+        </form>
+    </header>
+</div>
+<script>
+
+    function myFunction() {
+        if (confirm("Press a button!") == true) {
+
+            document.getElementById("myForm").submit();
+        } else {
+
+            alert("No students to team!");
+
+        }
+
+    }
+</script>
