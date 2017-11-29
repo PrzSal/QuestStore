@@ -66,6 +66,30 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
         return studentsWithQuests;
     }
 
+    public void deleteStudentWithQuest(StudentQuestModel studentQuestModel) {
+
+        Connection connection;
+        String title = studentQuestModel.getTitle().replaceAll("\\s+", "\n");
+        Integer studentID = studentQuestModel.getStudentID();
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String insertTableSQL = "DELETE FROM StudentsWithQuests WHERE quest_name = ? AND user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, studentID);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+    
     public void loadQuest() {
 
         Connection connection;
