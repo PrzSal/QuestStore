@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.QuestCategoryModel;
+import com.codecool.dream_is_green.model.StudentQuestModel;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -11,8 +12,8 @@ import java.util.LinkedList;
 
 public class QuestDAO extends AbstractDAO<QuestModel> {
 
-    public LinkedList<String> loadStudentsWithQuests(int studentID) {
-        LinkedList<String> studentsWithQuests = new LinkedList<>();
+    public LinkedList<String> loadQuestsTitle(int studentID) {
+        LinkedList<String> questsTile = new LinkedList<>();
         Connection connection;
 
         try {
@@ -27,7 +28,36 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             while (rs.next()) {
                 String title = rs.getString("quest_name");
 
-                studentsWithQuests.add(title);
+                questsTile.add(title);
+            }
+
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return questsTile;
+    }
+
+    public LinkedList<StudentQuestModel> loadStudentsWithQuests() {
+        LinkedList<StudentQuestModel> studentsWithQuests = new LinkedList<>();
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String selectSQL = "SELECT * FROM StudentsWithQuests;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("quest_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("quest_category");
+                Integer studentID = rs.getInt("user_id");
+
+                QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
+                StudentQuestModel studentQuestModel = new StudentQuestModel(title, price, questCategoryModel, studentID);
+                studentsWithQuests.add(studentQuestModel);
             }
 
         } catch ( Exception e ) {
