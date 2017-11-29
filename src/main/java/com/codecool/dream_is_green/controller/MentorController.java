@@ -182,7 +182,7 @@ public class MentorController implements HttpHandler {
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
             String option = inputs.get("button");
-            
+
             ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
             ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
 
