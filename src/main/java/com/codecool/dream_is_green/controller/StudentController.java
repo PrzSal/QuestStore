@@ -205,11 +205,11 @@ public class StudentController implements HttpHandler {
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
-            LinkedList<String> studentWithQuests = questDAO.loadStudentsWithQuests(studentID);
+            LinkedList<String> titles = questDAO.loadQuestsTitle(studentID);
             LinkedList<QuestModel> quests = questDAO.getObjectList();
-            System.out.println(studentWithQuests);
+            System.out.println(titles);
             ResponseController<QuestModel> responseController = new ResponseController<>();
-            responseController.sendQuestResponse(httpExchange, countMail, quests, studentWithQuests,
+            responseController.sendQuestResponse(httpExchange, countMail, quests, titles,
                     "questsModels", "Do quest",
                     "student/student_menu.twig", "student/student_do_quest.twig");
         }

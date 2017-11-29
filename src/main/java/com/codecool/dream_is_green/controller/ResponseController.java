@@ -1,7 +1,6 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
-import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.TeamShoppingModel;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
