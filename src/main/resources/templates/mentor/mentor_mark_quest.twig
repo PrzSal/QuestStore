@@ -1,0 +1,156 @@
+<div class="mark_container">
+    <div class="markAllTable">
+        <table class="markTable" id="table" border="1">
+            <thead>
+            <tr>
+                <th class="tg-gkax">No.</th>
+                <th class="tg-gkax">Title</th>
+                <th class="tg-gkax">Category</th>
+                <th class="tg-gkax">Price</th>
+                <th class="tg-gkax">Student ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for quest in studentQuestModels %}
+                <tr>
+                    <td class="tg-gkax">{{ loop.index }}</td>
+                    <td class="tg-gkax">{{ quest.title }}</td>
+                    <td class="tg-gkax">{{ quest.category }}</td>
+                    <td class="tg-gkax">{{ quest.price }}</td>
+                    <td class="tg-gkax">{{ quest.studentID }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="markSubmitTable">
+        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+            Title :<input type="text" name="title" id="title" required readonly>
+            Category :<input type="text" name="category" id="category" required readonly>
+            Price :<input type="number" name="price" id="price" required readonly>
+            Student ID :<input type="number" name="student_id" id="student_id" required readonly>
+
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Mark as done">
+        </form>
+    </div>
+</div>
+
+<style>
+    div.markAllTable {
+        display: flex;
+        justify-content: center;
+        transform: scale(1.2, 1.2);
+    }
+
+    table.markTable {
+        font-family: "Arial Black", Gadget, sans-serif;
+        border: 2px solid #000000;
+        background-color: #4A4A4A;
+        width: 80%;
+        height: 9%;
+        margin-top: 5%;
+        text-align: center;
+        border-collapse: collapse;
+    }
+
+    .markSubmitTable {
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 2%;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #ffffff;
+        border: 2px solid black;
+        margin-bottom: 1%;
+        width: 80%;
+        margin-left: 220px;
+        text-align: center;
+        display: flex;
+        padding: 7px;
+
+        background-color: #4A4A4A;
+    }
+
+    .markSubmit {
+        margin-left: 5%;
+        margin-top: 6px;
+        transform: scale(1.2, 1.2);
+
+    }
+    table.markTable td, table.markTable th {
+        border: 1px solid #000000;
+        padding: 5px 2%;
+    }
+    table.markTable tbody td {
+        font-size: 13px;
+        color: #ffffff;
+    }
+
+    table.markTable thead {
+        background: #000000;
+        border-bottom: 3px solid #000000;
+    }
+    table.markTable thead th {
+        font-size: 15px;
+        font-weight: bold;
+        color: #E6E6E6;
+        text-align: center;
+        border-left: 2px solid #4A4A4A;
+    }
+    table.markTable thead th:first-child {
+        border-left: none;
+    }
+
+    table.markTable tfoot td {
+        font-size: 12px;
+    }
+
+    table.markTable tbody tr:hover {
+        background-color: #3139ff; cursor: pointer; color: #fff;
+    }
+
+    tbody tr{cursor: pointer; transition: all .25s ease-in-out}
+    .selected{background-color: #3536ff; color: #fff;}
+
+</style>
+
+<script>
+
+    var rIndex,
+        table = document.getElementById("table");
+
+    // display selected row data into input text
+    function selectedRowToInput()
+    {
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                // get the selected row index
+                rIndex = this.rowIndex;
+                document.getElementById("title").value = this.cells[1].innerText;
+                document.getElementById("category").value = this.cells[2].innerText;
+                document.getElementById("price").value = this.cells[3].innerHTML;
+                document.getElementById("student_id").value = this.cells[4].innerHTML;
+
+                // remove the background from the previous selected row
+                if(typeof index !== "undefined"){
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+                console.log(typeof index);
+            };
+        }
+    }
+    selectedRowToInput();
+
+</script>
+
+
+

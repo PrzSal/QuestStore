@@ -4,11 +4,6 @@ import com.codecool.dream_is_green.model.QuestModel;
 import com.codecool.dream_is_green.model.SessionModel;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class SessionDAO extends AbstractDAO<QuestModel> {
 

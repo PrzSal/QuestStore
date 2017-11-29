@@ -74,27 +74,6 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
         }
     }
 
-    public void updateCoolcoins(StudentModel student) {
-
-        Connection connection;
-        Statement statement;
-
-        try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.createStatement();
-            connection.setAutoCommit(false);
-
-            Integer coolcoins = student.getWallet().getCoolCoins();
-            String query = "UPDATE WalletTable SET coolcoins = " + coolcoins +  " WHERE user_id = '" + student.getUserID() + "'";
-
-            statement.executeUpdate(query);
-            connection.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public LinkedList<ArtifactModel> getStudentArtifacts(Integer userId) {
 
         LinkedList<ArtifactModel> studentArtifacts = new LinkedList<>();

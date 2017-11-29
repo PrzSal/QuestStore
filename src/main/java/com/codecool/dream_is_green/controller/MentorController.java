@@ -36,8 +36,8 @@ public class MentorController implements HttpHandler {
 //            addStudent(httpExchange);
         } else if (userAction.equals("add_artifact")) {
             manageArtifact(httpExchange);
-//        } else if (userAction.equals("add_quest")) {
-//            addMentor(httpExchange);
+        } else if (userAction.equals("mark_quest")) {
+            markQuest(httpExchange);
         } else if (userAction.equals("show_students")) {
             showStudents(httpExchange);
         } else if (userAction.equals("create_team")) {
@@ -85,52 +85,6 @@ public class MentorController implements HttpHandler {
         }
     }
 
-    private void manageArtifact(HttpExchange httpExchange) throws IOException {
-
-        String method = httpExchange.getRequestMethod();
-
-        if (method.equals("GET")) {
-            ArtifactDAO artifactDAO = new ArtifactDAO();
-            artifactDAO.loadArtifact();
-            LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
-            ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, artifacts,
-                    "artifactsModels", "Add artifact",
-                    "mentor/menu_mentor.twig", "mentor/mentor_add_artifact.twig");
-
-        }
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-
-            Map<String, String> inputs = parseFormData(formData);
-            String title = inputs.get("title").trim();
-
-            String category = inputs.get("category").trim();
-            String priceStr = inputs.get("price");
-            Integer price = Integer.parseInt(priceStr);
-            String option = inputs.get("button");
-            ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
-            ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
-            ArtifactDAO artifactDAO = new ArtifactDAO();
-
-            if (option.equals("Add")) {
-                artifactDAO.insertArtifact("ArtifactsTable", artifactModel, 0);
-            } else if (option.equals("Remove")) {
-                artifactDAO.deleteArtifact(title);
-            } else if (option.equals("Update")) {
-                artifactDAO.updateArtifactsTable(artifactModel);
-                artifactDAO.updateArtifactStudents(artifactModel);
-            }
-
-            httpExchange.getResponseHeaders().set("Location", "/mentor/add_artifact");
-            httpExchange.sendResponseHeaders(302,-1);
-        }
-    }
-
-
     private void clearCookie(HttpExchange httpExchange) throws IOException {
         cookie.cleanCookie(httpExchange);
 
@@ -166,6 +120,85 @@ public class MentorController implements HttpHandler {
         responseController.sendResponse(httpExchange, countMail, students,
                 "studentModels", "Show students",
                 "mentor/menu_mentor.twig", "mentor/mentor_show_student.twig");
+    }
+
+    private void markQuest(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            LinkedList<StudentQuestModel> studentQuestModels = questDAO.loadStudentsWithQuests();
+            ResponseController<StudentQuestModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, studentQuestModels,
+                    "studentQuestModels", "Mark quest",
+                    "mentor/menu_mentor.twig", "mentor/mentor_mark_quest.twig");
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title").trim();
+            String category = inputs.get("category").trim();
+            Integer price = Integer.valueOf(inputs.get("price"));
+            Integer studentID = Integer.valueOf(inputs.get("student_id"));
+            QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
+            StudentQuestModel studentQuestModel = new StudentQuestModel(title, price, questCategoryModel, studentID);
+
+            WalletDAO walletDAO = new WalletDAO();
+            Integer coolCoins = walletDAO.getStudentCoolCoins(studentID);
+            walletDAO.updateStudentCoolCoins(coolCoins + price, studentID);
+            questDAO.deleteStudentWithQuest(studentQuestModel);
+
+            httpExchange.getResponseHeaders().set("Location", "/mentor/mark_quest");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
+    }
+
+
+    private void manageArtifact(HttpExchange httpExchange) throws IOException {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            artifactDAO.loadArtifact();
+            LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
+            ResponseController<ArtifactModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, artifacts,
+                    "artifactsModels", "Add artifact",
+                    "mentor/menu_mentor.twig", "mentor/mentor_add_artifact.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title").trim();
+
+            String category = inputs.get("category").trim();
+            String priceStr = inputs.get("price");
+            Integer price = Integer.parseInt(priceStr);
+            String option = inputs.get("button");
+            ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
+            ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
+
+            if (option.equals("Add")) {
+                artifactDAO.insertArtifact("ArtifactsTable", artifactModel, 0);
+            } else if (option.equals("Remove")) {
+                artifactDAO.deleteArtifact(title);
+            } else if (option.equals("Update")) {
+                artifactDAO.updateArtifactsTable(artifactModel);
+                artifactDAO.updateArtifactStudents(artifactModel);
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/mentor/add_artifact");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void createTeam(HttpExchange httpExchange) throws IOException {
@@ -239,8 +272,6 @@ public class MentorController implements HttpHandler {
         TeamDao teamDao = new TeamDao();
         Integer teamId = teamDao.getTeamId(teamShoppingModel);
         for (StudentModel student : temporaryStudents) {
-
-//            System.out.println(student.getName() + teamId);
             studentDAO.updateStudent(student.getUserID(), "team_id", String.valueOf(teamId));
         }
     }

@@ -205,11 +205,11 @@ public class StudentController implements HttpHandler {
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
-            LinkedList<String> studentWithQuests = questDAO.loadStudentsWithQuests(studentID);
+            LinkedList<String> titles = questDAO.loadQuestsTitle(studentID);
             LinkedList<QuestModel> quests = questDAO.getObjectList();
-            System.out.println(studentWithQuests);
+            System.out.println(titles);
             ResponseController<QuestModel> responseController = new ResponseController<>();
-            responseController.sendQuestResponse(httpExchange, countMail, quests, studentWithQuests,
+            responseController.sendQuestResponse(httpExchange, countMail, quests, titles,
                     "questsModels", "Do quest",
                     "student/student_menu.twig", "student/student_do_quest.twig");
         }
@@ -259,10 +259,14 @@ public class StudentController implements HttpHandler {
         WalletDAO walletDAO = new WalletDAO();
         Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
         LevelDAO levelDAO = new LevelDAO();
-        LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentCoolCoins - 1000);
+        Integer studentExp = studentCoolCoins - 1000;
+        LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentExp);
+        LevelModel previousLevel = levelDAO.getPreviousLevel(studentExp);
+        LevelModel nextLevel = levelDAO.getNextLevel(studentExp);
 
         ResponseController<LevelModel> responseController = new ResponseController<>();
-        responseController.sendResponseLevel(httpExchange, countMail, "Level", studentLevel,
+        responseController.sendResponseLevel(httpExchange, countMail, "Level",
+                studentExp, studentLevel, previousLevel, nextLevel,
                 "student/student_menu.twig", "student/student_show_level.twig");
     }
 

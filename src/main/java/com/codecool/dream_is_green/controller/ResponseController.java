@@ -2,7 +2,6 @@ package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
 import com.codecool.dream_is_green.model.LevelModel;
-import com.codecool.dream_is_green.model.QuestModel;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -145,12 +144,16 @@ public class ResponseController<T> {
     }
 
     public void sendResponseLevel(HttpExchange httpExchange, Integer counterMail, String title,
-                                  LevelModel studentLevel, String menuPath, String pagePath) throws IOException {
+                                  Integer studentExp, LevelModel studentLevel, LevelModel previousLevel, LevelModel nextLevel,
+                                  String menuPath, String pagePath) throws IOException {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
 
         model.with("studentLevel", studentLevel);
+        model.with("previousLevel", previousLevel);
+        model.with("nextLevel", nextLevel);
+        model.with("studentExp", studentExp);
         model.with("title", title);
         model.with("menu", "classpath:/templates/" + menuPath);
         model.with("main", "classpath:/templates/" + pagePath);
