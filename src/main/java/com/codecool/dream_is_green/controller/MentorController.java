@@ -132,7 +132,6 @@ public class MentorController implements HttpHandler {
             responseController.sendResponse(httpExchange, countMail, studentQuestModels,
                     "studentQuestModels", "Mark quest",
                     "mentor/menu_mentor.twig", "mentor/mentor_mark_quest.twig");
-
         }
 
         if (method.equals("POST")) {
@@ -144,8 +143,7 @@ public class MentorController implements HttpHandler {
             String title = inputs.get("title").trim();
             String category = inputs.get("category").trim();
             Integer price = Integer.valueOf(inputs.get("price"));
-            Integer studentID = Integer.valueOf(inputs.get("studentID"));
-
+            Integer studentID = Integer.valueOf(inputs.get("student_id"));
             QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
             StudentQuestModel studentQuestModel = new StudentQuestModel(title, price, questCategoryModel, studentID);
 
@@ -273,8 +271,6 @@ public class MentorController implements HttpHandler {
         TeamDao teamDao = new TeamDao();
         Integer teamId = teamDao.getTeamId(teamShoppingModel);
         for (StudentModel student : temporaryStudents) {
-
-//            System.out.println(student.getName() + teamId);
             studentDAO.updateStudent(student.getUserID(), "team_id", String.valueOf(teamId));
         }
     }
