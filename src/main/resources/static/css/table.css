@@ -1,0 +1,96 @@
+div.globalTable {
+    display: flex;
+    justify-content: center;
+}
+
+table.localTable {
+    padding: 10px 10px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    border: 2px solid #000000;
+    background-color: #4A4A4A;
+    width: 80%;
+    height: 9%;
+    margin-top: 5%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.submitTable {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 2%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    border: 2px solid black;
+    margin-bottom: 1%;
+    width: 80%;
+    margin-left: 220px;
+    text-align: center;
+    display: flex;
+    padding: 7px;
+
+    background-color: #4A4A4A;
+}
+
+.markSubmit {
+    margin-left: 5%;
+    margin-top: 6px;
+    transform: scale(1.2, 1.2);
+    cursor: pointer; transition: all .25s ease-in-out;
+}
+
+table.localTable td, table.localTable th {
+    border: 1px solid #000000;
+    padding: 5px 2%;
+}
+table.localTable tbody td {
+    font-size: 15px;
+    color: #ffffff;
+}
+
+table.localTable thead {
+    background: #000000;
+    border-bottom: 3px solid #000000;
+}
+table.localTable thead th {
+    font-size: 17px;
+    font-weight: bold;
+    color: #E6E6E6;
+    text-align: center;
+    border-left: 2px solid #4A4A4A;
+}
+table.localTable thead th:first-child {
+    border-left: none;
+}
+
+table.localTable tfoot td {
+    font-size: 15px;
+}
+
+table.localTable tbody tr:hover {
+    background-color: #3139ff; cursor: pointer; color: #fff;
+}
+
+
+table.localTable tr {
+    line-height: 20px;
+}
+
+tbody tr{cursor: pointer; transition: all .25s ease-in-out  }
+
+.selected{background-color: #3536ff; color: #fff}
+
+.emptyList {
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: center;
+    display: flex;
+    margin-left: 10%;
+    background-color: #4A4A4A;
+    width: 79%;
+    border: 2px solid #000000;
+    padding: 10px  2px;
+    justify-content: center;
+    color: white;
+}
