@@ -1,65 +1,46 @@
-<div class="mark_container">
-    <div class="markAllTable">
-        <table class="markTable" id="table" border="1">
+<div class="add_artifact_container">
+    <div class="manageArtifactTable">
+        <table class="artifactTable" id="table" border="1">
             <thead>
             <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Category</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Student ID</th>
+                {#<th>No.</th>#}
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
             </tr>
             </thead>
             <tbody>
-            {% for quest in studentQuestModels %}
+            {% for artifact in artifactsModels %}
                 <tr>
-                    <td class="tg-gkax">{{ loop.index }}</td>
-                    <td class="tg-gkax">{{ quest.title }}</td>
-                    <td class="tg-gkax">{{ quest.category }}</td>
-                    <td class="tg-gkax">{{ quest.price }}</td>
-                    <td class="tg-gkax">{{ quest.studentID }}</td>
+                    {#<td>{{ loop.index }}</td>#}
+                    <td>{{ artifact.title }}</td>
+                    <td>{{ artifact.category }}</td>
+                    <td>{{ artifact.price }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-    {% if studentQuestModels.size() == 0 %}
-       <a class="emptyList">Empty list</a>
-    {% else %}
-    <div class="markSubmitTable">
+    <div class="submitArtifactTable">
         <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
-            Title :<input type="text" name="title" id="title" required readonly>
-            Category :<input type="text" name="category" id="category" required readonly>
-            Price :<input type="number" name="price" id="price" required readonly>
-            Student ID :<input type="number" name="student_id" id="student_id" required readonly>
-
-            <input class="markSubmit" id="submit" name="button" type="submit"  value="Mark as done">
+            Title :<input type="text" name="title" id="title" required>
+            Category :<input type="text" name="category" id="category" required>
+            Price :<input type="number" name="price" id="price" required>
+            <br>
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Add">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Remove">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Update">
         </form>
     </div>
-    {% endif %}
 </div>
-
 <style>
 
-    .emptyList {
-        font-family: "Arial Black", Gadget, sans-serif;
-        text-align: center;
-        display: flex;
-        margin-left: 10%;
-        background-color: #4A4A4A;
-        width: 79%;
-        border: 2px solid #000000;
-        padding: 10px  2px;
-        justify-content: center;
-        color: white;
-    }
-
-    div.markAllTable {
+    div.manageArtifactTable {
         display: flex;
         justify-content: center;
     }
 
-    table.markTable {
+    table.artifactTable {
         padding: 10px 10px;
         font-family: "Arial Black", Gadget, sans-serif;
         border: 2px solid #000000;
@@ -71,7 +52,7 @@
         border-collapse: collapse;
     }
 
-    .markSubmitTable {
+    .submitArtifactTable {
         display: flex;
         justify-content: center;
         position: fixed;
@@ -94,50 +75,53 @@
         margin-left: 5%;
         margin-top: 6px;
         transform: scale(1.2, 1.2);
-
+        cursor: pointer; transition: all .25s ease-in-out;
     }
-    table.markTable td, table.markTable th {
+
+    table.artifactTable td, table.artifactTable th {
         border: 1px solid #000000;
         padding: 5px 2%;
     }
-    table.markTable tbody td {
-        font-size: 17px;
+    table.artifactTable tbody td {
+        font-size: 15px;
         color: #ffffff;
     }
 
-    table.markTable thead {
+    table.artifactTable thead {
         background: #000000;
         border-bottom: 3px solid #000000;
     }
-    table.markTable thead th {
-        font-size: 15px;
+    table.artifactTable thead th {
+        font-size: 17px;
         font-weight: bold;
         color: #E6E6E6;
         text-align: center;
         border-left: 2px solid #4A4A4A;
     }
-    table.markTable thead th:first-child {
+    table.artifactTable thead th:first-child {
         border-left: none;
     }
 
-    table.markTable tr {
-        line-height: 20px;
-    }
-
-    table.markTable tfoot td {
+    table.artifactTable tfoot td {
         font-size: 15px;
     }
 
-    table.markTable tbody tr:hover {
+    table.artifactTable tbody tr:hover {
         background-color: #3139ff; cursor: pointer; color: #fff;
     }
 
-    tbody tr{cursor: pointer; transition: all .25s ease-in-out}
-    .selected{background-color: #3536ff; color: #fff;}
+
+    table.artifactTable tr {
+        line-height: 20px;
+    }
+
+    tbody tr{cursor: pointer; transition: all .25s ease-in-out  }
+    .selected{background-color: #3536ff; color: #fff}
 
 </style>
 
-<script>
+
+<script type="text/javascript">
 
     var rIndex,
         table = document.getElementById("table");
@@ -152,10 +136,9 @@
             {
                 // get the selected row index
                 rIndex = this.rowIndex;
-                document.getElementById("title").value = this.cells[1].innerText;
-                document.getElementById("category").value = this.cells[2].innerText;
-                document.getElementById("price").value = this.cells[3].innerHTML;
-                document.getElementById("student_id").value = this.cells[4].innerHTML;
+                document.getElementById("title").value = this.cells[0].innerText;
+                document.getElementById("category").value = this.cells[1].innerText;
+                document.getElementById("price").value = this.cells[2].innerHTML;
 
                 // remove the background from the previous selected row
                 if(typeof index !== "undefined"){
@@ -173,6 +156,3 @@
     selectedRowToInput();
 
 </script>
-
-
-
