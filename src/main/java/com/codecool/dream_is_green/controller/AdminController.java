@@ -12,16 +12,15 @@ import java.util.*;
 public class AdminController implements HttpHandler {
 
     private Integer countMail;
-    private Integer userId;
+
     private static CookieManager cookie = new CookieManager();
+    private static SessionModel session;
 
     public void handle(HttpExchange httpExchange) throws IOException {
         URI uri = httpExchange.getRequestURI();
         FormDataController formDataController = new FormDataController();
         URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
-        MailController mailController = new MailController();
-        countMail = mailController.checkMail(10);
 
         if (userAction == null) {
             index(httpExchange);
@@ -38,8 +37,9 @@ public class AdminController implements HttpHandler {
         } else if (userAction.equals("show_levels")) {
             showLevels(httpExchange);
         } else if (userAction.equals("mail")) {
-            mailController = new MailController();
-            mailController.showReadMail(httpExchange, 10);
+            MailController mailController = new MailController();
+            Integer userId = session.getUserId();
+            mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         }
@@ -50,9 +50,12 @@ public class AdminController implements HttpHandler {
         cookie.redirectIfCookieNull(httpExchange);
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
+        session = sessionDAO.getSession(sessionId);
 
         if (session != null) {
+            Integer userId = session.getUserId();
+            MailController mailController = new MailController();
+            countMail = mailController.checkMail(userId);
 
             String userType = session.getUserType();
             redirectToAdminHome(httpExchange, userType);
@@ -66,7 +69,7 @@ public class AdminController implements HttpHandler {
                                      String userType) throws IOException{
         if(userType.equals("admin")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Home page",
+            responseController.sendResponse(httpExchange, countMail, "Home page",
                     "admin/menu_admin.twig","admin/admin_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -121,7 +124,7 @@ public class AdminController implements HttpHandler {
 
         if (method.equals("GET")) {
             ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Add class",
+            responseController.sendResponse(httpExchange, countMail, "Add class",
                     "admin/menu_admin.twig","admin/admin_add_class.twig");
         }
     }
@@ -142,7 +145,7 @@ public class AdminController implements HttpHandler {
 
         if (method.equals("GET")) {
             ResponseController<LevelModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange,"Add level",
+            responseController.sendResponse(httpExchange, countMail, "Add level",
                     "admin/menu_admin.twig","admin/admin_create_level.twig");
         }
     }
