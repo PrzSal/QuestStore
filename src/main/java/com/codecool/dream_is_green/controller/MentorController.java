@@ -254,7 +254,6 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(state + formData);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -268,15 +267,22 @@ public class MentorController implements HttpHandler {
                 temporaryStudents = temporaryStudentsList(students);
                 changeState(2);
 
-            } else if (formData.compareTo("confirm") > 0 && state == 2) {
+            } else if (formData.equals("confirm=") && state == 2) {
+                System.out.println("whodzdo conf");
                 updateStudents();
                 temporaryStudents.clear();
                 students.clear();
                 changeState(0);
 
             } else if (formData.compareTo("reset") > 0 && state == 10) {
-                removeTeam();
+                removeTeams();
                 removeStudentFromTeam();
+                changeState(0);
+
+            } else if (formData.equals("restore=")){
+                removeLastTeam();
+                temporaryStudents.clear();
+                students.clear();
                 changeState(0);
             }
 
@@ -302,6 +308,12 @@ public class MentorController implements HttpHandler {
                 }
             }
         }
+    }
+
+    private void removeLastTeam() {
+        TeamDao teamDao = new TeamDao();
+        Integer teamId = teamDao.getTeamId(teamShoppingModel);
+        teamDao.removeLastElement(teamId);
     }
 
     private LinkedList<TeamShoppingModel> showTeams() {
@@ -337,7 +349,7 @@ public class MentorController implements HttpHandler {
         return students;
     }
 
-    private void removeTeam() {
+    private void removeTeams() {
         Integer userId = session.getUserId();
         TeamDao teamDao = new TeamDao();
         MentorDAO mentorDAO = new MentorDAO();

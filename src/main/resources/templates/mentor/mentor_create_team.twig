@@ -13,7 +13,7 @@
     function buttonFunction() {
         if ({{ state }} == 1) {
             document.getElementById("buttonTeamShop").innerHTML =
-                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+               "<form method=\"post\" onsubmit=\"return validation(this);\">  \n" +
                 "        <table class=\"localTable\" id=\"table\" border=\"21\">\n" +
                 "            <thead>\n" +
                 "                <tr>" +
@@ -79,10 +79,33 @@
                 "             {% endfor %}\n" +
                 "             </tbody>\n" +
                 "        </table>\n" +
-                "        <input type=\"hidden\" name=\"confirm\" placeholder=\"enter team name...\"> <br>\n" +
-                "        <input type=\"submit\" value=\"Confirm\">\n" +
+                "        <input type=\"hidden\" name=\"confirm\"> <br>\n" +
+                "        <input type=\"submit\" value=\"confirm\">\n" +
+                "    </form>\n" +
+                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+                "        <input type=\"hidden\" name=\"restore\"> <br>\n" +
+                "        <input type=\"submit\" value=\"restore\">\n"+
                 "    </form>";
         }
     }
 
+    function validation(form)
+    {
+        var size = form.nextPage.length;
+        var check = false;
+        for (var i=0; i < size ; i++)
+        {
+            if(form.nextPage[i].checked == true)
+            {
+                check = true;
+                break;
+            }
+        }
+        if(check == false)
+        {
+            alert('Please select at least one Student !');
+            return false;
+        }
+        return true;
+    }
 </script>
