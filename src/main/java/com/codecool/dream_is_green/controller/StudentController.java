@@ -242,9 +242,8 @@ public class StudentController implements HttpHandler {
         Integer userId = session.getUserId();
 
         WalletDAO walletDAO = new WalletDAO();
-        Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
+        Integer studentExp = walletDAO.getStudentExp(userId);
         LevelDAO levelDAO = new LevelDAO();
-        Integer studentExp = studentCoolCoins - 1000;
         LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentExp);
         LevelModel previousLevel = levelDAO.getPreviousLevel(studentExp);
         LevelModel nextLevel = levelDAO.getNextLevel(studentExp);

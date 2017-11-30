@@ -147,6 +147,8 @@ public class MentorController implements HttpHandler {
             WalletDAO walletDAO = new WalletDAO();
             Integer coolCoins = walletDAO.getStudentCoolCoins(studentID);
             walletDAO.updateStudentCoolCoins(coolCoins + price, studentID);
+            Integer studentExp = walletDAO.getStudentExp(studentID);
+            walletDAO.updateStudentExp(studentExp + price, studentID);
             questDAO.deleteStudentWithQuest(studentQuestModel);
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/mark_quest");

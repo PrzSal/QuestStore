@@ -1,137 +1,55 @@
-<div class="buy_artifact_container">
-    <div class="tab tab-1">
-        <table class="buy_artifact_Table" id="table" border="1">
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
             <thead>
                 <tr>
-                    <th>Previous</th>
                     <th>Current</th>
+                    <th>Exp</th>
                     <th>Next</th>
                 </tr>
             </thead>
-            <tbody>
+            <cltbody>
                     <tr>
-                        <td>{{  previousLevel.levelName }}</td>
-                        <td>{{  studentLevel.levelName }}</td>
-                        <td>{{  nextLevel.levelName }}</td>
+                        <td class="tddd">{{  studentLevel.levelName }}</td>
+                        <td>
+                            <div id="pbc">
+                                <div id="pb"></div>
+                                <div id="pbt"></div>
+                            </div>
+                        </td>
+                        <td class="tddd">{{  nextLevel.levelName }}</td>
                     </tr>
                     <tr>
-                        <td>{{  previousLevel.expRequired }}</td>
-                        <td>{{  studentExp }}</td>
+                        <td>{{  studentLevel.expRequired }}</td>
+                        <td> {{ studentExp }}</td>
                         <td>{{  nextLevel.expRequired }}</td>
                     </tr>
-                    <tr>
-                        <progress max="{{ nextLevel.expRequired - previousLevel.expRequired }}" value="{{ studentExp - previousLevel.expRequired }}" class="html5"></progress>
-                    </tr>
-            </tbody>
+
+            </cltbody>
         </table>
 </div>
 
 
-
-
 <style>
 
-    div.buy_artifact_container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20%;
-        transform: scale(1.2, 1.2);
-
+    #pbc{
+        width: 500px;
+        height:30px;
+        background:#000;
+        border:#000 1px solid;
+        margin-left: 7%;
+        margin-top: 2%;
     }
-
-    .tab{float: left;}
-    .tab-2 input{display: block;margin-bottom: 10px}
-
-
-
-    table.buy_artifact_Table {
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        width: 100%;
-        text-align: center;
-    }
-
-    .tab-2 {
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        width: 14.5%;
-        text-align: center;
-        margin-left: 30%;
-    }
-
-
-    table.buy_artifact_Table td, table.buy_artifact_Table th, .tab-2 {
-        border: 1px solid #AAAAAA;
-        padding: 3px 3px;
-    }
-    tbody tr {
-        transition:all .25s ease-in-out;
-        background: #a4ffff;
-    }
-    /*tbody tr:nth-child(even) {*/
-        /*transition:all .25s ease-in-out;*/
-        /*background: #6fb79c;*/
-    /*}*/
-    table.buy_artifact_Table thead, .tab-2 {
-        background: #1C6EA4;
-        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        border-bottom: 2px solid #444444;
-    }
-    table.buy_artifact_Table thead th, .tab-2 {
-        font-size: 18px;
-        font-weight: bold;
-        color: #FFFFFF;
-        text-align: center;
-    }
-    table.buy_artifact_Table thead th:first-child {
-        border-left: none;
-    }
-
-    table.buy_artifact_Table tbody tr:hover {
-        background-color: #3f47ff; cursor: pointer; color: #fff;
-    }
-
-    tbody tr{cursor: pointer; transition: all .25s ease-in-out}
-    .selected{background-color: #3f47ff; color: #fff;}
+    #pbc > #pb{ position: relative; top:0px; background: #ff9f2c; width:0%; height:30px; color: #0FF; text-align:center; }
+    #pbc > #pbt{ position: relative; top:-25px; text-align:center; color:#FFF; padding: 0px; height:8px; font-size:12px; }
 
 </style>
 
-
 <script>
-
-    var rIndex,
-        table = document.getElementById("table");
-
-    // display selected row data into input text
-    function selectedRowToInput()
-    {
-
-        for(var i = 1; i < table.rows.length; i++)
-        {
-            table.rows[i].onclick = function()
-            {
-                // get the selected row index
-                rIndex = this.rowIndex;
-                document.getElementById("title").value = this.cells[0].innerText;
-                document.getElementById("category").value = this.cells[1].innerText;
-                document.getElementById("price").value = this.cells[2].innerHTML;
-
-                // remove the background from the previous selected row
-                if(typeof index !== "undefined"){
-                    table.rows[index].classList.toggle("selected");
-                }
-                console.log(typeof index);
-                // get the selected row index
-                index = this.rowIndex;
-                // add class selected to the row
-                this.classList.toggle("selected");
-                console.log(typeof index);
-            };
-        }
-    }
-    selectedRowToInput();
-
+    var testvalue = 100 * {{ studentExp - studentLevel.expRequired }} / {{ nextLevel.expRequired - studentLevel.expRequired }};
+    testvalue = Math.round(testvalue);
+    var pbt = document.getElementById("pbt");
+    var pb = document.getElementById("pb");
+    pb.style.width = testvalue+"%";
+    pbt.innerHTML = testvalue+"%";
 </script>
-
