@@ -63,8 +63,10 @@ body {
     width: 25%;
     margin: auto;
     text-align: center;
-    background-color:#fff;
-    border: 2px solid #ccc;
+    font-size: 25px;
+    background-color: #4A4A4A;
+    color: #ccc;
+    border: 2px solid black;
     border-radius:2px;
     padding: 30px 50px;
     margin-top: 0px;
@@ -89,7 +91,7 @@ body {
     font-weight:bold;
     text-transform: uppercase;
     font-size:20px;
-    color:#555555;
+    color: black;
 }
 
 .form textarea, .form input, .form select, .form-in textarea, .form-in input, .form-in select {
