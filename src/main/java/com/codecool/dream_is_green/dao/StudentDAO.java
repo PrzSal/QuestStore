@@ -9,7 +9,31 @@ import com.codecool.dream_is_green.model.PreUserModel;
 import com.codecool.dream_is_green.model.StudentModel;
 
 public class StudentDAO extends AbstractDAO<StudentModel> {
-    
+
+    public void deleteStudent(int id) {
+
+        Connection conn;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+
+            String statement1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'student'";
+            String statement2 = "DELETE FROM StudentsTable WHERE user_id = ?";
+            PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
+            PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
+
+            prepStmt1.setInt(1, id);
+            prepStmt2.setInt(1, id);
+            prepStmt1.execute();
+            prepStmt2.execute();
+            prepStmt1.close();
+            prepStmt2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void loadStudents() {
 
         try {
