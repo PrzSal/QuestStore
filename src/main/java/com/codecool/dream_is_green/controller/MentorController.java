@@ -210,6 +210,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
+            System.out.println(state + formData);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -307,6 +308,7 @@ public class MentorController implements HttpHandler {
         for (StudentModel studentModel : studentDAO.getObjectList()) {
             if (studentModel.getClassName().equals(mentorModel.getClassName())) {
                 studentDAO.updateStudent(studentModel.getUserID(), "team_id", "0");
+                studentDAO.updateStudent(studentModel.getUserID(), "voted", "no");
             }
         }
     }
