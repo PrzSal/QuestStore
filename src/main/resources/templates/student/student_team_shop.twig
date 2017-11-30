@@ -1,18 +1,32 @@
 <header>Team shop: {{ teamName }}</header>
 {% include data1 ignore missing %}
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="21">
+            <thead>
+                <div class="text">Team: {{ teamName }}</div>
+                <div class="text">Wallet Teams: {{ walletTeam }}</div>
+                <div class="text">Team Member</div>
+                <tr>
+                    <th>Nr.</th>
+                    <th>Name </th>
+                    <th>Surname </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if members.size() == 0 %}
+            <a class="emptyList">No team</a>
+            {% else %}
+            {% for member in members %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.surname }}</td>
 
-<div class="table">
-    <table class="tg">
-        <div class="text">Team Member</div>
-        <td class="tg-gkax">Nr.</td>
-        <td class="tg-gkax">Name </td>
-        <td class="tg-gkax">Artifact </td>
-        {% for shop in artifactModels %}
-            <tr>
-                <td class="tg-gkax">{{ loop.index }}</td>
-                <td class="tg-gkax">{{ shop.title }}</td>
-
-            </tr>
-        {% endfor %}
-    </table>
+                </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
 </div>
