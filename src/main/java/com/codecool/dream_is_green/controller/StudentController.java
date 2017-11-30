@@ -15,7 +15,7 @@ public class StudentController implements HttpHandler {
 
     private Integer countMail;
     private Integer userId = 0;
-    private Integer teamId = 0;
+//    private Integer teamId = 0;
     private Integer walletTeam = 0;
     private LinkedList<ArtifactModel> li;
 
@@ -47,7 +47,7 @@ public class StudentController implements HttpHandler {
         } else if (userAction.equals("level")) {
             showLevel(httpExchange);
         } else if (userAction.equals("team_shop")) {
-            teamShopping(httpExchange, teamId);
+            teamShopping(httpExchange);
         }  else if (userAction.equals("mail")) {
             mailController = new MailController();
             mailController.showReadMail(httpExchange, userId);
@@ -63,7 +63,6 @@ public class StudentController implements HttpHandler {
         SessionDAO sessionDAO = new SessionDAO();
         SessionModel session = sessionDAO.getSession(sessionId);
         userId = session.getUserId();
-        teamId = session.getTeamId();
 
         if (session != null) {
             String userType = session.getUserType();
@@ -270,9 +269,12 @@ public class StudentController implements HttpHandler {
                 "student/student_menu.twig", "student/student_show_level.twig");
     }
 
-    private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
+    private void teamShopping(HttpExchange httpExchange) throws IOException{
         String method = httpExchange.getRequestMethod();
-
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+        Integer teamId = session.getTeamId();
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
@@ -300,7 +302,7 @@ public class StudentController implements HttpHandler {
                 String header = preMailModel.getHeader();
                 String content = preMailModel.getContent();
                 mailController.sendMultiplyMailToStudents(students, content, header, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
 
             } else if (formData.compareTo("newPurchase") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
@@ -309,7 +311,7 @@ public class StudentController implements HttpHandler {
 
             } else if (formData.compareTo("mark") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "mark", teamId, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
                 String header = "Use an artifact";
                 String content = "Dear Codecooler \n, Your team use an artifact: " + teamShoppingModel.getArtifactModel().getTitle() + ". " +
                                  "You will receive detailed information soon from the Mentor. " +
@@ -406,7 +408,7 @@ public class StudentController implements HttpHandler {
         return teamShoppingModel;
     }
 
-    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao) {
+    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao, Integer teamId) {
         teamShoppingModel.setState(0);
         teamShoppingModel.setVotes(0);
         Integer state = teamShoppingModel.getState();

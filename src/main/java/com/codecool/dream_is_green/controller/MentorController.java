@@ -210,7 +210,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(formData + 10);
+            System.out.println(state + formData);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -229,10 +229,10 @@ public class MentorController implements HttpHandler {
                 temporaryStudents.clear();
                 students.clear();
                 changeState(0);
+
             } else if (formData.compareTo("reset") > 0 && state == 10) {
-                System.out.println("wchodzidoreseta");
-                teamShoppingModel.setTeamId(0);
-                removeStudentsFromTeam();
+                removeTeam();
+                removeStudentFromTeam();
                 changeState(0);
             }
 
@@ -241,7 +241,6 @@ public class MentorController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-
             if (state <= 1 && chooseStudents().size()>0) {
                 students = chooseStudents();
                 ResponseController<StudentModel> responseController = new ResponseController<>();
@@ -260,6 +259,7 @@ public class MentorController implements HttpHandler {
             }
         }
     }
+
     private LinkedList<TeamShoppingModel> showTeams() {
         TeamDao teamDao = new TeamDao();
         teamDao.loadTeams();
@@ -291,12 +291,26 @@ public class MentorController implements HttpHandler {
         }
         return students;
     }
-    private void removeStudentsFromTeam() {
+
+    private void removeTeam() {
+        System.out.println(userId);
         TeamDao teamDao = new TeamDao();
         MentorDAO mentorDAO = new MentorDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
         teamDao.removeAllRecordsFromTeamstable(mentorModel);
-        updateStudents();
+    }
+
+    private void removeStudentFromTeam() {
+        MentorDAO mentorDAO = new MentorDAO();
+        MentorModel mentorModel = mentorDAO.getMentor(userId);
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        for (StudentModel studentModel : studentDAO.getObjectList()) {
+            if (studentModel.getClassName().equals(mentorModel.getClassName())) {
+                studentDAO.updateStudent(studentModel.getUserID(), "team_id", "0");
+                studentDAO.updateStudent(studentModel.getUserID(), "voted", "no");
+            }
+        }
     }
 
     private void updateStudents() {
@@ -307,6 +321,7 @@ public class MentorController implements HttpHandler {
             studentDAO.updateStudent(student.getUserID(), "team_id", String.valueOf(teamId));
         }
     }
+
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
