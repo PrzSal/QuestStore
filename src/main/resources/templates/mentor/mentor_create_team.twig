@@ -1,8 +1,10 @@
 <style onload="buttonFunction()" ></style>
-<div class="table">
-    <header>
-        <p id="buttonTeamShop"> </p>
-    </header>
+<div class="container">
+    <div class="globalTable">
+        <header>
+            <p id="buttonTeamShop"> </p>
+        </header>
+    </div>
 </div>
 <script>
     if (document.attachEvent) {
@@ -12,25 +14,32 @@
         if ({{ state }} == 1) {
             document.getElementById("buttonTeamShop").innerHTML =
                 "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
-                "    <table class=\"tg\">\n" +
-                "        <td class=\"tg-gkax\">Nr.</td>\n" +
-                "        <td class=\"tg-gkax\">Name</td>\n" +
-                "        <td class=\"tg-gkax\">Surname</td>\n" +
-                "        <td class=\"tg-gkax\">Email</td>\n" +
-                "        <td class=\"tg-gkax\">Login</td>\n" +
-                "        <td class=\"tg-gkax\">Class Name</td>\n" +
-                "        {% for student in studentModels %}\n" +
-                "            <tr>\n" +
-                "                <td class=\"tg-gkax\">{{ loop.index }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.name }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.surname }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.email }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.login }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.className }}</td>\n" +
-                "                <td class=\"tg-gkax\"> <input type=\"checkbox\" name=\"nextPage\" value=\"{{ student.userID }}\"> </td>\n" +
-                "            </tr>\n" +
-                "        {% endfor %}\n" +
-                "    </table>\n" +
+                "        <table class=\"localTable\" id=\"table\" border=\"21\">\n" +
+                "            <thead>\n" +
+                "                <tr>" +
+                "                    <th>Nr.</th>\n" +
+                "                    <th>Name</th>\n" +
+                "                    <th>Surname</th>\n" +
+                "                    <th>Email</th>\n" +
+                "                    <th>Login</th>\n" +
+                "                    <th>Class Name</th>\n" +
+                "                    <th>CheckBox</th>\n" +
+                "                </tr>\n" +
+                "            </thead>\n" +
+                "            <tbody>\n" +
+                "            {% for student in studentModels %}\n" +
+                "                <tr>\n" +
+                "                    <td>{{ loop.index }}</td>\n" +
+                "                    <td>{{ student.name }}</td>\n" +
+                "                    <td>{{ student.surname }}</td>\n" +
+                "                    <td>{{ student.email }}</td>\n" +
+                "                    <td>{{ student.login }}</td>\n" +
+                "                    <td>{{ student.className }}</td>\n" +
+                "                    <td> <input type=\"checkbox\" name=\"nextPage\" value=\"{{ student.userID }}\"> </td>\n" +
+                "                </tr>\n" +
+                "             {% endfor %}\n" +
+                "             </tbody>\n" +
+                "        </table>\n" +
                 "        <label></label><br>\n" +
                 "        <input type=\"submit\" value=\"nextPage\">\n" +
                 "    </form>";
@@ -39,31 +48,37 @@
                 "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
                 "        <label>Team Name </label><br>\n" +
                 "        <input type=\"text\" name=\"name\" placeholder=\"enter team name...\" required> <br>\n" +
-                "        <input type=\"submit\" name=\"name\" value=\"Submit\">\n" +
+                "        <input class=\"markSubmit\" id=\"submit\" name=\"button\" type=\"submit\"  value=\"Add\">\n"+
                 "    </form>\n";
         } else if ({{ state }} == 2)
         {
             document.getElementById("buttonTeamShop").innerHTML =
                 "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
-                "        <label>Team Name </label><br>\n" +
-                "    <table class=\"tg\">\n" +
-                "        <td class=\"tg-gkax\">Nr.</td>\n" +
-                "        <td class=\"tg-gkax\">Name</td>\n" +
-                "        <td class=\"tg-gkax\">Surname</td>\n" +
-                "        <td class=\"tg-gkax\">Email</td>\n" +
-                "        <td class=\"tg-gkax\">Login</td>\n" +
-                "        <td class=\"tg-gkax\">Class Name</td>\n" +
-                "        {% for student in studentModels %}\n" +
-                "            <tr>\n" +
-                "                <td class=\"tg-gkax\">{{ loop.index }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.name }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.surname }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.email }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.login }}</td>\n" +
-                "                <td class=\"tg-gkax\">{{ student.className }}</td>\n" +
-                "            </tr>\n" +
-                "        {% endfor %}\n" +
-                "    </table>\n" +
+                "        <label>Choosen Students</label><br>\n" +
+                "        <table class=\"localTable\" id=\"table\" border=\"21\">\n" +
+                "            <thead>\n" +
+                "                <tr>" +
+                "                    <th>Nr.</th>\n" +
+                "                    <th>Name</th>\n" +
+                "                    <th>Surname</th>\n" +
+                "                    <th>Email</th>\n" +
+                "                    <th>Login</th>\n" +
+                "                    <th>Class Name</th>\n" +
+                "                </tr>\n" +
+                "            </thead>\n" +
+                "            <tbody>\n" +
+                "            {% for student in studentModels %}\n" +
+                "                <tr>\n" +
+                "                    <td>{{ loop.index }}</td>\n" +
+                "                    <td>{{ student.name }}</td>\n" +
+                "                    <td>{{ student.surname }}</td>\n" +
+                "                    <td>{{ student.email }}</td>\n" +
+                "                    <td>{{ student.login }}</td>\n" +
+                "                    <td>{{ student.className }}</td>\n" +
+                "                </tr>\n" +
+                "             {% endfor %}\n" +
+                "             </tbody>\n" +
+                "        </table>\n" +
                 "        <input type=\"hidden\" name=\"confirm\" placeholder=\"enter team name...\"> <br>\n" +
                 "        <input type=\"submit\" value=\"Confirm\">\n" +
                 "    </form>";
