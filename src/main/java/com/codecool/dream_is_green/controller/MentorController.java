@@ -113,20 +113,19 @@ public class MentorController implements HttpHandler {
             Map<String, String> inputs = parseFormData(formData);
             String name = inputs.get("name");
             String surname = inputs.get("surname");
-            String email =
-                    String login
-                    String password
+            String email = inputs.get("email");
+            String login = inputs.get("login");
+            String password = inputs.get("password");
+            String className = inputs.get("className");
 
-            ArtifactCategoryModel artifactCategoryModel = new ArtifactCategoryModel(category);
-            ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
-
+            PreUserModel preUserModel = new PreUserModel(name, surname, email,
+                                                        login, password, className);
             if (option.equals("Add")) {
-                artifactDAO.insertArtifact("ArtifactsTable", artifactModel, 0);
+                studentDAO.insertStudent("ArtifactsTable", artifactModel, 0);
             } else if (option.equals("Remove")) {
-                artifactDAO.deleteArtifact(title);
+                studentDAO.(title);
             } else if (option.equals("Update")) {
-                artifactDAO.updateArtifactsTable(artifactModel);
-                artifactDAO.updateArtifactStudents(artifactModel);
+                studentDAO.updateArtifactsTable(artifactModel);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/manage_students");
