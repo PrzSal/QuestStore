@@ -69,19 +69,19 @@ public class MentorController implements HttpHandler {
             redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
-            httpExchange.sendResponseHeaders(302,-1);
+            httpExchange.sendResponseHeaders(302, -1);
         }
     }
 
     private void redirectToMentorHome(HttpExchange httpExchange,
-                                     String userType) throws IOException{
-        if(userType.equals("mentor")) {
+                                      String userType) throws IOException {
+        if (userType.equals("mentor")) {
             ResponseController<User> responseController = new ResponseController<>();
             responseController.sendResponse(httpExchange, countMail, "Home page",
-                    "mentor/menu_mentor.twig","mentor/mentor_home.twig");
+                    "mentor/menu_mentor.twig", "mentor/mentor_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
-            httpExchange.sendResponseHeaders(302,-1);
+            httpExchange.sendResponseHeaders(302, -1);
         }
     }
 
@@ -89,7 +89,7 @@ public class MentorController implements HttpHandler {
         cookie.cleanCookie(httpExchange);
 
         httpExchange.getResponseHeaders().set("Location", "/login");
-        httpExchange.sendResponseHeaders(302,-1);
+        httpExchange.sendResponseHeaders(302, -1);
     }
 
     private void manageStudents(HttpExchange httpExchange) throws IOException {
@@ -109,27 +109,34 @@ public class MentorController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-
             Map<String, String> inputs = parseFormData(formData);
+
+            Integer studentID = Integer.valueOf(inputs.get("userID"));
             String name = inputs.get("name");
             String surname = inputs.get("surname");
             String email = inputs.get("email");
             String login = inputs.get("login");
             String password = inputs.get("password");
             String className = inputs.get("className");
+            Integer teamID = Integer.valueOf(inputs.get("teamID"));
 
             PreUserModel preUserModel = new PreUserModel(name, surname, email,
-                                                        login, password, className);
+                    login, password, className);
+
+            String option = inputs.get("button");
             if (option.equals("Add")) {
-                studentDAO.insertStudent("ArtifactsTable", artifactModel, 0);
+                studentDAO.insertStudent(preUserModel);
             } else if (option.equals("Remove")) {
-                studentDAO.(title);
+                studentDAO.deleteStudent(studentID);
             } else if (option.equals("Update")) {
-                studentDAO.updateArtifactsTable(artifactModel);
+                studentDAO.updateStudentModel(preUserModel, "UsersTable",
+                        studentID, teamID);
+                studentDAO.updateStudentModel(preUserModel, "students_table",
+                        studentID, teamID);
             }
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/manage_students");
-            httpExchange.sendResponseHeaders(302,-1);
+            httpExchange.sendResponseHeaders(302, -1);
         }
     }
 
