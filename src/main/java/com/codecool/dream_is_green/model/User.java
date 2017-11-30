@@ -22,6 +22,10 @@ public abstract class User {
         return name;
     }
 
+    public String getSurname() {
+        return this.surname;
+    }
+
     public int getUserID() {
         return userID;
     }

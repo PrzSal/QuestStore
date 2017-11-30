@@ -10,6 +10,30 @@ import com.codecool.dream_is_green.model.StudentModel;
 
 public class StudentDAO extends AbstractDAO<StudentModel> {
 
+    public void deleteStudent(int id) {
+
+        Connection conn;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+
+            String statement1 = "DELETE FROM UsersTable WHERE user_id = ? AND user_type = 'student'";
+            String statement2 = "DELETE FROM StudentsTable WHERE user_id = ?";
+            PreparedStatement prepStmt1 = conn.prepareStatement(statement1);
+            PreparedStatement prepStmt2 = conn.prepareStatement(statement2);
+
+            prepStmt1.setInt(1, id);
+            prepStmt2.setInt(1, id);
+            prepStmt1.execute();
+            prepStmt2.execute();
+            prepStmt1.close();
+            prepStmt2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void loadStudents() {
 
         try {
@@ -79,11 +103,52 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         }
     }
 
+    public void updateStudentModel(PreUserModel studentModel, String table, int studentID, int teamID) {
+
+        Connection connection;
+        String name = studentModel.getName();
+        String surname = studentModel.getSurname();
+        String email = studentModel.getEmail();
+        String login = studentModel.getLogin();
+        String password = studentModel.getPassword();
+        String className = studentModel.getClassName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement prepStmt;
+            String statement = "UPDATE UsersTable SET name = ?, surname = ?, email = ?," +
+                    " login = ?, password = ? WHERE user_id = ? ;";
+
+
+            if (table.equals("students_table")) {
+                statement = "UPDATE StudentsTable SET class_name = ?, team_id = ? WHERE user_id = ?";
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setString(1, className);
+                prepStmt.setInt(2, teamID);
+                prepStmt.setInt(3, studentID);
+            } else {
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setString(1, name);
+                prepStmt.setString(2, surname);
+                prepStmt.setString(3, email);
+                prepStmt.setString(4, login);
+                prepStmt.setString(5, password);
+                prepStmt.setInt(6, studentID);
+            }
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void insertStudent(PreUserModel preStudentModel) {
 
         Connection connection;
-        Statement statement;
 
         String name = preStudentModel.getName();
         String surname = preStudentModel.getSurname();
@@ -91,27 +156,34 @@ public class StudentDAO extends AbstractDAO<StudentModel> {
         String login = preStudentModel.getLogin();
         String password = preStudentModel.getPassword();
         String className = preStudentModel.getClassName();
-
         try {
             connection = DatabaseConnection.getConnection();
-            statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query1 = String.format("INSERT INTO UsersTable (name, surname, email," +
-                                          " login, password, user_type) VALUES ('%s', '%s'," +
-                                          "'%s', '%s', '%s', 'student');", name, surname, email, login, password);
+            String statement1 = "INSERT INTO UsersTable (name, surname, email," +
+                         " login, password, user_type) VALUES (?, ?, ?, ?, ?, 'student')";
+            PreparedStatement prepStmt1 = connection.prepareStatement(statement1);
 
-            statement.executeUpdate(query1);
+            prepStmt1.setString(1, name);
+            prepStmt1.setString(2, surname);
+            prepStmt1.setString(3, email);
+            prepStmt1.setString(4, login);
+            prepStmt1.setString(5, password);
+
+            prepStmt1.execute();
             connection.commit();
-            int userId = this.getStudentId(login);
+            prepStmt1.close();
 
-            String query2 = String.format("INSERT INTO StudentsTable (user_id, class_name)" +
-                                          " VALUES (%d, '%s');", userId, className);
+            int studentID = getStudentId(login);
+            String statement2 = "INSERT INTO StudentsTable (user_id, class_name) VALUES (?, ?);";
+            PreparedStatement prepStmt2 = connection.prepareStatement(statement2);
 
-            statement.executeUpdate(query2);
+            prepStmt2.setInt(1, studentID);
+            prepStmt2.setString(2, className);
 
-            statement.close();
+            prepStmt2.execute();
             connection.commit();
+            prepStmt2.close();
 
         } catch (Exception e) {
             e.printStackTrace();
