@@ -254,7 +254,6 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(state + formData);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -275,8 +274,13 @@ public class MentorController implements HttpHandler {
                 changeState(0);
 
             } else if (formData.compareTo("reset") > 0 && state == 10) {
-                removeTeam();
+                removeTeams();
                 removeStudentFromTeam();
+                changeState(0);
+
+            } else {
+                System.out.println("wch");
+                removeLastTeam();
                 changeState(0);
             }
 
@@ -302,6 +306,11 @@ public class MentorController implements HttpHandler {
                 }
             }
         }
+    }
+
+    private void removeLastTeam() {
+        TeamDao teamDao = new TeamDao();
+        teamDao.removeLastElement();
     }
 
     private LinkedList<TeamShoppingModel> showTeams() {
@@ -337,7 +346,7 @@ public class MentorController implements HttpHandler {
         return students;
     }
 
-    private void removeTeam() {
+    private void removeTeams() {
         Integer userId = session.getUserId();
         TeamDao teamDao = new TeamDao();
         MentorDAO mentorDAO = new MentorDAO();

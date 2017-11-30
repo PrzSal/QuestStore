@@ -299,4 +299,24 @@ public class TeamDao extends AbstractDAO<TeamShoppingModel> {
         }
     }
 
+    public void removeLastElement() {
+
+        Connection conn;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+
+            String statement = "DELETE FROM TeamsTable\n" +
+                    "ORDER BY team_id desc limit ?";
+
+            PreparedStatement prepStmt = conn.prepareStatement(statement);
+
+            prepStmt.setInt(1, 1);
+            prepStmt.execute();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
