@@ -14,9 +14,13 @@
                 "    <form method=\"POST\">" +
                 "       <label> Artifact to buy </label> <br>\n" +
                 "        <select  type=\"text\" id=\"artifactName\" name=\"newPurchase\"> <br>\n" +
+                         "{% if artifactModels.size() == 0 %}\n" +
+                                  "<a class=\"emptyList\">No team</a>\n"+
+                           " {% else %}\n"+
                 "            {% for artifact in artifactModels %}\n" +
                 "                <option  type=\"text\" name=\"newArtifact\" value= {{ artifact.title }}> {{ artifact.title }} </option>\n" +
                 "            {% endfor %}\n" +
+                "            {% endif %}\n"+
                 "        </select>\n" +
                 "     <input type=\"hidden\" name=\"state\" value=\"1\" > <br> \n" +
                 "        <input class=\"markSubmit\" id=\"submit\"  name=\"submit\" type=\"submit\"  value=\"submit\">\n" +
