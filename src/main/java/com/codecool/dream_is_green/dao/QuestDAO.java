@@ -173,4 +173,75 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             e.printStackTrace();
         }
     }
+
+    public void deleteQuest(String questTitle) {
+
+        Connection connection;
+        String questTitleRep = questTitle.replaceAll("\\s+", "\n");
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String insertTableSQL = "DELETE FROM QuestsTable WHERE quest_name = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, questTitleRep);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public void updateQuestStudents(QuestModel questModel) {
+
+        Connection connection;
+        String title = questModel.getTitle();
+        int price = questModel.getPrice();
+        String category = questModel.getCategory().getName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String updateQuestStudents = "UPDATE StudentsWithQuests SET price = ?, quest_category = ? WHERE quest_name = ?;";
+            PreparedStatement artifactsStudentStatement = connection.prepareStatement(updateQuestStudents);
+
+            artifactsStudentStatement.setInt(1, price);
+            artifactsStudentStatement.setString(2, category);
+            artifactsStudentStatement.setString(3, title);
+
+            artifactsStudentStatement.executeUpdate();
+            artifactsStudentStatement.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    public void updateQuestTable(QuestModel questModel) {
+
+        Connection connection;
+        String title = questModel.getTitle();
+        int price = questModel.getPrice();
+        String category = questModel.getCategory().getName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String updateQuestTable = "UPDATE QuestsTable SET price = ?, quest_category = ? WHERE quest_name = ?;";
+            PreparedStatement artifactsStatement = connection.prepareStatement(updateQuestTable);
+
+            artifactsStatement.setInt(1, price);
+            artifactsStatement.setString(2, category);
+            artifactsStatement.setString(3, title);
+
+            artifactsStatement.executeUpdate();
+            artifactsStatement.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
 }
