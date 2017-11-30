@@ -126,7 +126,7 @@ public class ResponseController<T> {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Create Team");
+        model.with("title", "Full Team");
         model.with("counterMail", countMail);
         model.with("menu", "classpath:/templates/mentor/menu_mentor.twig");
         model.with("main", "classpath:/templates/mentor/mentor_full_team.twig");
