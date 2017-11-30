@@ -16,19 +16,20 @@ import java.util.Map;
 public class MentorController implements HttpHandler {
 
     private Integer countMail;
-    private Integer userId = 0;
     private Integer state = 0;
     private LinkedList<StudentModel> temporaryStudents = new LinkedList<>();
     private TeamShoppingModel teamShoppingModel;
+
     private static CookieManager cookie = new CookieManager();
+    private static SessionModel session;
+
 
     public void handle(HttpExchange httpExchange) throws IOException {
+
         URI uri = httpExchange.getRequestURI();
         FormDataController formDataController = new FormDataController();
         URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
-        MailController mailController = new MailController();
-        countMail = mailController.checkMail(10);
 
         if (userAction == null) {
             index(httpExchange);
@@ -47,8 +48,9 @@ public class MentorController implements HttpHandler {
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
-            mailController = new MailController();
-            mailController.showReadMail(httpExchange, 10);
+            MailController mailController = new MailController();
+            Integer userId = session.getUserId();
+            mailController.showReadMail(httpExchange, userId);
         }
 
     }
@@ -58,12 +60,14 @@ public class MentorController implements HttpHandler {
         cookie.redirectIfCookieNull(httpExchange);
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
+        session = sessionDAO.getSession(sessionId);
 
         if (session != null) {
+            Integer userId = session.getUserId();
+            MailController mailController = new MailController();
+            countMail = mailController.checkMail(userId);
 
             String userType = session.getUserType();
-            userId = session.getUserId();
             redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
@@ -75,7 +79,7 @@ public class MentorController implements HttpHandler {
                                      String userType) throws IOException{
         if(userType.equals("mentor")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Home page",
+            responseController.sendResponse(httpExchange, countMail, "Home page",
                     "mentor/menu_mentor.twig","mentor/mentor_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -277,6 +281,7 @@ public class MentorController implements HttpHandler {
     }
 
     private LinkedList<StudentModel> chooseStudents() {
+        Integer userId = session.getUserId();
         MentorDAO mentorDAO = new MentorDAO();
         StudentDAO studentDAO = new StudentDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
@@ -293,7 +298,7 @@ public class MentorController implements HttpHandler {
     }
 
     private void removeTeam() {
-        System.out.println(userId);
+        Integer userId = session.getUserId();
         TeamDao teamDao = new TeamDao();
         MentorDAO mentorDAO = new MentorDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
@@ -301,6 +306,7 @@ public class MentorController implements HttpHandler {
     }
 
     private void removeStudentFromTeam() {
+        Integer userId = session.getUserId();
         MentorDAO mentorDAO = new MentorDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
         StudentDAO studentDAO = new StudentDAO();
