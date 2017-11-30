@@ -26,6 +26,7 @@ public class StudentController implements HttpHandler {
         URI uri = httpExchange.getRequestURI();
         URIModel uriModel = parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
+        cookie.refreshCookie(httpExchange);
 
         if (userAction == null) {
             index(httpExchange);
@@ -50,7 +51,7 @@ public class StudentController implements HttpHandler {
             Integer userId = session.getUserId();
             mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
-            clearCookie(httpExchange);
+            cookie.resetSession(httpExchange);
         }
     }
 
@@ -398,13 +399,6 @@ public class StudentController implements HttpHandler {
         WalletDAO walletDAO = new WalletDAO();
         walletDAO.loadCoolcoinsToWallet(studentModel);
         return studentModel.getWallet().getCoolCoins();
-    }
-
-    private void clearCookie(HttpExchange httpExchange) throws IOException {
-        cookie.cleanCookie(httpExchange);
-
-        httpExchange.getResponseHeaders().set("Location", "/login");
-        httpExchange.sendResponseHeaders(302,-1);
     }
 
     private TeamShoppingModel temporaryTeamModel(TeamDao teamDao) {
