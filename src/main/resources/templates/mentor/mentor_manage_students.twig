@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Class Name</th>
+                <th>Team ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in studentModels %}
+                <tr>
+                    <td>{{ student.userID }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.surname }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.login }}</td>
+                    <td>{{ student.password }}</td>
+                    <td>{{ student.className }}</td>
+                    <td>{{ student.teamId }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="submitTable">
+        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+            Student ID:<input type="number" name="userID" id="userID">
+            Name:<input type="text" name="name" id="name" required>
+            Surname:<input type="text" name="surname" id="surname" required>
+            Email:<input type="text" name="email" id="email" required><br>
+            Login:<input type="text" name="login" id="login" required>
+            Password:<input type="text" name="password" id="password" required>
+            Class name:<input type="text" name="className" id="className" required>
+            Team ID:<input type="number" name="teamID" id="teamID">
+            <br>
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Add">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Remove">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Update">
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var rIndex,
+        table = document.getElementById("table");
+
+    // display selected row data into input text
+    function selectedRowToInput()
+    {
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                // get the selected row index
+                rIndex = this.rowIndex;
+                document.getElementById("userID").value = this.cells[0].innerHTML;
+                document.getElementById("name").value = this.cells[1].innerText;
+                document.getElementById("surname").value = this.cells[2].innerText;
+                document.getElementById("email").value = this.cells[3].innerText;
+                document.getElementById("login").value = this.cells[4].innerText;
+                document.getElementById("password").value = this.cells[5].innerText;
+                document.getElementById("className").value = this.cells[6].innerText;
+                document.getElementById("teamID").value = this.cells[7].innerHTML;
+
+                // remove the background from the previous selected row
+                if(typeof index !== "undefined"){
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+                console.log(typeof index);
+            };
+        }
+    }
+    selectedRowToInput();
+
+</script>
