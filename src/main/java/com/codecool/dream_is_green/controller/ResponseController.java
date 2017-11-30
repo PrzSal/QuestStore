@@ -54,7 +54,7 @@ public class ResponseController<T> {
         os.close();
     }
 
-    public void sendResponse(HttpExchange httpExchange, String title,
+    public void sendResponse(HttpExchange httpExchange, Integer counterMail, String title,
                              String menuPath, String pagePath) throws IOException {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
@@ -63,6 +63,7 @@ public class ResponseController<T> {
         model.with("title", title);
         model.with("menu", "classpath:/templates/" + menuPath);
         model.with("main", "classpath:/templates/" + pagePath);
+        model.with("counterMail", counterMail);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
@@ -126,7 +127,7 @@ public class ResponseController<T> {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("title", "Create Team");
+        model.with("title", "Full Team");
         model.with("counterMail", countMail);
         model.with("menu", "classpath:/templates/mentor/menu_mentor.twig");
         model.with("main", "classpath:/templates/mentor/mentor_full_team.twig");

@@ -14,24 +14,21 @@ import java.util.*;
 public class StudentController implements HttpHandler {
 
     private Integer countMail;
-    private Integer userId = 0;
-    private Integer teamId = 0;
     private Integer walletTeam = 0;
     private LinkedList<ArtifactModel> li;
 
     private static CookieManager cookie = new CookieManager();
+    private static SessionModel session;
+
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
         URI uri = httpExchange.getRequestURI();
         URIModel uriModel = parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
-        MailController mailController = new MailController();
-        countMail = mailController.checkMail(userId);
 
         if (userAction == null) {
             index(httpExchange);
-            //walletStudent = showCoolcoins(userId);
         } else if (userAction.equals("show_quests")) {
             showQuests(httpExchange);
         } else if (userAction.equals("show_artifacts")) {
@@ -47,9 +44,10 @@ public class StudentController implements HttpHandler {
         } else if (userAction.equals("level")) {
             showLevel(httpExchange);
         } else if (userAction.equals("team_shop")) {
-            teamShopping(httpExchange, teamId);
+            teamShopping(httpExchange);
         }  else if (userAction.equals("mail")) {
-            mailController = new MailController();
+            MailController mailController = new MailController();
+            Integer userId = session.getUserId();
             mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
@@ -61,11 +59,13 @@ public class StudentController implements HttpHandler {
         cookie.redirectIfCookieNull(httpExchange);
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
-        userId = session.getUserId();
-        teamId = session.getTeamId();
+        session = sessionDAO.getSession(sessionId);
 
         if (session != null) {
+            Integer userId = session.getUserId();
+            MailController mailController = new MailController();
+            countMail = mailController.checkMail(userId);
+
             String userType = session.getUserType();
             redirectToStudentHome(httpExchange, userType);
         } else {
@@ -74,11 +74,10 @@ public class StudentController implements HttpHandler {
         }
     }
 
-    private void redirectToStudentHome(HttpExchange httpExchange,
-                                     String userType) throws IOException{
+    private void redirectToStudentHome(HttpExchange httpExchange, String userType) throws IOException{
         if(userType.equals("student")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Home page",
+            responseController.sendResponse(httpExchange, countMail,  "Home page",
                     "student/student_menu.twig","student/student_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -136,9 +135,6 @@ public class StudentController implements HttpHandler {
 
             ArtifactDAO artifactDAO = new ArtifactDAO();
 
-            String sessionId = cookie.getSessionId(httpExchange);
-            SessionDAO sessionDAO = new SessionDAO();
-            SessionModel session = sessionDAO.getSession(sessionId);
             Integer userId = session.getUserId();
             ArtifactModel testArtifact = artifactDAO.getUserArtifact(title, userId);
             System.out.println(testArtifact);
@@ -161,10 +157,6 @@ public class StudentController implements HttpHandler {
     private void useArtifact(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
-
-        String sessionId = cookie.getSessionId(httpExchange);
-        SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
         Integer userId = session.getUserId();
 
         if (method.equals("GET")) {
@@ -183,7 +175,6 @@ public class StudentController implements HttpHandler {
 
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
-            String titleRep = title.replaceAll("\\s+","\n");
 
             WalletDAO walletDAO = new WalletDAO();
             walletDAO.setArtifactOnUsed(title, userId);
@@ -196,10 +187,6 @@ public class StudentController implements HttpHandler {
     private void doQuest(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
-
-        String sessionId = cookie.getSessionId(httpExchange);
-        SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
         Integer studentID = session.getUserId();
 
         if (method.equals("GET")) {
@@ -236,9 +223,6 @@ public class StudentController implements HttpHandler {
     }
 
     private void showWallet(HttpExchange httpExchange) throws IOException {
-        String sessionId = cookie.getSessionId(httpExchange);
-        SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
         Integer userId = session.getUserId();
 
         WalletDAO walletDAO = new WalletDAO();
@@ -251,9 +235,6 @@ public class StudentController implements HttpHandler {
     }
 
     private void showLevel(HttpExchange httpExchange) throws IOException {
-        String sessionId = cookie.getSessionId(httpExchange);
-        SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
         Integer userId = session.getUserId();
 
         WalletDAO walletDAO = new WalletDAO();
@@ -270,9 +251,11 @@ public class StudentController implements HttpHandler {
                 "student/student_menu.twig", "student/student_show_level.twig");
     }
 
-    private void teamShopping(HttpExchange httpExchange, Integer teamId) throws IOException{
-        String method = httpExchange.getRequestMethod();
+    private void teamShopping(HttpExchange httpExchange) throws IOException{
 
+        String method = httpExchange.getRequestMethod();
+        Integer teamId = session.getTeamId();
+        Integer userId = session.getUserId();
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
@@ -300,7 +283,7 @@ public class StudentController implements HttpHandler {
                 String header = preMailModel.getHeader();
                 String content = preMailModel.getContent();
                 mailController.sendMultiplyMailToStudents(students, content, header, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
 
             } else if (formData.compareTo("newPurchase") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
@@ -309,7 +292,7 @@ public class StudentController implements HttpHandler {
 
             } else if (formData.compareTo("mark") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "mark", teamId, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
                 String header = "Use an artifact";
                 String content = "Dear Codecooler \n, Your team use an artifact: " + teamShoppingModel.getArtifactModel().getTitle() + ". " +
                                  "You will receive detailed information soon from the Mentor. " +
@@ -406,7 +389,7 @@ public class StudentController implements HttpHandler {
         return teamShoppingModel;
     }
 
-    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao) {
+    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao, Integer teamId) {
         teamShoppingModel.setState(0);
         teamShoppingModel.setVotes(0);
         Integer state = teamShoppingModel.getState();

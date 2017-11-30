@@ -16,19 +16,20 @@ import java.util.Map;
 public class MentorController implements HttpHandler {
 
     private Integer countMail;
-    private Integer userId = 0;
     private Integer state = 0;
     private LinkedList<StudentModel> temporaryStudents = new LinkedList<>();
     private TeamShoppingModel teamShoppingModel;
+
     private static CookieManager cookie = new CookieManager();
+    private static SessionModel session;
+
 
     public void handle(HttpExchange httpExchange) throws IOException {
+
         URI uri = httpExchange.getRequestURI();
         FormDataController formDataController = new FormDataController();
         URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
-        MailController mailController = new MailController();
-        countMail = mailController.checkMail(10);
 
         if (userAction == null) {
             index(httpExchange);
@@ -45,8 +46,9 @@ public class MentorController implements HttpHandler {
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
-            mailController = new MailController();
-            mailController.showReadMail(httpExchange, 10);
+            MailController mailController = new MailController();
+            Integer userId = session.getUserId();
+            mailController.showReadMail(httpExchange, userId);
         }
 
     }
@@ -56,12 +58,14 @@ public class MentorController implements HttpHandler {
         cookie.redirectIfCookieNull(httpExchange);
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
-        SessionModel session = sessionDAO.getSession(sessionId);
+        session = sessionDAO.getSession(sessionId);
 
         if (session != null) {
+            Integer userId = session.getUserId();
+            MailController mailController = new MailController();
+            countMail = mailController.checkMail(userId);
 
             String userType = session.getUserType();
-            userId = session.getUserId();
             redirectToMentorHome(httpExchange, userType);
         } else {
             httpExchange.getResponseHeaders().set("Location", "/login");
@@ -73,7 +77,7 @@ public class MentorController implements HttpHandler {
                                      String userType) throws IOException{
         if(userType.equals("mentor")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, "Home page",
+            responseController.sendResponse(httpExchange, countMail, "Home page",
                     "mentor/menu_mentor.twig","mentor/mentor_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -264,7 +268,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
             TeamDao teamDao = new TeamDao();
-            System.out.println(formData + 10);
+            System.out.println(state + formData);
 
             if (formData.compareTo("name") > 0 && state == 0) {
                 FormDataController<TeamShoppingModel> formDataController = new FormDataController<>();
@@ -283,10 +287,10 @@ public class MentorController implements HttpHandler {
                 temporaryStudents.clear();
                 students.clear();
                 changeState(0);
+
             } else if (formData.compareTo("reset") > 0 && state == 10) {
-                System.out.println("wchodzidoreseta");
-                teamShoppingModel.setTeamId(0);
-                removeStudentsFromTeam();
+                removeTeam();
+                removeStudentFromTeam();
                 changeState(0);
             }
 
@@ -295,7 +299,6 @@ public class MentorController implements HttpHandler {
         }
 
         if (method.equals("GET")) {
-
             if (state <= 1 && chooseStudents().size()>0) {
                 students = chooseStudents();
                 ResponseController<StudentModel> responseController = new ResponseController<>();
@@ -314,6 +317,7 @@ public class MentorController implements HttpHandler {
             }
         }
     }
+
     private LinkedList<TeamShoppingModel> showTeams() {
         TeamDao teamDao = new TeamDao();
         teamDao.loadTeams();
@@ -331,6 +335,7 @@ public class MentorController implements HttpHandler {
     }
 
     private LinkedList<StudentModel> chooseStudents() {
+        Integer userId = session.getUserId();
         MentorDAO mentorDAO = new MentorDAO();
         StudentDAO studentDAO = new StudentDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
@@ -345,12 +350,27 @@ public class MentorController implements HttpHandler {
         }
         return students;
     }
-    private void removeStudentsFromTeam() {
+
+    private void removeTeam() {
+        Integer userId = session.getUserId();
         TeamDao teamDao = new TeamDao();
         MentorDAO mentorDAO = new MentorDAO();
         MentorModel mentorModel = mentorDAO.getMentor(userId);
         teamDao.removeAllRecordsFromTeamstable(mentorModel);
-        updateStudents();
+    }
+
+    private void removeStudentFromTeam() {
+        Integer userId = session.getUserId();
+        MentorDAO mentorDAO = new MentorDAO();
+        MentorModel mentorModel = mentorDAO.getMentor(userId);
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        for (StudentModel studentModel : studentDAO.getObjectList()) {
+            if (studentModel.getClassName().equals(mentorModel.getClassName())) {
+                studentDAO.updateStudent(studentModel.getUserID(), "team_id", "0");
+                studentDAO.updateStudent(studentModel.getUserID(), "voted", "no");
+            }
+        }
     }
 
     private void updateStudents() {
@@ -361,6 +381,7 @@ public class MentorController implements HttpHandler {
             studentDAO.updateStudent(student.getUserID(), "team_id", String.valueOf(teamId));
         }
     }
+
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
