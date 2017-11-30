@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
+import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.model.TeamShoppingModel;
 import com.codecool.dream_is_green.model.LevelModel;
 import org.jtwig.JtwigModel;
@@ -10,6 +11,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ResponseController<T> {
 
@@ -73,13 +75,17 @@ public class ResponseController<T> {
     }
 
     public void sendResponseTeaamShop(HttpExchange httpExchange, Integer countMail, LinkedList<T> objectsList,
-                             Integer state, Integer voted, TeamDao teamDao) throws IOException {
+                                      Integer state, Integer voted, TeamDao teamDao, String teamName, Integer walletTeam,
+                                      List<StudentModel> members) throws IOException {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("artifactModels", objectsList);
         model.with("title", "Team shop");
         model.with("counterMail", countMail);
+        model.with("teamName", teamName);
+        model.with("walletTeam", walletTeam);
+        model.with("members", members);
         model.with("voted", voted);
         model.with("menu", "classpath:/templates/student/student_menu.twig");
         model.with("main", "classpath:/templates/student/student_team_shop.twig");
@@ -175,6 +181,27 @@ public class ResponseController<T> {
         model.with("nextLevel", nextLevel);
         model.with("studentExp", studentExp);
         model.with("title", title);
+        model.with("menu", "classpath:/templates/" + menuPath);
+        model.with("main", "classpath:/templates/" + pagePath);
+        model.with("counterMail", counterMail);
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    public void sendBuyArtifactResponse(HttpExchange httpExchange, Integer counterMail, LinkedList<T> objectsList,
+                             Integer currentCoolCoins, String objectModels, String title,
+                             String menuPath, String pagePath) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with(objectModels, objectsList);
+        model.with("title", title);
+        model.with("currentCoolCoins", currentCoolCoins);
         model.with("menu", "classpath:/templates/" + menuPath);
         model.with("main", "classpath:/templates/" + pagePath);
         model.with("counterMail", counterMail);

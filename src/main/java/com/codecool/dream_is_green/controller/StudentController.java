@@ -14,7 +14,7 @@ import java.util.*;
 public class StudentController implements HttpHandler {
 
     private Integer countMail;
-    private Integer walletTeam = 0;
+
     private LinkedList<ArtifactModel> li;
 
     private static CookieManager cookie = new CookieManager();
@@ -108,13 +108,16 @@ public class StudentController implements HttpHandler {
     private void buyArtifact(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
+        Integer userId = session.getUserId();
+        WalletDAO walletDAO = new WalletDAO();
+        Integer currentCoolCoins = walletDAO.getStudentCoolCoins(userId);
 
         if (method.equals("GET")) {
             ArtifactDAO artifactDAO = new ArtifactDAO();
             artifactDAO.loadArtifact();
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, artifacts,
+            responseController.sendBuyArtifactResponse(httpExchange, countMail, artifacts, currentCoolCoins,
                     "artifactsModels", "Buy artifact",
                     "student/student_menu.twig", "student/student_buy_artifact.twig");
 
@@ -128,25 +131,21 @@ public class StudentController implements HttpHandler {
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
             String titleRep = title.replaceAll("\\s+","\n");
-
             String category = inputs.get("category").trim();
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
 
             ArtifactDAO artifactDAO = new ArtifactDAO();
-
-            Integer userId = session.getUserId();
             ArtifactModel testArtifact = artifactDAO.getUserArtifact(title, userId);
-            System.out.println(testArtifact);
 
             if(testArtifact == null) {
                 ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
                 ArtifactModel artifact = new ArtifactModel(titleRep, price, artifactCategory);
                 artifactDAO.insertUserArtifact(artifact, userId);
 
-                WalletDAO walletDAO = new WalletDAO();
-                Integer currentCoolCoins = walletDAO.getStudentCoolCoins(userId);
-                walletDAO.updateStudentCoolCoins(currentCoolCoins - price, userId);
+                if(currentCoolCoins - price >= 0) {
+                    walletDAO.updateStudentCoolCoins(currentCoolCoins - price, userId);
+                }
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");
@@ -187,12 +186,12 @@ public class StudentController implements HttpHandler {
     private void doQuest(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
-        Integer studentID = session.getUserId();
+        Integer userId = session.getUserId();
 
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
-            LinkedList<String> titles = questDAO.loadQuestsTitle(studentID);
+            LinkedList<String> titles = questDAO.loadQuestsTitle(userId);
             LinkedList<QuestModel> quests = questDAO.getObjectList();
             System.out.println(titles);
             ResponseController<QuestModel> responseController = new ResponseController<>();
@@ -215,7 +214,12 @@ public class StudentController implements HttpHandler {
             QuestModel questModel = new QuestModel(title, price, questCategoryModel);
 
             QuestDAO questDAO = new QuestDAO();
-            questDAO.insertStudentQuest(questModel, studentID);
+            QuestModel testQuest = questDAO.getUserQuest(title, userId);
+
+            if(testQuest == null) {
+                questDAO.insertStudentQuest(questModel, userId);
+
+            }
 
             httpExchange.getResponseHeaders().set("Location", "/student/do_quest");
             httpExchange.sendResponseHeaders(302,-1);
@@ -238,9 +242,8 @@ public class StudentController implements HttpHandler {
         Integer userId = session.getUserId();
 
         WalletDAO walletDAO = new WalletDAO();
-        Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
+        Integer studentExp = walletDAO.getStudentExp(userId);
         LevelDAO levelDAO = new LevelDAO();
-        Integer studentExp = studentCoolCoins - 1000;
         LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentExp);
         LevelModel previousLevel = levelDAO.getPreviousLevel(studentExp);
         LevelModel nextLevel = levelDAO.getNextLevel(studentExp);
@@ -256,6 +259,8 @@ public class StudentController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         Integer teamId = session.getTeamId();
         Integer userId = session.getUserId();
+        Integer walletTeam = 0;
+
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
@@ -265,8 +270,10 @@ public class StudentController implements HttpHandler {
             studentDAO.loadStudents();
             TeamDao teamDao = new TeamDao();
             teamDao.loadDataAboutTeam(teamId);
+
             MailController mailController = new MailController();
             TeamShoppingModel temporary = temporaryTeamModel(teamDao);
+            Integer artifactPrice = artifactPrice(temporary);
 
             if (formData.compareTo("voteYes") > 0) {
                 studentDAO.updateStudent(userId, "voted", "yes");
@@ -283,7 +290,7 @@ public class StudentController implements HttpHandler {
                 String header = preMailModel.getHeader();
                 String content = preMailModel.getContent();
                 mailController.sendMultiplyMailToStudents(students, content, header, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId, artifactPrice);
 
             } else if (formData.compareTo("newPurchase") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "newPurchase", teamId, userId);
@@ -292,7 +299,7 @@ public class StudentController implements HttpHandler {
 
             } else if (formData.compareTo("mark") > 0) {
                 TeamShoppingModel teamShoppingModel = formDataTeamModel.parseFormData(formData, "mark", teamId, userId);
-                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId);
+                resetDataInTeamDao(teamShoppingModel, studentDAO, teamDao, teamId, artifactPrice);
                 String header = "Use an artifact";
                 String content = "Dear Codecooler \n, Your team use an artifact: " + teamShoppingModel.getArtifactModel().getTitle() + ". " +
                                  "You will receive detailed information soon from the Mentor. " +
@@ -316,32 +323,48 @@ public class StudentController implements HttpHandler {
 
         if (method.equals("GET")) {
             TeamDao teamDao = new TeamDao();
-            System.out.println(teamId);
             teamDao.loadDataAboutTeam(teamId);
-            LinkedList<ArtifactModel> artifactToBuy = offerToBuy(teamDao.getObjectList());
+            TeamShoppingModel teamShoppingModel = teamDao.getObjectList().get(0);
+            walletTeam = getWalletTeam(teamShoppingModel);
+            LinkedList<ArtifactModel> artifactToBuy = offerToBuy(walletTeam);
+            List<StudentModel> members = teamShoppingModel.getStudentModels();
             Integer voted = checkVoted(userId);
             Integer state = checkState(teamId);
+            String teamName = teamShoppingModel.getNameTeam();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponseTeaamShop(httpExchange, countMail, artifactToBuy, state, voted, teamDao);
+            responseController.sendResponseTeaamShop(httpExchange, countMail, artifactToBuy, state, voted, teamDao, teamName, walletTeam, members);
         }
     }
 
-    private LinkedList<ArtifactModel> offerToBuy(LinkedList<TeamShoppingModel> teamShoppingModels) {
+    private LinkedList<ArtifactModel> offerToBuy(Integer walletTeam ) {
 
         ArtifactDAO artifactDAO = new ArtifactDAO();
         artifactDAO.loadArtifact();
         li = new LinkedList<>();
-        walletTeam = 0;
-        for (StudentModel member : teamShoppingModels.get(0).getStudentModels()) {
-            walletTeam += showCoolcoins(member.getUserID());
-
-        }
         for(ArtifactModel artifact : artifactDAO.getObjectList()) {
             if (walletTeam >= artifact.getPrice()) {
                 li.add(artifact);
             }
         }
         return li;
+    }
+
+    private Integer getWalletTeam(TeamShoppingModel teamShoppingModel) {
+        Integer walletTeam = 0;
+        for (StudentModel member : teamShoppingModel.getStudentModels()) {
+            walletTeam += showCoolcoins(member.getUserID());
+
+        }
+        if (teamShoppingModel.getArtifactModel().getTitle() != null) {
+            walletTeam -= teamShoppingModel.getArtifactModel().getPrice();
+        }
+
+        return walletTeam;
+    }
+
+    private Integer artifactPrice(TeamShoppingModel teamShoppingModel) {
+        Integer price = teamShoppingModel.getArtifactModel().getPrice();
+        return price;
     }
 
     private Integer checkState(Integer teamId) {
@@ -389,15 +412,20 @@ public class StudentController implements HttpHandler {
         return teamShoppingModel;
     }
 
-    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao, Integer teamId) {
+    private void resetDataInTeamDao(TeamShoppingModel teamShoppingModel, StudentDAO studentDAO, TeamDao teamDao, Integer teamId, Integer artifactPrice) {
         teamShoppingModel.setState(0);
         teamShoppingModel.setVotes(0);
+        WalletDAO walletDAO = new WalletDAO();
+        Integer priceToUser = artifactPrice / teamShoppingModel.getStudentModels().size();
         Integer state = teamShoppingModel.getState();
         Integer votes = teamShoppingModel.getVotes();
         teamShoppingModel.getArtifactModel().setTitle(null);
         String artifactId = teamShoppingModel.getArtifactModel().getTitle();
 
         for (StudentModel student : teamShoppingModel.getStudentModels()) {
+            walletDAO.loadCoolcoinsToWallet(student);
+            Integer wallet = student.getWallet().getCoolCoins() - priceToUser;
+            walletDAO.updateStudentCoolCoins(wallet, student.getUserID());
             studentDAO.updateStudent(student.getUserID(), "voted", "no");
         }
 

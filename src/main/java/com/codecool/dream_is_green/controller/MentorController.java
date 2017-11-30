@@ -23,7 +23,6 @@ public class MentorController implements HttpHandler {
     private static CookieManager cookie = new CookieManager();
     private static SessionModel session;
 
-
     public void handle(HttpExchange httpExchange) throws IOException {
 
         URI uri = httpExchange.getRequestURI();
@@ -168,6 +167,8 @@ public class MentorController implements HttpHandler {
             WalletDAO walletDAO = new WalletDAO();
             Integer coolCoins = walletDAO.getStudentCoolCoins(studentID);
             walletDAO.updateStudentCoolCoins(coolCoins + price, studentID);
+            Integer studentExp = walletDAO.getStudentExp(studentID);
+            walletDAO.updateStudentExp(studentExp + price, studentID);
             questDAO.deleteStudentWithQuest(studentQuestModel);
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/mark_quest");
