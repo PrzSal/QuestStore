@@ -79,9 +79,12 @@
                 "             {% endfor %}\n" +
                 "             </tbody>\n" +
                 "        </table>\n" +
-                "        <input type=\"radio\" name=\"return\"> <br>\n" +
-                "        <input type=\"radio\" name=\"confirm\"> <br>\n" +
-                "        <input type=\"submit\" value=\"select\">\n" +
+                "        <input type=\"hidden\" name=\"confirm\"> <br>\n" +
+                "        <input type=\"submit\" value=\"confirm\">\n" +
+                "    </form>\n" +
+                "    <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
+                "        <input type=\"hidden\" name=\"restore\"> <br>\n" +
+                "        <input type=\"submit\" value=\"restore\">\n"+
                 "    </form>";
         }
     }

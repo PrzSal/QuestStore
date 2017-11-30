@@ -267,7 +267,8 @@ public class MentorController implements HttpHandler {
                 temporaryStudents = temporaryStudentsList(students);
                 changeState(2);
 
-            } else if (formData.compareTo("confirm") > 0 && state == 2) {
+            } else if (formData.equals("confirm=") && state == 2) {
+                System.out.println("whodzdo conf");
                 updateStudents();
                 temporaryStudents.clear();
                 students.clear();
@@ -278,9 +279,10 @@ public class MentorController implements HttpHandler {
                 removeStudentFromTeam();
                 changeState(0);
 
-            } else {
-                System.out.println("wch");
+            } else if (formData.equals("restore=")){
                 removeLastTeam();
+                temporaryStudents.clear();
+                students.clear();
                 changeState(0);
             }
 
@@ -310,7 +312,8 @@ public class MentorController implements HttpHandler {
 
     private void removeLastTeam() {
         TeamDao teamDao = new TeamDao();
-        teamDao.removeLastElement();
+        Integer teamId = teamDao.getTeamId(teamShoppingModel);
+        teamDao.removeLastElement(teamId);
     }
 
     private LinkedList<TeamShoppingModel> showTeams() {
