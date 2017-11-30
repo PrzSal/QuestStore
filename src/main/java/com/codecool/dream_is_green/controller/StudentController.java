@@ -108,13 +108,16 @@ public class StudentController implements HttpHandler {
     private void buyArtifact(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
+        Integer userId = session.getUserId();
+        WalletDAO walletDAO = new WalletDAO();
+        Integer currentCoolCoins = walletDAO.getStudentCoolCoins(userId);
 
         if (method.equals("GET")) {
             ArtifactDAO artifactDAO = new ArtifactDAO();
             artifactDAO.loadArtifact();
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, artifacts,
+            responseController.sendBuyArtifactResponse(httpExchange, countMail, artifacts, currentCoolCoins,
                     "artifactsModels", "Buy artifact",
                     "student/student_menu.twig", "student/student_buy_artifact.twig");
 
@@ -128,25 +131,21 @@ public class StudentController implements HttpHandler {
             Map<String, String> inputs = parseFormData(formData);
             String title = inputs.get("title").trim();
             String titleRep = title.replaceAll("\\s+","\n");
-
             String category = inputs.get("category").trim();
             String priceStr = inputs.get("price");
             Integer price = Integer.parseInt(priceStr);
 
             ArtifactDAO artifactDAO = new ArtifactDAO();
-
-            Integer userId = session.getUserId();
             ArtifactModel testArtifact = artifactDAO.getUserArtifact(title, userId);
-            System.out.println(testArtifact);
 
             if(testArtifact == null) {
                 ArtifactCategoryModel artifactCategory = new ArtifactCategoryModel(category);
                 ArtifactModel artifact = new ArtifactModel(titleRep, price, artifactCategory);
                 artifactDAO.insertUserArtifact(artifact, userId);
 
-                WalletDAO walletDAO = new WalletDAO();
-                Integer currentCoolCoins = walletDAO.getStudentCoolCoins(userId);
-                walletDAO.updateStudentCoolCoins(currentCoolCoins - price, userId);
+                if(currentCoolCoins - price >= 0) {
+                    walletDAO.updateStudentCoolCoins(currentCoolCoins - price, userId);
+                }
             }
 
             httpExchange.getResponseHeaders().set("Location", "/student/buy_artifact");

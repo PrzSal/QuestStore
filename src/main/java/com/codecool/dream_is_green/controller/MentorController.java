@@ -23,7 +23,6 @@ public class MentorController implements HttpHandler {
     private static CookieManager cookie = new CookieManager();
     private static SessionModel session;
 
-
     public void handle(HttpExchange httpExchange) throws IOException {
 
         URI uri = httpExchange.getRequestURI();
