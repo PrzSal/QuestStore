@@ -23,12 +23,14 @@
     <a class="emptyList">Empty list</a>
     {% else %}
     <div class="submitTable">
-        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+        <form method="POST" onsubmit="myFunction()">
             Title :<input type="text" name="title" id="title" required readonly>
             Category :<input type="text" name="category" id="category" required readonly>
             Price :<input type="number" name="price" id="price" readonly>
 
+            <a>Wallet balance: {{ currentCoolCoins }}</a>
             <input class="markSubmit" id="submit" name="button" type="submit"  value="Buy">
+            <p id="demo"></p>
         </form>
     </div>
     {% endif %}
@@ -69,4 +71,26 @@
     selectedRowToInput();
 
 </script>
+
+<script>
+    function myFunction() {
+
+        var x, y;
+
+        // Get the value of the input field with id="numb"
+        x = document.getElementById("price").value;
+        y = {{ currentCoolCoins }};
+
+        // If x is Not a Number or less than one or greater than 10
+        if (y - x < 0) {
+            alert("Not enough money");
+        } else {
+            alert("Success");
+        }
+    }
+</script>
+
+
+
+
 
