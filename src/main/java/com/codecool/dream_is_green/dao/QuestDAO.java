@@ -244,4 +244,34 @@ public class QuestDAO extends AbstractDAO<QuestModel> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
+
+    public QuestModel getUserQuest(String questTitle, Integer userId) {
+
+        QuestModel quest = null;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT * FROM StudentsWithQuests WHERE quest_name = ? and user_Id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, questTitle);
+            preparedStatement.setInt(2, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String title = rs.getString("quest_name");
+                Integer price = rs.getInt("price");
+                String category = rs.getString("quest_category");
+
+                QuestCategoryModel questCategory = new QuestCategoryModel(category);
+                quest = new QuestModel(title, price, questCategory);
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return quest;
+    }
 }
