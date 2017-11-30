@@ -21,6 +21,8 @@ public class AdminController implements HttpHandler {
         FormDataController formDataController = new FormDataController();
         URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
+        cookie.refreshCookie(httpExchange);
+
 
         if (userAction == null) {
             index(httpExchange);
@@ -41,7 +43,7 @@ public class AdminController implements HttpHandler {
             Integer userId = session.getUserId();
             mailController.showReadMail(httpExchange, userId);
         } else if (userAction.equals("logout")) {
-            clearCookie(httpExchange);
+            cookie.resetSession(httpExchange);
         }
     }
 
@@ -180,9 +182,4 @@ public class AdminController implements HttpHandler {
                 "admin/menu_admin.twig", "admin/admin_show_classes.twig");
     }
 
-    private void clearCookie(HttpExchange httpExchange) throws IOException {
-        cookie.cleanCookie(httpExchange);
-        httpExchange.getResponseHeaders().set("Location", "/login");
-        httpExchange.sendResponseHeaders(302,-1);
-    }
 }

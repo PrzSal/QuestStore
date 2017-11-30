@@ -23,7 +23,7 @@ public class CookieManager implements HttpHandler {
         } else {
             UUID sessionId = UUID.randomUUID();
             cookie = new HttpCookie("SessionId", String.valueOf(sessionId));
-            httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue());
+            httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue() + "; Max-Age=300;");
         }
     }
 
@@ -43,11 +43,24 @@ public class CookieManager implements HttpHandler {
         httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue() + "; Max-Age=0; Path=/");
     }
 
+    public void refreshCookie(HttpExchange httpExchange) {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        cookie = HttpCookie.parse(cookieStr).get(0);
+        httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue() + "; Max-Age=300; Path=/");
+    }
+
     public void redirectIfCookieNull(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         if(cookieStr == null) {
             httpExchange.getResponseHeaders().set("Location", "/login");
             httpExchange.sendResponseHeaders(302, -1);
         }
+    }
+
+    public void resetSession(HttpExchange httpExchange) throws IOException {
+        this.cleanCookie(httpExchange);
+
+        httpExchange.getResponseHeaders().set("Location", "/login");
+        httpExchange.sendResponseHeaders(302, -1);
     }
 }
