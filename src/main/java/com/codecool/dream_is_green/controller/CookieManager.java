@@ -23,7 +23,7 @@ public class CookieManager implements HttpHandler {
         } else {
             UUID sessionId = UUID.randomUUID();
             cookie = new HttpCookie("SessionId", String.valueOf(sessionId));
-            httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue() + "; Max-Age=300");
+            httpExchange.getResponseHeaders().add("Set-cookie", "SessionCookie=" + cookie.getValue());
         }
     }
 
