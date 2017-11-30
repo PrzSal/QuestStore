@@ -208,7 +208,7 @@ public class MentorController implements HttpHandler {
             ArtifactModel artifactModel = new ArtifactModel(title, price, artifactCategoryModel);
 
             if (option.equals("Add")) {
-                artifactDAO.insertArtifact("ArtifactsTable", artifactModel, 0);
+                artifactDAO.insertArtifact(artifactModel);
             } else if (option.equals("Remove")) {
                 artifactDAO.deleteArtifact(title);
             } else if (option.equals("Update")) {
@@ -289,7 +289,6 @@ public class MentorController implements HttpHandler {
                 changeState(2);
 
             } else if (formData.equals("confirm=") && state == 2) {
-                System.out.println("whodzdo conf");
                 updateStudents();
                 temporaryStudents.clear();
                 students.clear();
