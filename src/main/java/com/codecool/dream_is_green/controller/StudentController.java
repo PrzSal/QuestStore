@@ -186,12 +186,12 @@ public class StudentController implements HttpHandler {
     private void doQuest(HttpExchange httpExchange) throws IOException {
 
         String method = httpExchange.getRequestMethod();
-        Integer studentID = session.getUserId();
+        Integer userId = session.getUserId();
 
         if (method.equals("GET")) {
             QuestDAO questDAO = new QuestDAO();
             questDAO.loadQuest();
-            LinkedList<String> titles = questDAO.loadQuestsTitle(studentID);
+            LinkedList<String> titles = questDAO.loadQuestsTitle(userId);
             LinkedList<QuestModel> quests = questDAO.getObjectList();
             System.out.println(titles);
             ResponseController<QuestModel> responseController = new ResponseController<>();
@@ -214,7 +214,12 @@ public class StudentController implements HttpHandler {
             QuestModel questModel = new QuestModel(title, price, questCategoryModel);
 
             QuestDAO questDAO = new QuestDAO();
-            questDAO.insertStudentQuest(questModel, studentID);
+            QuestModel testQuest = questDAO.getUserQuest(title, userId);
+
+            if(testQuest == null) {
+                questDAO.insertStudentQuest(questModel, userId);
+
+            }
 
             httpExchange.getResponseHeaders().set("Location", "/student/do_quest");
             httpExchange.sendResponseHeaders(302,-1);
@@ -237,9 +242,8 @@ public class StudentController implements HttpHandler {
         Integer userId = session.getUserId();
 
         WalletDAO walletDAO = new WalletDAO();
-        Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
+        Integer studentExp = walletDAO.getStudentExp(userId);
         LevelDAO levelDAO = new LevelDAO();
-        Integer studentExp = studentCoolCoins - 1000;
         LevelModel studentLevel = levelDAO.getLevelByStudentExp(studentExp);
         LevelModel previousLevel = levelDAO.getPreviousLevel(studentExp);
         LevelModel nextLevel = levelDAO.getNextLevel(studentExp);
