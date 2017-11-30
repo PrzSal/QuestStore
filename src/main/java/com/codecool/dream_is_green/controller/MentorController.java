@@ -34,16 +34,12 @@ public class MentorController implements HttpHandler {
             index(httpExchange);
         } else if (userAction.equals("manage_artifacts")) {
             manageArtifact(httpExchange);
+        } else if (userAction.equals("manage_quests")) {
+            manageQuests(httpExchange);
         } else if (userAction.equals("mark_quest")) {
             markQuest(httpExchange);
-        } else if (userAction.equals("show_students")) {
-            showStudents(httpExchange);
         } else if (userAction.equals("create_team")) {
             createTeam(httpExchange);
-        } else if (userAction.equals("show_artifacts")) {
-            showArtifacts(httpExchange);
-        } else if (userAction.equals("show_quests")) {
-            showQuests(httpExchange);
         } else if (userAction.equals("logout")) {
             clearCookie(httpExchange);
         } else if (userAction.equals("mail")) {
@@ -199,6 +195,50 @@ public class MentorController implements HttpHandler {
             }
 
             httpExchange.getResponseHeaders().set("Location", "/mentor/manage_artifacts");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
+    }
+
+    private void manageQuests(HttpExchange httpExchange) throws IOException {
+        QuestDAO questDAO = new QuestDAO();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            questDAO.loadQuest();
+            LinkedList<QuestModel> quests = questDAO.getObjectList();
+            ResponseController<QuestModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, quests,
+                    "questsModels", "Manage quests",
+                    "mentor/menu_mentor.twig", "mentor/mentor_manage_quests.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String title = inputs.get("title").trim();
+
+            String category = inputs.get("category").trim();
+            String priceStr = inputs.get("price");
+            Integer price = Integer.parseInt(priceStr);
+            String option = inputs.get("button");
+
+            QuestCategoryModel questCategoryModel = new QuestCategoryModel(category);
+            QuestModel questModel = new QuestModel(title, price, questCategoryModel);
+
+            if (option.equals("Add")) {
+                questDAO.insertQuest(questModel);
+            } else if (option.equals("Remove")) {
+                questDAO.deleteQuest(title);
+            } else if (option.equals("Update")) {
+                questDAO.updateQuestTable(questModel);
+                questDAO.updateQuestStudents(questModel);
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/mentor/manage_quests");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }
