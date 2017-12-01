@@ -41,7 +41,14 @@
     </div>
     <div class="circle">{{ counterMail }}</div>
     <div class="mail">
-        <a href="/admin/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+        {% if session.userType.equals("admin") %}
+            <a href="/admin/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+        {% elseif session.userType.equals("mentor")  %}
+            <a href="/mentor/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+        {% else %}
+            <a href="/student/mail" img border="0" alt="logout"> <img src="/static/img/if_aiga_mail_bg_134145.png" width=100%></a>
+        {% endif %}
+
     </div>
 </div>
 
