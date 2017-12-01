@@ -49,7 +49,7 @@ public class MentorController implements HttpHandler {
         } else if (userAction.equals("mail")) {
             MailController mailController = new MailController();
             Integer userId = session.getUserId();
-            mailController.showReadMail(httpExchange, userId);
+            mailController.showReadMail(httpExchange);
         }
 
     }
