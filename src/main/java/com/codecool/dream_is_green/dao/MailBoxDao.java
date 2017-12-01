@@ -104,25 +104,24 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
         }
     }
 
-
     public void insertMail(PreMailModel preMailModel) {
 
         Connection connection;
-        Statement statement;
 
         try {
             connection = DatabaseConnection.getConnection();
-            statement = connection.createStatement();
             connection.setAutoCommit(false);
 
-            String query = String.format("INSERT INTO MailBox (content, header, user_id_recipient," +
-                    " user_id_sender) VALUES ('%s', '%s'," +
-                    "'%d', '%d');", preMailModel.getContent(), preMailModel.getHeader(), preMailModel.getUserIdAddressee(), preMailModel.getUserIdSender());
-
-            statement.executeUpdate(query);
+            String query = "INSERT INTO MailBox (content, header, user_id_recipient," +
+                    " user_id_sender) VALUES (?,?,?,?)";
+            PreparedStatement prepStmt = connection.prepareStatement(query);
+            prepStmt.setString(1, preMailModel.getContent());
+            prepStmt.setString(2, preMailModel.getHeader());
+            prepStmt.setInt(3, preMailModel.getUserIdAddressee());
+            prepStmt.setInt(4, preMailModel.getUserIdSender());
+            prepStmt.execute();
             connection.commit();
-
-
+            prepStmt.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
