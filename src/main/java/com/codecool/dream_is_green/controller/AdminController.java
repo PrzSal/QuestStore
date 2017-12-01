@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
@@ -26,10 +27,8 @@ public class AdminController implements HttpHandler {
 
         if (userAction == null) {
             index(httpExchange);
-        } else if (userAction.equals("add_class")) {
-            addClass(httpExchange);
-        } else if (userAction.equals("show_classes")) {
-            showClasses(httpExchange);
+        } else if (userAction.equals("manage_classes")) {
+            manageClasses(httpExchange);
         } else if (userAction.equals("add_mentor")) {
             addMentor(httpExchange);
         } else if (userAction.equals("show_mentors")) {
@@ -109,28 +108,6 @@ public class AdminController implements HttpHandler {
 
     }
 
-
-    private void addClass(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            FormDataController<ClassModel> classModel = new FormDataController<>();
-            ClassDAO classDao = new ClassDAO();
-            classDao.insertClass(classModel.parseFormData(formData, "class"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_classes");
-            httpExchange.sendResponseHeaders(302, -1);
-        }
-
-        if (method.equals("GET")) {
-            ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, "Add class",
-                    "admin/menu_admin.twig","admin/admin_add_class.twig");
-        }
-    }
-
     private void addLevel(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
@@ -172,14 +149,49 @@ public class AdminController implements HttpHandler {
                 "admin/menu_admin.twig","admin/admin_show_levels.twig");
     }
 
-    private void showClasses(HttpExchange httpExchange) throws IOException {
+    private void manageClasses(HttpExchange httpExchange) throws IOException {
         ClassDAO classDAO = new ClassDAO();
-        classDAO.loadClasses();
-        LinkedList<ClassModel> classes = classDAO.getObjectList();
-        ResponseController<ClassModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, classes,
-                "classModels", "Show classes",
-                "admin/menu_admin.twig", "admin/admin_show_classes.twig");
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            classDAO.loadClasses();
+            LinkedList<ClassModel> classes = classDAO.getObjectList();
+            ResponseController<ClassModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, classes,
+                    "classModels", "Manage classes",
+                    "admin/menu_admin.twig", "admin/admin_manage_classes.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String className = inputs.get("className").trim();
+            String option = inputs.get("button");
+
+            ClassModel classModel = new ClassModel(className);
+            if (option.equals("Add")) {
+                classDAO.insertClass(classModel);
+            } else if (option.equals("Remove")) {
+                classDAO.deleteClass(className);
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/mentor/manage_classes");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
+    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = formData.split("&");
+        for(String pair : pairs){
+            String[] keyValue = pair.split("=");
+            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
+            map.put(keyValue[0], value);
+        }
+        return map;
+    }
 }
