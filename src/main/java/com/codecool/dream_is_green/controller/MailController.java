@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MailController {
-    Integer response=0;
 
     public Integer checkMail(Integer userId ) {
 
