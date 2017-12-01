@@ -61,7 +61,6 @@ INSERT INTO `UsersTable` VALUES (11,'Karol','Kotarski','op.pl','Uj','Uj','studen
 INSERT INTO `UsersTable` VALUES (12,'Michal','Kowalski','@op.pl','mk','mk12','student');
 INSERT INTO `UsersTable` VALUES (13,'Marcin','Izworski','mi@','mi','mi12','mentor');
 INSERT INTO `UsersTable` VALUES (14,'Konrad','Gadzina','kg','kg','kg','mentor');
-INSERT INTO `UsersTable` VALUES (15,'Jan','Kowalski','j.kowalski@gmail.com','mentor','mentor','mentor');
 CREATE TABLE "TeamsTable" (
 	`team_id`	INTEGER,
 	`team_name`	TEXT DEFAULT null,

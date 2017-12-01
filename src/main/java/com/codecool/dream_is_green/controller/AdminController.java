@@ -29,10 +29,8 @@ public class AdminController implements HttpHandler {
             index(httpExchange);
         } else if (userAction.equals("manage_classes")) {
             manageClasses(httpExchange);
-        } else if (userAction.equals("add_mentor")) {
-            addMentor(httpExchange);
-        } else if (userAction.equals("show_mentors")) {
-            showMentors(httpExchange);
+        } else if (userAction.equals("manage_mentor")) {
+            manageMentor(httpExchange);
         } else if (userAction.equals("add_level")) {
             addLevel(httpExchange);
         } else if (userAction.equals("show_levels")) {
@@ -178,8 +176,55 @@ public class AdminController implements HttpHandler {
             } else if (option.equals("Remove")) {
                 classDAO.deleteClass(className);
             }
+            System.out.println("Przed");
+            httpExchange.getResponseHeaders().set("Location", "/admin/manage_classes");
+            System.out.println("Pod");
+            httpExchange.sendResponseHeaders(302,-1);
+            System.out.println("Po Po");
+        }
+    }
 
-            httpExchange.getResponseHeaders().set("Location", "/mentor/manage_classes");
+    private void manageMentor(HttpExchange httpExchange) throws IOException {
+        MentorDAO mentorDAO = new MentorDAO();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            mentorDAO.loadMentors();
+            LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
+            ResponseController<MentorModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, mentors,
+                    "mentorModels", "Manage mentors",
+                    "admin/menu_admin.twig", "admin/admin_manage_mentors.twig");
+
+        }
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+            Map<String, String> inputs = parseFormData(formData);
+
+            Integer mentorId = Integer.valueOf(inputs.get("userID"));
+            String name = inputs.get("name");
+            String surname = inputs.get("surname");
+            String email = inputs.get("email");
+            String login = inputs.get("login");
+            String password = inputs.get("password");
+            String className = inputs.get("className");
+
+            PreUserModel preUserModel = new PreUserModel(name, surname, email,
+                    login, password, className);
+
+            String option = inputs.get("button");
+            if (option.equals("Add")) {
+                mentorDAO.insertMentor(preUserModel);
+            } else if (option.equals("Remove")) {
+                mentorDAO.deleteMentor(mentorId);
+            } else if (option.equals("Update")) {
+                mentorDAO.updateMentorModel(mentorId, preUserModel, "UsersTable");
+                mentorDAO.updateMentorModel(mentorId, preUserModel,"mentorsTable");
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/admin/manage_mentor");
             httpExchange.sendResponseHeaders(302,-1);
         }
     }
