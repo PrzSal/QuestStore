@@ -1,7 +1,9 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.MailBoxDao;
+import com.codecool.dream_is_green.dao.MentorDAO;
 import com.codecool.dream_is_green.dao.SessionDAO;
+import com.codecool.dream_is_green.dao.StudentDAO;
 import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
@@ -47,15 +49,15 @@ public class MailController {
             } else if (userType.equals("student")) {
                 menu = "student/student_menu.twig";
             }
-            responseController.sendResponse(httpExchange, session, checkMail(userId), mails,
-                    "mailModels", "Show Mail",
-                    menu, "admin/admin_mail.twig");
+            responseController.sendResponseMail(httpExchange, session, checkMail(userId), mails,
+                    "mailModels", "Show Mail",  menu, "admin/admin_mail.twig", getMentors(), getStudents(), userId);
         }
 
         if (method.equals("POST")) {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
+            System.out.println(formData);
             FormDataController <PreMailModel> formDataController = new FormDataController<>();
             MailBoxDao mailBoxDao = new MailBoxDao();
             mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
@@ -64,35 +66,19 @@ public class MailController {
         }
     }
 
+    private LinkedList<MentorModel> getMentors() {
+        MentorDAO mentorDAO = new MentorDAO();
+        mentorDAO.loadMentors();
+        LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
+        return mentors;
+    }
 
-//    public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
-//        String method = httpExchange.getRequestMethod();
-//        MailBoxDao mailBoxDao = new MailBoxDao();
-//        mailBoxDao.loadReadMail(userId, 0);
-//        MailBoxModel mailBoxModel = mailBoxDao.getObjectList().get(0);
-//        if (method.equals("POST")) {
-//
-//            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-//            BufferedReader br = new BufferedReader(isr);
-//            String formData = br.readLine();
-//            FormDataController <PreMailModel> formDataController = new FormDataController<>();
-//            mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
-//            httpExchange.getResponseHeaders().set("Location", "/"+mailBoxModel.getUserType()+"/mail");
-//            httpExchange.sendResponseHeaders(302, -1);
-//        }
-//        if (method.equals("GET")) {
-//            mailBoxDao.loadReadMail(userId, 0);
-//            LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
-//            MailBoxDao mailBoxDaoAll = new MailBoxDao();
-//            mailBoxDaoAll.loadReadMailAll();
-//            LinkedList<MailBoxModel> allMails = mailBoxDao.getObjectList();
-//            MailBoxModel mailBoxModelAll = allMails.getLast();
-//            response = mailBoxModelAll.getReact();
-//            ResponseController<MailBoxModel> responseController = new ResponseController();
-//            responseController.sendResponseMail(httpExchange, checkMail(userId), mails, response);
-//            mailBoxDao.updateReact(mailBoxModel.getIdMail());
-//        }
-//    }
+    private LinkedList<StudentModel> getStudents() {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.loadStudents();
+        LinkedList<StudentModel> students = studentDAO.getObjectList();
+        return students;
+    }
 
     public void sendMultiplyMailToMentors(List<MentorModel> mentorsToSendMail, String content, String header, Integer idSender) {
         MailBoxDao mailBoxDao = new MailBoxDao();
