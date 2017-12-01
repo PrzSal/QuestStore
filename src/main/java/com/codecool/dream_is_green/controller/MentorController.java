@@ -42,6 +42,8 @@ public class MentorController implements HttpHandler {
             manageStudents(httpExchange);
         } else if (userAction.equals("mark_quest")) {
             markQuest(httpExchange);
+        } else if (userAction.equals("show_coolcoins")) {
+            showStudentsCoolcoins(httpExchange);
         } else if (userAction.equals("create_team")) {
             createTeam(httpExchange);
         } else if (userAction.equals("logout")) {
@@ -171,6 +173,14 @@ public class MentorController implements HttpHandler {
         }
     }
 
+    private void showStudentsCoolcoins(HttpExchange httpExchange) throws IOException {
+        WalletDAO walletDAO = new WalletDAO();
+        LinkedList<CoolCoinsModel> studentsCoolCoins = walletDAO.getStudentCoolCoins();
+        ResponseController<CoolCoinsModel> responseController = new ResponseController<>();
+        responseController.sendResponse(httpExchange, session, countMail, studentsCoolCoins,
+                "studentCoolCoins", "Show coolcoins",
+                "mentor/menu_mentor.twig", "mentor/mentor_show_coolcoins.twig");
+    }
 
     private void manageArtifact(HttpExchange httpExchange) throws IOException {
         ArtifactDAO artifactDAO = new ArtifactDAO();
