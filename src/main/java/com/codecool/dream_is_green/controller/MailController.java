@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.MailBoxDao;
+import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
@@ -22,6 +23,11 @@ public class MailController {
     }
 
     public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
+        CookieManager cookie = new CookieManager();
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+
         String method = httpExchange.getRequestMethod();
         if (method.equals("GET")) {
 
@@ -30,7 +36,7 @@ public class MailController {
             mailBoxDao.loadReadMail(userId, 0);
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
-            responseController.sendResponse(httpExchange, checkMail(userId), mails,
+            responseController.sendResponse(httpExchange, session, checkMail(userId), mails,
                     "mailModels", "Show Mail",
                     "admin/menu_admin.twig", "admin/admin_mail.twig");
         }
@@ -62,4 +68,5 @@ public class MailController {
             mailBoxDao.insertMail(preMailModel);
         }
     }
+
 }

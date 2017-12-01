@@ -78,7 +78,7 @@ public class StudentController implements HttpHandler {
     private void redirectToStudentHome(HttpExchange httpExchange, String userType) throws IOException{
         if(userType.equals("student")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail,  "Home page",
+            responseController.sendResponse(httpExchange, session, countMail,  "Home page",
                     "student/student_menu.twig","student/student_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -91,7 +91,7 @@ public class StudentController implements HttpHandler {
         questDAO.loadQuest();
         LinkedList<QuestModel> quests = questDAO.getObjectList();
         ResponseController<QuestModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, quests,
+        responseController.sendResponse(httpExchange, session, countMail, quests,
                 "questsModels", "Show quests",
                 "student/student_menu.twig", "student/student_show_quests.twig");
     }
@@ -101,7 +101,7 @@ public class StudentController implements HttpHandler {
         artifactDAO.loadArtifact();
         LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
         ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, artifacts,
+        responseController.sendResponse(httpExchange, session, countMail, artifacts,
                 "artifactsModels", "Show artifacts",
                 "student/student_menu.twig", "student/student_show_artifacts.twig");
     }
@@ -118,7 +118,7 @@ public class StudentController implements HttpHandler {
             artifactDAO.loadArtifact();
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendBuyArtifactResponse(httpExchange, countMail, artifacts, currentCoolCoins,
+            responseController.sendBuyArtifactResponse(httpExchange, session, countMail, artifacts, currentCoolCoins,
                     "artifactsModels", "Buy artifact",
                     "student/student_menu.twig", "student/student_buy_artifact.twig");
 
@@ -163,7 +163,7 @@ public class StudentController implements HttpHandler {
             WalletDAO walletDAO = new WalletDAO();
             LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentUnUsedArtifacts(userId);
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, studentArtifacts,
+            responseController.sendResponse(httpExchange, session, countMail, studentArtifacts,
                     "artifactsModels", "Use artifact",
                     "student/student_menu.twig", "student/student_use_artifact.twig");
         }
@@ -196,7 +196,7 @@ public class StudentController implements HttpHandler {
             LinkedList<QuestModel> quests = questDAO.getObjectList();
             System.out.println(titles);
             ResponseController<QuestModel> responseController = new ResponseController<>();
-            responseController.sendQuestResponse(httpExchange, countMail, quests, titles,
+            responseController.sendQuestResponse(httpExchange, session, countMail, quests, titles,
                     "questsModels", "Do quest",
                     "student/student_menu.twig", "student/student_do_quest.twig");
         }
@@ -234,7 +234,7 @@ public class StudentController implements HttpHandler {
         LinkedList<ArtifactModel> studentArtifacts = walletDAO.getStudentArtifacts(userId);
         Integer studentCoolCoins = walletDAO.getStudentCoolCoins(userId);
         ResponseController<ArtifactModel> responseController = new ResponseController<>();
-        responseController.sendResponseWallet(httpExchange, countMail, studentArtifacts,
+        responseController.sendResponseWallet(httpExchange, session, countMail, studentArtifacts,
                 "artifactsModels", "Wallet", studentCoolCoins,
                 "student/student_menu.twig", "student/student_show_wallet.twig");
     }
@@ -250,7 +250,7 @@ public class StudentController implements HttpHandler {
         LevelModel nextLevel = levelDAO.getNextLevel(studentExp);
 
         ResponseController<LevelModel> responseController = new ResponseController<>();
-        responseController.sendResponseLevel(httpExchange, countMail, "Level",
+        responseController.sendResponseLevel(httpExchange, session, countMail, "Level",
                 studentExp, studentLevel, previousLevel, nextLevel,
                 "student/student_menu.twig", "student/student_show_level.twig");
     }
@@ -333,7 +333,7 @@ public class StudentController implements HttpHandler {
             Integer state = checkState(teamId);
             String teamName = teamShoppingModel.getNameTeam();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponseTeaamShop(httpExchange, countMail, artifactToBuy, state, voted, teamDao, teamName, walletTeam, members);
+            responseController.sendResponseTeaamShop(httpExchange, session, countMail, artifactToBuy, state, voted, teamDao, teamName, walletTeam, members);
         }
     }
 
