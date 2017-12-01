@@ -23,12 +23,14 @@ public class MailController {
 
     }
 
-    public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
+    public void showReadMail(HttpExchange httpExchange) throws IOException {
         CookieManager cookie = new CookieManager();
         String sessionId = cookie.getSessionId(httpExchange);
         SessionDAO sessionDAO = new SessionDAO();
         SessionModel session = sessionDAO.getSession(sessionId);
-
+        String userType = session.getUserType();
+        Integer userId = session.getUserId();
+        System.out.println(userId);
         String method = httpExchange.getRequestMethod();
         if (method.equals("GET")) {
 
@@ -37,9 +39,17 @@ public class MailController {
             mailBoxDao.loadReadMail(userId, 0);
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
+            String menu = null;
+            if (userType.equals("admin")){
+                menu = "admin/menu_admin.twig";
+            } else if (userType.equals("mentor")) {
+                menu = "mentor/menu_mentor.twig";
+            } else if (userType.equals("student")) {
+                menu = "student/student_menu.twig";
+            }
             responseController.sendResponse(httpExchange, session, checkMail(userId), mails,
                     "mailModels", "Show Mail",
-                    "admin/menu_admin.twig", "admin/admin_mail.twig");
+                    menu, "admin/admin_mail.twig");
         }
 
         if (method.equals("POST")) {
@@ -49,7 +59,7 @@ public class MailController {
             FormDataController <PreMailModel> formDataController = new FormDataController<>();
             MailBoxDao mailBoxDao = new MailBoxDao();
             mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
-            httpExchange.getResponseHeaders().set("Location", "/mail");
+            httpExchange.getResponseHeaders().set("Location", "/"+session.getUserType()+"/mail");
             httpExchange.sendResponseHeaders(302, -1);
         }
     }
@@ -86,9 +96,17 @@ public class MailController {
 
     public void sendMultiplyMailToMentors(List<MentorModel> mentorsToSendMail, String content, String header, Integer idSender) {
         MailBoxDao mailBoxDao = new MailBoxDao();
+        Integer temporaryId = 0;
+        int i = 0;
         for (MentorModel mentor : mentorsToSendMail) {
-            PreMailModel preMailModel = new PreMailModel(content, header, mentor.getUserID(), idSender);
-            mailBoxDao.insertMail(preMailModel);
+            if (i > 0) {
+                temporaryId = mentorsToSendMail.get(i-1).getUserID();
+            }
+            if (!temporaryId.equals(mentor.getUserID())) {
+                PreMailModel preMailModel = new PreMailModel(content, header, mentor.getUserID(), idSender);
+                mailBoxDao.insertMail(preMailModel);
+            }
+            i++;
         }
     }
 

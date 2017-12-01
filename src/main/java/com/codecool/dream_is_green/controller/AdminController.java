@@ -36,7 +36,7 @@ public class AdminController implements HttpHandler {
         } else if (userAction.equals("mail")) {
             MailController mailController = new MailController();
             Integer userId = session.getUserId();
-            mailController.showReadMail(httpExchange, userId);
+            mailController.showReadMail(httpExchange);
         } else if (userAction.equals("logout")) {
             cookie.resetSession(httpExchange);
         }
