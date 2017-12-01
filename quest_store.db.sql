@@ -7,19 +7,23 @@ INTEGER,
 INTEGER
 DEFAULT
 1000,
+`user_exp`
+INTEGER
+DEFAULT
+0,
 `user_id`
 INTEGER
 UNIQUE,
 PRIMARY
 KEY(`wallet_id`)
 );
-INSERT INTO `WalletTable` VALUES (1,1000,3);
-INSERT INTO `WalletTable` VALUES (2,1000,4);
-INSERT INTO `WalletTable` VALUES (3,1000,8);
-INSERT INTO `WalletTable` VALUES (4,1000,9);
-INSERT INTO `WalletTable` VALUES (5,1000,11);
-INSERT INTO `WalletTable` VALUES (6,1000,12);
-INSERT INTO `WalletTable` VALUES (7,1000,5);
+INSERT INTO `WalletTable` VALUES (1,1000,0,3);
+INSERT INTO `WalletTable` VALUES (2,1000,0,4);
+INSERT INTO `WalletTable` VALUES (3,1000,0,8);
+INSERT INTO `WalletTable` VALUES (4,1000,0,9);
+INSERT INTO `WalletTable` VALUES (5,1000,0,11);
+INSERT INTO `WalletTable` VALUES (6,1000,0,12);
+INSERT INTO `WalletTable` VALUES (7,1000,0,5);
 CREATE TABLE "UsersTable"
 (
 `user_id`
@@ -45,7 +49,7 @@ PRIMARY
 KEY(`user_id`)
 );
 INSERT INTO `UsersTable` VALUES (1,'Michalina','Borek','m.borek','admin','admin','admin');
-INSERT INTO `UsersTable` VALUES (2,'Agnieszka','Koszany','a.koszany','akosz','akoszany','mentor');
+INSERT INTO `UsersTable` VALUES (2,'Agnieszka','Koszany','a.koszany','mentor','mentor','mentor');
 INSERT INTO `UsersTable` VALUES (3,'Przemyslaw','Salak','p.salak@','student','student','student');
 INSERT INTO `UsersTable` VALUES (4,'Pawel','Syktus','p.syktus@','psyktus','a912','student');
 INSERT INTO `UsersTable` VALUES (5,'Bob','Studer','b.stude','bob','stude','student');
@@ -57,7 +61,6 @@ INSERT INTO `UsersTable` VALUES (11,'Karol','Kotarski','op.pl','Uj','Uj','studen
 INSERT INTO `UsersTable` VALUES (12,'Michal','Kowalski','@op.pl','mk','mk12','student');
 INSERT INTO `UsersTable` VALUES (13,'Marcin','Izworski','mi@','mi','mi12','mentor');
 INSERT INTO `UsersTable` VALUES (14,'Konrad','Gadzina','kg','kg','kg','mentor');
-INSERT INTO `UsersTable` VALUES (15,'Jan','Kowalski','j.kowalski@gmail.com','mentor','mentor','mentor');
 CREATE TABLE "TeamsTable" (
 	`team_id`	INTEGER,
 	`team_name`	TEXT DEFAULT null,

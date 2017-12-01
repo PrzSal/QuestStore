@@ -1,9 +1,8 @@
-<div class="buy_artifact_container">
-    <div class="tab tab-1">
-        <table class="buy_artifact_Table" id="table" border="1">
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
             <thead>
                 <tr>
-                    {#<th>No.</th>#}
                     <th>Title</th>
                     <th>Category</th>
                     <th>Price</th>
@@ -12,7 +11,6 @@
             <tbody>
                 {% for artifact in artifactsModels %}
                     <tr>
-                        {#<td>{{ loop.index }}</td>#}
                         <td>{{ artifact.title }}</td>
                         <td>{{ artifact.category }}</td>
                         <td>{{ artifact.price }}</td>
@@ -21,88 +19,22 @@
             </tbody>
         </table>
     </div>
-    <div class="tab tab-2">
-        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+    {% if artifactsModels.size() == 0 %}
+    <a class="emptyList">Empty list</a>
+    {% else %}
+    <div class="submitTable">
+        <form method="POST" onsubmit="myFunction()">
             Title :<input type="text" name="title" id="title" required readonly>
             Category :<input type="text" name="category" id="category" required readonly>
             Price :<input type="number" name="price" id="price" readonly>
 
-            <input id="submit" name="button" type="submit"  value="Buy">
+            <a>Wallet balance: {{ currentCoolCoins }}</a>
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Buy">
+            <p id="demo"></p>
         </form>
     </div>
+    {% endif %}
 </div>
-
-
-<style>
-
-    div.buy_artifact_container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20%;
-        transform: scale(1.2, 1.2);
-
-    }
-
-    .tab{float: left;}
-    .tab-2 input{display: block;margin-bottom: 10px}
-
-
-
-    table.buy_artifact_Table {
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        width: 180%;
-        text-align: center;
-        margin-left: 15%;
-    }
-
-    .tab-2 {
-        font-family: Arial, Helvetica, sans-serif;
-        border: 2px solid #1C6EA4;
-        width: 14.5%;
-        text-align: center;
-        margin-left: 30%;
-    }
-
-
-    table.buy_artifact_Table td, table.buy_artifact_Table th, .tab-2 {
-        border: 1px solid #AAAAAA;
-        padding: 3px 3px;
-    }
-    tbody tr {
-        transition:all .25s ease-in-out;
-        background: #a4ffff;
-    }
-    /*tbody tr:nth-child(even) {*/
-        /*transition:all .25s ease-in-out;*/
-        /*background: #6fb79c;*/
-    /*}*/
-    table.buy_artifact_Table thead, .tab-2 {
-        background: #1C6EA4;
-        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        border-bottom: 2px solid #444444;
-    }
-    table.buy_artifact_Table thead th, .tab-2 {
-        font-size: 18px;
-        font-weight: bold;
-        color: #FFFFFF;
-        text-align: center;
-    }
-    table.buy_artifact_Table thead th:first-child {
-        border-left: none;
-    }
-
-    table.buy_artifact_Table tbody tr:hover {
-        background-color: #3f47ff; cursor: pointer; color: #fff;
-    }
-
-    tbody tr{cursor: pointer; transition: all .25s ease-in-out}
-    .selected{background-color: #3f47ff; color: #fff;}
-
-</style>
-
 
 <script>
 
@@ -139,4 +71,26 @@
     selectedRowToInput();
 
 </script>
+
+<script>
+    function myFunction() {
+
+        var x, y;
+
+        // Get the value of the input field with id="numb"
+        x = document.getElementById("price").value;
+        y = {{ currentCoolCoins }};
+
+        // If x is Not a Number or less than one or greater than 10
+        if (y - x < 0) {
+            alert("Not enough money");
+        } else {
+            alert("Success");
+        }
+    }
+</script>
+
+
+
+
 

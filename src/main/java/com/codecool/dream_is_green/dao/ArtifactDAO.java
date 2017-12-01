@@ -41,36 +41,35 @@ public class ArtifactDAO extends AbstractDAO<ArtifactModel> {
             e.printStackTrace();
         }
     }
-
-    public void insertArtifact(String table, ArtifactModel artifactModel, Integer id) {
+    public void insertArtifact(ArtifactModel artifactModel) {
 
         Connection connection;
-        Statement statement;
-        String artifactName = artifactModel.getTitle();
-        Integer price = artifactModel.getPrice();
-        String artifactCategory = artifactModel.getCategory().getName();
 
         try {
-            connection = DatabaseConnection.getConnection();
-            statement = connection.createStatement();
+            connection =  DatabaseConnection.getConnection();
             connection.setAutoCommit(false);
 
-            if(table.equals("ArtifactsTable")) {
+            String artifactName = artifactModel.getTitle();
+            Integer price = artifactModel.getPrice();
+            String artifactCategory = artifactModel.getCategory().getName();
+            Integer state =  0;
 
-                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category) VALUES('%s', %d, '%s');", table, artifactName, price, artifactCategory);
-                statement.executeUpdate(query);
-                connection.commit();
+            String insertTableSQL = "INSERT INTO ArtifactsTable (artifact_name, price, artifact_category, state) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertTableSQL);
+            preparedStatement.setString(1, artifactName);
+            preparedStatement.setInt(2, price);
+            preparedStatement.setString(3, artifactCategory);
+            preparedStatement.setInt(4, state);
 
-            } else {
-                String query = String.format("INSERT INTO '%s' (artifact_name, price, artifact_category, user_id) VALUES('%s', %d, '%s', %d);", table, artifactName, price, artifactCategory, id);
-                statement.executeUpdate(query);
-                connection.commit();
-            }
+            preparedStatement .executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
+
 
     public void updateArtifactStudents(ArtifactModel artifactModel) {
 

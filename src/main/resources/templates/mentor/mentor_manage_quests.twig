@@ -3,36 +3,38 @@
         <table class="localTable" id="table" border="1">
             <thead>
             <tr>
+                {#<th>No.</th>#}
                 <th>Title</th>
                 <th>Category</th>
-                <th>Price</th>
+                <th>Reward</th>
             </tr>
             </thead>
             <tbody>
-            {% for artifact in artifactsModels %}
+            {% for quest in questsModels %}
                 <tr>
-                    <td>{{ artifact.title }}</td>
-                    <td>{{ artifact.category }}</td>
-                    <td>{{ artifact.price }}</td>
+                    {#<td>{{ loop.index }}</td>#}
+                    <td>{{ quest.title }}</td>
+                    <td>{{ quest.category }}</td>
+                    <td>{{ quest.price }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-    {% if artifactsModels.size() == 0 %}
-        <a class="emptyList">Empty list</a>
-    {% else %}
-        <div class="submitTable">
-            <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
-                Title :<input type="text" name="title" id="title" required readonly>
-                Category :<input type="text" name="category" id="category" required readonly>
-                Price :<input type="number" name="price" id="price" readonly>
-            </form>
-        </div>
-    {% endif %}
+    <div class="submitTable">
+        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+            Title :<input type="text" name="title" id="title" required>
+            Category :<input type="text" name="category" id="category" required>
+            Reward :<input type="number" name="price" id="price" required>
+            <br>
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Add">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Remove">
+            <input class="markSubmit" id="submit" name="button" type="submit"  value="Update">
+        </form>
+    </div>
 </div>
 
-<script>
+<script type="text/javascript">
 
     var rIndex,
         table = document.getElementById("table");

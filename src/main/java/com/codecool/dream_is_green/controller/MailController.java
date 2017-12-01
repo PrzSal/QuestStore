@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.MailBoxDao;
+import com.codecool.dream_is_green.dao.SessionDAO;
 import com.codecool.dream_is_green.model.*;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MailController {
+    Integer response=0;
 
     public Integer checkMail(Integer userId ) {
 
@@ -22,6 +24,11 @@ public class MailController {
     }
 
     public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
+        CookieManager cookie = new CookieManager();
+        String sessionId = cookie.getSessionId(httpExchange);
+        SessionDAO sessionDAO = new SessionDAO();
+        SessionModel session = sessionDAO.getSession(sessionId);
+
         String method = httpExchange.getRequestMethod();
         if (method.equals("GET")) {
 
@@ -30,7 +37,7 @@ public class MailController {
             mailBoxDao.loadReadMail(userId, 0);
             LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
             ResponseController<MailBoxModel> responseController = new ResponseController();
-            responseController.sendResponse(httpExchange, checkMail(userId), mails,
+            responseController.sendResponse(httpExchange, session, checkMail(userId), mails,
                     "mailModels", "Show Mail",
                     "admin/menu_admin.twig", "admin/admin_mail.twig");
         }
@@ -47,6 +54,36 @@ public class MailController {
         }
     }
 
+
+//    public void showReadMail(HttpExchange httpExchange, Integer userId) throws IOException {
+//        String method = httpExchange.getRequestMethod();
+//        MailBoxDao mailBoxDao = new MailBoxDao();
+//        mailBoxDao.loadReadMail(userId, 0);
+//        MailBoxModel mailBoxModel = mailBoxDao.getObjectList().get(0);
+//        if (method.equals("POST")) {
+//
+//            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+//            BufferedReader br = new BufferedReader(isr);
+//            String formData = br.readLine();
+//            FormDataController <PreMailModel> formDataController = new FormDataController<>();
+//            mailBoxDao.insertMail(formDataController.parseFormData(formData, "mail"));
+//            httpExchange.getResponseHeaders().set("Location", "/"+mailBoxModel.getUserType()+"/mail");
+//            httpExchange.sendResponseHeaders(302, -1);
+//        }
+//        if (method.equals("GET")) {
+//            mailBoxDao.loadReadMail(userId, 0);
+//            LinkedList<MailBoxModel> mails = mailBoxDao.getObjectList();
+//            MailBoxDao mailBoxDaoAll = new MailBoxDao();
+//            mailBoxDaoAll.loadReadMailAll();
+//            LinkedList<MailBoxModel> allMails = mailBoxDao.getObjectList();
+//            MailBoxModel mailBoxModelAll = allMails.getLast();
+//            response = mailBoxModelAll.getReact();
+//            ResponseController<MailBoxModel> responseController = new ResponseController();
+//            responseController.sendResponseMail(httpExchange, checkMail(userId), mails, response);
+//            mailBoxDao.updateReact(mailBoxModel.getIdMail());
+//        }
+//    }
+
     public void sendMultiplyMailToMentors(List<MentorModel> mentorsToSendMail, String content, String header, Integer idSender) {
         MailBoxDao mailBoxDao = new MailBoxDao();
         for (MentorModel mentor : mentorsToSendMail) {
@@ -62,4 +99,5 @@ public class MailController {
             mailBoxDao.insertMail(preMailModel);
         }
     }
+
 }

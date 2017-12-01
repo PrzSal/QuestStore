@@ -11,7 +11,6 @@
     <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400|Roboto+Condensed:400|Fjalla+One:400'>
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="/static/css/calendar.css">
-    {{ redirect }}
 </head>
 <body>
 
@@ -25,7 +24,13 @@
 <!-- Sidebar -->
 <div class="left">
     <div class="user_photo">
-        <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
+        {% if session.userType.equals("admin") %}
+            <img border="0" alt="logout" src="/static/img/rafon.jpg" width=100%>
+        {% elseif session.userType.equals("mentor")  %}
+            <img border="0" alt="logout" src="/static/img/agi.jpg" width=100%>
+        {% else %}
+            <img border="0" alt="logout" src="/static/img/pietrek.jpg" width=100%>
+        {% endif %}
     </div>
 
     <div class="calendar-wrapper">
@@ -43,11 +48,6 @@
 <div class="main">
     {% include main ignore missing %}
 </div>
-
-{#<div class="footer">#}
-    {#? 2017 Codecool. All rights reserved. <br>#}
-    {#<a href=authors_admin.html> About authors ? </a>#}
-{#</div>#}
 
 <script src="/static/js/calendar.js"></script>
 </body>

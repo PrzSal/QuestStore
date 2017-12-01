@@ -200,4 +200,48 @@ public class WalletDAO extends AbstractDAO<WalletDAO> {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
+
+    public Integer getStudentExp(Integer userId) {
+
+        Integer userExp = 0;
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "SELECT user_exp FROM WalletTable WHERE user_Id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Integer studentExp = rs.getInt("user_exp");
+                userExp = studentExp;
+            }
+
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return userExp;
+    }
+
+    public void updateStudentExp(Integer userExp, Integer userId) {
+
+        Connection connection;
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+
+            String selectSQL = "UPDATE WalletTable SET user_exp = ? WHERE user_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, userExp);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
 }

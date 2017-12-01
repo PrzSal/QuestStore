@@ -3,21 +3,21 @@
         <table class="localTable" id="table" border="1">
             <thead>
             <tr>
-                <th class="tg-gkax">No.</th>
-                <th class="tg-gkax">Title</th>
-                <th class="tg-gkax">Category</th>
-                <th class="tg-gkax">Price</th>
-                <th class="tg-gkax">Student ID</th>
+                <th>No.</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Student ID</th>
             </tr>
             </thead>
             <tbody>
             {% for quest in studentQuestModels %}
                 <tr>
-                    <td class="tg-gkax">{{ loop.index }}</td>
-                    <td class="tg-gkax">{{ quest.title }}</td>
-                    <td class="tg-gkax">{{ quest.category }}</td>
-                    <td class="tg-gkax">{{ quest.price }}</td>
-                    <td class="tg-gkax">{{ quest.studentID }}</td>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ quest.title }}</td>
+                    <td>{{ quest.category }}</td>
+                    <td>{{ quest.price }}</td>
+                    <td>{{ quest.studentID }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -27,14 +27,14 @@
        <a class="emptyList">Empty list</a>
     {% else %}
         <div class="submitTable">
-        <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
-            Title :<input type="text" name="title" id="title" required readonly>
-            Category :<input type="text" name="category" id="category" required readonly>
-            Price :<input type="number" name="price" id="price" required readonly>
-            Student ID :<input type="number" name="student_id" id="student_id" required readonly>
+            <form method="POST" onsubmit="return confirm('Are you sure you want to submit this form?');">
+                Title :<input type="text" name="title" id="title" required readonly>
+                Category :<input type="text" name="category" id="category" required readonly>
+                Price :<input type="number" name="price" id="price" required readonly>
+                Student ID :<input type="number" name="student_id" id="student_id" required readonly>
 
-            <input class="markSubmit" id="submit" name="button" type="submit"  value="Mark as done">
-        </form>
+                <input class="markSubmit" id="submit" name="button" type="submit"  value="Mark as done">
+            </form>
     </div>
     {% endif %}
 </div>

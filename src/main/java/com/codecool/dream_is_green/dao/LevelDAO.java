@@ -2,7 +2,6 @@ package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.LevelModel;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -179,5 +178,26 @@ public class LevelDAO extends AbstractDAO<LevelModel> {
         return previousLevel;
     }
 
+    public void updateLevel(LevelModel level) {
 
+        Connection connection;
+        String levelName = level.getLevelName();
+        int expRequired = level.getExpRequired();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String updateLevelTable = "UPDATE LevelsTable SET exp_required = ? WHERE level_name = ?;";
+            PreparedStatement levelStatement = connection.prepareStatement(updateLevelTable);
+
+            levelStatement.setInt(1, expRequired);
+            levelStatement.setString(2, levelName);
+
+            levelStatement.executeUpdate();
+            levelStatement.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
 }
