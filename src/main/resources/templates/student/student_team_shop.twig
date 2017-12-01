@@ -1,12 +1,13 @@
-<header>Team shop: {{ teamName }}</header>
+<header>Welcome in Team shop: </header>
 {% include data1 ignore missing %}
+
 <div class="container">
+    <div class="text">Team: {{ teamName }}</div>
+    <div class="text">Wallet Teams: {{ walletTeam }}</div>
+    <div class="text">Yours Members: </div>
     <div class="globalTable">
         <table class="localTable" id="table" border="21">
             <thead>
-                <div class="text">Team: {{ teamName }}</div>
-                <div class="text">Wallet Teams: {{ walletTeam }}</div>
-                <div class="text">Team Member</div>
                 <tr>
                     <th>Nr.</th>
                     <th>Name </th>
