@@ -6,11 +6,38 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class WalletDAO extends AbstractDAO<WalletDAO> {
+
+    public LinkedList<CoolCoinsModel> getStudentCoolCoins() {
+
+        LinkedList<CoolCoinsModel> studentsWithCoolcoins = new LinkedList<>();
+        Connection connection;
+        Statement statement;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.createStatement();
+
+            String query = "SELECT * FROM WalletTable";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+
+                Integer coolCoins = resultSet.getInt("coolcoins");
+                Integer studentID = resultSet.getInt("user_id");
+                CoolCoinsModel studentCoolCoins = new CoolCoinsModel(coolCoins, studentID);
+                studentsWithCoolcoins.add(studentCoolCoins);
+            }
+            resultSet.close();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return studentsWithCoolcoins;
+    }
 
     public void loadCoolcoinsToWallet(StudentModel student) {
 
