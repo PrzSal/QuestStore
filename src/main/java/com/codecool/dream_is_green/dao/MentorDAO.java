@@ -210,4 +210,45 @@ public class MentorDAO extends AbstractDAO<MentorModel> {
         }
         return null;
     }
+
+    public void updateMentorModel(int mentorId, PreUserModel mentorModel, String table) {
+
+        Connection connection;
+        String name = mentorModel.getName();
+        String surname = mentorModel.getSurname();
+        String email = mentorModel.getEmail();
+        String login = mentorModel.getLogin();
+        String password = mentorModel.getPassword();
+        String className = mentorModel.getClassName();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement prepStmt;
+            String statement = "UPDATE UsersTable SET name = ?, surname = ?, email = ?," +
+                    " login = ?, password = ? WHERE user_id = ? ;";
+
+
+            if (table.equals("mentorsTable")) {
+                statement = "UPDATE MentorsTable SET class_name = ? WHERE user_id = ?";
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setString(1, className);
+                prepStmt.setInt(2, mentorId);
+            } else {
+                prepStmt = connection.prepareStatement(statement);
+                prepStmt.setString(1, name);
+                prepStmt.setString(2, surname);
+                prepStmt.setString(3, email);
+                prepStmt.setString(4, login);
+                prepStmt.setString(5, password);
+                prepStmt.setInt(6, mentorId);
+            }
+            prepStmt.executeUpdate();
+            connection.commit();
+            prepStmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
