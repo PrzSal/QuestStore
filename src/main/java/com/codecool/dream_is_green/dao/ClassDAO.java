@@ -2,6 +2,7 @@ package com.codecool.dream_is_green.dao;
 
 import com.codecool.dream_is_green.model.ClassModel;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -52,6 +53,27 @@ public class ClassDAO extends AbstractDAO<ClassModel> {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteClass(String className) {
+
+        Connection connection;
+        String classNameRep = className.replaceAll("\\s+", "\n");
+
+        try {
+            connection =  DatabaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String deleteTableSQL = "DELETE FROM ClassTable WHERE class_name = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteTableSQL);
+            preparedStatement.setString(1, classNameRep);
+
+            preparedStatement .executeUpdate();
+            preparedStatement.close();
+            connection.commit();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 }
