@@ -31,10 +31,8 @@ public class AdminController implements HttpHandler {
             manageClasses(httpExchange);
         } else if (userAction.equals("manage_mentor")) {
             manageMentor(httpExchange);
-        } else if (userAction.equals("add_level")) {
-            addLevel(httpExchange);
-        } else if (userAction.equals("show_levels")) {
-            showLevels(httpExchange);
+        } else if (userAction.equals("manage_levels")) {
+            manageLevels(httpExchange);
         } else if (userAction.equals("mail")) {
             MailController mailController = new MailController();
             Integer userId = session.getUserId();
@@ -76,75 +74,42 @@ public class AdminController implements HttpHandler {
         }
     }
 
-    private void addMentor(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-
-        addMentorPost(httpExchange, method);
-        if (method.equals("GET")) {
-            ClassDAO classDAO = new ClassDAO();
-            classDAO.loadClasses();
-            LinkedList<ClassModel> classes = classDAO.getObjectList();
-            ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, classes,
-                    "classModels", "Add mentor",
-                    "admin/menu_admin.twig", "admin/admin_add_mentor.twig");
-
-        }
-    }
-
-    private void addMentorPost(HttpExchange httpExchange, String method) throws IOException {
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            MentorDAO mentorDAO = new MentorDAO();
-            FormDataController<PreUserModel> preUser = new FormDataController<>();
-            mentorDAO.insertMentor(preUser.parseFormData(formData, "preUser"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_mentors");
-            httpExchange.sendResponseHeaders(302, -1);
-        }
-
-    }
-
-    private void addLevel(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
-
-        if (method.equals("POST")) {
-            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            String formData = br.readLine();
-            FormDataController<LevelModel> level = new FormDataController<>();
-            LevelDAO levelDAO = new LevelDAO();
-            levelDAO.insertLevel(level.parseFormData(formData, "level"));
-            httpExchange.getResponseHeaders().set("Location", "/admin/show_levels");
-            httpExchange.sendResponseHeaders(302, -1);
-        }
-
-        if (method.equals("GET")) {
-            ResponseController<LevelModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, "Add level",
-                    "admin/menu_admin.twig","admin/admin_create_level.twig");
-        }
-    }
-
-    private void showMentors(HttpExchange httpExchange) throws IOException {
-        MentorDAO mentorDAO = new MentorDAO();
-        mentorDAO.loadMentors();
-        LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
-        ResponseController<MentorModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, mentors,
-                "mentorModels", "Show mentors",
-                "admin/menu_admin.twig", "admin/admin_show_mentors.twig");
-    }
-
-    private void showLevels(HttpExchange httpExchange) throws IOException {
+    private void manageLevels(HttpExchange httpExchange) throws IOException {
         LevelDAO levelDAO = new LevelDAO();
-        levelDAO.loadLevels();
-        LinkedList<LevelModel> levels = levelDAO.getObjectList();
-        ResponseController<LevelModel> responseController = new ResponseController<>();
-        responseController.sendResponse(httpExchange, countMail, levels,
-                "levelModels", "Show levels",
-                "admin/menu_admin.twig","admin/admin_show_levels.twig");
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            levelDAO.loadLevels();
+            LinkedList<LevelModel> levels = levelDAO.getObjectList();
+            ResponseController<LevelModel> responseController = new ResponseController<>();
+            responseController.sendResponse(httpExchange, countMail, levels,
+                    "levelModels", "Manage levels",
+                    "admin/menu_admin.twig","admin/admin_manage_levels.twig");
+
+        }
+
+        if (method.equals("POST")) {
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            Map<String, String> inputs = parseFormData(formData);
+            String levelName = inputs.get("levelName").trim();
+            Integer expRequired = Integer.valueOf(inputs.get("expRequired"));
+            String option = inputs.get("button");
+
+            LevelModel levelModel = new LevelModel(levelName, expRequired);
+            if (option.equals("Add")) {
+                levelDAO.insertLevel(levelModel);
+            } else if (option.equals("Remove")) {
+                levelDAO.deleteLevel(levelName);
+            } else if (option.equals("Update")) {
+                levelDAO.updateLevel(levelModel);
+            }
+
+            httpExchange.getResponseHeaders().set("Location", "/admin/manage_levels");
+            httpExchange.sendResponseHeaders(302,-1);
+        }
     }
 
     private void manageClasses(HttpExchange httpExchange) throws IOException {
@@ -176,11 +141,9 @@ public class AdminController implements HttpHandler {
             } else if (option.equals("Remove")) {
                 classDAO.deleteClass(className);
             }
-            System.out.println("Przed");
+
             httpExchange.getResponseHeaders().set("Location", "/admin/manage_classes");
-            System.out.println("Pod");
             httpExchange.sendResponseHeaders(302,-1);
-            System.out.println("Po Po");
         }
     }
 
