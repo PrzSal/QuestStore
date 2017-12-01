@@ -134,6 +134,26 @@ public class ResponseController<T> {
         os.write(response.getBytes());
         os.close();
     }
+  
+    public void sendResponseCreateTeam(HttpExchange httpExchange, SessionModel session, Integer countMail, LinkedList<T> objectsList,
+                                      Integer state) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("mailModels", objectsList);
+        model.with("title", "Show Mail");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_mail.twig");
+        model.with("response", responsee);
+        model.with("counterMail", countMail);
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
 
     public void sendResponseEmptyCreateTeam(HttpExchange httpExchange, SessionModel session, Integer countMail, Integer state, LinkedList<TeamShoppingModel> teams) throws IOException {
 
