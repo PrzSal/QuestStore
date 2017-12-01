@@ -217,9 +217,7 @@ INSERT INTO `LevelsTable` VALUES ('noob',0);
 INSERT INTO `LevelsTable` VALUES ('beginner',400);
 INSERT INTO `LevelsTable` VALUES ('medium',600);
 INSERT INTO `LevelsTable` VALUES ('java_guru',1000);
-INSERT INTO `LevelsTable` VALUES ('replace_mentor','22
-500');
-INSERT INTO `LevelsTable` VALUES ('Fullstack',400000);
+INSERT INTO `LevelsTable` VALUES ('Fullstack',4000);
 CREATE TABLE "ClassTable"
 (
 `class_name`
