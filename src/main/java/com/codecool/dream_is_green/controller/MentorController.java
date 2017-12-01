@@ -29,6 +29,8 @@ public class MentorController implements HttpHandler {
         FormDataController formDataController = new FormDataController();
         URIModel uriModel = formDataController.parseURI(uri.getPath());
         String userAction = uriModel.getUserAction();
+        cookie.refreshCookie(httpExchange);
+
 
         if (userAction == null) {
             index(httpExchange);
@@ -43,7 +45,7 @@ public class MentorController implements HttpHandler {
         } else if (userAction.equals("create_team")) {
             createTeam(httpExchange);
         } else if (userAction.equals("logout")) {
-            clearCookie(httpExchange);
+            cookie.resetSession(httpExchange);
         } else if (userAction.equals("mail")) {
             MailController mailController = new MailController();
             Integer userId = session.getUserId();
@@ -82,13 +84,6 @@ public class MentorController implements HttpHandler {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
             httpExchange.sendResponseHeaders(302, -1);
         }
-    }
-
-    private void clearCookie(HttpExchange httpExchange) throws IOException {
-        cookie.cleanCookie(httpExchange);
-
-        httpExchange.getResponseHeaders().set("Location", "/login");
-        httpExchange.sendResponseHeaders(302, -1);
     }
 
     private void manageStudents(HttpExchange httpExchange) throws IOException {
