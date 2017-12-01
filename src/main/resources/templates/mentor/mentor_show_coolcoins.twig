@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="1">
+            <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>CoolCoins</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for coolcoins in studentCoolCoins %}
+                <tr>
+                    <td>{{ coolcoins.studentID }}</td>
+                    <td>{{ coolcoins.coolCoins }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if studentCoolCoins.size() == 0 %}
+        <a class="emptyList">Empty list</a>
+    {% endif %}
+</div>
+
+
+
