@@ -15,7 +15,7 @@
         {% for mail in mailModels %}
         if (id == {{loop.index }}) {
             myWindow.document.write("<div class=\"form-in\">\n" +
-                "                <form method=\"POST\">\n" +
+                "                <form name=\"myform\" action=\"\" method=\"POST\" id=\"myForm\">\n" +
                 "                    <input type=\"hidden\" name=\"mailId\" value = \"{{ mail.userID }}\" > <br>\n" +
                 "                    <input type=\"hidden\" name=\"mailIdRecipient\" value = \"{{ mail.idRecipient }}\" > <br>\n" +
                 "                    <input type=\"text\" name=\"mailName\" placeholder=\"{{ mail.name }}\"  value = \"{{ mail.name }}\" disabled=\"disabled\"> <br>\n" +
@@ -25,28 +25,46 @@
                 "                    <input type=\"text\" name=\"content\" placeholder=\"enter content...\" required> <br>\n" +
                 "                    <input type=\"submit\" value=\"Submit\">\n" +
                 "                </form>\n" +
-                "            </div>");
+                "            </div> ");
+        }
+            {% endfor %}
+        else if ({{ response }} == 1) {
+            closeWin();
+        }
+    }
+
+    function confirmFun() {
+        if (confirm("Confirm remove all team!") == true) {
+
+            document.getElementById("myForm").submit();
+        } else {
+
+            alert("Full teams!");
 
         }
-        {% endfor %}
+
     }
 
     function closeWin() {
         myWindow.close();
     }
 </script>
-<div class="table">
-    <table class="tg">
-        <div class="text">Mail Box</div>
-        <td class="tg-gkax">Sender</td>
-        <td class="tg-gkax">Header</td>
-        <td class="tg-gkax">Response</td>
-
+<div class="container">
+    <div class="globalTable">
+        <table class="localTable" id="table" border="21">
+           <thead>
+           <tr>
+                <div class="text">Mail Box</div>
+                <th>Sender</th>
+                <th>Header</th>
+                <th>Response</th>
+           </tr>
+           </thead>
         {% for mail in mailModels %}
-
+            <tbody>
             <tr>
-                <td class="tg-gkax">{{ mail.name }} </td>
-                <td class="tg-gkax">
+                <td>{{ mail.name }} </td>
+                <td>
                     {% if mail.read == 1 %}
                         <div class="popup" onclick="myFunction({{ loop.index }})"><p class="test"> {{ mail.header }}
                              <span class="popuptext" id="{{ loop.index }}"> {{ mail.content }} </span>
@@ -58,9 +76,10 @@
                         </div>
                     {% endif %}
                 </td>
-                <td class="tg-gkax"><button onclick="openResponseForm({{ loop.index }})">Response</button> </td>
+                <td><button onclick="openResponseForm({{ loop.index }})">Response</button> </td>
             </tr>
         {% endfor %}
-
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

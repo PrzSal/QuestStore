@@ -1,6 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
+import com.codecool.dream_is_green.model.MailBoxModel;
 import com.codecool.dream_is_green.model.StudentModel;
 import com.codecool.dream_is_green.model.TeamShoppingModel;
 import com.codecool.dream_is_green.model.LevelModel;
@@ -121,6 +122,25 @@ public class ResponseController<T> {
         model.with("main", "classpath:/templates/mentor/mentor_create_team.twig");
         model.with("state", state );
 
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    public void sendResponseMail(HttpExchange httpExchange, Integer countMail, LinkedList<MailBoxModel> objectsList, Integer responsee) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with("mailModels", objectsList);
+        model.with("title", "Show Mail");
+        model.with("menu", "classpath:/templates/admin/menu_admin.twig");
+        model.with("main", "classpath:/templates/admin/admin_mail.twig");
+        model.with("response", responsee);
+        model.with("counterMail", countMail);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
