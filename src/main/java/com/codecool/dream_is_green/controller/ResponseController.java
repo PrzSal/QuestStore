@@ -1,10 +1,7 @@
 package com.codecool.dream_is_green.controller;
 
 import com.codecool.dream_is_green.dao.TeamDao;
-import com.codecool.dream_is_green.model.SessionModel;
-import com.codecool.dream_is_green.model.StudentModel;
-import com.codecool.dream_is_green.model.TeamShoppingModel;
-import com.codecool.dream_is_green.model.LevelModel;
+import com.codecool.dream_is_green.model.*;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -215,6 +212,30 @@ public class ResponseController<T> {
         model.with("menu", "classpath:/templates/" + menuPath);
         model.with("main", "classpath:/templates/" + pagePath);
         model.with("counterMail", counterMail);
+        String response = template.render(model);
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    public void sendResponseMail(HttpExchange httpExchange, SessionModel session, Integer counterMail, LinkedList<T> objectsList,
+                                 String objectModels, String title, String menuPath, String pagePath, LinkedList<MentorModel> mentors,
+                                 LinkedList<StudentModel>students, Integer userId) throws IOException {
+
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/main.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        model.with(objectModels, objectsList);
+        model.with("session", session);
+        model.with("title", title);
+        model.with("menu", "classpath:/templates/" + menuPath);
+        model.with("main", "classpath:/templates/" + pagePath);
+        model.with("counterMail", counterMail);
+        model.with("mentors", mentors);
+        model.with("students", students);
+        model.with("userID", userId);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());
