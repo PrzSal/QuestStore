@@ -49,7 +49,7 @@ PRIMARY
 KEY(`user_id`)
 );
 INSERT INTO `UsersTable` VALUES (1,'Michalina','Borek','m.borek','admin','admin','admin');
-INSERT INTO `UsersTable` VALUES (2,'Agnieszka','Koszany','a.koszany','akosz','akoszany','mentor');
+INSERT INTO `UsersTable` VALUES (2,'Agnieszka','Koszany','a.koszany','mentor','mentor','mentor');
 INSERT INTO `UsersTable` VALUES (3,'Przemyslaw','Salak','p.salak@','student','student','student');
 INSERT INTO `UsersTable` VALUES (4,'Pawel','Syktus','p.syktus@','psyktus','a912','student');
 INSERT INTO `UsersTable` VALUES (5,'Bob','Studer','b.stude','bob','stude','student');

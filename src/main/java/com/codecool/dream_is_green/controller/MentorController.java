@@ -78,7 +78,7 @@ public class MentorController implements HttpHandler {
                                       String userType) throws IOException {
         if (userType.equals("mentor")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, "Home page",
+            responseController.sendResponse(httpExchange, session, countMail, "Home page",
                     "mentor/menu_mentor.twig", "mentor/mentor_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -94,7 +94,7 @@ public class MentorController implements HttpHandler {
             studentDAO.loadStudents();
             LinkedList<StudentModel> students = studentDAO.getObjectList();
             ResponseController<StudentModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, students,
+            responseController.sendResponse(httpExchange, session, countMail, students,
                     "studentModels", "Manage students",
                     "mentor/menu_mentor.twig", "mentor/mentor_manage_students.twig");
         }
@@ -141,7 +141,7 @@ public class MentorController implements HttpHandler {
         if (method.equals("GET")) {
             LinkedList<StudentQuestModel> studentQuestModels = questDAO.loadStudentsWithQuests();
             ResponseController<StudentQuestModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, studentQuestModels,
+            responseController.sendResponse(httpExchange, session, countMail, studentQuestModels,
                     "studentQuestModels", "Mark quest",
                     "mentor/menu_mentor.twig", "mentor/mentor_mark_quest.twig");
         }
@@ -180,7 +180,7 @@ public class MentorController implements HttpHandler {
             artifactDAO.loadArtifact();
             LinkedList<ArtifactModel> artifacts = artifactDAO.getObjectList();
             ResponseController<ArtifactModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, artifacts,
+            responseController.sendResponse(httpExchange, session, countMail, artifacts,
                     "artifactsModels", "Manage artifacts",
                     "mentor/menu_mentor.twig", "mentor/mentor_manage_artifacts.twig");
 
@@ -224,7 +224,7 @@ public class MentorController implements HttpHandler {
             questDAO.loadQuest();
             LinkedList<QuestModel> quests = questDAO.getObjectList();
             ResponseController<QuestModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, quests,
+            responseController.sendResponse(httpExchange, session, countMail, quests,
                     "questsModels", "Manage quests",
                     "mentor/menu_mentor.twig", "mentor/mentor_manage_quests.twig");
 
@@ -309,17 +309,17 @@ public class MentorController implements HttpHandler {
             if (state <= 1 && chooseStudents().size()>0) {
                 students = chooseStudents();
                 ResponseController<StudentModel> responseController = new ResponseController<>();
-                responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+                responseController.sendResponseCreateTeam(httpExchange, session, countMail, students, state);
 
             } else if (students.size() == 0) {
                 if (temporaryStudents.size() == 0) {
                     ResponseController<StudentModel> responseController = new ResponseController<>();
                     state = 10;
-                    responseController.sendResponseEmptyCreateTeam(httpExchange, countMail, state, teamShoppingModels);
+                    responseController.sendResponseEmptyCreateTeam(httpExchange, session, countMail, state, teamShoppingModels);
                 } else {
                     students = temporaryStudents;
                     ResponseController<StudentModel> responseController = new ResponseController<>();
-                    responseController.sendResponseCreateTeam(httpExchange, countMail, students, state);
+                    responseController.sendResponseCreateTeam(httpExchange, session, countMail, students, state);
                 }
             }
         }

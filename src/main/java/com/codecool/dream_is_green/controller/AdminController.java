@@ -66,7 +66,7 @@ public class AdminController implements HttpHandler {
                                      String userType) throws IOException{
         if(userType.equals("admin")) {
             ResponseController<User> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, "Home page",
+            responseController.sendResponse(httpExchange, session, countMail, "Home page",
                     "admin/menu_admin.twig","admin/admin_home.twig");
         } else {
             httpExchange.getResponseHeaders().set("Location", "/" + userType);
@@ -82,7 +82,7 @@ public class AdminController implements HttpHandler {
             levelDAO.loadLevels();
             LinkedList<LevelModel> levels = levelDAO.getObjectList();
             ResponseController<LevelModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, levels,
+            responseController.sendResponse(httpExchange, session, countMail, levels,
                     "levelModels", "Manage levels",
                     "admin/menu_admin.twig","admin/admin_manage_levels.twig");
 
@@ -120,10 +120,9 @@ public class AdminController implements HttpHandler {
             classDAO.loadClasses();
             LinkedList<ClassModel> classes = classDAO.getObjectList();
             ResponseController<ClassModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, classes,
+            responseController.sendResponse(httpExchange, session, countMail, classes,
                     "classModels", "Manage classes",
                     "admin/menu_admin.twig", "admin/admin_manage_classes.twig");
-
         }
 
         if (method.equals("POST")) {
@@ -155,7 +154,7 @@ public class AdminController implements HttpHandler {
             mentorDAO.loadMentors();
             LinkedList<MentorModel> mentors = mentorDAO.getObjectList();
             ResponseController<MentorModel> responseController = new ResponseController<>();
-            responseController.sendResponse(httpExchange, countMail, mentors,
+            responseController.sendResponse(httpExchange, session, countMail, mentors,
                     "mentorModels", "Manage mentors",
                     "admin/menu_admin.twig", "admin/admin_manage_mentors.twig");
 
