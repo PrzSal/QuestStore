@@ -20,8 +20,8 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
                                          "MailBox.user_id_sender = UsersTable.user_id where " +
                                          "MailBox.user_id_recipient == %d and MailBox.read == %d;", userId, status);
             ResultSet result = stat.executeQuery(query);
-            String content, header, name, surname, email, login, password, userType;
-            int read, userID, userIDSender, react, mailId;
+            String content, header, name, surname, email, login, password;
+            int read, userID, userIDSender, mailId;
 
             while(result.next()) {
 
@@ -35,10 +35,8 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
                 read = result.getInt("read");
                 userID = result.getInt("user_id_recipient");
                 userIDSender = result.getInt("user_id_sender");
-                react = result.getInt("react");
                 mailId = result.getInt("id");
-                userType = result.getString("user_type");
-                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender, read, react, mailId, userType);
+                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender, read, mailId);
                 this.addObject(mailBoxModel);
             }
             result.close();
@@ -74,10 +72,8 @@ public class MailBoxDao extends AbstractDAO<MailBoxModel> {
                 read = result.getInt("read");
                 userID = result.getInt("user_id_recipient");
                 userIDSender = result.getInt("user_id_sender");
-                react = result.getInt("react");
                 mailId = result.getInt("id");
-                userType = result.getString("user_type");
-                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender, read, react, mailId, userType);
+                MailBoxModel mailBoxModel = new MailBoxModel(userID, name, surname, email, login, password, header, content, userIDSender, read, mailId);
                 this.addObject(mailBoxModel);
             }
             result.close();
